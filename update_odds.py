@@ -6,7 +6,7 @@ API_KEY = os.getenv('ODDS_API_KEY')
 # Lista refinada: Solo España (1 y 2) y las 3 grandes de Europa
 LEAGUES = [
     'soccer_spain_la_liga',
-    'soccer_spain_la_liga_2',
+    'soccer_spain_segunda_division',
     'soccer_uefa_champs_league',
     'soccer_uefa_europa_league',
     'soccer_uefa_europa_conference_league'
