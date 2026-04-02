@@ -4,7 +4,20 @@ import os
 
 API_KEY = os.getenv('ODDS_API_KEY')
 # Ligas: Primera y Segunda de España
-LEAGUES = ['soccer_spain_la_liga', 'soccer_spain_la_liga_2']
+# Ligas españolas, competiciones europeas, selecciones y ligas top europeas (por si hay parón)
+LEAGUES = [
+    'soccer_spain_la_liga',                 # Primera División
+    'soccer_spain_la_liga_2',               # Segunda División
+    'soccer_uefa_champs_league',            # Champions League
+    'soccer_uefa_europa_league',            # Europa League
+    'soccer_uefa_europa_conference_league', # Conference League
+    'soccer_uefa_nations_league',           # Selecciones (Nations League)
+    'soccer_fifa_world_cup_qualification',  # Selecciones (Clasificación Mundial)
+    'soccer_uefa_euro_qualification',       # Selecciones (Clasificación Eurocopa)
+    'soccer_england_league_1',              # Premier League (Inglaterra)
+    'soccer_italy_serie_a',                 # Serie A (Italia)
+    'soccer_germany_bundesliga'             # Bundesliga (Alemania)
+]
 
 def get_odds():
     all_odds = []
