@@ -1,0 +1,29 @@
+name: Update Odds Data
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Se ejecuta cada 6 horas
+  workflow_dispatch: # Permite ejecutarlo a mano para probar
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: pip install requests
+      - name: Run script
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python update_odds.py
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'OddsBot'
+          git config --global user.email 'bot@quiniai.com'
+          git add cuotas.json
+          git commit -m "Actualizar cuotas" || exit 0
+          git push
