@@ -1,17 +1,21 @@
 name: Update Odds Data
 on:
   schedule:
-    - cron: '0 */6 * * *' # Se ejecuta cada 6 horas
-  workflow_dispatch: # Permite ejecutarlo a mano para probar
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+# ESTO ES LO QUE SOLUCIONA EL ERROR 128 (Da permiso para subir el archivo)
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
       - name: Install dependencies
