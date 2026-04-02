@@ -14,9 +14,6 @@ LEAGUES = [
     'soccer_uefa_nations_league',           # Selecciones (Nations League)
     'soccer_fifa_world_cup_qualification',  # Selecciones (Clasificación Mundial)
     'soccer_uefa_euro_qualification',       # Selecciones (Clasificación Eurocopa)
-    'soccer_england_league_1',              # Premier League (Inglaterra)
-    'soccer_italy_serie_a',                 # Serie A (Italia)
-    'soccer_germany_bundesliga'             # Bundesliga (Alemania)
 ]
 
 def get_odds():
