@@ -3,43 +3,37 @@ import json
 import os
 
 API_KEY = os.getenv('ODDS_API_KEY')
-# Ligas actualizadas
+# Lista refinada: Solo España (1 y 2) y las 3 grandes de Europa
 LEAGUES = [
-    'soccer_spain_la_liga',                 # Primera División
-
-    'soccer_spain_la_liga_2',               # Segunda División
-
-    'soccer_uefa_champs_league',            # Champions League
-
-    'soccer_uefa_europa_league',            # Europa League
-
-    'soccer_uefa_europa_conference_league', # Conference League
-
-    'soccer_uefa_nations_league',           # Selecciones (Nations League)
-
-    'soccer_fifa_world_cup_qualification',  # Selecciones (Clasificación Mundial)
-
-    'soccer_uefa_euro_qualification',       # Selecciones (Clasificación Eurocopa)
+    'soccer_spain_la_liga',
+    'soccer_spain_la_liga_2',
+    'soccer_uefa_champs_league',
+    'soccer_uefa_europa_league',
+    'soccer_uefa_europa_conference_league'
 ]
 
 def get_odds():
     all_odds = []
+    print(f"Iniciando descarga de cuotas...")
+    
     for league in LEAGUES:
+        # Petición a la API
         url = f'https://api.the-odds-api.com/v4/sports/{league}/odds/?apiKey={API_KEY}&regions=eu&markets=h2h'
         try:
             r = requests.get(url)
             if r.status_code == 200:
                 data = r.json()
-                print(f"Descargados {len(data)} partidos de {league}")
+                print(f"✅ {league}: Encontrados {len(data)} partidos.")
                 all_odds.extend(data)
             else:
-                print(f"Error en {league}: {r.status_code}")
+                print(f"❌ {league}: Error {r.status_code} - {r.text}")
         except Exception as e:
-            print(f"Fallo en {league}: {e}")
+            print(f"💥 Error crítico en {league}: {e}")
     
-    # Guardamos todo el chorro de partidos
+    # Guardar el JSON final
     with open('cuotas.json', 'w', encoding='utf-8') as f:
         json.dump(all_odds, f, ensure_ascii=False, indent=2)
+    print(f"PROCESO TERMINADO. Total partidos guardados: {len(all_odds)}")
 
 if __name__ == "__main__":
     get_odds()
