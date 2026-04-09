@@ -1,8 +1,9 @@
 name: Update Odds Data
 on:
   schedule:
-    - cron: '0 8,20 * * *'
-  workflow_dispatch:
+    - cron: '0 0 * * *'  # 02:00 Europe/Madrid (verano CEST=UTC+2) / 01:00 invierno → ajustar a '0 1 * * *' en oct
+    - cron: '0 10 * * *' # 12:00 Europe/Madrid (verano CEST=UTC+2) / 11:00 invierno → ajustar a '0 11 * * *' en oct
+  workflow_dispatch: # Permite ejecutarlo a mano para probar
 
 # ESTO ES LO QUE SOLUCIONA EL ERROR 128 (Da permiso para subir el archivo)
 permissions:
