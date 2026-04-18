@@ -9,7 +9,9 @@ LEAGUES = [
     'soccer_spain_segunda_division',
     'soccer_uefa_champs_league',
     'soccer_uefa_europa_league',
-    'soccer_uefa_europa_conference_league'
+    'soccer_uefa_europa_conference_league',
+    'soccer_epl',
+    'soccer_efl_champ',
 ]
 
 def get_odds():
