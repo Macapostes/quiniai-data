@@ -4,7 +4,10 @@ import time
 from datetime import datetime, timezone
 
 import requests
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 ODDS_API_KEY = os.getenv("ODDS_API_KEY", "").strip()
 BACKEND_URL = os.getenv(
