@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QuiniAI Monitor</title>
+  <style>
+    :root{--bg:#07101d;--panel:#122033;--panel2:#182b44;--text:#eef6ff;--muted:#96aac4;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#243754}
+    *{box-sizing:border-box} body{margin:0;font-family:Consolas,"Cascadia Code",monospace;background:radial-gradient(circle at top right,rgba(34,197,94,.12),transparent 28%),radial-gradient(circle at bottom left,rgba(56,189,248,.12),transparent 32%),var(--bg);color:var(--text)}
+    .wrap{max-width:980px;margin:0 auto;padding:20px}
+    .hero,.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+    .hero{padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+    h1,h2{margin:0} h1{font-size:28px} h2{font-size:18px;margin-bottom:12px}
+    .muted{color:var(--muted);line-height:1.5}
+    .badge{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-weight:700}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--ok);box-shadow:0 0 14px var(--ok)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+    .card{padding:14px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.03)}
+    .k{font-size:12px;color:var(--muted);text-transform:uppercase}.v{font-size:28px;font-weight:800;margin-top:8px}
+    .stack{display:grid;gap:16px;margin-top:18px}.panel{padding:18px}
+    table{width:100%;border-collapse:collapse;font-size:14px} th,td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;vertical-align:top}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px}
+    .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+    @media (max-width:640px){.v{font-size:24px}table{font-size:12px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="top">
+        <div>
+          <h1>QuiniAI Monitor</h1>
+          <div class="muted">Panel ligero para comprobar desde movil si el worker sigue vivo, cuando subio el ultimo snapshot y si la integridad de las jornadas sigue correcta.</div>
+        </div>
+        <div class="badge"><span class="dot" id="dot"></span><span id="alive">Cargando...</span></div>
+      </div>
+      <div class="grid" id="cards"></div>
+    </div>
+    <div class="stack">
+      <div class="panel">
+        <h2>Estado actual</h2>
+        <div class="chips" id="status-chips"></div>
+      </div>
+      <div class="panel">
+        <h2>Ultimas ejecuciones</h2>
+        <table>
+          <thead><tr><th>Estado</th><th>Hora Madrid</th><th>Duracion</th><th>Jornada</th><th>Partidos</th></tr></thead>
+          <tbody id="runs"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script>
+    const fmtMadrid = (iso) => {
+      if (!iso) return "-";
+      try {
+        return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"medium"}).format(new Date(iso));
+      } catch { return iso; }
+    };
+    const ageMinutes = (iso) => {
+      if (!iso) return "-";
+      const ms = Date.now() - new Date(iso).getTime();
+      return (ms / 60000).toFixed(1);
+    };
+    const chip = (text, cls="") => `<span class="chip ${cls}">${text}</span>`;
+    async function render() {
+      const response = await fetch(`status.json?t=${Date.now()}`, {cache:"no-store"});
+      const status = await response.json();
+      const coverage = status.coverage || {};
+      const integrity = status.quiniela_integrity || {};
+      document.getElementById("alive").textContent = status.ok ? "Worker sano" : "Worker con error";
+      document.getElementById("dot").style.background = status.ok ? "var(--ok)" : "var(--bad)";
+      document.getElementById("dot").style.boxShadow = status.ok ? "0 0 14px var(--ok)" : "0 0 14px var(--bad)";
+      document.getElementById("cards").innerHTML = [
+        ["Ultimo snapshot", fmtMadrid(status.snapshot_generated_at)],
+        ["Antiguedad", `${ageMinutes(status.snapshot_generated_at)} min`],
+        ["Jornada actual", coverage.quiniela_current_jornada ?? "-"],
+        ["Ultima oficial", coverage.quiniela_latest_available_jornada ?? "-"],
+        ["Partidos rastreados", coverage.tracked_quiniela_matches ?? "-"],
+        ["Integridad", integrity.ok ? "OK" : "ERROR"],
+      ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+      document.getElementById("status-chips").innerHTML = [
+        chip(`Poll ${status.poll_seconds || "-"}s`, "ok"),
+        chip(`Fuentes ${coverage.sources_ok || 0}/${coverage.sources_total || 0}`, "ok"),
+        chip(`Weather ${coverage.weather_matches || 0}`),
+        chip(`Travel ${coverage.travel_matches || 0}`),
+        chip(`History ${coverage.history_matches || 0}`),
+        chip(`Referees ${coverage.structured_referees || 0}`),
+        chip(`Slots ${integrity.checked_slots || 0}`),
+        chip(`Fallos ${integrity.mismatch_count || 0}`, integrity.ok ? "ok" : "bad"),
+      ].join("");
+      const runs = (status.last_runs || []).slice(-8).reverse();
+      document.getElementById("runs").innerHTML = runs.map((run) => `
+        <tr>
+          <td class="${run.ok ? "ok" : "bad"}">${run.ok ? "OK" : "ERROR"}</td>
+          <td>${fmtMadrid(run.finished_at)}</td>
+          <td>${run.duration_seconds ?? "-" }s</td>
+          <td>${run.current_jornada ?? "-"}</td>
+          <td>${run.tracked_matches ?? "-"}</td>
+        </tr>`).join("") || "<tr><td colspan='5'>Sin historial.</td></tr>";
+    }
+    render();
+    setInterval(render, 60000);
+  </script>
+</body>
+</html>
