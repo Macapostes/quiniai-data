@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>QuiniAI Monitor</title>
   <style>
-    :root{--bg:#07101d;--panel:#122033;--panel2:#182b44;--text:#eef6ff;--muted:#96aac4;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#243754}
+    :root{--bg:#07101d;--panel:#122033;--panel2:#182b44;--text:#eef6ff;--muted:#96aac4;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#243754;--accent:#38bdf8}
     *{box-sizing:border-box} body{margin:0;font-family:Consolas,"Cascadia Code",monospace;background:radial-gradient(circle at top right,rgba(34,197,94,.12),transparent 28%),radial-gradient(circle at bottom left,rgba(56,189,248,.12),transparent 32%),var(--bg);color:var(--text)}
     .wrap{max-width:980px;margin:0 auto;padding:20px}
     .hero,.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
@@ -21,7 +21,18 @@
     table{width:100%;border-collapse:collapse;font-size:14px} th,td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;vertical-align:top}
     .chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px}
     .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
-    @media (max-width:640px){.v{font-size:24px}table{font-size:12px}}
+    .jornada{border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.03);margin-top:14px;overflow:hidden}
+    .jornada summary{cursor:pointer;list-style:none;padding:16px 18px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .jornada summary::-webkit-details-marker{display:none}
+    .jornada-body{padding:0 18px 18px}
+    .match{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;background:rgba(0,0,0,.12);margin-top:12px}
+    .match-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .match-title{font-size:16px;font-weight:700}
+    .mini{font-size:12px;color:var(--muted);line-height:1.5}
+    .line{margin-top:8px;font-size:13px;line-height:1.5}
+    .line strong{color:var(--accent)}
+    .brief{white-space:pre-wrap;font-size:12px;line-height:1.45;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    @media (max-width:640px){.v{font-size:24px}table{font-size:12px}.match-title{font-size:15px}}
   </style>
 </head>
 <body>
@@ -48,6 +59,11 @@
           <tbody id="runs"></tbody>
         </table>
       </div>
+      <div class="panel">
+        <h2>Analisis publico: jornada actual y siguiente</h2>
+        <div class="muted">Aqui puedes abrir la jornada actual y la siguiente publicada para ver si el monitor realmente esta recogiendo contexto util, no solo horas.</div>
+        <div id="jornadas"></div>
+      </div>
     </div>
   </div>
   <script>
@@ -62,7 +78,45 @@
       const ms = Date.now() - new Date(iso).getTime();
       return (ms / 60000).toFixed(1);
     };
+    const fmtPct = (value) => value === null || value === undefined || value === "" ? "-" : `${Number(value).toFixed(2)}%`;
+    const fmtNum = (value, digits=1) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : Number(value).toFixed(digits);
     const chip = (text, cls="") => `<span class="chip ${cls}">${text}</span>`;
+    const escapeHtml = (value) => String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    const renderMatch = (match) => {
+      const homeTable = match.home_table || {};
+      const awayTable = match.away_table || {};
+      const homePressure = (match.pressure || {}).home || {};
+      const awayPressure = (match.pressure || {}).away || {};
+      const homeFatigue = (match.fatigue || {}).home || {};
+      const awayFatigue = (match.fatigue || {}).away || {};
+      const odds = match.odds || {};
+      const market = match.normalized_percent || {};
+      const official = match.official_percent || {};
+      const weather = match.weather || {};
+      const referee = match.referee || {};
+      return `
+        <div class="match">
+          <div class="match-head">
+            <div>
+              <div class="match-title">${escapeHtml(match.slot)} ${escapeHtml(match.local)} vs ${escapeHtml(match.visitante)}</div>
+              <div class="mini">${escapeHtml(match.league || "-")} · ${fmtMadrid(match.kickoff)} · ${escapeHtml(match.bookmaker || "sin bookmaker")}</div>
+            </div>
+            <div class="chips">
+              ${chip(`1 ${fmtNum(odds["1"],2)}`)}
+              ${chip(`X ${fmtNum(odds["X"],2)}`)}
+              ${chip(`2 ${fmtNum(odds["2"],2)}`)}
+            </div>
+          </div>
+          <div class="line"><strong>Mercado base:</strong> 1=${fmtPct(market["1"])} · X=${fmtPct(market["X"])} · 2=${fmtPct(market["2"])} | <strong>Quinielista:</strong> 1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}</div>
+          <div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>
+          <div class="line"><strong>Presion/Fatiga:</strong> local ${fmtNum(homePressure.score,2)} (${escapeHtml(homePressure.label || "-")}) y visitante ${fmtNum(awayPressure.score,2)} (${escapeHtml(awayPressure.label || "-")}) | fatiga ${fmtNum(homeFatigue.score,2)} / ${fmtNum(awayFatigue.score,2)}</div>
+          <div class="line"><strong>Arbitro:</strong> ${escapeHtml(referee.name || "no confirmado")} | <strong>Viaje visitante:</strong> ${fmtNum(match.travel_km,1)} km | <strong>Clima:</strong> ${fmtNum(weather.temperature_c,1)} C, lluvia ${weather.precipitation_probability ?? "-"}%, viento ${fmtNum(weather.wind_speed_kmh,1)} km/h</div>
+          <div class="line"><strong>Proximos 5 ${escapeHtml(match.local)}:</strong> ${escapeHtml(match.future_home || "sin calendario detectado")}</div>
+          <div class="line"><strong>Proximos 5 ${escapeHtml(match.visitante)}:</strong> ${escapeHtml(match.future_away || "sin calendario detectado")}</div>
+          <div class="line"><strong>Sesgo arbitral:</strong> ${escapeHtml(referee.bias_summary || "sin historico arbitral fiable")}</div>
+          ${match.briefing_excerpt ? `<div class="brief">${escapeHtml(match.briefing_excerpt)}</div>` : `<div class="brief">Esta jornada ya esta publicada pero este partido todavia no tiene briefing enriquecido en el monitor publico.</div>`}
+        </div>`;
+    };
     async function render() {
       const response = await fetch(`status.json?t=${Date.now()}`, {cache:"no-store"});
       const status = await response.json();
@@ -98,6 +152,17 @@
           <td>${run.current_jornada ?? "-"}</td>
           <td>${run.tracked_matches ?? "-"}</td>
         </tr>`).join("") || "<tr><td colspan='5'>Sin historial.</td></tr>";
+      const jornadas = status.public_jornadas || [];
+      document.getElementById("jornadas").innerHTML = jornadas.map((jornada, index) => `
+        <details class="jornada" ${index === 0 ? "open" : ""}>
+          <summary>
+            <span>${escapeHtml(jornada.label || "Jornada")} ${jornada.is_current ? "· actual" : "· siguiente/publicada"}</span>
+            <span class="mini">${fmtMadrid(jornada.kickoff_from)} ${jornada.history_only ? "· historico/cache" : ""}</span>
+          </summary>
+          <div class="jornada-body">
+            ${(jornada.matches || []).map(renderMatch).join("") || "<div class='match'>Sin partidos publicados.</div>"}
+          </div>
+        </details>`).join("") || "<div class='match'>Todavia no hay jornadas publicas preparadas.</div>";
     }
     render();
     setInterval(render, 60000);
