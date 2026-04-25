@@ -1,4 +1,5 @@
-name: Update Snapshot (cuotas + contexto enriquecido)
+name: Enviar Datos al Backend
+
 on:
   schedule:
     # 4 ejecuciones diarias en UTC → horario Madrid (CEST verano = UTC+2)
@@ -8,42 +9,22 @@ on:
     - cron: '0 18 * * *'  # 20:00 Madrid
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  build:
+  upload:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 5
     steps:
-      - name: Checkout repo
+      - name: Descargar archivos del repo
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Update raw odds (cuotas.json)
+      - name: Enviar snapshot a la IA
         env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: python update_odds.py
-
-      - name: Build enriched snapshot and upload to backend
-        env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           QUINIAI_ADMIN_KEY: ${{ secrets.QUINIAI_ADMIN_KEY }}
           QUINIAI_BACKEND_URL: ${{ secrets.QUINIAI_BACKEND_URL }}
-          QUINIAI_DATA_URL: "https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json"
-        run: python snapshot_worker.py --once --pretty
-
-      - name: Commit and push changes
         run: |
-          git config --global user.name 'OddsBot'
-          git config --global user.email 'bot@quiniai.com'
-          git add cuotas.json
-          git commit -m "Actualizar cuotas + snapshot enriquecido" || exit 0
-          git push
+          # Usamos un comando curl básico para enviar tu archivo ya generado al servidor
+          curl -X POST "${QUINIAI_BACKEND_URL}/admin/ia-feed" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${QUINIAI_ADMIN_KEY}" \
+            -H "x-admin-key: ${QUINIAI_ADMIN_KEY}" \
+            -d @ia_feed_snapshot.json
