@@ -1,34 +1,49 @@
-name: Update Odds Data
+name: Update Snapshot (cuotas + contexto enriquecido)
 on:
   schedule:
-    - cron: '0 0 * * *'  # 02:00 Europe/Madrid (verano CEST=UTC+2) / 01:00 invierno → ajustar a '0 1 * * *' en oct
-    - cron: '0 10 * * *' # 12:00 Europe/Madrid (verano CEST=UTC+2) / 11:00 invierno → ajustar a '0 11 * * *' en oct
-  workflow_dispatch: # Permite ejecutarlo a mano para probar
+    # 4 ejecuciones diarias en UTC → horario Madrid (CEST verano = UTC+2)
+    - cron: '0 0 * * *'   # 02:00 Madrid
+    - cron: '0 8 * * *'   # 10:00 Madrid
+    - cron: '0 13 * * *'  # 15:00 Madrid
+    - cron: '0 18 * * *'  # 20:00 Madrid
+  workflow_dispatch:
 
-# ESTO ES LO QUE SOLUCIONA EL ERROR 128 (Da permiso para subir el archivo)
 permissions:
   contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.12'
+
       - name: Install dependencies
-        run: pip install requests
-      - name: Run script
+        run: pip install -r requirements.txt
+
+      - name: Update raw odds (cuotas.json)
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: python update_odds.py
+
+      - name: Build enriched snapshot and upload to backend
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          QUINIAI_ADMIN_KEY: ${{ secrets.QUINIAI_ADMIN_KEY }}
+          QUINIAI_BACKEND_URL: ${{ secrets.QUINIAI_BACKEND_URL }}
+          QUINIAI_DATA_URL: "https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json"
+        run: python snapshot_worker.py --once --pretty
+
       - name: Commit and push changes
         run: |
           git config --global user.name 'OddsBot'
           git config --global user.email 'bot@quiniai.com'
           git add cuotas.json
-          git commit -m "Actualizar cuotas" || exit 0
+          git commit -m "Actualizar cuotas + snapshot enriquecido" || exit 0
           git push
