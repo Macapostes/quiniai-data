@@ -100,7 +100,7 @@ EDUARDO_API_QUINIELISTA_URL = "https://api.eduardolosilla.es/servicios/v1/porcen
 EDUARDO_API_LAE_URL = "https://api.eduardolosilla.es/servicios/v1/porcentajes_lae"
 QUINIELA_ROOT_URL = EDUARDO_QUINIELA_PORCENTAJES_URL
 QUINIELA_HISTORY_JORNADAS = max(5, int(os.getenv("QUINIAI_QUINIELA_HISTORY_JORNADAS", "5")))
-TEAM_PROFILE_CACHE_VERSION = "v3"
+TEAM_PROFILE_CACHE_VERSION = "v4"
 
 CACHE_DIR = Path(__file__).with_name("cache")
 OUTPUT_DIR = Path(__file__).with_name("output")
@@ -383,6 +383,43 @@ TEAM_LOCATION_OVERRIDES = {
     "plymouth argyle": {"query": "Plymouth, England"},
     "cardiff city": {"query": "Cardiff, Wales"},
     "birmingham city": {"query": "Birmingham, England"},
+}
+
+TEAM_WIKIPEDIA_TITLE_OVERRIDES = {
+    "alaves": "Deportivo Alavés",
+    "alavés": "Deportivo Alavés",
+    "girona": "Girona FC",
+    "mallorca": "RCD Mallorca",
+    "valencia": "Valencia CF",
+    "betis": "Real Betis",
+    "real betis": "Real Betis",
+    "atletico madrid": "Atlético Madrid",
+    "athletic bilbao": "Athletic Bilbao",
+    "barcelona": "FC Barcelona",
+    "getafe": "Getafe CF",
+    "rayo vallecano": "Rayo Vallecano",
+    "real sociedad": "Real Sociedad",
+    "osasuna": "CA Osasuna",
+    "sevilla": "Sevilla FC",
+    "villarreal": "Villarreal CF",
+    "real oviedo": "Real Oviedo",
+    "elche": "Elche CF",
+    "elche cf": "Elche CF",
+    "burgos": "Burgos CF",
+    "burgos cf": "Burgos CF",
+    "deportivo la coruna": "Deportivo de La Coruña",
+    "deportivo la coruña": "Deportivo de La Coruña",
+    "malaga": "Málaga CF",
+    "málaga": "Málaga CF",
+    "castellon": "CD Castellón",
+    "castellón": "CD Castellón",
+    "granada": "Granada CF",
+    "almeria": "UD Almería",
+    "almería": "UD Almería",
+    "huesca": "SD Huesca",
+    "zaragoza": "Real Zaragoza",
+    "ceuta": "AD Ceuta FC",
+    "racing santander": "Real Racing Club de Santander",
 }
 
 AMBIGUOUS_GEO_TEAM_TOKENS = {
@@ -2728,6 +2765,13 @@ def _team_location_override(team_name: str) -> dict:
     return TEAM_LOCATION_OVERRIDES.get(normalized, {})
 
 
+def _team_wikipedia_override(team_name: str) -> str:
+    normalized = _normalize_team_name(str(team_name or "").strip())
+    if not normalized:
+        return ""
+    return TEAM_WIKIPEDIA_TITLE_OVERRIDES.get(normalized, "")
+
+
 def _extract_location_hint(summary: str) -> str:
     patterns = [
         r"based in ([^.;]+)",
@@ -2751,6 +2795,9 @@ def _clean_location_hint(location_hint: str) -> str:
 
 
 def _search_wikipedia_title(team_name: str, country_hint: str | None = None) -> str:
+    override_title = _team_wikipedia_override(team_name)
+    if override_title:
+        return override_title
     country_label = COUNTRY_LABELS.get(country_hint or "", "")
     queries = [
         f"{team_name} {country_label} football club".strip(),
