@@ -174,6 +174,29 @@ LEAGUE_RELEGATION_START = {
     "soccer_spain_segunda_division": 19,
 }
 
+LEAGUE_SEASON_OBJECTIVE_LINES = {
+    "soccer_spain_la_liga": [
+        {"key": "title", "label": "titulo", "line_position": 1},
+        {"key": "champions", "label": "Champions", "line_position": 4},
+        {"key": "europa", "label": "Europa League", "line_position": 5},
+        {"key": "conference", "label": "Conference", "line_position": 6},
+    ],
+    "soccer_epl": [
+        {"key": "title", "label": "titulo", "line_position": 1},
+        {"key": "champions", "label": "Champions", "line_position": 4},
+        {"key": "europa", "label": "Europa League", "line_position": 5},
+        {"key": "conference", "label": "Conference", "line_position": 6},
+    ],
+    "soccer_spain_segunda_division": [
+        {"key": "promotion", "label": "ascenso directo", "line_position": 2},
+        {"key": "playoff", "label": "play-off", "line_position": 6},
+    ],
+    "soccer_efl_champ": [
+        {"key": "promotion", "label": "ascenso directo", "line_position": 2},
+        {"key": "playoff", "label": "play-off", "line_position": 6},
+    ],
+}
+
 LEAGUE_RFEF_PDF_PREFIX = {
     "soccer_spain_la_liga": "1a_division_masculina",
     "soccer_spain_segunda_division": "2a_division_masculina",
@@ -1764,6 +1787,8 @@ def _render_focus_match_detail(match: dict) -> str:
     h2h = history.get("head_to_head") or {}
     home_relegation = competition.get("home_relegation") or {}
     away_relegation = competition.get("away_relegation") or {}
+    home_objective = competition.get("home_objective") or {}
+    away_objective = competition.get("away_objective") or {}
     home_upcoming = competition.get("home_upcoming") or []
     away_upcoming = competition.get("away_upcoming") or []
     home_pressure = analytics.get("home_pressure_index") or {}
@@ -1807,8 +1832,8 @@ def _render_focus_match_detail(match: dict) -> str:
           <div class="detail-card">
             <h3>Tabla y objetivo</h3>
             <ul>
-              <li>{_html_escape(_competitive_context_line(match.get('local', ''), home_table, home_relegation))}</li>
-              <li>{_html_escape(_competitive_context_line(match.get('visitante', ''), away_table, away_relegation))}</li>
+              <li>{_html_escape(_competitive_context_line(match.get('local', ''), home_table, home_relegation, competition.get('home_objective') or {}))}</li>
+              <li>{_html_escape(_competitive_context_line(match.get('visitante', ''), away_table, away_relegation, competition.get('away_objective') or {}))}</li>
               <li>Forma ultimos 5: {_html_escape(home_recent.get('form', '-'))} ({_html_escape(home_recent.get('points', '-'))} pts) / {_html_escape(away_recent.get('form', '-'))} ({_html_escape(away_recent.get('points', '-'))} pts)</li>
               <li>Indice de presion: {_html_escape(home_pressure.get('score', '-'))} / {_html_escape(away_pressure.get('score', '-'))}</li>
               <li>ELO: {_html_escape(analytics.get('home_elo', '-'))} / {_html_escape(analytics.get('away_elo', '-'))}</li>
@@ -4619,7 +4644,186 @@ def _future_schedule_difficulty(fixtures: list[dict]) -> dict:
     }
 
 
-def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict) -> dict:
+def _table_row_at_position(table_snapshot: dict, position: int | None) -> dict:
+    if not table_snapshot or not position or position <= 0:
+        return {}
+    return next(
+        (row for row in table_snapshot.values() if _safe_int(row.get("position")) == position),
+        {},
+    )
+
+
+def _urgency_from_gap(gap: int | None, *, inside: bool = False) -> str:
+    if gap is None:
+        return "medium"
+    gap = int(gap)
+    if inside:
+        if gap <= 1:
+            return "critical"
+        if gap <= 3:
+            return "high"
+        if gap <= 6:
+            return "medium"
+        return "low"
+    if gap <= 1:
+        return "critical"
+    if gap <= 3:
+        return "high"
+    if gap <= 6:
+        return "medium"
+    return "low"
+
+
+def _season_objective_context(league_key: str, table_snapshot: dict, team_name: str) -> dict:
+    team_row = table_snapshot.get(team_name) or {}
+    if not team_row:
+        return {}
+
+    position = _safe_int(team_row.get("position"))
+    points = _safe_int(team_row.get("points"), 0) or 0
+    if not position:
+        return {}
+
+    objective_lines = LEAGUE_SEASON_OBJECTIVE_LINES.get(league_key) or []
+    relegation_start = LEAGUE_RELEGATION_START.get(league_key)
+    drop_zone = bool(relegation_start and position >= relegation_start)
+    drop_row = _table_row_at_position(table_snapshot, relegation_start)
+    safe_row = _table_row_at_position(table_snapshot, max(1, (relegation_start or 1) - 1))
+    drop_points = _safe_int(drop_row.get("points"), points) or points
+    safe_points = _safe_int(safe_row.get("points"), points) or points
+
+    if drop_zone:
+        gap_to_safe = max(0, safe_points - points)
+        return {
+            "objective_key": "survival",
+            "objective_label": "salvacion",
+            "status": "drop_zone",
+            "line_position": max(1, (relegation_start or 1) - 1),
+            "line_points": safe_points,
+            "gap_points": gap_to_safe,
+            "cushion_points": None,
+            "urgency": _urgency_from_gap(gap_to_safe, inside=False),
+            "summary": f"en descenso, a {gap_to_safe} pts de la salvacion",
+        }
+
+    for idx, line in enumerate(objective_lines):
+        line_position = int(line["line_position"])
+        if position > line_position:
+            continue
+        line_points = _safe_int(
+            _table_row_at_position(table_snapshot, line_position).get("points"),
+            points,
+        ) or points
+        outside_points = _safe_int(
+            _table_row_at_position(table_snapshot, line_position + 1).get("points"),
+            points,
+        )
+        cushion = max(0, points - (outside_points if outside_points is not None else points))
+        better_line = objective_lines[idx - 1] if idx > 0 else None
+        gap_to_better = None
+        if better_line:
+            better_points = _safe_int(
+                _table_row_at_position(table_snapshot, int(better_line["line_position"])).get("points"),
+                points,
+            )
+            gap_to_better = max(0, (better_points or points) - points)
+        summary = f"en zona {line['label']} con colchon de {cushion} pts"
+        if gap_to_better is not None and better_line:
+            summary += f" y a {gap_to_better} pts de {better_line['label']}"
+        return {
+            "objective_key": line["key"],
+            "objective_label": line["label"],
+            "status": "defending",
+            "line_position": line_position,
+            "line_points": line_points,
+            "gap_points": gap_to_better,
+            "cushion_points": cushion,
+            "urgency": _urgency_from_gap(cushion, inside=True),
+            "summary": summary,
+        }
+
+    if objective_lines:
+        next_line = objective_lines[-1]
+        for line in objective_lines:
+            if position > int(line["line_position"]):
+                next_line = line
+        target_position = int(next_line["line_position"])
+        target_points = _safe_int(
+            _table_row_at_position(table_snapshot, target_position).get("points"),
+            points,
+        ) or points
+        gap_to_target = max(0, target_points - points)
+        return {
+            "objective_key": next_line["key"],
+            "objective_label": next_line["label"],
+            "status": "chasing",
+            "line_position": target_position,
+            "line_points": target_points,
+            "gap_points": gap_to_target,
+            "cushion_points": None,
+            "urgency": _urgency_from_gap(gap_to_target, inside=False),
+            "summary": f"a {gap_to_target} pts de la zona {next_line['label']}",
+        }
+
+    gap_to_drop = max(0, points - drop_points) if relegation_start else None
+    if gap_to_drop is not None and gap_to_drop <= 6:
+        return {
+            "objective_key": "survival",
+            "objective_label": "salvacion",
+            "status": "protecting",
+            "line_position": max(1, (relegation_start or 1) - 1),
+            "line_points": safe_points,
+            "gap_points": None,
+            "cushion_points": gap_to_drop,
+            "urgency": _urgency_from_gap(gap_to_drop, inside=True),
+            "summary": f"{gap_to_drop} pts por encima del descenso",
+        }
+
+    return {
+        "objective_key": "midtable",
+        "objective_label": "zona media",
+        "status": "midtable",
+        "line_position": None,
+        "line_points": None,
+        "gap_points": None,
+        "cushion_points": gap_to_drop,
+        "urgency": "low",
+        "summary": "zona media sin objetivo clasificatorio inmediato",
+    }
+
+
+def _objective_pressure(objective_context: dict) -> float:
+    if not objective_context:
+        return 18.0
+    urgency = str(objective_context.get("urgency", "")).strip().lower()
+    objective_key = str(objective_context.get("objective_key", "")).strip().lower()
+    status = str(objective_context.get("status", "")).strip().lower()
+    urgency_base = {
+        "low": 12.0,
+        "medium": 24.0,
+        "high": 38.0,
+        "critical": 52.0,
+    }.get(urgency, 18.0)
+    ambition_bonus = {
+        "title": 16.0,
+        "champions": 14.0,
+        "promotion": 14.0,
+        "europa": 10.0,
+        "conference": 8.0,
+        "playoff": 10.0,
+        "survival": 18.0,
+    }.get(objective_key, 0.0)
+    status_bonus = {
+        "drop_zone": 22.0,
+        "defending": 12.0,
+        "protecting": 14.0,
+        "chasing": 10.0,
+        "midtable": -6.0,
+    }.get(status, 0.0)
+    return round(min(100.0, max(8.0, urgency_base + ambition_bonus + status_bonus)), 2)
+
+
+def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict, objective_context: dict | None = None) -> dict:
     if not team_row:
         return {}
     position = int(team_row.get("position", 0) or 0)
@@ -4633,13 +4837,15 @@ def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict) -
         relegation_pressure = 25.0
     else:
         relegation_pressure = max(0.0, 55.0 - (float(gap_to_drop) * 12.0))
+    objective_pressure = _objective_pressure(objective_context or {})
     schedule_pressure = difficulty * 0.24 + hard_window * 4.5
     score = round(
         min(
             100.0,
-            position_pressure * 0.26
-            + points_pressure * 0.12
-            + relegation_pressure * 0.34
+            position_pressure * 0.18
+            + points_pressure * 0.08
+            + relegation_pressure * 0.24
+            + objective_pressure * 0.26
             + schedule_pressure,
         ),
         2,
@@ -4651,6 +4857,8 @@ def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict) -
         "future_difficulty": difficulty,
         "hard_window_matches": hard_window,
         "gap_to_drop_zone": gap_to_drop,
+        "objective_pressure": objective_pressure,
+        "objective_summary": (objective_context or {}).get("summary"),
     }
 
 
@@ -5353,18 +5561,25 @@ def _referee_analysis_summary(referee_analysis: dict) -> str:
     )
 
 
-def _competitive_context_line(team_name: str, table: dict, relegation: dict) -> str:
+def _competitive_context_line(team_name: str, table: dict, relegation: dict, objective: dict | None = None) -> str:
     position = table.get("position", "-")
     points = table.get("points", "-")
     gap_to_drop = relegation.get("gap_to_drop_zone")
     gap_to_safe = relegation.get("gap_to_safe_line")
     urgency = relegation.get("urgency", "")
     extras = []
-    if gap_to_drop is not None:
-        extras.append(f"gap descenso {gap_to_drop:+}")
-    if gap_to_safe is not None and gap_to_safe > 0:
-        extras.append(f"a {gap_to_safe} pts de la salvacion")
-    if urgency:
+    objective_summary = str((objective or {}).get("summary", "")).strip()
+    objective_urgency = str((objective or {}).get("urgency", "")).strip()
+    if objective_summary:
+        extras.append(objective_summary)
+    else:
+        if gap_to_drop is not None:
+            extras.append(f"gap descenso {gap_to_drop:+}")
+        if gap_to_safe is not None and gap_to_safe > 0:
+            extras.append(f"a {gap_to_safe} pts de la salvacion")
+    if objective_urgency:
+        extras.append(f"urgencia {objective_urgency}")
+    elif urgency:
         extras.append(f"urgencia {urgency}")
     suffix = ", ".join(extras) if extras else "sin alerta clasificatoria clara"
     return f"{team_name}: puesto {position}, {points} puntos, {suffix}."
@@ -5547,16 +5762,28 @@ def _enrich_quiniela_match(match: dict) -> None:
     competition_context["away_upcoming"] = away_upcoming
     competition_context["home_future_difficulty"] = _future_schedule_difficulty(home_upcoming)
     competition_context["away_future_difficulty"] = _future_schedule_difficulty(away_upcoming)
+    competition_context["home_objective"] = _season_objective_context(
+        match.get("league", ""),
+        current_table_snapshot,
+        ((history_context.get("home") or {}).get("resolved_name") or match.get("local", "")),
+    )
+    competition_context["away_objective"] = _season_objective_context(
+        match.get("league", ""),
+        current_table_snapshot,
+        ((history_context.get("away") or {}).get("resolved_name") or match.get("visitante", "")),
+    )
     match["competition_context"] = competition_context
     match["analytics_context"]["home_pressure_index"] = _pressure_index(
         (history_context.get("home") or {}).get("table", {}),
         competition_context.get("home_relegation") or {},
         competition_context.get("home_future_difficulty") or {},
+        competition_context.get("home_objective") or {},
     )
     match["analytics_context"]["away_pressure_index"] = _pressure_index(
         (history_context.get("away") or {}).get("table", {}),
         competition_context.get("away_relegation") or {},
         competition_context.get("away_future_difficulty") or {},
+        competition_context.get("away_objective") or {},
     )
     match["analytics_context"]["home_fatigue_index"] = _fatigue_index(
         (match.get("schedule_context") or {}).get("home", {}).get("days_since_last_match"),
@@ -5730,8 +5957,8 @@ def _focus_match_ai_briefing(match: dict) -> str:
             f"visitante {schedule.get('away', {}).get('days_since_last_match', '-')} dias y "
             f"{schedule.get('away', {}).get('matches_last_14_days', '-')} partidos en 14 dias."
         ),
-        _competitive_context_line(match.get("local", ""), home_table, home_relegation),
-        _competitive_context_line(match.get("visitante", ""), away_table, away_relegation),
+        _competitive_context_line(match.get("local", ""), home_table, home_relegation, home_objective),
+        _competitive_context_line(match.get("visitante", ""), away_table, away_relegation, away_objective),
         (
             f"Forma ultimos 5: local {home_recent.get('form', '-')} ({home_recent.get('points', '-')} pts) "
             f"y visitante {away_recent.get('form', '-')} ({away_recent.get('points', '-')} pts)."
@@ -6398,6 +6625,8 @@ def build_snapshot(raw_matches: list) -> dict:
         )
         home_relegation = _relegation_context(league, current_table_snapshot, home_resolved_name)
         away_relegation = _relegation_context(league, current_table_snapshot, away_resolved_name)
+        home_objective = _season_objective_context(league, current_table_snapshot, home_resolved_name)
+        away_objective = _season_objective_context(league, current_table_snapshot, away_resolved_name)
         home_future_difficulty = _future_schedule_difficulty(home_upcoming)
         away_future_difficulty = _future_schedule_difficulty(away_upcoming)
 
@@ -6410,8 +6639,18 @@ def build_snapshot(raw_matches: list) -> dict:
         weather = fetch_weather_context(home_profile, kickoff)
         home_fatigue_index = _fatigue_index(home_rest_days, home_recent_matches, 0.0)
         away_fatigue_index = _fatigue_index(away_rest_days, away_recent_matches, travel_distance_km)
-        home_pressure_index = _pressure_index(home_history.get("table", {}), home_relegation, home_future_difficulty)
-        away_pressure_index = _pressure_index(away_history.get("table", {}), away_relegation, away_future_difficulty)
+        home_pressure_index = _pressure_index(
+            home_history.get("table", {}),
+            home_relegation,
+            home_future_difficulty,
+            home_objective,
+        )
+        away_pressure_index = _pressure_index(
+            away_history.get("table", {}),
+            away_relegation,
+            away_future_difficulty,
+            away_objective,
+        )
         match_key = _match_key(league, home_team, away_team, kickoff)
 
         matches.append(
@@ -6446,6 +6685,8 @@ def build_snapshot(raw_matches: list) -> dict:
                     "season_code": season_code,
                     "home_relegation": home_relegation,
                     "away_relegation": away_relegation,
+                    "home_objective": home_objective,
+                    "away_objective": away_objective,
                     "home_upcoming": home_upcoming,
                     "away_upcoming": away_upcoming,
                     "home_future_difficulty": home_future_difficulty,
