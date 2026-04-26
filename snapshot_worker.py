@@ -25,6 +25,7 @@ from zoneinfo import ZoneInfo
 
 import requests
 from dotenv import load_dotenv
+import urllib3
 
 RUNTIME_SITE_PACKAGES = (
     Path.home()
@@ -133,6 +134,7 @@ DESKTOP_STATUS_JSON_PATH = DESKTOP_KINII_STATE_DIR / "Estado QuiniAI.json"
 STATUS_HTML_PATH = OUTPUT_DIR / "PANEL_QUINIAI.html"
 DESKTOP_STATUS_HTML_PATH = DESKTOP_KINII_STATE_DIR / "Panel QuiniAI.html"
 MONITOR_STATUS_JSON_PATH = MONITOR_WEB_DIR / "status.json"
+MONITOR_JORNADAS_HISTORY_PATH = MONITOR_WEB_DIR / "jornadas_history.json"
 MONITOR_INDEX_PATH = MONITOR_WEB_DIR / "index.html"
 WORKER_LOG_PATH = LOG_DIR / "worker_events.log"
 SUPERVISOR_LOG_PATH = LOG_DIR / "worker_supervisor.log"
@@ -142,6 +144,17 @@ MANUAL_REFRESH_FLAG_PATH = CACHE_DIR / "manual_refresh.flag"
 DEFAULT_HEADERS = {
     "User-Agent": "QuiniAI-Context-Worker/3.0 (+https://github.com/Macapostes/quiniai-data)"
 }
+SSL_RELAXED_HOSTS = {
+    "api.eduardolosilla.es",
+    "www.eduardolosilla.es",
+    "api.loteriasyapuestas.es",
+    "www.loteriasyapuestas.es",
+    "futbol.as.com",
+    "as.com",
+    "www.football-data.co.uk",
+}
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 LAE_HEADER_SETS = [
     {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -261,14 +274,25 @@ TEAM_NAME_ALIASES = {
     "real betis": "Real Betis",
     "r zaragoza": "Real Zaragoza",
     "r oviedo": "Real Oviedo",
+    "oviedo": "Real Oviedo",
     "dep coruna": "Deportivo La Coruña",
     "dep la coruna": "Deportivo La Coruña",
+    "deportivo": "Deportivo La Coruña",
     "qpr": "Queens Park Rangers",
     "swans": "Swansea City",
     "coventry": "Coventry City",
     "portsmouth": "Portsmouth",
     "mirandes": "Mirandés",
     "castellon": "Castellón",
+    "cd castellon": "Castellón",
+    "cordoba": "Córdoba",
+    "cordoba cf": "Córdoba",
+    "valladolid": "Real Valladolid",
+    "r valladolid": "Real Valladolid",
+    "real valladolid cf": "Real Valladolid",
+    "las palmas": "Las Palmas",
+    "ud las palmas": "Las Palmas",
+    "eibar": "Eibar",
     "rayo v": "Rayo Vallecano",
     "athletic de bilbao": "Athletic Bilbao",
 }
@@ -679,6 +703,37 @@ def _load_cache(path: Path) -> dict:
         return {}
 
 
+def _load_monitor_jornada_history() -> dict:
+    clone = lambda value: json.loads(json.dumps(value, ensure_ascii=False))
+    persisted = _load_cache(MONITOR_JORNADAS_HISTORY_PATH) if MONITOR_JORNADAS_HISTORY_PATH.exists() else {}
+    if (persisted or {}).get("jornadas"):
+        return persisted
+    if not MONITOR_STATUS_JSON_PATH.exists():
+        return {"updated_at": "", "jornadas": {}}
+    legacy_status = _load_cache(MONITOR_STATUS_JSON_PATH) or {}
+    jornadas = legacy_status.get("public_jornadas") or legacy_status.get("quiniela_jornadas") or []
+    normalized = {}
+    for jornada in jornadas:
+        jornada_num = _safe_int(jornada.get("jornada"))
+        if not jornada_num:
+            continue
+        normalized[str(jornada_num)] = {
+            "jornada": jornada_num,
+            "label": jornada.get("label") or f"Jornada {jornada_num}",
+            "source": jornada.get("source", ""),
+            "source_url": jornada.get("source_url", ""),
+            "kickoff_from": jornada.get("kickoff_from", ""),
+            "kickoff_to": jornada.get("kickoff_to", ""),
+            "updated_at": legacy_status.get("snapshot_generated_at") or legacy_status.get("generated_at") or "",
+            "matches": clone(jornada.get("matches", [])),
+            "unmatched_slots": clone(jornada.get("matches", [])),
+        }
+    return {
+        "updated_at": legacy_status.get("snapshot_generated_at") or legacy_status.get("generated_at") or "",
+        "jornadas": normalized,
+    }
+
+
 TEAM_PROFILE_CACHE = _load_cache(TEAM_PROFILE_CACHE_PATH)
 TEAM_NEWS_CACHE = _load_cache(TEAM_NEWS_CACHE_PATH)
 MATCH_NEWS_CACHE = _load_cache(MATCH_NEWS_CACHE_PATH)
@@ -696,6 +751,7 @@ STRUCTURED_DB = _load_cache(STRUCTURED_DB_PATH) or {
 }
 RUN_HISTORY = _load_cache(RUN_HISTORY_PATH) or {"runs": []}
 QUINIELA_HISTORY = _load_cache(QUINIELA_HISTORY_PATH) or {"season": None, "current_jornada": None, "jornadas": {}}
+MONITOR_JORNADAS_HISTORY = _load_monitor_jornada_history() or {"updated_at": "", "jornadas": {}}
 LEGACY_SNAPSHOT = _load_cache(LEGACY_SNAPSHOT_PATH) if LEGACY_SNAPSHOT_PATH.exists() else {}
 
 
@@ -718,6 +774,7 @@ def _flush_caches() -> None:
         _save_cache(STRUCTURED_DB_PATH, STRUCTURED_DB)
         _save_cache(RUN_HISTORY_PATH, RUN_HISTORY)
         _save_cache(QUINIELA_HISTORY_PATH, QUINIELA_HISTORY)
+        _save_cache(MONITOR_JORNADAS_HISTORY_PATH, MONITOR_JORNADAS_HISTORY)
 
 
 def _build_logger() -> logging.Logger:
@@ -906,15 +963,40 @@ def _season_tag_for(date_value: datetime | None = None) -> str:
     return f"{start_year}-{(start_year + 1) % 100:02d}"
 
 
+def _request_response(
+    url: str,
+    params: dict | None = None,
+    headers: dict | None = None,
+    timeout: int = 30,
+):
+    parsed = urllib.parse.urlparse(url)
+    host = (parsed.hostname or "").lower()
+    request_headers = headers or DEFAULT_HEADERS
+    try:
+        response = requests.get(url, params=params, headers=request_headers, timeout=timeout)
+        response.raise_for_status()
+        return response
+    except requests.exceptions.SSLError:
+        if host not in SSL_RELAXED_HOSTS:
+            raise
+        response = requests.get(
+            url,
+            params=params,
+            headers=request_headers,
+            timeout=timeout,
+            verify=False,
+        )
+        response.raise_for_status()
+        return response
+
+
 def _request_json(url: str, params: dict | None = None, timeout: int = 30) -> dict | list:
-    response = requests.get(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
-    response.raise_for_status()
+    response = _request_response(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
     return response.json()
 
 
 def _request_text(url: str, params: dict | None = None, timeout: int = 30) -> str:
-    response = requests.get(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
-    response.raise_for_status()
+    response = _request_response(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
     return response.text
 
 
@@ -922,7 +1004,7 @@ def _request_json_lae(url: str, params: dict | None = None, timeout: int = 20) -
     last_error = None
     for headers in LAE_HEADER_SETS:
         try:
-            response = requests.get(url, params=params, headers=headers, timeout=timeout)
+            response = _request_response(url, params=params, headers=headers, timeout=timeout)
             if response.status_code == 200:
                 return response.json()
         except Exception as exc:
@@ -2767,16 +2849,40 @@ def _monitor_match_summary(match: dict) -> dict:
     }
 
 
+def _merge_jornada_records(*sources: list[dict]) -> list[dict]:
+    merged = {}
+    for source_records in sources:
+        for record in source_records or []:
+            jornada_num = _safe_int(record.get("jornada"))
+            if not jornada_num:
+                continue
+            existing = merged.get(jornada_num)
+            if not existing:
+                merged[jornada_num] = dict(record)
+                continue
+            existing_matches = len(existing.get("matches", []) or existing.get("unmatched_slots", []) or [])
+            candidate_matches = len(record.get("matches", []) or record.get("unmatched_slots", []) or [])
+            existing_updated = str(existing.get("updated_at", "") or "")
+            candidate_updated = str(record.get("updated_at", "") or "")
+            if candidate_matches > existing_matches or candidate_updated > existing_updated:
+                merged[jornada_num] = dict(record)
+    out = list(merged.values())
+    out.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
+    return out
+
+
 def _history_jornada_records() -> list[dict]:
-    records = list(((QUINIELA_HISTORY or {}).get("jornadas") or {}).values())
-    records.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
-    return records
+    return _merge_jornada_records(
+        list(((MONITOR_JORNADAS_HISTORY or {}).get("jornadas") or {}).values()),
+        list(((QUINIELA_HISTORY or {}).get("jornadas") or {}).values()),
+    )
 
 
 def _select_monitor_public_jornadas(status_payload: dict) -> list[dict]:
-    jornadas = list(status_payload.get("quiniela_jornadas") or [])
-    if not jornadas:
-        jornadas = _history_jornada_records()
+    jornadas = _merge_jornada_records(
+        list(status_payload.get("quiniela_jornadas") or []),
+        _history_jornada_records(),
+    )
     if not jornadas:
         return []
     jornadas.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
@@ -2814,9 +2920,10 @@ def _build_monitor_status_payload(status_payload: dict) -> dict:
     coverage = status_payload.get("coverage") or {}
     structured = status_payload.get("structured_db_summary") or {}
     integrity = status_payload.get("quiniela_integrity") or {}
-    jornadas = list(status_payload.get("quiniela_jornadas") or [])
-    if not jornadas:
-        jornadas = _history_jornada_records()
+    jornadas = _merge_jornada_records(
+        list(status_payload.get("quiniela_jornadas") or []),
+        _history_jornada_records(),
+    )
     return {
         "generated_at": status_payload.get("generated_at", ""),
         "snapshot_generated_at": status_payload.get("snapshot_generated_at", ""),
@@ -2873,7 +2980,10 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
     }
     if snapshot:
         lines = _snapshot_summary_lines(snapshot)
-        jornadas_payload = snapshot.get("quiniela_jornadas", []) or _history_jornada_records()
+        jornadas_payload = _merge_jornada_records(
+            list(snapshot.get("quiniela_jornadas", []) or []),
+            _history_jornada_records(),
+        )
         status_text = "\n".join(lines) + "\n"
         status_payload.update(
             {
@@ -6751,7 +6861,7 @@ def _guess_slot_league(home_team: str, away_team: str, kickoff: str) -> str:
         home_score = max((_team_similarity_score(home_team, team) for team in teams), default=0.0)
         away_score = max((_team_similarity_score(away_team, team) for team in teams), default=0.0)
         total = home_score + away_score
-        if home_score >= 0.88 and away_score >= 0.88 and total > best_score:
+        if home_score >= 0.82 and away_score >= 0.82 and total > best_score:
             best_score = total
             best_league = league_key
     return best_league
@@ -6917,19 +7027,22 @@ def _build_quiniela_placeholder(
 
 def _persist_quiniela_history(quiniela_jornadas: list[dict]) -> None:
     jornadas_store = QUINIELA_HISTORY.setdefault("jornadas", {})
+    monitor_store = MONITOR_JORNADAS_HISTORY.setdefault("jornadas", {})
     QUINIELA_HISTORY["updated_at"] = _now_iso()
+    MONITOR_JORNADAS_HISTORY["updated_at"] = QUINIELA_HISTORY["updated_at"]
     if quiniela_jornadas:
         QUINIELA_HISTORY["current_jornada"] = next(
             (jornada.get("jornada") for jornada in quiniela_jornadas if jornada.get("is_current")),
             quiniela_jornadas[0].get("jornada"),
         )
+        MONITOR_JORNADAS_HISTORY["current_jornada"] = QUINIELA_HISTORY["current_jornada"]
     keep_jornadas = set()
     for jornada in quiniela_jornadas:
         jornada_num = _safe_int(jornada.get("jornada"))
         if not jornada_num:
             continue
         keep_jornadas.add(jornada_num)
-        jornadas_store[str(jornada_num)] = {
+        jornada_payload = {
             "jornada": jornada_num,
             "label": jornada.get("label") or f"Jornada {jornada_num}",
             "source": jornada.get("source", ""),
@@ -6940,9 +7053,19 @@ def _persist_quiniela_history(quiniela_jornadas: list[dict]) -> None:
             "matches": [_json_clone(match) for match in jornada.get("matches", [])],
             "unmatched_slots": _json_clone(jornada.get("unmatched_slots", [])),
         }
+        jornadas_store[str(jornada_num)] = jornada_payload
+        monitor_store[str(jornada_num)] = dict(jornada_payload)
     for jornada_key in list(jornadas_store.keys()):
         if _safe_int(jornada_key, 0) not in keep_jornadas:
             jornadas_store.pop(jornada_key, None)
+    current_anchor = _safe_int(QUINIELA_HISTORY.get("current_jornada"))
+    if current_anchor:
+        lower_bound = max(1, current_anchor - max(6, QUINIELA_HISTORY_JORNADAS))
+        upper_bound = current_anchor + 2
+        for jornada_key in list(monitor_store.keys()):
+            jornada_num = _safe_int(jornada_key, 0)
+            if jornada_num < lower_bound or jornada_num > upper_bound:
+                monitor_store.pop(jornada_key, None)
 
 
 def _audit_quiniela_integrity(
@@ -7040,7 +7163,11 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
                     "matches": list(upcoming_payload.get("matches", [])),
                     "pleno15": dict(upcoming_payload.get("pleno15") or {}),
                 }
-        history_record = ((QUINIELA_HISTORY or {}).get("jornadas") or {}).get(str(jornada_num)) or {}
+        history_record = (
+            ((QUINIELA_HISTORY or {}).get("jornadas") or {}).get(str(jornada_num))
+            or ((MONITOR_JORNADAS_HISTORY or {}).get("jornadas") or {}).get(str(jornada_num))
+            or {}
+        )
         if not payload.get("ok") and not history_record.get("matches"):
             continue
         if not payload.get("ok"):
