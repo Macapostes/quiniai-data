@@ -2512,6 +2512,13 @@ def _build_status_html(status_payload: dict) -> str:
 
 
 def _build_monitor_web_html() -> str:
+    try:
+        if MONITOR_INDEX_PATH.exists():
+            html_text = MONITOR_INDEX_PATH.read_text(encoding="utf-8")
+            if "<!DOCTYPE html>" in html_text and "QuiniAI Monitor" in html_text:
+                return html_text
+    except Exception:
+        pass
     return """<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -2620,6 +2627,135 @@ def _build_monitor_web_html() -> str:
 </html>"""
 
 
+def _monitor_competitive_context(match: dict) -> dict:
+    competition = match.get("competition_context") or {}
+    analytics = match.get("analytics_context") or {}
+    structured = match.get("structured_context") or {}
+    return {
+        "competitive_stakes_label": competition.get("competitive_stakes_label", ""),
+        "season_context_phase": competition.get("season_context_phase"),
+        "home_objective": competition.get("home_objective") or {},
+        "away_objective": competition.get("away_objective") or {},
+        "direct_rivalry": competition.get("direct_rivalry") or {},
+        "home_must_win_index": analytics.get("home_must_win_index"),
+        "away_must_win_index": analytics.get("away_must_win_index"),
+        "home_must_not_lose_index": analytics.get("home_must_not_lose_index"),
+        "away_must_not_lose_index": analytics.get("away_must_not_lose_index"),
+        "home_rotation_context": (structured.get("injury_context") or {}).get("home_rotation_context") or {},
+        "away_rotation_context": (structured.get("injury_context") or {}).get("away_rotation_context") or {},
+    }
+
+
+def _monitor_match_summary(match: dict) -> dict:
+    history = match.get("history_context") or {}
+    market_context = match.get("market_context") or {}
+    weather = match.get("weather_context") or {}
+    travel = match.get("travel_context") or {}
+    analytics = match.get("analytics_context") or {}
+    structured = match.get("structured_context") or {}
+    competition = match.get("competition_context") or {}
+    referee_context = structured.get("referee_context") or {}
+    home_recent = ((history.get("home") or {}).get("recent_all") or {})
+    away_recent = ((history.get("away") or {}).get("recent_all") or {})
+    home_table = ((history.get("home") or {}).get("table") or {})
+    away_table = ((history.get("away") or {}).get("table") or {})
+    home_upcoming = competition.get("home_upcoming") or []
+    away_upcoming = competition.get("away_upcoming") or []
+    official_percent = (
+        market_context.get("official_percent")
+        or match.get("official_quiniela_percentages")
+        or {}
+    )
+    return {
+        "slot": "Pleno al 15" if any(slot.get("pleno15") for slot in (match.get("quiniela_slots") or [])) else (
+            str((match.get("quiniela_slots") or [{}])[0].get("position") or "")
+        ),
+        "local": match.get("local", ""),
+        "visitante": match.get("visitante", ""),
+        "league": match.get("league", ""),
+        "kickoff": match.get("kickoff", ""),
+        "bookmaker": match.get("bookmaker", ""),
+        "odds": match.get("odds") or {},
+        "normalized_percent": market_context.get("normalized_percent") or {},
+        "official_percent": official_percent,
+        "home_table": {
+            "position": home_table.get("position"),
+            "points": home_table.get("points"),
+            "form": home_recent.get("form") or home_table.get("form"),
+        },
+        "away_table": {
+            "position": away_table.get("position"),
+            "points": away_table.get("points"),
+            "form": away_recent.get("form") or away_table.get("form"),
+        },
+        "pressure": {
+            "home": analytics.get("home_pressure_index") or {},
+            "away": analytics.get("away_pressure_index") or {},
+        },
+        "fatigue": {
+            "home": analytics.get("home_fatigue_index") or {},
+            "away": analytics.get("away_fatigue_index") or {},
+        },
+        "competitive_context": _monitor_competitive_context(match),
+        "travel_km": travel.get("distance_km"),
+        "weather": {
+            "temperature_c": weather.get("temperature_c"),
+            "precipitation_probability": weather.get("precipitation_probability"),
+            "wind_speed_kmh": weather.get("wind_speed_kmh"),
+        },
+        "referee": {
+            "name": referee_context.get("assigned_referee", ""),
+            "bias_summary": (referee_context.get("season_analysis") or {}).get("bias_summary", ""),
+        },
+        "future_home": " | ".join(
+            f"{item.get('rival', '?')} ({item.get('days_until', '?')}d)"
+            for item in home_upcoming[:5]
+        ),
+        "future_away": " | ".join(
+            f"{item.get('rival', '?')} ({item.get('days_until', '?')}d)"
+            for item in away_upcoming[:5]
+        ),
+        "h2h": (history.get("head_to_head") or {}),
+        "briefing_excerpt": (match.get("focus_ai_briefing") or "")[:1200],
+        "analysis_ready": bool(match.get("focus_ai_briefing")),
+    }
+
+
+def _select_monitor_public_jornadas(status_payload: dict) -> list[dict]:
+    jornadas = list(status_payload.get("quiniela_jornadas") or [])
+    if not jornadas:
+        return []
+    jornadas.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
+    current = _safe_int((status_payload.get("coverage") or {}).get("quiniela_current_jornada"))
+    if current:
+        selected = [
+            jornada
+            for jornada in jornadas
+            if current - 3 <= (_safe_int(jornada.get("jornada")) or 0) <= current + 1
+        ]
+        if selected:
+            jornadas = selected
+    if len(jornadas) > 5:
+        jornadas = jornadas[-5:]
+    out = []
+    for jornada in jornadas:
+        out.append(
+            {
+                "jornada": _safe_int(jornada.get("jornada")),
+                "label": jornada.get("label") or f"Jornada {_safe_int(jornada.get('jornada')) or '-'}",
+                "is_current": bool(jornada.get("is_current")),
+                "source": jornada.get("source", ""),
+                "source_url": jornada.get("source_url", ""),
+                "kickoff_from": jornada.get("kickoff_from", ""),
+                "kickoff_to": jornada.get("kickoff_to", ""),
+                "history_only": bool(jornada.get("history_only")),
+                "matches": [_monitor_match_summary(match) for match in jornada.get("matches", [])],
+            }
+        )
+    out.sort(key=lambda item: item.get("jornada") or 0, reverse=True)
+    return out
+
+
 def _build_monitor_status_payload(status_payload: dict) -> dict:
     coverage = status_payload.get("coverage") or {}
     structured = status_payload.get("structured_db_summary") or {}
@@ -2657,6 +2793,14 @@ def _build_monitor_status_payload(status_payload: dict) -> dict:
             "checked_slots": integrity.get("checked_slots"),
             "mismatch_count": integrity.get("mismatch_count"),
         },
+        "quiniela_jornadas": [
+            {
+                "jornada": _safe_int(jornada.get("jornada")),
+                "label": jornada.get("label") or f"Jornada {_safe_int(jornada.get('jornada')) or '-'}",
+            }
+            for jornada in (status_payload.get("quiniela_jornadas") or [])
+        ],
+        "public_jornadas": _select_monitor_public_jornadas(status_payload),
         "last_runs": (status_payload.get("last_runs") or [])[-12:],
     }
 
