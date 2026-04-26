@@ -94,6 +94,12 @@
       const official = match.official_percent || {};
       const weather = match.weather || {};
       const referee = match.referee || {};
+      const competitive = match.competitive_context || {};
+      const homeObjective = competitive.home_objective || {};
+      const awayObjective = competitive.away_objective || {};
+      const homeRotation = competitive.home_rotation_context || {};
+      const awayRotation = competitive.away_rotation_context || {};
+      const rotationLine = [homeRotation.reason ? `local ${homeRotation.reason} (${homeRotation.risk})` : "", awayRotation.reason ? `visitante ${awayRotation.reason} (${awayRotation.risk})` : ""].filter(Boolean).join(" | ");
       return `
         <div class="match">
           <div class="match-head">
@@ -109,6 +115,9 @@
           </div>
           <div class="line"><strong>Mercado base:</strong> 1=${fmtPct(market["1"])} · X=${fmtPct(market["X"])} · 2=${fmtPct(market["2"])} | <strong>Quinielista:</strong> 1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}</div>
           <div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>
+          <div class="line"><strong>Objetivo:</strong> ${escapeHtml(homeObjective.summary || "-")} [MW ${competitive.home_must_win_index ?? 0}, NP ${competitive.home_must_not_lose_index ?? 0}] | ${escapeHtml(awayObjective.summary || "-")} [MW ${competitive.away_must_win_index ?? 0}, NP ${competitive.away_must_not_lose_index ?? 0}]</div>
+          <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} | rivalidad ${competitive.direct_rivalry_index ?? 0}/100</div>
+          ${rotationLine ? `<div class="line"><strong>Rotacion probable:</strong> ${escapeHtml(rotationLine)}</div>` : ""}
           <div class="line"><strong>Presion/Fatiga:</strong> local ${fmtNum(homePressure.score,2)} (${escapeHtml(homePressure.label || "-")}) y visitante ${fmtNum(awayPressure.score,2)} (${escapeHtml(awayPressure.label || "-")}) | fatiga ${fmtNum(homeFatigue.score,2)} / ${fmtNum(awayFatigue.score,2)}</div>
           <div class="line"><strong>Arbitro:</strong> ${escapeHtml(referee.name || "no confirmado")} | <strong>Viaje visitante:</strong> ${fmtNum(match.travel_km,1)} km | <strong>Clima:</strong> ${fmtNum(weather.temperature_c,1)} C, lluvia ${weather.precipitation_probability ?? "-"}%, viento ${fmtNum(weather.wind_speed_kmh,1)} km/h</div>
           <div class="line"><strong>Proximos 5 ${escapeHtml(match.local)}:</strong> ${escapeHtml(match.future_home || "sin calendario detectado")}</div>
