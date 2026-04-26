@@ -4792,6 +4792,175 @@ def _season_objective_context(league_key: str, table_snapshot: dict, team_name: 
     }
 
 
+def _season_context_phase(table_snapshot: dict) -> str:
+    played = max((_safe_int((row or {}).get("played"), 0) or 0) for row in (table_snapshot or {}).values()) if table_snapshot else 0
+    if played <= 10:
+        return "early"
+    if played <= 24:
+        return "middle"
+    if played <= 34:
+        return "decisive"
+    return "final"
+
+
+def _phase_bonus(phase: str) -> float:
+    return {
+        "early": 0.0,
+        "middle": 5.0,
+        "decisive": 10.0,
+        "final": 15.0,
+    }.get(str(phase or "").strip().lower(), 0.0)
+
+
+def _must_win_index(objective_context: dict, phase: str) -> float:
+    if not objective_context:
+        return 18.0
+    urgency = str(objective_context.get("urgency", "")).strip().lower()
+    status = str(objective_context.get("status", "")).strip().lower()
+    objective_key = str(objective_context.get("objective_key", "")).strip().lower()
+    gap = _safe_float(objective_context.get("gap_points"))
+    cushion = _safe_float(objective_context.get("cushion_points"))
+    base = {
+        "low": 18.0,
+        "medium": 38.0,
+        "high": 62.0,
+        "critical": 82.0,
+    }.get(urgency, 24.0)
+    base += _phase_bonus(phase)
+    base += {
+        "drop_zone": 16.0,
+        "chasing": 12.0,
+        "defending": 8.0,
+        "protecting": 10.0,
+        "midtable": -10.0,
+    }.get(status, 0.0)
+    base += {
+        "title": 12.0,
+        "champions": 10.0,
+        "promotion": 10.0,
+        "europa": 8.0,
+        "conference": 6.0,
+        "playoff": 8.0,
+        "survival": 12.0,
+        "midtable": -8.0,
+    }.get(objective_key, 0.0)
+    if gap is not None and gap <= 3:
+        base += 8.0
+    if cushion is not None and cushion <= 2:
+        base += 6.0
+    return round(min(100.0, max(0.0, base)), 2)
+
+
+def _must_not_lose_index(objective_context: dict, phase: str) -> float:
+    if not objective_context:
+        return 16.0
+    urgency = str(objective_context.get("urgency", "")).strip().lower()
+    status = str(objective_context.get("status", "")).strip().lower()
+    cushion = _safe_float(objective_context.get("cushion_points"))
+    gap = _safe_float(objective_context.get("gap_points"))
+    base = {
+        "low": 14.0,
+        "medium": 30.0,
+        "high": 50.0,
+        "critical": 70.0,
+    }.get(urgency, 20.0)
+    base += _phase_bonus(phase) * 0.8
+    base += {
+        "drop_zone": 18.0,
+        "defending": 16.0,
+        "protecting": 18.0,
+        "chasing": 4.0,
+        "midtable": -8.0,
+    }.get(status, 0.0)
+    if cushion is not None and cushion <= 2:
+        base += 10.0
+    if gap is not None and gap <= 1:
+        base += 5.0
+    return round(min(100.0, max(0.0, base)), 2)
+
+
+def _objective_swing(result_key: str, objective_context: dict) -> dict:
+    if not objective_context:
+        return {}
+    status = str(objective_context.get("status", "")).strip().lower()
+    objective_label = str(objective_context.get("objective_label", "")).strip().lower()
+    gap = _safe_int(objective_context.get("gap_points"))
+    cushion = _safe_int(objective_context.get("cushion_points"))
+    if result_key == "win":
+        if status == "chasing" and gap is not None:
+            if gap <= 1:
+                return {"impact": "very_high", "summary": f"ganando puede meterse en zona {objective_label}"}
+            if gap <= 3:
+                return {"impact": "high", "summary": f"ganando se queda a tiro de la zona {objective_label}"}
+        if status == "drop_zone" and gap is not None and gap <= 3:
+            return {"impact": "very_high", "summary": "ganando puede salir del descenso o igualarse a la salvacion"}
+        if status in {"defending", "protecting"} and cushion is not None and cushion <= 2:
+            return {"impact": "high", "summary": f"ganando protege mejor su plaza de {objective_label}"}
+        return {"impact": "medium", "summary": "ganar refuerza claramente su objetivo competitivo"}
+    if result_key == "lose":
+        if status in {"defending", "protecting"} and cushion is not None and cushion <= 3:
+            return {"impact": "very_high", "summary": f"perdiendo puede comprometer su plaza de {objective_label}"}
+        if status == "drop_zone":
+            return {"impact": "high", "summary": "perdiendo agrava la situacion de descenso"}
+        if status == "chasing" and gap is not None and gap <= 3:
+            return {"impact": "high", "summary": f"perdiendo frena seriamente la persecucion de la zona {objective_label}"}
+        return {"impact": "medium", "summary": "una derrota le complica el margen competitivo"}
+    return {"impact": "low", "summary": "el empate mantiene el objetivo sin un salto brusco"}
+
+
+def _direct_rivalry_context(home_objective: dict, away_objective: dict, home_table: dict, away_table: dict) -> dict:
+    if not home_objective or not away_objective or not home_table or not away_table:
+        return {}
+    shared_key = str(home_objective.get("objective_key", "")).strip().lower()
+    away_key = str(away_objective.get("objective_key", "")).strip().lower()
+    if not shared_key or shared_key != away_key:
+        return {}
+    home_pos = _safe_int(home_table.get("position"))
+    away_pos = _safe_int(away_table.get("position"))
+    home_pts = _safe_int(home_table.get("points"))
+    away_pts = _safe_int(away_table.get("points"))
+    if home_pos is None or away_pos is None or home_pts is None or away_pts is None:
+        return {}
+    pos_gap = abs(home_pos - away_pos)
+    pts_gap = abs(home_pts - away_pts)
+    if pos_gap > 4 or pts_gap > 8:
+        return {}
+    score = 54.0 + max(0.0, 12.0 - pts_gap * 1.5) + max(0.0, 8.0 - pos_gap * 1.5)
+    label = "high" if score >= 72 else ("medium" if score >= 60 else "low")
+    objective_label = str(home_objective.get("objective_label", "")).strip() or "objetivo comun"
+    return {
+        "score": round(min(100.0, score), 2),
+        "label": label,
+        "shared_objective": shared_key,
+        "position_gap": pos_gap,
+        "points_gap": pts_gap,
+        "summary": f"duelo directo por {objective_label} con {pts_gap} pts y {pos_gap} puestos de separacion",
+    }
+
+
+def _competitive_stakes_label(
+    phase: str,
+    home_must_win: float,
+    away_must_win: float,
+    home_must_not_lose: float,
+    away_must_not_lose: float,
+    direct_rivalry: dict,
+) -> str:
+    rivalry_score = _safe_float((direct_rivalry or {}).get("score")) or 0.0
+    top_pressure = max(home_must_win, away_must_win, home_must_not_lose, away_must_not_lose)
+    if rivalry_score >= 68 and top_pressure >= 70:
+        return "duelo directo de alta tension"
+    if top_pressure >= 82:
+        return "partido de maxima urgencia competitiva"
+    if top_pressure >= 64:
+        return "partido de urgencia competitiva alta"
+    if phase == "final":
+        return "partido de final de temporada"
+    if phase == "decisive":
+        return "partido con impacto clasificatorio relevante"
+    return "partido de contexto competitivo contenido"
+
+
 def _objective_pressure(objective_context: dict) -> float:
     if not objective_context:
         return 18.0
@@ -5585,6 +5754,36 @@ def _competitive_context_line(team_name: str, table: dict, relegation: dict, obj
     return f"{team_name}: puesto {position}, {points} puntos, {suffix}."
 
 
+def _competitive_stakes_summary(competition: dict) -> str:
+    if not competition:
+        return "sin lectura competitiva premium"
+    direct_rivalry = competition.get("direct_rivalry") or {}
+    phase = str(competition.get("season_context_phase", "")).strip() or "unknown"
+    stakes = str(competition.get("competitive_stakes_label", "")).strip() or "sin stakes"
+    home_win = competition.get("home_must_win_index", "-")
+    away_win = competition.get("away_must_win_index", "-")
+    home_hold = competition.get("home_must_not_lose_index", "-")
+    away_hold = competition.get("away_must_not_lose_index", "-")
+    home_swing = str((competition.get("home_objective_swing_if_win") or {}).get("summary") or "").strip()
+    away_swing = str((competition.get("away_objective_swing_if_win") or {}).get("summary") or "").strip()
+    rivalry_summary = str(direct_rivalry.get("summary", "")).strip()
+    parts = [
+        f"fase={phase}",
+        f"stakes={stakes}",
+        f"must-win local={home_win}",
+        f"must-win visitante={away_win}",
+        f"must-not-lose local={home_hold}",
+        f"must-not-lose visitante={away_hold}",
+    ]
+    if rivalry_summary:
+        parts.append(rivalry_summary)
+    if home_swing:
+        parts.append(f"local: {home_swing}")
+    if away_swing:
+        parts.append(f"visitante: {away_swing}")
+    return "; ".join(parts)
+
+
 def _enrich_quiniela_match(match: dict) -> None:
     match_news = fetch_match_news(match["local"], match["visitante"])
     referee_news_items = fetch_match_referee_news(match["local"], match["visitante"])
@@ -5771,6 +5970,53 @@ def _enrich_quiniela_match(match: dict) -> None:
         match.get("league", ""),
         current_table_snapshot,
         ((history_context.get("away") or {}).get("resolved_name") or match.get("visitante", "")),
+    )
+    competition_context["season_context_phase"] = _season_context_phase(current_table_snapshot)
+    competition_context["home_must_win_index"] = _must_win_index(
+        competition_context.get("home_objective") or {},
+        competition_context.get("season_context_phase", ""),
+    )
+    competition_context["away_must_win_index"] = _must_win_index(
+        competition_context.get("away_objective") or {},
+        competition_context.get("season_context_phase", ""),
+    )
+    competition_context["home_must_not_lose_index"] = _must_not_lose_index(
+        competition_context.get("home_objective") or {},
+        competition_context.get("season_context_phase", ""),
+    )
+    competition_context["away_must_not_lose_index"] = _must_not_lose_index(
+        competition_context.get("away_objective") or {},
+        competition_context.get("season_context_phase", ""),
+    )
+    competition_context["home_objective_swing_if_win"] = _objective_swing(
+        "win",
+        competition_context.get("home_objective") or {},
+    )
+    competition_context["home_objective_swing_if_lose"] = _objective_swing(
+        "lose",
+        competition_context.get("home_objective") or {},
+    )
+    competition_context["away_objective_swing_if_win"] = _objective_swing(
+        "win",
+        competition_context.get("away_objective") or {},
+    )
+    competition_context["away_objective_swing_if_lose"] = _objective_swing(
+        "lose",
+        competition_context.get("away_objective") or {},
+    )
+    competition_context["direct_rivalry"] = _direct_rivalry_context(
+        competition_context.get("home_objective") or {},
+        competition_context.get("away_objective") or {},
+        (history_context.get("home") or {}).get("table", {}),
+        (history_context.get("away") or {}).get("table", {}),
+    )
+    competition_context["competitive_stakes_label"] = _competitive_stakes_label(
+        competition_context.get("season_context_phase", ""),
+        _safe_float(competition_context.get("home_must_win_index")) or 0.0,
+        _safe_float(competition_context.get("away_must_win_index")) or 0.0,
+        _safe_float(competition_context.get("home_must_not_lose_index")) or 0.0,
+        _safe_float(competition_context.get("away_must_not_lose_index")) or 0.0,
+        competition_context.get("direct_rivalry") or {},
     )
     match["competition_context"] = competition_context
     match["analytics_context"]["home_pressure_index"] = _pressure_index(
@@ -5959,6 +6205,7 @@ def _focus_match_ai_briefing(match: dict) -> str:
         ),
         _competitive_context_line(match.get("local", ""), home_table, home_relegation, home_objective),
         _competitive_context_line(match.get("visitante", ""), away_table, away_relegation, away_objective),
+        f"Lectura stakes premium: {_competitive_stakes_summary(competition)}.",
         (
             f"Forma ultimos 5: local {home_recent.get('form', '-')} ({home_recent.get('points', '-')} pts) "
             f"y visitante {away_recent.get('form', '-')} ({away_recent.get('points', '-')} pts)."
