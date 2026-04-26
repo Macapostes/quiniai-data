@@ -10,6 +10,7 @@ import logging
 import math
 import os
 import re
+import subprocess
 import threading
 import time
 import traceback
@@ -54,6 +55,11 @@ BACKEND_URL = os.getenv(
 ).rstrip("/")
 ADMIN_KEY = os.getenv("QUINIAI_ADMIN_KEY", "").strip()
 POLL_SECONDS = int(os.getenv("SNAPSHOT_POLL_SECONDS", "900"))
+AUTO_PUBLISH_MONITOR = str(os.getenv("QUINIAI_AUTO_PUBLISH_MONITOR", "1")).strip().lower() not in {
+    "0",
+    "false",
+    "no",
+}
 DATA_URL = os.getenv(
     "QUINIAI_DATA_URL",
     "https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
@@ -3014,6 +3020,88 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
     _write_text_file(STATUS_HTML_PATH, html)
     _write_text_file(DESKTOP_STATUS_HTML_PATH, html)
     _write_text_file(MONITOR_INDEX_PATH, _build_monitor_web_html())
+
+
+def _run_git_command(*args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        ["git", *args],
+        cwd=str(Path(__file__).resolve().parent),
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+    )
+
+
+def publish_monitor_to_github() -> bool:
+    if not AUTO_PUBLISH_MONITOR:
+        return False
+    repo_root = Path(__file__).resolve().parent
+    tracked_files = [
+        "docs/monitor/status.json",
+        "docs/monitor/jornadas_history.json",
+    ]
+    status = _run_git_command("status", "--porcelain", "--", *tracked_files)
+    if status.returncode != 0:
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_status_failed",
+            stdout=status.stdout.strip(),
+            stderr=status.stderr.strip(),
+        )
+        return False
+    changed = [line for line in status.stdout.splitlines() if line.strip()]
+    if not changed:
+        return False
+
+    add = _run_git_command("add", *tracked_files)
+    if add.returncode != 0:
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_add_failed",
+            stdout=add.stdout.strip(),
+            stderr=add.stderr.strip(),
+        )
+        return False
+
+    commit_message = f"Update monitor status {_format_madrid_datetime(_now_iso())}"
+    commit = _run_git_command("commit", "-m", commit_message)
+    if commit.returncode != 0 and "nothing to commit" not in (commit.stdout + commit.stderr).lower():
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_commit_failed",
+            stdout=commit.stdout.strip(),
+            stderr=commit.stderr.strip(),
+        )
+        return False
+
+    pull = _run_git_command("pull", "--rebase", "origin", "main")
+    if pull.returncode != 0:
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_pull_failed",
+            stdout=pull.stdout.strip(),
+            stderr=pull.stderr.strip(),
+        )
+        return False
+
+    push = _run_git_command("push", "origin", "main")
+    if push.returncode != 0:
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_push_failed",
+            stdout=push.stdout.strip(),
+            stderr=push.stderr.strip(),
+        )
+        return False
+
+    _log_cycle_event(
+        "info",
+        "monitor_publish_ok",
+        changed_files=tracked_files,
+        repo=str(repo_root),
+    )
+    return True
 
 
 def print_pretty_summary(snapshot: dict) -> None:
@@ -7858,6 +7946,7 @@ def run_once(print_summary: bool = False) -> dict:
     )
     _persist_run_history()
     write_status_files(snapshot=snapshot)
+    publish_monitor_to_github()
     _log_cycle_event(
         "info",
         "cycle_completed",
