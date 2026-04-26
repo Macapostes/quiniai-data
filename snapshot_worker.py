@@ -98,6 +98,8 @@ EDUARDO_QUINIELA_PORCENTAJES_URL = "https://www.eduardolosilla.es/quiniela/ayuda
 EDUARDO_QUINIELA_PROXIMAS_URL = "https://www.eduardolosilla.es/quiniela/ayudas/proximas"
 EDUARDO_API_QUINIELISTA_URL = "https://api.eduardolosilla.es/servicios/v1/porcentajes_quinielista"
 EDUARDO_API_LAE_URL = "https://api.eduardolosilla.es/servicios/v1/porcentajes_lae"
+LAE_PROXIMOS_URL = "https://www.loteriasyapuestas.es/servicios/proximosv3"
+LAE_PUNTO_VENTA_URL = "https://www.loteriasyapuestas.es/servicios/juegoPuntoVenta"
 QUINIELA_ROOT_URL = EDUARDO_QUINIELA_PORCENTAJES_URL
 QUINIELA_HISTORY_JORNADAS = max(5, int(os.getenv("QUINIAI_QUINIELA_HISTORY_JORNADAS", "5")))
 TEAM_PROFILE_CACHE_VERSION = "v4"
@@ -140,6 +142,36 @@ MANUAL_REFRESH_FLAG_PATH = CACHE_DIR / "manual_refresh.flag"
 DEFAULT_HEADERS = {
     "User-Agent": "QuiniAI-Context-Worker/3.0 (+https://github.com/Macapostes/quiniai-data)"
 }
+LAE_HEADER_SETS = [
+    {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Referer": "https://www.loteriasyapuestas.es/es/quiniela",
+        "Origin": "https://www.loteriasyapuestas.es",
+        "Connection": "keep-alive",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-CH-UA": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+        "Sec-CH-UA-Mobile": "?0",
+        "Sec-CH-UA-Platform": '"Windows"',
+    },
+    {
+        "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-G991B Build/TP1A.220624.014)",
+        "X-Requested-With": "es.loteriasyapuestas.android",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "es-ES,es;q=0.9",
+    },
+    {
+        "User-Agent": "okhttp/4.11.0",
+        "X-Requested-With": "es.loteriasyapuestas.android",
+        "Accept": "application/json",
+        "Accept-Language": "es-ES",
+    },
+]
 
 MADRID_TZ = ZoneInfo("Europe/Madrid")
 
@@ -884,6 +916,20 @@ def _request_text(url: str, params: dict | None = None, timeout: int = 30) -> st
     response = requests.get(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
     response.raise_for_status()
     return response.text
+
+
+def _request_json_lae(url: str, params: dict | None = None, timeout: int = 20) -> dict | list:
+    last_error = None
+    for headers in LAE_HEADER_SETS:
+        try:
+            response = requests.get(url, params=params, headers=headers, timeout=timeout)
+            if response.status_code == 200:
+                return response.json()
+        except Exception as exc:
+            last_error = exc
+    if last_error:
+        raise last_error
+    raise RuntimeError(f"LAE request failed: {url}")
 
 
 def _format_madrid_datetime(value: object, include_tz: bool = True) -> str:
@@ -2721,8 +2767,16 @@ def _monitor_match_summary(match: dict) -> dict:
     }
 
 
+def _history_jornada_records() -> list[dict]:
+    records = list(((QUINIELA_HISTORY or {}).get("jornadas") or {}).values())
+    records.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
+    return records
+
+
 def _select_monitor_public_jornadas(status_payload: dict) -> list[dict]:
     jornadas = list(status_payload.get("quiniela_jornadas") or [])
+    if not jornadas:
+        jornadas = _history_jornada_records()
     if not jornadas:
         return []
     jornadas.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
@@ -2760,6 +2814,9 @@ def _build_monitor_status_payload(status_payload: dict) -> dict:
     coverage = status_payload.get("coverage") or {}
     structured = status_payload.get("structured_db_summary") or {}
     integrity = status_payload.get("quiniela_integrity") or {}
+    jornadas = list(status_payload.get("quiniela_jornadas") or [])
+    if not jornadas:
+        jornadas = _history_jornada_records()
     return {
         "generated_at": status_payload.get("generated_at", ""),
         "snapshot_generated_at": status_payload.get("snapshot_generated_at", ""),
@@ -2798,7 +2855,7 @@ def _build_monitor_status_payload(status_payload: dict) -> dict:
                 "jornada": _safe_int(jornada.get("jornada")),
                 "label": jornada.get("label") or f"Jornada {_safe_int(jornada.get('jornada')) or '-'}",
             }
-            for jornada in (status_payload.get("quiniela_jornadas") or [])
+            for jornada in jornadas
         ],
         "public_jornadas": _select_monitor_public_jornadas(status_payload),
         "last_runs": (status_payload.get("last_runs") or [])[-12:],
@@ -2816,6 +2873,7 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
     }
     if snapshot:
         lines = _snapshot_summary_lines(snapshot)
+        jornadas_payload = snapshot.get("quiniela_jornadas", []) or _history_jornada_records()
         status_text = "\n".join(lines) + "\n"
         status_payload.update(
             {
@@ -2825,7 +2883,7 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
                 "competition_headlines": snapshot.get("competition_headlines", {}),
                 "context_sources": snapshot.get("context_sources", []),
                 "source_health_summary": snapshot.get("source_health_summary", {}),
-                "quiniela_jornadas": snapshot.get("quiniela_jornadas", []),
+                "quiniela_jornadas": jornadas_payload,
                 "focus_matches": snapshot.get("quiniela_focus_matches", []),
                 "quiniela_integrity": snapshot.get("quiniela_integrity", {}),
                 "last_runs": list((RUN_HISTORY or {}).get("runs", []))[-12:],
@@ -3265,6 +3323,20 @@ def _fetch_cached_html(url: str, cache_key: str, ttl_seconds: int = 12 * 3600) -
     return html_text
 
 
+def _combine_match_datetime(date_text: str, hour_text: str) -> str:
+    date_text = str(date_text or "").strip()
+    hour_text = str(hour_text or "").strip() or "00:00"
+    if not date_text:
+        return ""
+    for fmt in ("%d/%m/%Y %H:%M", "%d/%m/%y %H:%M", "%Y-%m-%d %H:%M"):
+        try:
+            parsed = datetime.strptime(f"{date_text} {hour_text}", fmt).replace(tzinfo=MADRID_TZ)
+            return parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+        except Exception:
+            continue
+    return ""
+
+
 def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
     jornadas = []
     block_pattern = re.compile(
@@ -3316,6 +3388,151 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
                     "pleno15": next((slot for slot in slots if slot.get("position") == 15), {}),
                 }
             )
+    return jornadas
+
+
+def _find_lae_match_arrays(root, out: list | None = None, depth: int = 0) -> list[list[dict]]:
+    if out is None:
+        out = []
+    if depth > 10:
+        return out
+    if isinstance(root, list) and root and isinstance(root[0], dict):
+        keyset = {str(key).lower() for key in root[0].keys()}
+        has_match_shape = (
+            any(("local" in key or key in {"home", "equipo1"}) for key in keyset)
+            and any(("visit" in key or key in {"away", "equipo2"}) for key in keyset)
+        ) or any(key in {"partido", "match", "encuentro"} for key in keyset)
+        if has_match_shape:
+            out.append(root)
+    if isinstance(root, dict):
+        for value in root.values():
+            _find_lae_match_arrays(value, out, depth + 1)
+    elif isinstance(root, list):
+        for value in root:
+            _find_lae_match_arrays(value, out, depth + 1)
+    return out
+
+
+def _parse_lae_match_array(entries: list[dict]) -> list[dict]:
+    parsed = []
+    for raw in entries[:15]:
+        if not isinstance(raw, dict):
+            continue
+        local = str(
+            raw.get("local")
+            or raw.get("equipo1")
+            or raw.get("equipoLocal")
+            or raw.get("equipo_local")
+            or raw.get("nombre_local")
+            or raw.get("home")
+            or raw.get("homeTeam")
+            or ""
+        ).strip()
+        visitante = str(
+            raw.get("visitante")
+            or raw.get("equipo2")
+            or raw.get("equipoVisitante")
+            or raw.get("equipo_visitante")
+            or raw.get("nombre_visitante")
+            or raw.get("away")
+            or raw.get("awayTeam")
+            or ""
+        ).strip()
+        merged_name = str(raw.get("partido") or raw.get("match") or raw.get("encuentro") or "").strip()
+        if (not local or not visitante) and " - " in merged_name:
+            local, visitante = [part.strip() for part in merged_name.split(" - ", 1)]
+        if not local or not visitante:
+            continue
+        fecha = str(raw.get("fecha_completa") or raw.get("fecha") or "").strip()
+        hora = str(raw.get("hora") or "").strip()
+        kickoff = ""
+        if fecha and hora:
+            kickoff = _combine_match_datetime(fecha, hora)
+        elif fecha:
+            kickoff = _combine_match_datetime(fecha, "00:00")
+        parsed.append(
+            {
+                "position": _safe_int(raw.get("posicion") or raw.get("orden") or len(parsed) + 1),
+                "local": _canonical_team_name(local),
+                "visitante": _canonical_team_name(visitante),
+                "percentages": {},
+                "kickoff": kickoff,
+                "date_label": fecha,
+                "hour_label": hora,
+            }
+        )
+    return [item for item in parsed if item.get("position")]
+
+
+def _lae_slots_are_placeholder(slots: list[dict]) -> bool:
+    bad = ("aleatoria", "sorteo", "determinarse", "a determinar", "por determinar")
+    provisional = 0
+    for slot in slots:
+        local = str(slot.get("local", "")).lower()
+        visitante = str(slot.get("visitante", "")).lower()
+        if any(token in local or token in visitante for token in bad):
+            provisional += 1
+    return provisional >= 2
+
+
+def fetch_lae_upcoming_jornadas(limit: int = 8) -> list[dict]:
+    cache_key = f"lae:upcoming-jornadas:{limit}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, cache_key, 30 * 60)
+    if cached:
+        return list(cached)
+    jornadas = []
+    try:
+        payload = _request_json_lae(
+            LAE_PROXIMOS_URL,
+            params={"game_id": "LAQU", "num": max(2, limit)},
+            timeout=20,
+        )
+        if isinstance(payload, list):
+            for sorteo in payload:
+                if not isinstance(sorteo, dict):
+                    continue
+                jornada_num = _safe_int(sorteo.get("jornada") or sorteo.get("numero_sorteo"))
+                if not jornada_num:
+                    continue
+                arrays = _find_lae_match_arrays(sorteo)
+                slots = []
+                for arr in arrays:
+                    slots = _parse_lae_match_array(arr)
+                    if len(slots) >= 14 and not _lae_slots_are_placeholder(slots):
+                        break
+                if len(slots) < 14:
+                    sorteo_id = str(sorteo.get("id_sorteo") or "").strip()
+                    if sorteo_id:
+                        try:
+                            detail = _request_json_lae(
+                                LAE_PUNTO_VENTA_URL,
+                                params={"gameId": "LAQU", "idSorteo": sorteo_id},
+                                timeout=20,
+                            )
+                            for arr in _find_lae_match_arrays(detail):
+                                slots = _parse_lae_match_array(arr)
+                                if len(slots) >= 14 and not _lae_slots_are_placeholder(slots):
+                                    break
+                        except Exception:
+                            pass
+                if len(slots) >= 14 and not _lae_slots_are_placeholder(slots):
+                    jornadas.append(
+                        {
+                            "jornada": jornada_num,
+                            "date_label": str(sorteo.get("fecha_sorteo") or "").strip(),
+                            "matches": [slot for slot in slots if (slot.get("position") or 0) < 15],
+                            "pleno15": next(
+                                (slot for slot in slots if slot.get("position") == 15),
+                                {},
+                            ),
+                            "source": "LAE proximosv3",
+                            "source_url": f"{LAE_PROXIMOS_URL}?game_id=LAQU&num={max(2, limit)}",
+                        }
+                    )
+    except Exception:
+        jornadas = []
+    jornadas.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
+    _cache_set(EXTERNAL_FEEDS_CACHE, cache_key, jornadas)
     return jornadas
 
 
@@ -6494,6 +6711,52 @@ def _is_confident_slot_match(home_team: str, away_team: str, match: dict) -> boo
     return home_score >= 0.7 and away_score >= 0.7 and total_score >= 1.55
 
 
+def _slot_kickoff_matches(slot: dict, match: dict, max_gap_hours: int = 36) -> bool:
+    slot_dt = _parse_iso_datetime(str(slot.get("kickoff", "")).strip())
+    match_dt = _parse_iso_datetime(str(match.get("kickoff", "")).strip())
+    if not slot_dt or not match_dt:
+        return True
+    gap_seconds = abs((slot_dt - match_dt).total_seconds())
+    return gap_seconds <= max_gap_hours * 3600
+
+
+def _guess_slot_league(home_team: str, away_team: str, kickoff: str) -> str:
+    kickoff_dt = _parse_iso_datetime(kickoff) or datetime.now(timezone.utc)
+    season_code = _season_code_for(kickoff_dt)
+    candidate_leagues = [
+        "soccer_spain_la_liga",
+        "soccer_spain_segunda_division",
+        "soccer_uefa_champs_league",
+        "soccer_uefa_europa_league",
+        "soccer_uefa_europa_conference_league",
+        "soccer_epl",
+        "soccer_efl_champ",
+    ]
+    best_league = ""
+    best_score = 0.0
+    for league_key in candidate_leagues:
+        history_rows = _season_rows(fetch_league_history(league_key), season_code)
+        if not history_rows:
+            continue
+        teams = set()
+        for row in history_rows:
+            home_name = str(row.get("HomeTeam", "")).strip()
+            away_name = str(row.get("AwayTeam", "")).strip()
+            if home_name:
+                teams.add(home_name)
+            if away_name:
+                teams.add(away_name)
+        if not teams:
+            continue
+        home_score = max((_team_similarity_score(home_team, team) for team in teams), default=0.0)
+        away_score = max((_team_similarity_score(away_team, team) for team in teams), default=0.0)
+        total = home_score + away_score
+        if home_score >= 0.88 and away_score >= 0.88 and total > best_score:
+            best_score = total
+            best_league = league_key
+    return best_league
+
+
 def _find_match_by_teams(matches: list[dict], home_team: str, away_team: str) -> dict | None:
     best_match = None
     best_score = 0.0
@@ -6597,15 +6860,21 @@ def _find_cached_quiniela_match(
     return _json_clone(best)
 
 
-def _build_quiniela_placeholder(slot: dict, jornada: int, cached_match: dict | None = None) -> dict:
+def _build_quiniela_placeholder(
+    slot: dict,
+    jornada: int,
+    cached_match: dict | None = None,
+    inferred_league: str = "",
+    inferred_kickoff: str = "",
+) -> dict:
     if cached_match:
         placeholder = cached_match
     else:
         placeholder = {
             "local": slot.get("local", ""),
             "visitante": slot.get("visitante", ""),
-            "league": "",
-            "kickoff": "",
+            "league": inferred_league,
+            "kickoff": inferred_kickoff,
             "bookmaker": "",
             "odds": {},
             "market_context": {"normalized_percent": {}},
@@ -6626,6 +6895,10 @@ def _build_quiniela_placeholder(slot: dict, jornada: int, cached_match: dict | N
         }
     placeholder.setdefault("local", slot.get("local", ""))
     placeholder.setdefault("visitante", slot.get("visitante", ""))
+    if inferred_league and not placeholder.get("league"):
+        placeholder["league"] = inferred_league
+    if inferred_kickoff and not placeholder.get("kickoff"):
+        placeholder["kickoff"] = inferred_kickoff
     placeholder["match_key"] = placeholder.get("match_key") or _match_key(
         "quiniela_cache",
         placeholder.get("local", ""),
@@ -6734,7 +7007,9 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
     current_context = _eduardo_current_context()
     current_jornada = _safe_int(current_context.get("jornada"))
     current_season = _safe_int(current_context.get("temporada"))
-    upcoming_jornadas = fetch_eduardo_upcoming_jornadas()
+    upcoming_jornadas = fetch_lae_upcoming_jornadas()
+    if not upcoming_jornadas:
+        upcoming_jornadas = fetch_eduardo_upcoming_jornadas()
     upcoming_map = {
         _safe_int(jornada.get("jornada")): jornada
         for jornada in upcoming_jornadas
@@ -6795,6 +7070,8 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
             if not position:
                 continue
             match = _find_match_by_teams(matches, slot.get("local", ""), slot.get("visitante", ""))
+            if match and not _slot_kickoff_matches(slot, match):
+                match = None
             if not match:
                 cached_match = _find_cached_quiniela_match(
                     jornada_num,
@@ -6802,7 +7079,19 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
                     slot_local=slot.get("local", ""),
                     slot_visitante=slot.get("visitante", ""),
                 )
-                placeholder = _build_quiniela_placeholder(slot, jornada_num, cached_match=cached_match)
+                inferred_kickoff = str(slot.get("kickoff", "")).strip()
+                inferred_league = _guess_slot_league(
+                    str(slot.get("local", "")).strip(),
+                    str(slot.get("visitante", "")).strip(),
+                    inferred_kickoff,
+                )
+                placeholder = _build_quiniela_placeholder(
+                    slot,
+                    jornada_num,
+                    cached_match=cached_match,
+                    inferred_league=inferred_league,
+                    inferred_kickoff=inferred_kickoff,
+                )
                 if slot.get("kickoff") and not placeholder.get("kickoff"):
                     placeholder["kickoff"] = slot.get("kickoff", "")
                 jornada_matches.append(placeholder)
