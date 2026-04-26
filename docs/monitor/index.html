@@ -32,6 +32,14 @@
     .line{margin-top:8px;font-size:13px;line-height:1.5}
     .line strong{color:var(--accent)}
     .brief{white-space:pre-wrap;font-size:12px;line-height:1.45;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+    .input,.button{border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);padding:12px 14px;font:inherit}
+    .input{min-width:260px;flex:1}
+    .button{cursor:pointer;font-weight:700}
+    .button:hover{background:rgba(255,255,255,.08)}
+    .audit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:14px 0}
+    .tiny{font-size:11px;color:var(--muted);line-height:1.45}
+    .log-card{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;background:rgba(255,255,255,.03);margin-top:12px}
     @media (max-width:640px){.v{font-size:24px}table{font-size:12px}.match-title{font-size:15px}}
   </style>
 </head>
@@ -51,6 +59,18 @@
       <div class="panel">
         <h2>Estado actual</h2>
         <div class="chips" id="status-chips"></div>
+      </div>
+      <div class="panel">
+        <h2>Auditoria IA avanzada</h2>
+        <div class="muted">Carga desde el mismo monitor las ultimas generaciones premium, sus tokens, el coste estimado y cuanto ha corregido Python. La clave admin se guarda solo en este navegador.</div>
+        <div class="controls">
+          <input class="input" id="admin-key" type="password" placeholder="Pega aqui x-admin-key">
+          <button class="button" id="save-admin-key" type="button">Guardar clave</button>
+          <button class="button" id="load-ia-audit" type="button">Cargar auditoria</button>
+        </div>
+        <div class="tiny" id="ia-audit-status">Sin cargar todavia.</div>
+        <div class="audit-grid" id="ia-audit-cards"></div>
+        <div id="ia-audit-logs"></div>
       </div>
       <div class="panel">
         <h2>Ultimas ejecuciones</h2>
@@ -80,6 +100,7 @@
     };
     const fmtPct = (value) => value === null || value === undefined || value === "" ? "-" : `${Number(value).toFixed(2)}%`;
     const fmtNum = (value, digits=1) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : Number(value).toFixed(digits);
+    const fmtMoney = (value, digits=4) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : `$${Number(value).toFixed(digits)}`;
     const chip = (text, cls="") => `<span class="chip ${cls}">${text}</span>`;
     const escapeHtml = (value) => String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
     const renderMatch = (match) => {
@@ -97,6 +118,11 @@
       const competitive = match.competitive_context || {};
       const homeObjective = competitive.home_objective || {};
       const awayObjective = competitive.away_objective || {};
+      const phase = typeof competitive.season_context_phase === "object"
+        ? (competitive.season_context_phase.label || competitive.season_context_phase.key || "-")
+        : (competitive.season_context_phase || "-");
+      const rivalry = competitive.direct_rivalry || {};
+      const rivalryIndex = rivalry.direct_rivalry_index ?? rivalry.score ?? 0;
       const homeRotation = competitive.home_rotation_context || {};
       const awayRotation = competitive.away_rotation_context || {};
       const rotationLine = [homeRotation.reason ? `local ${homeRotation.reason} (${homeRotation.risk})` : "", awayRotation.reason ? `visitante ${awayRotation.reason} (${awayRotation.risk})` : ""].filter(Boolean).join(" | ");
@@ -116,7 +142,7 @@
           <div class="line"><strong>Mercado base:</strong> 1=${fmtPct(market["1"])} · X=${fmtPct(market["X"])} · 2=${fmtPct(market["2"])} | <strong>Quinielista:</strong> 1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}</div>
           <div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>
           <div class="line"><strong>Objetivo:</strong> ${escapeHtml(homeObjective.summary || "-")} [MW ${competitive.home_must_win_index ?? 0}, NP ${competitive.home_must_not_lose_index ?? 0}] | ${escapeHtml(awayObjective.summary || "-")} [MW ${competitive.away_must_win_index ?? 0}, NP ${competitive.away_must_not_lose_index ?? 0}]</div>
-          <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} | rivalidad ${competitive.direct_rivalry_index ?? 0}/100</div>
+          <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} | fase ${escapeHtml(phase)} | rivalidad ${rivalryIndex}/100</div>
           ${rotationLine ? `<div class="line"><strong>Rotacion probable:</strong> ${escapeHtml(rotationLine)}</div>` : ""}
           <div class="line"><strong>Presion/Fatiga:</strong> local ${fmtNum(homePressure.score,2)} (${escapeHtml(homePressure.label || "-")}) y visitante ${fmtNum(awayPressure.score,2)} (${escapeHtml(awayPressure.label || "-")}) | fatiga ${fmtNum(homeFatigue.score,2)} / ${fmtNum(awayFatigue.score,2)}</div>
           <div class="line"><strong>Arbitro:</strong> ${escapeHtml(referee.name || "no confirmado")} | <strong>Viaje visitante:</strong> ${fmtNum(match.travel_km,1)} km | <strong>Clima:</strong> ${fmtNum(weather.temperature_c,1)} C, lluvia ${weather.precipitation_probability ?? "-"}%, viento ${fmtNum(weather.wind_speed_kmh,1)} km/h</div>
@@ -126,6 +152,76 @@
           ${match.briefing_excerpt ? `<div class="brief">${escapeHtml(match.briefing_excerpt)}</div>` : `<div class="brief">Esta jornada ya esta publicada pero este partido todavia no tiene briefing enriquecido en el monitor publico.</div>`}
         </div>`;
     };
+    const backendBase = "https://quiniela-backend-production-cb1a.up.railway.app";
+    const adminKeyInput = document.getElementById("admin-key");
+    const saveAdminKeyButton = document.getElementById("save-admin-key");
+    const loadIaAuditButton = document.getElementById("load-ia-audit");
+    const storedAdminKey = localStorage.getItem("quiniai_admin_key") || "";
+    if (storedAdminKey) adminKeyInput.value = storedAdminKey;
+    saveAdminKeyButton.addEventListener("click", () => {
+      localStorage.setItem("quiniai_admin_key", adminKeyInput.value.trim());
+      document.getElementById("ia-audit-status").textContent = adminKeyInput.value.trim()
+        ? "Clave guardada en este navegador."
+        : "Clave borrada de este navegador.";
+    });
+    const renderIaAuditLog = (item) => {
+      const telemetry = item.telemetry || {};
+      const quality = item.quality_breakdown || {};
+      const penalties = Object.entries((quality.penalties || {})).map(([k,v]) => `${k} ${v}`).join(" · ");
+      const bonuses = Object.entries((quality.bonuses || {})).map(([k,v]) => `${k} ${v}`).join(" · ");
+      return `
+        <div class="log-card">
+          <div class="match-head">
+            <div>
+              <div class="match-title">J${item.jornada ?? "-"} · ${escapeHtml(item.requested_type || "-")} → ${escapeHtml(item.final_type || "-")}</div>
+              <div class="mini">${escapeHtml(item.model_used || "-")} · ${fmtMadrid(item.hora_inicio)} · estado ${escapeHtml(item.status || "-")} · uid ${escapeHtml(item.user_id || "-")}</div>
+            </div>
+            <div class="chips">
+              ${chip(`Q ${item.quality_label || "-"}`, item.quality_score >= 85 ? "ok" : (item.quality_score >= 55 ? "warn" : "bad"))}
+              ${chip(`Score ${fmtNum(item.quality_score,2)}`)}
+              ${chip(`Coste ${fmtMoney(item.total_cost_usd)}`)}
+            </div>
+          </div>
+          <div class="line"><strong>Tokens:</strong> in ${item.input_tokens ?? 0} · out ${item.output_tokens ?? 0} · total ${item.total_tokens ?? 0} · patch ${item.narrative_patch_calls ?? 0}</div>
+          <div class="line"><strong>Python override:</strong> cambios signo ${item.sign_changes_count ?? 0} · cambio tipo ${item.type_changed ? "si" : "no"} · cambio estructura ${item.structure_changed ? "si" : "no"} · partidos ${escapeHtml((telemetry.changed_match_ids || []).join(", ") || "-")}</div>
+          <div class="line"><strong>Ejecucion:</strong> attempts ${item.attempts_used ?? 0} · provider_calls ${item.provider_calls ?? 0} · apuestas finales ${item.final_total_bets ?? "-"} · coste boleto ${fmtNum(item.final_cost,2)}€</div>
+          <div class="line"><strong>Contexto externo:</strong> matches ${item.external_matches_count ?? 0} · usados ${item.external_usage_count ?? 0}</div>
+          ${penalties ? `<div class="line"><strong>Penalizaciones:</strong> ${escapeHtml(penalties)}</div>` : ""}
+          ${bonuses ? `<div class="line"><strong>Bonos:</strong> ${escapeHtml(bonuses)}</div>` : ""}
+          ${item.error_msg ? `<div class="line"><strong>Error:</strong> ${escapeHtml(item.error_msg)}</div>` : ""}
+        </div>`;
+    };
+    async function loadIaAudit() {
+      const adminKey = adminKeyInput.value.trim();
+      if (!adminKey) {
+        document.getElementById("ia-audit-status").textContent = "Pega primero la x-admin-key para cargar la auditoria.";
+        return;
+      }
+      localStorage.setItem("quiniai_admin_key", adminKey);
+      document.getElementById("ia-audit-status").textContent = "Cargando auditoria IA avanzada...";
+      try {
+        const response = await fetch(`${backendBase}/admin/ia-generation/recent?limit=20`, {
+          headers: {"x-admin-key": adminKey},
+          cache: "no-store",
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        const items = data.items || [];
+        document.getElementById("ia-audit-cards").innerHTML = [
+          ["Generaciones", items.length],
+          ["Quality media", fmtNum(data.avg_quality_score_completed,2)],
+          ["Coste medio", fmtMoney(data.avg_total_cost_usd_completed)],
+          ["Ultima con cambios", items.find(i => (i.sign_changes_count || 0) > 0)?.id || "-"],
+        ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+        document.getElementById("ia-audit-logs").innerHTML = items.map(renderIaAuditLog).join("") || "<div class='log-card'>Sin logs todavia.</div>";
+        document.getElementById("ia-audit-status").textContent = `Auditoria cargada: ${items.length} generaciones.`;
+      } catch (error) {
+        document.getElementById("ia-audit-status").textContent = `No se pudo cargar la auditoria: ${error.message}`;
+        document.getElementById("ia-audit-cards").innerHTML = "";
+        document.getElementById("ia-audit-logs").innerHTML = "";
+      }
+    }
+    loadIaAuditButton.addEventListener("click", loadIaAudit);
     async function render() {
       const response = await fetch(`status.json?t=${Date.now()}`, {cache:"no-store"});
       const status = await response.json();
@@ -174,6 +270,7 @@
         </details>`).join("") || "<div class='match'>Todavia no hay jornadas publicas preparadas.</div>";
     }
     render();
+    if (storedAdminKey) loadIaAudit();
     setInterval(render, 60000);
   </script>
 </body>
