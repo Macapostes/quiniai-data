@@ -117,15 +117,25 @@
     const storedAdminKey = localStorage.getItem("quiniai_admin_key") || "";
     if (storedAdminKey) adminKeyInput.value = storedAdminKey;
 
+    const parseUtcish = (iso) => {
+      if (!iso) return null;
+      const value = String(iso).trim();
+      if (!value) return null;
+      const normalized = /([zZ]|[+\-]\d{2}:\d{2})$/.test(value) ? value : `${value}Z`;
+      const date = new Date(normalized);
+      return Number.isNaN(date.getTime()) ? null : date;
+    };
     const fmtMadrid = (iso) => {
-      if (!iso) return "-";
+      const date = parseUtcish(iso);
+      if (!date) return "-";
       try {
-        return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"medium"}).format(new Date(iso));
+        return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"medium"}).format(date);
       } catch { return iso; }
     };
     const ageMinutes = (iso) => {
-      if (!iso) return "-";
-      const ms = Date.now() - new Date(iso).getTime();
+      const date = parseUtcish(iso);
+      if (!date) return "-";
+      const ms = Date.now() - date.getTime();
       return (ms / 60000).toFixed(1);
     };
     const fmtPct = (value) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : `${Number(value).toFixed(2)}%`;
@@ -216,6 +226,10 @@
       const quality = item.quality_breakdown || {};
       const penalties = Object.entries(quality.penalties || {}).map(([k,v]) => `${k} ${v}`).join(" · ");
       const bonuses = Object.entries(quality.bonuses || {}).map(([k,v]) => `${k} ${v}`).join(" · ");
+      const startedAt = parseUtcish(item.hora_inicio);
+      const finishedAt = parseUtcish(item.hora_fin);
+      const durationSec = startedAt && finishedAt ? Math.max(0, Math.round((finishedAt.getTime() - startedAt.getTime()) / 1000)) : null;
+      const externalMissing = (item.external_matches_count ?? 0) === 0;
       return `
         <div class="log-card">
           <div class="match-head">
@@ -227,9 +241,14 @@
               ${chip(`Score ${fmtNum(item.quality_score,2)}`, (item.quality_score ?? 0) >= 85 ? "ok" : ((item.quality_score ?? 0) >= 55 ? "warn" : "bad"))}
               ${chip(`Coste ${fmtMoney(item.total_cost_usd)}`)}
               ${chip(`Tokens ${item.total_tokens ?? 0}`)}
+              ${durationSec !== null ? chip(`Duración ${durationSec}s`) : ""}
+              ${externalMissing ? chip("Sin contexto externo", "bad") : ""}
             </div>
           </div>
           <div class="line"><strong>Proveedor:</strong> calls ${item.provider_calls ?? 0} · intents ${item.attempts_used ?? 0} · patch ${item.narrative_patch_calls ?? 0} · reached ${item.request_reached_provider ? "sí" : "no"}</div>
+          <div class="line"><strong>Modelo y tokens:</strong> input ${item.input_tokens ?? 0} · output ${item.output_tokens ?? 0} · total ${item.total_tokens ?? 0}</div>
+          <div class="line"><strong>Coste desglosado:</strong> principal ${fmtMoney(item.estimated_cost_usd)} · patch ${fmtMoney(item.patch_cost_usd)} · total ${fmtMoney(item.total_cost_usd)}</div>
+          <div class="line"><strong>Tipos:</strong> pedido ${escapeHtml(item.requested_type || "-")} · IA ${escapeHtml(item.initial_ai_type || "-")} · final ${escapeHtml(item.final_type || "-")}</div>
           <div class="line"><strong>Python corrigió:</strong> signos ${item.sign_changes_count ?? 0} · tipo ${item.type_changed ? "sí" : "no"} · estructura ${item.structure_changed ? "sí" : "no"} · partidos ${escapeHtml((telemetry.changed_match_ids || []).join(", ") || "-")}</div>
           <div class="line"><strong>Boleto final:</strong> ${item.final_total_bets ?? "-"} apuestas · ${fmtNum(item.final_cost,2)}€ · tipo final ${escapeHtml(item.final_type || "-")}</div>
           <div class="line"><strong>Contexto externo:</strong> partidos disponibles ${item.external_matches_count ?? 0} · realmente usados ${item.external_usage_count ?? 0}</div>
@@ -255,14 +274,19 @@
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         const items = data.items || [];
+        const telemetryCount = data.telemetry_count ?? items.length;
+        const completedMeasured = data.measured_completed_count ?? 0;
+        const completedCount = data.completed_count ?? items.filter(item => item.status === "completed").length;
         document.getElementById("ia-audit-cards").innerHTML = [
-          ["Generaciones medidas", data.measured_completed_count ?? items.length],
+          ["Con telemetría", telemetryCount],
+          ["Completadas medidas", completedMeasured],
+          ["Completadas en lote", completedCount],
           ["Quality media", fmtNum(data.avg_quality_score_completed,2)],
           ["Coste medio medido", fmtMoney(data.avg_total_cost_usd_completed)],
           ["Última medida", items[0]?.hora_fin ? fmtMadrid(items[0].hora_fin) : "-"],
         ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
         document.getElementById("ia-audit-logs").innerHTML = items.map(renderIaAuditLog).join("") || "<div class='log-card'>Sin auditoría medida todavía.</div>";
-        document.getElementById("ia-audit-status").textContent = `Auditoría cargada: ${items.length} generaciones con telemetría real.`;
+        document.getElementById("ia-audit-status").textContent = `Auditoría cargada: ${telemetryCount} con telemetría real; ${completedMeasured} completadas usadas para medias. Horas convertidas a Madrid.`;
       } catch (error) {
         document.getElementById("ia-audit-status").textContent = `No se pudo cargar la auditoría: ${error.message}`;
         document.getElementById("ia-audit-cards").innerHTML = "";
