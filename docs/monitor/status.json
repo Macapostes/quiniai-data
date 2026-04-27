@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-04-27T12:57:23.808288+00:00",
-  "snapshot_generated_at": "2026-04-27T12:57:20.487498+00:00",
+  "generated_at": "2026-04-27T14:10:37.207464+00:00",
+  "snapshot_generated_at": "2026-04-27T14:10:33.829638+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -24,7 +24,7 @@
     "teams": 105,
     "matches": 114,
     "referees": 20,
-    "last_pruned_at": "2026-04-27T12:57:20.487230+00:00"
+    "last_pruned_at": "2026-04-27T14:10:33.829386+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,15 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-04-27T01:25:51.604267+00:00",
-      "finished_at": "2026-04-27T01:37:01.984736+00:00",
-      "ok": true,
-      "duration_seconds": 670.38,
-      "monitored_matches": 66,
-      "tracked_matches": 75,
-      "current_jornada": 60
-    },
     {
       "started_at": "2026-04-27T03:25:53.252252+00:00",
       "finished_at": "2026-04-27T03:42:22.235209+00:00",
@@ -136,6 +127,15 @@
       "finished_at": "2026-04-27T12:57:23.806860+00:00",
       "ok": true,
       "duration_seconds": 417.52,
+      "monitored_matches": 66,
+      "tracked_matches": 75,
+      "current_jornada": 60
+    },
+    {
+      "started_at": "2026-04-27T14:02:35.990994+00:00",
+      "finished_at": "2026-04-27T14:10:37.205378+00:00",
+      "ok": true,
+      "duration_seconds": 481.21,
       "monitored_matches": 66,
       "tracked_matches": 75,
       "current_jornada": 60
@@ -4238,10 +4238,10 @@
           },
           "pressure": {
             "home": {
-              "score": 35.52,
-              "label": "medium",
-              "future_difficulty": 68.65,
-              "hard_window_matches": 1,
+              "score": 14.54,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 5
             },
             "away": {
@@ -4437,9 +4437,9 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Valencia (14º) | casa vs Villarreal (3º) | fuera vs Deportivo Alavés (18º)",
-          "future_away": "casa vs Real Sociedad (8º) | fuera vs Atlético Madrid (4º) | casa vs Elche (15º)",
-          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | duelo directo por salvacion: equipos separados por 0 pts y 0 puestos. | RAYO defiende salvacion con 5 pts de colchon en tramo decisivo (must-win 35/100, no perder 54/100). Victoria abre colchon en salvacion. Calendario futuro con 1 rivales del top-6. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (18 vs 18 días).",
+          "future_home": "sin calendario detectado",
+          "future_away": "fuera vs Rayo Vallecano (11º) | casa vs Real Sociedad (8º) | fuera vs Atlético Madrid (4º) | casa vs Elche (15º)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | duelo directo por salvacion: equipos separados por 0 pts y 0 puestos. | RAYO defiende salvacion con 5 pts de colchon en tramo decisivo (must-win 35/100, no perder 54/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (18 vs 18 días).",
           "analysis_ready": true
         },
         {
@@ -11359,7 +11359,7 @@
             "wind_speed_kmh": 8.9
           },
           "referee": {
-            "name": "Pundit questions",
+            "name": "choice for Man City",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
@@ -11452,5 +11452,41 @@
         }
       ]
     }
-  ]
+  ],
+  "audit_news_quality": {
+    "news_language": "es",
+    "news_country": "ES",
+    "high_trust_domains": [
+      "as.com",
+      "bbc.co.uk",
+      "cadenaser.com",
+      "cope.es",
+      "eldesmarque.com",
+      "estadiodeportivo.com",
+      "fifa.com",
+      "marca.com",
+      "mundodeportivo.com",
+      "premierleague.com",
+      "relevo.com",
+      "skysports.com",
+      "sport.es",
+      "superdeporte.es",
+      "theguardian.com",
+      "uefa.com"
+    ],
+    "low_trust_domains": [
+      "facebook.com",
+      "instagram.com",
+      "pinterest.com",
+      "reddit.com",
+      "telegram.org",
+      "tiktok.com",
+      "twitter.com",
+      "whatsapp.com",
+      "x.com",
+      "youtu.be",
+      "youtube.com"
+    ],
+    "notes": "Se resuelven enlaces de Google News RSS cuando incluyen url/q, se filtra ruido y se prioriza prensa fiable."
+  }
 }
