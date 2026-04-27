@@ -52,6 +52,11 @@
         <h2>Estado actual</h2>
         <div class="chips" id="status-chips"></div>
       </div>
+      <div class="panel" id="audit-panel" style="display:none">
+        <h2>Auditoría avanzada</h2>
+        <div class="muted" id="audit-meta"></div>
+        <div class="chips" id="audit-chips" style="margin-top:12px"></div>
+      </div>
       <div class="panel">
         <h2>Ultimas ejecuciones</h2>
         <table>
@@ -172,6 +177,24 @@
             ${(jornada.matches || []).map(renderMatch).join("") || "<div class='match'>Sin partidos publicados.</div>"}
           </div>
         </details>`).join("") || "<div class='match'>Todavia no hay jornadas publicas preparadas.</div>";
+
+      const audit = status.audit_news_quality || status.auditoria_avanzada || status.audit || null;
+      const auditPanel = document.getElementById("audit-panel");
+      if (auditPanel && audit) {
+        auditPanel.style.display = "block";
+        const lang = audit.news_language || (coverage.news_language ?? "-");
+        const country = audit.news_country || (coverage.news_country ?? "-");
+        document.getElementById("audit-meta").textContent =
+          `Curación de noticias activa · hl=${lang} · gl=${country}`;
+        const hi = (audit.high_trust_domains || []).length;
+        const lo = (audit.low_trust_domains || []).length;
+        document.getElementById("audit-chips").innerHTML = [
+          chip(`High-trust domains ${hi}`, "ok"),
+          chip(`Blocked domains ${lo}`, "warn"),
+          chip(`Fuentes sanas ${coverage.sources_ok || 0}/${coverage.sources_total || 0}`),
+          chip(`Titulares frescos ${coverage.fresh_headlines || 0}`),
+        ].join("");
+      }
     }
     render();
     setInterval(render, 60000);
