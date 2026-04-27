@@ -159,6 +159,41 @@ DEFAULT_HEADERS = {
 
 MADRID_TZ = ZoneInfo("Europe/Madrid")
 
+HIGH_TRUST_NEWS_DOMAINS = {
+    # ES
+    "marca.com",
+    "as.com",
+    "relevo.com",
+    "eldesmarque.com",
+    "mundodeportivo.com",
+    "sport.es",
+    "estadiodeportivo.com",
+    "superdeporte.es",
+    "cope.es",
+    "cadenaser.com",
+    # EN/UK
+    "bbc.co.uk",
+    "theguardian.com",
+    "skysports.com",
+    "premierleague.com",
+    "uefa.com",
+    "fifa.com",
+}
+
+LOW_TRUST_NEWS_DOMAINS = {
+    "youtube.com",
+    "youtu.be",
+    "tiktok.com",
+    "instagram.com",
+    "reddit.com",
+    "twitter.com",
+    "x.com",
+    "facebook.com",
+    "pinterest.com",
+    "telegram.org",
+    "whatsapp.com",
+}
+
 LEAGUE_COUNTRY_HINTS = {
     "soccer_spain_la_liga": "ES",
     "soccer_spain_segunda_division": "ES",
@@ -1111,12 +1146,13 @@ def _sort_news_items(items: list[dict]) -> list[dict]:
 
 
 def _clean_news_items(items: list[dict], max_age_days: int, limit: int) -> list[dict]:
-    filtered = [item for item in items if _headline_recent_enough(item, max_age_days)]
+    filtered = [_enrich_news_item(item) for item in items if _headline_recent_enough(item, max_age_days)]
     ordered = _sort_news_items(_dedupe_news_items(filtered))
     cleaned = []
     for item in ordered[:limit]:
         entry = dict(item)
         entry.pop("_relevance", None)
+        entry.pop("_domain", None)
         cleaned.append(entry)
     return cleaned
 
@@ -1124,6 +1160,7 @@ def _clean_news_items(items: list[dict], max_age_days: int, limit: int) -> list[
 def _competition_relevance_score(item: dict, league_key: str, league_teams: list[str] | None = None) -> float:
     title = str(item.get("title", "")).strip()
     source = str(item.get("source", "")).strip().lower()
+    domain = _safe_url_host(str(item.get("link", "")).strip())
     stop_tokens = {"football", "soccer", "league", "spain"}
     league_terms = [
         token
@@ -1138,6 +1175,10 @@ def _competition_relevance_score(item: dict, league_key: str, league_teams: list
     source_bonus = 0.0
     if source in {"uefa.com", "bbc football", "guardian football"} or source.startswith("as "):
         source_bonus = 0.2
+    if domain and domain in HIGH_TRUST_NEWS_DOMAINS:
+        source_bonus = max(source_bonus, 0.25)
+    if domain and domain in LOW_TRUST_NEWS_DOMAINS:
+        return 0.0
     base_score = token_bonus + team_bonus
     if base_score <= 0:
         return 0.0
@@ -1390,9 +1431,12 @@ def _is_low_value_result_story(title: str) -> bool:
 def _passes_team_news_quality(item: dict, team_name: str, require_signal: bool = False) -> bool:
     title = str(item.get("title", "")).strip()
     source = str(item.get("source", "")).strip()
+    domain = _safe_url_host(str(item.get("link", "")).strip())
     if not title:
         return False
     if _is_low_signal_source(source):
+        return False
+    if domain and domain in LOW_TRUST_NEWS_DOMAINS:
         return False
     if _is_generic_preview_title(title) or _is_non_match_noise_title(title):
         return False
@@ -1414,9 +1458,12 @@ def _passes_team_news_quality(item: dict, team_name: str, require_signal: bool =
 def _passes_match_news_quality(item: dict, home_team: str, away_team: str) -> bool:
     title = str(item.get("title", "")).strip()
     source = str(item.get("source", "")).strip()
+    domain = _safe_url_host(str(item.get("link", "")).strip())
     if not title:
         return False
     if _is_low_signal_source(source):
+        return False
+    if domain and domain in LOW_TRUST_NEWS_DOMAINS:
         return False
     # Evita falsos positivos de equipos con nombre geográfico/ambiguo.
     if (_requires_football_context(home_team) or _requires_football_context(away_team)) and not _has_football_context(
@@ -3333,6 +3380,11 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
                 "last_runs": list((RUN_HISTORY or {}).get("runs", []))[-12:],
             }
         )
+        # Exponer auditorías/costes/calidad en el monitor público (GitHub Pages).
+        for key, value in snapshot.items():
+            normalized_key = _normalize_ascii(str(key)).lower()
+            if any(token in normalized_key for token in ["audit", "auditoria", "price", "precio", "quality", "calidad", "cost", "coste"]):
+                status_payload[key] = value
     else:
         status_text = (
             "QUINIAI WORKER STATUS\n"
@@ -3366,6 +3418,54 @@ def _strip_google_suffix(title: str) -> str:
     if cleaned.endswith(" - Google News"):
         cleaned = cleaned[: -len(" - Google News")].strip()
     return cleaned
+
+
+def _safe_url_host(value: str) -> str:
+    url = str(value or "").strip()
+    if not url:
+        return ""
+    try:
+        parsed = urllib.parse.urlparse(url)
+        host = (parsed.netloc or "").strip().lower()
+    except Exception:
+        return ""
+    if host.startswith("www."):
+        host = host[4:]
+    return host
+
+
+def _resolve_google_news_link(value: str) -> str:
+    """Google News RSS suele traer URLs intermedias; intentamos extraer el destino real.
+
+    - /rss/articles/... a veces incluye ?url=<destino>
+    - algunos enlaces usan /articles/.. con query ?url=
+    """
+    url = str(value or "").strip()
+    if not url:
+        return ""
+    try:
+        parsed = urllib.parse.urlparse(url)
+    except Exception:
+        return url
+    if "news.google.com" not in (parsed.netloc or ""):
+        return url
+    params = urllib.parse.parse_qs(parsed.query or "")
+    # RSS suele traer `url` o `q` apuntando al destino.
+    candidate = (params.get("url") or params.get("q") or [""])[0]
+    candidate = str(candidate or "").strip()
+    if candidate.startswith("http"):
+        return candidate
+    return url
+
+
+def _enrich_news_item(item: dict) -> dict:
+    enriched = dict(item or {})
+    link = str(enriched.get("link", "")).strip()
+    resolved = _resolve_google_news_link(link)
+    if resolved and resolved != link:
+        enriched["link"] = resolved
+    enriched["_domain"] = _safe_url_host(enriched.get("link", ""))
+    return enriched
 
 
 def _normalize_ascii(value: str) -> str:
@@ -9125,6 +9225,13 @@ def build_snapshot(raw_matches: list) -> dict:
         "quiniela_focus_matches": quiniela_focus_matches,
         "quiniela_tracked_matches": tracked_matches,
         "matches": matches,
+        "audit_news_quality": {
+            "news_language": NEWS_LANGUAGE,
+            "news_country": NEWS_COUNTRY,
+            "high_trust_domains": sorted(HIGH_TRUST_NEWS_DOMAINS),
+            "low_trust_domains": sorted(LOW_TRUST_NEWS_DOMAINS),
+            "notes": "Se resuelven enlaces de Google News RSS cuando incluyen url/q, se filtra ruido y se prioriza prensa fiable.",
+        },
     }
     _flush_caches()
     return snapshot
