@@ -196,6 +196,11 @@ LEAGUE_PRIORITY = {
     "soccer_uefa_europa_conference_league": 4,
     "soccer_epl": 5,
     "soccer_efl_champ": 6,
+    # Competiciones internacionales (a veces salen en quiniela)
+    "soccer_fifa_world_cup": 7,
+    "soccer_uefa_european_championship": 8,
+    "soccer_conmebol_copa_america": 9,
+    "soccer_international_friendlies": 10,
 }
 
 LEAGUE_RELEGATION_START = {
@@ -313,6 +318,26 @@ LEAGUE_EXTERNAL_FEEDS = {
         {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
         {"name": "Google News Championship", "url": ""},
     ],
+    "soccer_fifa_world_cup": [
+        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
+        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
+        {"name": "Google News World Cup", "url": ""},
+    ],
+    "soccer_uefa_european_championship": [
+        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
+        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
+        {"name": "Google News EURO", "url": ""},
+    ],
+    "soccer_conmebol_copa_america": [
+        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
+        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
+        {"name": "Google News Copa America", "url": ""},
+    ],
+    "soccer_international_friendlies": [
+        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
+        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
+        {"name": "Google News International friendlies", "url": ""},
+    ],
 }
 
 LEAGUE_NEWS_SEARCH_TERMS = {
@@ -323,6 +348,10 @@ LEAGUE_NEWS_SEARCH_TERMS = {
     "soccer_uefa_europa_conference_league": "UEFA Conference League football",
     "soccer_epl": "Premier League football",
     "soccer_efl_champ": "EFL Championship football",
+    "soccer_fifa_world_cup": "FIFA World Cup football",
+    "soccer_uefa_european_championship": "UEFA European Championship football",
+    "soccer_conmebol_copa_america": "Copa America football",
+    "soccer_international_friendlies": "International friendlies football",
 }
 
 COUNTRY_LABELS = {
@@ -560,6 +589,14 @@ NOISE_FORMAT_KEYWORDS = [
     "canal tv",
     "tv",
     "streaming",
+    "live stream",
+    "live streaming",
+    "watch live",
+    "directo",
+    "ver en vivo",
+    "a que hora",
+    "a qué hora",
+    "canal",
     "minuto a minuto",
     "live blog",
 ]
@@ -584,7 +621,6 @@ NON_PREDICTIVE_NOISE_KEYWORDS = [
     "terremotos",
     "travel",
     "turismo",
-    "cup",
 ]
 LOW_INFORMATION_SOURCE_TOKENS = [
     "onefootball",
@@ -1122,6 +1158,16 @@ def _is_low_signal_source(source_name: str) -> bool:
             "apwin",
             "sportytrader",
             "futbolfantasy",
+            "youtube",
+            "tiktok",
+            "instagram",
+            "reddit",
+            "twitter",
+            "x.com",
+            "pinterest",
+            "facebook",
+            "telegram",
+            "whatsapp",
         ]
     )
 
@@ -1371,6 +1417,11 @@ def _passes_match_news_quality(item: dict, home_team: str, away_team: str) -> bo
     if not title:
         return False
     if _is_low_signal_source(source):
+        return False
+    # Evita falsos positivos de equipos con nombre geográfico/ambiguo.
+    if (_requires_football_context(home_team) or _requires_football_context(away_team)) and not _has_football_context(
+        title, source
+    ):
         return False
     if _is_generic_preview_title(title) or _is_non_match_noise_title(title):
         return False
