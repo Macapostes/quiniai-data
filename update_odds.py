@@ -6,7 +6,11 @@ API_KEY = os.getenv('ODDS_API_KEY')
 # Lista refinada: Solo España (1 y 2) y las 3 grandes de Europa
 LEAGUES = [
     'soccer_spain_la_liga',
+    # Segunda: la clave ha variado en algunas cuentas/regiones/temporadas.
+    # Consultamos varias para no quedarnos sin partidos.
     'soccer_spain_segunda_division',
+    'soccer_spain_la_liga2',
+    'soccer_spain_la_liga_2',
     'soccer_uefa_champs_league',
     'soccer_uefa_europa_league',
     'soccer_uefa_europa_conference_league',
@@ -16,6 +20,7 @@ LEAGUES = [
 
 def get_odds():
     all_odds = []
+    seen_ids = set()
     print(f"Iniciando descarga de cuotas...")
     
     for league in LEAGUES:
@@ -26,7 +31,13 @@ def get_odds():
             if r.status_code == 200:
                 data = r.json()
                 print(f"✅ {league}: Encontrados {len(data)} partidos.")
-                all_odds.extend(data)
+                for item in data if isinstance(data, list) else []:
+                    match_id = str(item.get("id", "")).strip()
+                    if match_id and match_id in seen_ids:
+                        continue
+                    if match_id:
+                        seen_ids.add(match_id)
+                    all_odds.append(item)
             else:
                 print(f"❌ {league}: Error {r.status_code} - {r.text}")
         except Exception as e:

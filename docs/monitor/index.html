@@ -6,48 +6,33 @@
   <title>QuiniAI Monitor</title>
   <style>
     :root{--bg:#07101d;--panel:#122033;--panel2:#182b44;--text:#eef6ff;--muted:#96aac4;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#243754;--accent:#38bdf8}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Consolas,"Cascadia Code",monospace;background:radial-gradient(circle at top right,rgba(34,197,94,.12),transparent 28%),radial-gradient(circle at bottom left,rgba(56,189,248,.12),transparent 32%),var(--bg);color:var(--text)}
-    .wrap{max-width:1120px;margin:0 auto;padding:20px}
+    *{box-sizing:border-box} body{margin:0;font-family:Consolas,"Cascadia Code",monospace;background:radial-gradient(circle at top right,rgba(34,197,94,.12),transparent 28%),radial-gradient(circle at bottom left,rgba(56,189,248,.12),transparent 32%),var(--bg);color:var(--text)}
+    .wrap{max-width:980px;margin:0 auto;padding:20px}
     .hero,.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
-    .hero{padding:22px}
-    .panel{padding:18px}
-    .top,.panel-head,.controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    h1,h2,h3{margin:0}
-    h1{font-size:28px}
-    h2{font-size:18px}
-    h3{font-size:15px}
+    .hero{padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+    h1,h2{margin:0} h1{font-size:28px} h2{font-size:18px;margin-bottom:12px}
     .muted{color:var(--muted);line-height:1.5}
     .badge{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-weight:700}
     .dot{width:12px;height:12px;border-radius:50%;background:var(--ok);box-shadow:0 0 14px var(--ok)}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
     .card{padding:14px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.03)}
-    .k{font-size:12px;color:var(--muted);text-transform:uppercase}
-    .v{font-size:24px;font-weight:800;margin-top:8px}
-    .stack{display:grid;gap:16px;margin-top:18px}
-    .chips{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px}
+    .k{font-size:12px;color:var(--muted);text-transform:uppercase}.v{font-size:28px;font-weight:800;margin-top:8px}
+    .stack{display:grid;gap:16px;margin-top:18px}.panel{padding:18px}
+    table{width:100%;border-collapse:collapse;font-size:14px} th,td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;vertical-align:top}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px}
     .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
-    .nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-    .nav a{color:var(--text);text-decoration:none;padding:10px 14px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.04)}
-    table{width:100%;border-collapse:collapse;font-size:14px}
-    th,td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;vertical-align:top}
-    .input,.button,.select{border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);padding:12px 14px;font:inherit}
-    .input{min-width:260px;flex:1}
-    .select{min-width:220px}
-    .button{cursor:pointer;font-weight:700}
-    .button:hover{background:rgba(255,255,255,.08)}
+    .jornada{border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.03);margin-top:14px;overflow:hidden}
+    .jornada summary{cursor:pointer;list-style:none;padding:16px 18px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .jornada summary::-webkit-details-marker{display:none}
+    .jornada-body{padding:0 18px 18px}
     .match{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;background:rgba(0,0,0,.12);margin-top:12px}
     .match-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
     .match-title{font-size:16px;font-weight:700}
     .mini{font-size:12px;color:var(--muted);line-height:1.5}
-    .line{margin-top:8px;font-size:13px;line-height:1.55}
+    .line{margin-top:8px;font-size:13px;line-height:1.5}
     .line strong{color:var(--accent)}
     .brief{white-space:pre-wrap;font-size:12px;line-height:1.45;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
-    .audit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:14px 0}
-    .log-card{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;background:rgba(255,255,255,.03);margin-top:12px}
-    .section-anchor{scroll-margin-top:24px}
-    @media (max-width:640px){.v{font-size:20px}table{font-size:12px}.match-title{font-size:15px}}
+    @media (max-width:640px){.v{font-size:24px}table{font-size:12px}.match-title{font-size:15px}}
   </style>
 </head>
 <body>
@@ -56,319 +41,139 @@
       <div class="top">
         <div>
           <h1>QuiniAI Monitor</h1>
-          <div class="muted">Estado del worker, jornadas publicadas y auditoría de IA avanzada en horario de Madrid.</div>
+          <div class="muted">Panel ligero para comprobar desde movil si el worker sigue vivo, cuando subio el ultimo snapshot y si la integridad de las jornadas sigue correcta.</div>
         </div>
         <div class="badge"><span class="dot" id="dot"></span><span id="alive">Cargando...</span></div>
       </div>
       <div class="grid" id="cards"></div>
-      <div class="nav">
-        <a href="#publico">Jornadas</a>
-        <a href="#ejecuciones">Ejecuciones</a>
-        <a href="#ia-audit">Auditoría IA</a>
-      </div>
     </div>
-
     <div class="stack">
-      <div class="panel section-anchor" id="publico">
-        <div class="panel-head">
-          <div>
-            <h2>Jornadas públicas</h2>
-            <div class="muted">Ventana útil para revisar la jornada actual, la siguiente publicada y varias anteriores sin perder H2H, clima o contexto competitivo.</div>
-          </div>
-          <select class="select" id="jornada-filter"></select>
-        </div>
-        <div class="chips" id="status-chips" style="margin-top:14px"></div>
-        <div id="jornadas" style="margin-top:14px"></div>
+      <div class="panel">
+        <h2>Estado actual</h2>
+        <div class="chips" id="status-chips"></div>
       </div>
-
-      <div class="panel section-anchor" id="ejecuciones">
-        <h2>Últimas ejecuciones del worker</h2>
+      <div class="panel">
+        <h2>Ultimas ejecuciones</h2>
         <table>
-          <thead><tr><th>Estado</th><th>Hora Madrid</th><th>Duración</th><th>Jornada</th><th>Partidos</th></tr></thead>
+          <thead><tr><th>Estado</th><th>Hora Madrid</th><th>Duracion</th><th>Jornada</th><th>Partidos</th></tr></thead>
           <tbody id="runs"></tbody>
         </table>
       </div>
-
-      <div class="panel section-anchor" id="ia-audit">
-        <div class="panel-head">
-          <div>
-            <h2>Auditoría IA avanzada</h2>
-            <div class="muted">Solo se usan generaciones con telemetría real para medias de coste, calidad y tokens. La clave admin se guarda solo en este navegador.</div>
-          </div>
-        </div>
-        <div class="controls" style="margin-top:14px">
-          <input class="input" id="admin-key" type="password" placeholder="Pega aquí la x-admin-key">
-          <button class="button" id="save-admin-key" type="button">Guardar clave</button>
-          <button class="button" id="load-ia-audit" type="button">Cargar auditoría</button>
-        </div>
-        <div class="muted" id="ia-audit-status" style="margin-top:10px">Sin cargar todavía.</div>
-        <div class="audit-grid" id="ia-audit-cards"></div>
-        <div id="ia-audit-logs"></div>
+      <div class="panel">
+        <h2>Analisis publico: jornada actual y siguiente</h2>
+        <div class="muted">Aqui puedes abrir la jornada actual y la siguiente publicada para ver si el monitor realmente esta recogiendo contexto util, no solo horas.</div>
+        <div id="jornadas"></div>
       </div>
     </div>
   </div>
-
   <script>
-    const backendBase = "https://quiniela-backend-production-cb1a.up.railway.app";
-    const adminKeyInput = document.getElementById("admin-key");
-    const saveAdminKeyButton = document.getElementById("save-admin-key");
-    const loadIaAuditButton = document.getElementById("load-ia-audit");
-    const jornadaFilter = document.getElementById("jornada-filter");
-    const storedAdminKey = localStorage.getItem("quiniai_admin_key") || "";
-    if (storedAdminKey) adminKeyInput.value = storedAdminKey;
-
-    const parseUtcish = (iso) => {
-      if (!iso) return null;
-      const value = String(iso).trim();
-      if (!value) return null;
-      const normalized = /([zZ]|[+\-]\d{2}:\d{2})$/.test(value) ? value : `${value}Z`;
-      const date = new Date(normalized);
-      return Number.isNaN(date.getTime()) ? null : date;
-    };
     const fmtMadrid = (iso) => {
-      const date = parseUtcish(iso);
-      if (!date) return "-";
+      if (!iso) return "-";
       try {
-        return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"medium"}).format(date);
+        return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"medium"}).format(new Date(iso));
       } catch { return iso; }
     };
     const ageMinutes = (iso) => {
-      const date = parseUtcish(iso);
-      if (!date) return "-";
-      const ms = Date.now() - date.getTime();
+      if (!iso) return "-";
+      const ms = Date.now() - new Date(iso).getTime();
       return (ms / 60000).toFixed(1);
     };
-    const fmtPct = (value) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : `${Number(value).toFixed(2)}%`;
+    const fmtPct = (value) => value === null || value === undefined || value === "" ? "-" : `${Number(value).toFixed(2)}%`;
     const fmtNum = (value, digits=1) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : Number(value).toFixed(digits);
-    const fmtMoney = (value, digits=4) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : `$${Number(value).toFixed(digits)}`;
     const chip = (text, cls="") => `<span class="chip ${cls}">${text}</span>`;
     const escapeHtml = (value) => String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
-
-    let latestStatus = null;
-
-    const h2hLine = (h2h) => {
-      if (!h2h || !h2h.meetings) return "sin H2H fiable";
-      return `${h2h.meetings} cruces · local ${h2h.home_team_wins ?? 0} · X ${h2h.draws ?? 0} · visitante ${h2h.away_team_wins ?? 0}`;
-    };
-
-    const objectiveLine = (objective, mw, mnl) => {
-      const summary = objective?.summary || "sin objetivo detallado";
-      return `${summary} [MW ${mw ?? 0}, NP ${mnl ?? 0}]`;
-    };
-
     const renderMatch = (match) => {
       const homeTable = match.home_table || {};
       const awayTable = match.away_table || {};
-      const pressure = match.pressure || {};
-      const fatigue = match.fatigue || {};
-      const competitive = match.competitive_context || {};
-      const direct = competitive.direct_rivalry || {};
-      const seasonPhase = typeof competitive.season_context_phase === "object"
-        ? (competitive.season_context_phase.label || competitive.season_context_phase.key || "-")
-        : (competitive.season_context_phase || "-");
+      const homePressure = (match.pressure || {}).home || {};
+      const awayPressure = (match.pressure || {}).away || {};
+      const homeFatigue = (match.fatigue || {}).home || {};
+      const awayFatigue = (match.fatigue || {}).away || {};
+      const odds = match.odds || {};
+      const market = match.normalized_percent || {};
       const official = match.official_percent || {};
-      const hasOfficial = Object.values(official).some(v => v !== null && v !== undefined && v !== "");
+      const weather = match.weather || {};
+      const referee = match.referee || {};
+      const competitive = match.competitive_context || {};
+      const homeObjective = competitive.home_objective || {};
+      const awayObjective = competitive.away_objective || {};
+      const homeRotation = competitive.home_rotation_context || {};
+      const awayRotation = competitive.away_rotation_context || {};
+      const rotationLine = [homeRotation.reason ? `local ${homeRotation.reason} (${homeRotation.risk})` : "", awayRotation.reason ? `visitante ${awayRotation.reason} (${awayRotation.risk})` : ""].filter(Boolean).join(" | ");
       return `
         <div class="match">
           <div class="match-head">
             <div>
-              <div class="match-title">${escapeHtml(match.slot || "-")} · ${escapeHtml(match.local)} vs ${escapeHtml(match.visitante)}</div>
+              <div class="match-title">${escapeHtml(match.slot)} ${escapeHtml(match.local)} vs ${escapeHtml(match.visitante)}</div>
               <div class="mini">${escapeHtml(match.league || "-")} · ${fmtMadrid(match.kickoff)} · ${escapeHtml(match.bookmaker || "sin bookmaker")}</div>
             </div>
             <div class="chips">
-              ${chip(`1 ${fmtNum((match.odds || {})["1"],2)}`)}
-              ${chip(`X ${fmtNum((match.odds || {})["X"],2)}`)}
-              ${chip(`2 ${fmtNum((match.odds || {})["2"],2)}`)}
+              ${chip(`1 ${fmtNum(odds["1"],2)}`)}
+              ${chip(`X ${fmtNum(odds["X"],2)}`)}
+              ${chip(`2 ${fmtNum(odds["2"],2)}`)}
             </div>
           </div>
-          <div class="line"><strong>Mercado 1X2:</strong> 1=${fmtPct((match.normalized_percent || {})["1"])} · X=${fmtPct((match.normalized_percent || {})["X"])} · 2=${fmtPct((match.normalized_percent || {})["2"])}</div>
-          <div class="line"><strong>Porcentaje oficial quiniela:</strong> ${hasOfficial ? `1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}` : "no disponible en este snapshot"}</div>
+          <div class="line"><strong>Mercado base:</strong> 1=${fmtPct(market["1"])} · X=${fmtPct(market["X"])} · 2=${fmtPct(market["2"])} | <strong>Quinielista:</strong> 1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}</div>
           <div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>
-          <div class="line"><strong>Objetivo local:</strong> ${escapeHtml(objectiveLine(competitive.home_objective, competitive.home_must_win_index, competitive.home_must_not_lose_index))}</div>
-          <div class="line"><strong>Objetivo visitante:</strong> ${escapeHtml(objectiveLine(competitive.away_objective, competitive.away_must_win_index, competitive.away_must_not_lose_index))}</div>
-          <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} · fase ${escapeHtml(seasonPhase)} · rivalidad ${direct.direct_rivalry_index ?? direct.score ?? 0}/100</div>
-          <div class="line"><strong>H2H:</strong> ${escapeHtml(h2hLine(match.h2h || {}))}</div>
-          <div class="line"><strong>Presión / fatiga:</strong> local ${fmtNum((pressure.home || {}).score,2)} (${escapeHtml((pressure.home || {}).label || "-")}) y visitante ${fmtNum((pressure.away || {}).score,2)} (${escapeHtml((pressure.away || {}).label || "-")}) | fatiga ${fmtNum((fatigue.home || {}).score,2)} / ${fmtNum((fatigue.away || {}).score,2)}</div>
-          <div class="line"><strong>Clima y viaje:</strong> ${fmtNum((match.weather || {}).temperature_c,1)} C · lluvia ${(match.weather || {}).precipitation_probability ?? "-"}% · viento ${fmtNum((match.weather || {}).wind_speed_kmh,1)} km/h · viaje visitante ${fmtNum(match.travel_km,1)} km</div>
-          <div class="line"><strong>Árbitro:</strong> ${escapeHtml((match.referee || {}).name || "no confirmado")} ${((match.referee || {}).bias_summary || "").trim() ? `· ${escapeHtml((match.referee || {}).bias_summary)}` : ""}</div>
-          <div class="line"><strong>Próximos 5 local:</strong> ${escapeHtml(match.future_home || "sin calendario")}</div>
-          <div class="line"><strong>Próximos 5 visitante:</strong> ${escapeHtml(match.future_away || "sin calendario")}</div>
-          ${match.briefing_excerpt ? `<div class="brief">${escapeHtml(match.briefing_excerpt)}</div>` : ""}
+          <div class="line"><strong>Objetivo:</strong> ${escapeHtml(homeObjective.summary || "-")} [MW ${competitive.home_must_win_index ?? 0}, NP ${competitive.home_must_not_lose_index ?? 0}] | ${escapeHtml(awayObjective.summary || "-")} [MW ${competitive.away_must_win_index ?? 0}, NP ${competitive.away_must_not_lose_index ?? 0}]</div>
+          <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} | rivalidad ${competitive.direct_rivalry_index ?? 0}/100</div>
+          ${rotationLine ? `<div class="line"><strong>Rotacion probable:</strong> ${escapeHtml(rotationLine)}</div>` : ""}
+          <div class="line"><strong>Presion/Fatiga:</strong> local ${fmtNum(homePressure.score,2)} (${escapeHtml(homePressure.label || "-")}) y visitante ${fmtNum(awayPressure.score,2)} (${escapeHtml(awayPressure.label || "-")}) | fatiga ${fmtNum(homeFatigue.score,2)} / ${fmtNum(awayFatigue.score,2)}</div>
+          <div class="line"><strong>Arbitro:</strong> ${escapeHtml(referee.name || "no confirmado")} | <strong>Viaje visitante:</strong> ${fmtNum(match.travel_km,1)} km | <strong>Clima:</strong> ${fmtNum(weather.temperature_c,1)} C, lluvia ${weather.precipitation_probability ?? "-"}%, viento ${fmtNum(weather.wind_speed_kmh,1)} km/h</div>
+          <div class="line"><strong>Proximos 5 ${escapeHtml(match.local)}:</strong> ${escapeHtml(match.future_home || "sin calendario detectado")}</div>
+          <div class="line"><strong>Proximos 5 ${escapeHtml(match.visitante)}:</strong> ${escapeHtml(match.future_away || "sin calendario detectado")}</div>
+          <div class="line"><strong>Sesgo arbitral:</strong> ${escapeHtml(referee.bias_summary || "sin historico arbitral fiable")}</div>
+          ${match.briefing_excerpt ? `<div class="brief">${escapeHtml(match.briefing_excerpt)}</div>` : `<div class="brief">Esta jornada ya esta publicada pero este partido todavia no tiene briefing enriquecido en el monitor publico.</div>`}
         </div>`;
     };
-
-    const renderJornadas = (status) => {
-      const jornadas = status.public_jornadas || [];
-      const selected = jornadaFilter.value || "all";
-      const filtered = selected === "all"
-        ? jornadas
-        : jornadas.filter(j => String(j.jornada ?? "") === selected);
-
-      document.getElementById("jornadas").innerHTML = filtered.map((jornada) => `
-        <div class="card" style="margin-top:14px">
-          <div class="panel-head">
-            <div>
-              <h3>${escapeHtml(jornada.label || `Jornada ${jornada.jornada ?? "-"}`)} ${jornada.is_current ? "· actual" : ""}</h3>
-              <div class="mini">Desde ${fmtMadrid(jornada.kickoff_from)} · hasta ${fmtMadrid(jornada.kickoff_to)} ${jornada.history_only ? "· histórico/cache" : ""}</div>
-            </div>
-            <div class="chips">
-              ${chip(`J${jornada.jornada ?? "-"}`)}
-              ${chip(`${(jornada.matches || []).length} partidos`)}
-            </div>
-          </div>
-          ${(jornada.matches || []).map(renderMatch).join("") || "<div class='match'>Sin partidos publicados.</div>"}
-        </div>
-      `).join("") || "<div class='card'>Todavía no hay jornadas públicas preparadas.</div>";
-    };
-
-    const renderIaAuditLog = (item) => {
-      const telemetry = item.telemetry || {};
-      const quality = item.quality_breakdown || {};
-      const penalties = Object.entries(quality.penalties || {}).map(([k,v]) => `${k} ${v}`).join(" · ");
-      const bonuses = Object.entries(quality.bonuses || {}).map(([k,v]) => `${k} ${v}`).join(" · ");
-      const startedAt = parseUtcish(item.hora_inicio);
-      const finishedAt = parseUtcish(item.hora_fin);
-      const durationSec = startedAt && finishedAt ? Math.max(0, Math.round((finishedAt.getTime() - startedAt.getTime()) / 1000)) : null;
-      const externalMissing = (item.external_matches_count ?? 0) === 0;
-      const requestedBudget = Number(item.presupuesto ?? telemetry.requested_budget ?? 0);
-      const finalCost = Number(item.final_cost ?? telemetry.final_cost ?? 0);
-      const utilization = requestedBudget > 0 ? (finalCost / requestedBudget) : null;
-      const budgetGap = requestedBudget > 0 ? Math.max(0, requestedBudget - finalCost) : null;
-      return `
-        <div class="log-card">
-          <div class="match-head">
-            <div>
-              <div class="match-title">J${item.jornada ?? "-"} · ${escapeHtml(item.requested_type || "-")} → ${escapeHtml(item.final_type || "-")}</div>
-              <div class="mini">${escapeHtml(item.model_used || "-")} · inicio ${fmtMadrid(item.hora_inicio)} · fin ${fmtMadrid(item.hora_fin)} · uid ${escapeHtml(item.user_id || "-")}</div>
-            </div>
-            <div class="chips">
-              ${chip(`Score ${fmtNum(item.quality_score,2)}`, (item.quality_score ?? 0) >= 85 ? "ok" : ((item.quality_score ?? 0) >= 55 ? "warn" : "bad"))}
-              ${chip(`Coste ${fmtMoney(item.total_cost_usd)}`)}
-              ${chip(`Tokens ${item.total_tokens ?? 0}`)}
-              ${durationSec !== null ? chip(`Duración ${durationSec}s`) : ""}
-              ${externalMissing ? chip("Sin contexto externo", "bad") : ""}
-            </div>
-          </div>
-          <div class="line"><strong>Proveedor:</strong> calls ${item.provider_calls ?? 0} · intents ${item.attempts_used ?? 0} · patch ${item.narrative_patch_calls ?? 0} · reached ${item.request_reached_provider ? "sí" : "no"}</div>
-          <div class="line"><strong>Modelo y tokens:</strong> input ${item.input_tokens ?? 0} · output ${item.output_tokens ?? 0} · total ${item.total_tokens ?? 0}</div>
-          <div class="line"><strong>Coste desglosado:</strong> principal ${fmtMoney(item.estimated_cost_usd)} · patch ${fmtMoney(item.patch_cost_usd)} · total ${fmtMoney(item.total_cost_usd)}</div>
-          <div class="line"><strong>Tipos:</strong> pedido ${escapeHtml(item.requested_type || "-")} · IA ${escapeHtml(item.initial_ai_type || "-")} · final ${escapeHtml(item.final_type || "-")}</div>
-          <div class="line"><strong>Presupuesto:</strong> pedido ${fmtNum(requestedBudget,2)}€ · final ${fmtNum(finalCost,2)}€ · aprovechamiento ${utilization !== null ? Math.round(utilization * 100) : "-"}% · hueco ${budgetGap !== null ? fmtNum(budgetGap,2) : "-"}€</div>
-          <div class="line"><strong>Python corrigió:</strong> signos ${item.sign_changes_count ?? 0} · tipo ${item.type_changed ? "sí" : "no"} · estructura ${item.structure_changed ? "sí" : "no"} · partidos ${escapeHtml((telemetry.changed_match_ids || []).join(", ") || "-")}</div>
-          <div class="line"><strong>Boleto final:</strong> ${item.final_total_bets ?? "-"} apuestas · ${fmtNum(item.final_cost,2)}€ · tipo final ${escapeHtml(item.final_type || "-")}</div>
-          <div class="line"><strong>Contexto externo:</strong> partidos disponibles ${item.external_matches_count ?? 0} · realmente usados ${item.external_usage_count ?? 0}</div>
-          ${penalties ? `<div class="line"><strong>Penalizaciones:</strong> ${escapeHtml(penalties)}</div>` : ""}
-          ${bonuses ? `<div class="line"><strong>Bonos:</strong> ${escapeHtml(bonuses)}</div>` : ""}
-          ${item.error_msg ? `<div class="line"><strong>Error:</strong> ${escapeHtml(item.error_msg)}</div>` : ""}
-        </div>`;
-    };
-
-    async function loadIaAudit() {
-      const adminKey = adminKeyInput.value.trim();
-      if (!adminKey) {
-        document.getElementById("ia-audit-status").textContent = "Pega primero la x-admin-key.";
-        return;
-      }
-      localStorage.setItem("quiniai_admin_key", adminKey);
-      document.getElementById("ia-audit-status").textContent = "Cargando auditoría medida...";
-      try {
-        const response = await fetch(`${backendBase}/admin/ia-generation/recent?limit=30&measured_only=1`, {
-          headers: {"x-admin-key": adminKey},
-          cache: "no-store",
-        });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-        const items = data.items || [];
-        const telemetryCount = data.telemetry_count ?? items.length;
-        const completedMeasured = data.measured_completed_count ?? 0;
-        const costMeasured = data.cost_measured_completed_count ?? completedMeasured;
-        const qualityMeasured = data.quality_measured_completed_count ?? costMeasured;
-        const completedCount = data.completed_count ?? items.filter(item => item.status === "completed").length;
-        document.getElementById("ia-audit-cards").innerHTML = [
-          ["Con telemetría", telemetryCount],
-          ["Completadas medidas", completedMeasured],
-          ["Con coste real", costMeasured],
-          ["Quality con coste", qualityMeasured],
-          ["Completadas totales", completedCount],
-          ["Quality media real", fmtNum(data.avg_quality_score_completed,2)],
-          ["Coste medio medido", fmtMoney(data.avg_total_cost_usd_completed)],
-          ["Última medida", items[0]?.hora_fin ? fmtMadrid(items[0].hora_fin) : "-"],
-        ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
-        document.getElementById("ia-audit-logs").innerHTML = items.map(renderIaAuditLog).join("") || "<div class='log-card'>Sin auditoría medida todavía.</div>";
-        document.getElementById("ia-audit-status").textContent = `Auditoría cargada: ${telemetryCount} con telemetría; ${costMeasured} con coste real; ${qualityMeasured} usadas para la quality media. Horas convertidas a Madrid.`;
-      } catch (error) {
-        document.getElementById("ia-audit-status").textContent = `No se pudo cargar la auditoría: ${error.message}`;
-        document.getElementById("ia-audit-cards").innerHTML = "";
-        document.getElementById("ia-audit-logs").innerHTML = "";
-      }
-    }
-
-    saveAdminKeyButton.addEventListener("click", () => {
-      localStorage.setItem("quiniai_admin_key", adminKeyInput.value.trim());
-      document.getElementById("ia-audit-status").textContent = adminKeyInput.value.trim()
-        ? "Clave guardada en este navegador."
-        : "Clave eliminada de este navegador.";
-    });
-    loadIaAuditButton.addEventListener("click", loadIaAudit);
-
-    jornadaFilter.addEventListener("change", () => {
-      if (latestStatus) renderJornadas(latestStatus);
-    });
-
     async function render() {
       const response = await fetch(`status.json?t=${Date.now()}`, {cache:"no-store"});
       const status = await response.json();
-      latestStatus = status;
       const coverage = status.coverage || {};
       const integrity = status.quiniela_integrity || {};
-
       document.getElementById("alive").textContent = status.ok ? "Worker sano" : "Worker con error";
       document.getElementById("dot").style.background = status.ok ? "var(--ok)" : "var(--bad)";
       document.getElementById("dot").style.boxShadow = status.ok ? "0 0 14px var(--ok)" : "0 0 14px var(--bad)";
-
       document.getElementById("cards").innerHTML = [
-        ["Último snapshot", fmtMadrid(status.snapshot_generated_at)],
-        ["Antigüedad", `${ageMinutes(status.snapshot_generated_at)} min`],
+        ["Ultimo snapshot", fmtMadrid(status.snapshot_generated_at)],
+        ["Antiguedad", `${ageMinutes(status.snapshot_generated_at)} min`],
         ["Jornada actual", coverage.quiniela_current_jornada ?? "-"],
-        ["Última oficial", coverage.quiniela_latest_available_jornada ?? "-"],
-        ["Jornadas visibles", (status.public_jornadas || []).length],
+        ["Ultima oficial", coverage.quiniela_latest_available_jornada ?? "-"],
+        ["Partidos rastreados", coverage.tracked_quiniela_matches ?? "-"],
         ["Integridad", integrity.ok ? "OK" : "ERROR"],
       ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
-
       document.getElementById("status-chips").innerHTML = [
+        chip(`Poll ${status.poll_seconds || "-"}s`, "ok"),
         chip(`Fuentes ${coverage.sources_ok || 0}/${coverage.sources_total || 0}`, "ok"),
         chip(`Weather ${coverage.weather_matches || 0}`),
         chip(`Travel ${coverage.travel_matches || 0}`),
         chip(`History ${coverage.history_matches || 0}`),
         chip(`Referees ${coverage.structured_referees || 0}`),
-        chip(`Slots auditados ${integrity.checked_slots || 0}`),
+        chip(`Slots ${integrity.checked_slots || 0}`),
         chip(`Fallos ${integrity.mismatch_count || 0}`, integrity.ok ? "ok" : "bad"),
       ].join("");
-
-      const jornadas = status.public_jornadas || [];
-      const currentFilter = jornadaFilter.value;
-      jornadaFilter.innerHTML = [
-        `<option value="all">Todas las jornadas visibles</option>`,
-        ...jornadas.map(j => `<option value="${j.jornada}">${escapeHtml(j.label || `Jornada ${j.jornada}`)}</option>`)
-      ].join("");
-      if ([...jornadaFilter.options].some(opt => opt.value === currentFilter)) {
-        jornadaFilter.value = currentFilter;
-      }
-      renderJornadas(status);
-
-      const runs = (status.last_runs || []).slice(-10).reverse();
+      const runs = (status.last_runs || []).slice(-8).reverse();
       document.getElementById("runs").innerHTML = runs.map((run) => `
         <tr>
           <td class="${run.ok ? "ok" : "bad"}">${run.ok ? "OK" : "ERROR"}</td>
           <td>${fmtMadrid(run.finished_at)}</td>
-          <td>${run.duration_seconds ?? "-"}s</td>
+          <td>${run.duration_seconds ?? "-" }s</td>
           <td>${run.current_jornada ?? "-"}</td>
           <td>${run.tracked_matches ?? "-"}</td>
         </tr>`).join("") || "<tr><td colspan='5'>Sin historial.</td></tr>";
+      const jornadas = status.public_jornadas || [];
+      document.getElementById("jornadas").innerHTML = jornadas.map((jornada, index) => `
+        <details class="jornada" ${index === 0 ? "open" : ""}>
+          <summary>
+            <span>${escapeHtml(jornada.label || "Jornada")} ${jornada.is_current ? "· actual" : "· siguiente/publicada"}</span>
+            <span class="mini">${fmtMadrid(jornada.kickoff_from)} ${jornada.history_only ? "· historico/cache" : ""}</span>
+          </summary>
+          <div class="jornada-body">
+            ${(jornada.matches || []).map(renderMatch).join("") || "<div class='match'>Sin partidos publicados.</div>"}
+          </div>
+        </details>`).join("") || "<div class='match'>Todavia no hay jornadas publicas preparadas.</div>";
     }
-
     render();
-    if (storedAdminKey) loadIaAudit();
     setInterval(render, 60000);
   </script>
 </body>
