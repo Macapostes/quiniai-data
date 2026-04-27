@@ -7124,12 +7124,10 @@ def _persist_quiniela_history(quiniela_jornadas: list[dict]) -> None:
             quiniela_jornadas[0].get("jornada"),
         )
         MONITOR_JORNADAS_HISTORY["current_jornada"] = QUINIELA_HISTORY["current_jornada"]
-    keep_jornadas = set()
     for jornada in quiniela_jornadas:
         jornada_num = _safe_int(jornada.get("jornada"))
         if not jornada_num:
             continue
-        keep_jornadas.add(jornada_num)
         jornada_payload = {
             "jornada": jornada_num,
             "label": jornada.get("label") or f"Jornada {jornada_num}",
@@ -7137,19 +7135,22 @@ def _persist_quiniela_history(quiniela_jornadas: list[dict]) -> None:
             "source_url": jornada.get("source_url", ""),
             "kickoff_from": jornada.get("kickoff_from", ""),
             "kickoff_to": jornada.get("kickoff_to", ""),
+            "is_current": bool(jornada.get("is_current")),
+            "history_only": bool(jornada.get("history_only")),
             "updated_at": _now_iso(),
             "matches": [_json_clone(match) for match in jornada.get("matches", [])],
             "unmatched_slots": _json_clone(jornada.get("unmatched_slots", [])),
         }
         jornadas_store[str(jornada_num)] = jornada_payload
         monitor_store[str(jornada_num)] = dict(jornada_payload)
-    for jornada_key in list(jornadas_store.keys()):
-        if _safe_int(jornada_key, 0) not in keep_jornadas:
-            jornadas_store.pop(jornada_key, None)
     current_anchor = _safe_int(QUINIELA_HISTORY.get("current_jornada"))
     if current_anchor:
         lower_bound = max(1, current_anchor - max(6, QUINIELA_HISTORY_JORNADAS))
         upper_bound = current_anchor + 2
+        for jornada_key in list(jornadas_store.keys()):
+            jornada_num = _safe_int(jornada_key, 0)
+            if jornada_num < lower_bound or jornada_num > upper_bound:
+                jornadas_store.pop(jornada_key, None)
         for jornada_key in list(monitor_store.keys()):
             jornada_num = _safe_int(jornada_key, 0)
             if jornada_num < lower_bound or jornada_num > upper_bound:

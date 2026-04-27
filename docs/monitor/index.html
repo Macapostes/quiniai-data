@@ -277,18 +277,20 @@
         const telemetryCount = data.telemetry_count ?? items.length;
         const completedMeasured = data.measured_completed_count ?? 0;
         const costMeasured = data.cost_measured_completed_count ?? completedMeasured;
+        const qualityMeasured = data.quality_measured_completed_count ?? costMeasured;
         const completedCount = data.completed_count ?? items.filter(item => item.status === "completed").length;
         document.getElementById("ia-audit-cards").innerHTML = [
           ["Con telemetría", telemetryCount],
           ["Completadas medidas", completedMeasured],
           ["Con coste real", costMeasured],
+          ["Quality con coste", qualityMeasured],
           ["Completadas totales", completedCount],
-          ["Quality media", fmtNum(data.avg_quality_score_completed,2)],
+          ["Quality media real", fmtNum(data.avg_quality_score_completed,2)],
           ["Coste medio medido", fmtMoney(data.avg_total_cost_usd_completed)],
           ["Última medida", items[0]?.hora_fin ? fmtMadrid(items[0].hora_fin) : "-"],
         ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
         document.getElementById("ia-audit-logs").innerHTML = items.map(renderIaAuditLog).join("") || "<div class='log-card'>Sin auditoría medida todavía.</div>";
-        document.getElementById("ia-audit-status").textContent = `Auditoría cargada: ${telemetryCount} ejecuciones con telemetría; ${costMeasured} con coste real usado en la media. Horas convertidas a Madrid.`;
+        document.getElementById("ia-audit-status").textContent = `Auditoría cargada: ${telemetryCount} con telemetría; ${costMeasured} con coste real; ${qualityMeasured} usadas para la quality media. Horas convertidas a Madrid.`;
       } catch (error) {
         document.getElementById("ia-audit-status").textContent = `No se pudo cargar la auditoría: ${error.message}`;
         document.getElementById("ia-audit-cards").innerHTML = "";
