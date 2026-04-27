@@ -5590,12 +5590,80 @@ def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict, o
     }
 
 
-def _fatigue_index(days_since_last_match: int | None, recent_match_count: int, distance_km: float | None) -> dict:
+def _next_rotation_fixture_context(upcoming: list[dict], team_name: str, signals: dict | None = None) -> dict:
+    signals = signals or {}
+    europe_count = int(signals.get("europe_count", 0) or 0)
+    for fixture in upcoming or []:
+        competition = str(
+            fixture.get("competition")
+            or fixture.get("league")
+            or fixture.get("competition_name")
+            or fixture.get("label")
+            or ""
+        ).strip()
+        comp_l = competition.lower()
+        if not any(keyword in comp_l for keyword in ("champions", "europa", "conference", "uefa")):
+            continue
+        opponent = str(fixture.get("rival") or fixture.get("opponent") or "?").strip() or "?"
+        days_until = fixture.get("days_until")
+        try:
+            days_until_num = float(days_until)
+        except Exception:
+            days_until_num = None
+        if days_until_num is not None and days_until_num <= 3.5:
+            risk = "high"
+        elif days_until_num is not None and days_until_num <= 5.0:
+            risk = "medium"
+        else:
+            risk = "medium" if europe_count >= 1 else "low"
+        reason = f"{team_name} tiene {competition or 'competición europea'} vs {opponent} en {days_until_num:.1f} dias" if days_until_num is not None else f"{team_name} tiene {competition or 'competición europea'} pronto"
+        return {
+            "risk": risk,
+            "reason": reason,
+            "competition": competition,
+            "opponent": opponent,
+            "days_until": days_until_num,
+        }
+    if europe_count >= 1:
+        return {
+            "risk": "medium",
+            "reason": f"{team_name} llega con atención europea reciente o próxima",
+            "competition": "",
+            "opponent": "",
+            "days_until": None,
+        }
+    return {}
+
+
+def _fatigue_index(
+    days_since_last_match: int | None,
+    recent_match_count: int,
+    distance_km: float | None,
+    *,
+    next_rotation_context: dict | None = None,
+) -> dict:
     rest_component = 45.0 if days_since_last_match is None else max(0.0, 50.0 - (days_since_last_match * 8.0))
     density_component = min(35.0, float(recent_match_count) * 9.0)
     travel_component = min(25.0, (float(distance_km or 0.0) / 1000.0) * 25.0)
-    score = round(min(100.0, rest_component + density_component + travel_component), 2)
-    label = "high" if score >= 70 else ("medium" if score >= 40 else "low")
+    rotation_component = 0.0
+    rotation = next_rotation_context or {}
+    if rotation:
+        risk = str(rotation.get("risk", "")).strip().lower()
+        days_until = rotation.get("days_until")
+        try:
+            days_until_num = float(days_until)
+        except Exception:
+            days_until_num = None
+        if risk == "high":
+            rotation_component += 18.0
+        elif risk == "medium":
+            rotation_component += 9.0
+        if days_until_num is not None and days_until_num <= 3.0:
+            rotation_component += 10.0
+        elif days_until_num is not None and days_until_num <= 4.0:
+            rotation_component += 6.0
+    score = round(min(100.0, rest_component + density_component + travel_component + rotation_component), 2)
+    label = "high" if score >= 62 else ("medium" if score >= 34 else "low")
     return {"score": score, "label": label}
 
 
@@ -6520,6 +6588,16 @@ def _enrich_quiniela_match(match: dict) -> None:
     competition_context["away_upcoming"] = away_upcoming
     competition_context["home_future_difficulty"] = _future_schedule_difficulty(home_upcoming)
     competition_context["away_future_difficulty"] = _future_schedule_difficulty(away_upcoming)
+    competition_context["home_rotation_context"] = _next_rotation_fixture_context(
+        home_upcoming,
+        match.get("local", ""),
+        (match.get("home_team_context") or {}).get("focus_news", {}).get("signals", {}),
+    )
+    competition_context["away_rotation_context"] = _next_rotation_fixture_context(
+        away_upcoming,
+        match.get("visitante", ""),
+        (match.get("away_team_context") or {}).get("focus_news", {}).get("signals", {}),
+    )
     competition_context["home_objective"] = _season_objective_context(
         match.get("league", ""),
         current_table_snapshot,
@@ -6594,11 +6672,13 @@ def _enrich_quiniela_match(match: dict) -> None:
         (match.get("schedule_context") or {}).get("home", {}).get("days_since_last_match"),
         (match.get("schedule_context") or {}).get("home", {}).get("matches_last_14_days"),
         0.0,
+        next_rotation_context=competition_context.get("home_rotation_context") or {},
     )
     match["analytics_context"]["away_fatigue_index"] = _fatigue_index(
         (match.get("schedule_context") or {}).get("away", {}).get("days_since_last_match"),
         (match.get("schedule_context") or {}).get("away", {}).get("matches_last_14_days"),
         travel_distance_km,
+        next_rotation_context=competition_context.get("away_rotation_context") or {},
     )
     match["match_signals"]["home_pressure_index"] = (match["analytics_context"]["home_pressure_index"] or {}).get("score")
     match["match_signals"]["away_pressure_index"] = (match["analytics_context"]["away_pressure_index"] or {}).get("score")
@@ -6665,6 +6745,8 @@ def _enrich_quiniela_match(match: dict) -> None:
                 "items": away_injuries,
                 "count": len(away_injuries),
             },
+            "home_rotation_context": competition_context.get("home_rotation_context") or {},
+            "away_rotation_context": competition_context.get("away_rotation_context") or {},
         },
         "updated_at": _now_iso(),
     }
@@ -6710,10 +6792,14 @@ def _focus_match_ai_briefing(match: dict) -> str:
     h2h = history.get("head_to_head") or {}
     home_relegation = competition.get("home_relegation") or {}
     away_relegation = competition.get("away_relegation") or {}
+    home_objective = competition.get("home_objective") or {}
+    away_objective = competition.get("away_objective") or {}
     home_upcoming = competition.get("home_upcoming") or []
     away_upcoming = competition.get("away_upcoming") or []
     home_future_difficulty = competition.get("home_future_difficulty") or {}
     away_future_difficulty = competition.get("away_future_difficulty") or {}
+    home_rotation_context = competition.get("home_rotation_context") or {}
+    away_rotation_context = competition.get("away_rotation_context") or {}
     home_pressure = analytics.get("home_pressure_index") or {}
     away_pressure = analytics.get("away_pressure_index") or {}
     home_fatigue = analytics.get("home_fatigue_index") or {}
@@ -6737,6 +6823,23 @@ def _focus_match_ai_briefing(match: dict) -> str:
             f"Favorito inicial={favorite_label} con {favorite_value:.2f}% y brecha de {market_gap:.2f} puntos sobre la segunda opcion. "
             "Usa lesiones confirmadas, arbitraje con sesgo real, fatiga alta o clima severo solo para modular el mercado, no para ignorarlo sin evidencia fuerte."
         )
+    rotation_lines = []
+    for label, rotation_context in (
+        ("local", home_rotation_context),
+        ("visitante", away_rotation_context),
+    ):
+        risk = str(rotation_context.get("risk") or "").strip().lower()
+        reason = str(rotation_context.get("reason") or "").strip()
+        if risk in {"high", "medium"} and reason:
+            rotation_lines.append(
+                f"Rotación/calendario {label}: riesgo {risk}. {reason}."
+            )
+    fatigue_line = (
+        f"Fatiga estimada: local {home_fatigue.get('score', '-')} ({home_fatigue.get('label', '-')}) "
+        f"y visitante {away_fatigue.get('score', '-')} ({away_fatigue.get('label', '-')})."
+    )
+    if rotation_lines:
+        fatigue_line += " Si la carga base parece similar pero hay cruce europeo cercano, prioriza la alerta de rotación sobre la lectura genérica de descanso."
     lines = [
         f"Partido de la jornada: {match.get('local', '')} vs {match.get('visitante', '')}. Slots oficiales: {slot_labels}.",
         (
@@ -6765,6 +6868,7 @@ def _focus_match_ai_briefing(match: dict) -> str:
         _competitive_context_line(match.get("local", ""), home_table, home_relegation, home_objective),
         _competitive_context_line(match.get("visitante", ""), away_table, away_relegation, away_objective),
         f"Lectura stakes premium: {_competitive_stakes_summary(competition)}.",
+        *rotation_lines,
         (
             f"Forma ultimos 5: local {home_recent.get('form', '-')} ({home_recent.get('points', '-')} pts) "
             f"y visitante {away_recent.get('form', '-')} ({away_recent.get('points', '-')} pts)."
@@ -6773,10 +6877,7 @@ def _focus_match_ai_briefing(match: dict) -> str:
             f"Presion competitiva: local {home_pressure.get('score', '-')} ({home_pressure.get('label', '-')}) "
             f"y visitante {away_pressure.get('score', '-')} ({away_pressure.get('label', '-')})."
         ),
-        (
-            f"Fatiga estimada: local {home_fatigue.get('score', '-')} ({home_fatigue.get('label', '-')}) "
-            f"y visitante {away_fatigue.get('score', '-')} ({away_fatigue.get('label', '-')})."
-        ),
+        fatigue_line,
         (
             f"ELO prepartido: local {analytics.get('home_elo', '-')} y visitante {analytics.get('away_elo', '-')}."
         ),
@@ -7525,6 +7626,16 @@ def build_snapshot(raw_matches: list) -> dict:
         away_objective = _season_objective_context(league, current_table_snapshot, away_resolved_name)
         home_future_difficulty = _future_schedule_difficulty(home_upcoming)
         away_future_difficulty = _future_schedule_difficulty(away_upcoming)
+        home_rotation_context = _next_rotation_fixture_context(
+            home_upcoming,
+            home_team,
+            home_news.get("signals", {}),
+        )
+        away_rotation_context = _next_rotation_fixture_context(
+            away_upcoming,
+            away_team,
+            away_news.get("signals", {}),
+        )
 
         travel_distance_km = _haversine_km(
             home_profile.get("latitude"),
@@ -7533,8 +7644,18 @@ def build_snapshot(raw_matches: list) -> dict:
             away_profile.get("longitude"),
         )
         weather = fetch_weather_context(home_profile, kickoff)
-        home_fatigue_index = _fatigue_index(home_rest_days, home_recent_matches, 0.0)
-        away_fatigue_index = _fatigue_index(away_rest_days, away_recent_matches, travel_distance_km)
+        home_fatigue_index = _fatigue_index(
+            home_rest_days,
+            home_recent_matches,
+            0.0,
+            next_rotation_context=home_rotation_context,
+        )
+        away_fatigue_index = _fatigue_index(
+            away_rest_days,
+            away_recent_matches,
+            travel_distance_km,
+            next_rotation_context=away_rotation_context,
+        )
         home_pressure_index = _pressure_index(
             home_history.get("table", {}),
             home_relegation,
@@ -7587,6 +7708,8 @@ def build_snapshot(raw_matches: list) -> dict:
                     "away_upcoming": away_upcoming,
                     "home_future_difficulty": home_future_difficulty,
                     "away_future_difficulty": away_future_difficulty,
+                    "home_rotation_context": home_rotation_context,
+                    "away_rotation_context": away_rotation_context,
                 },
                 "schedule_context": {
                     "home": {
