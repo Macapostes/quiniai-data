@@ -230,6 +230,10 @@
       const finishedAt = parseUtcish(item.hora_fin);
       const durationSec = startedAt && finishedAt ? Math.max(0, Math.round((finishedAt.getTime() - startedAt.getTime()) / 1000)) : null;
       const externalMissing = (item.external_matches_count ?? 0) === 0;
+      const requestedBudget = Number(item.presupuesto ?? telemetry.requested_budget ?? 0);
+      const finalCost = Number(item.final_cost ?? telemetry.final_cost ?? 0);
+      const utilization = requestedBudget > 0 ? (finalCost / requestedBudget) : null;
+      const budgetGap = requestedBudget > 0 ? Math.max(0, requestedBudget - finalCost) : null;
       return `
         <div class="log-card">
           <div class="match-head">
@@ -249,6 +253,7 @@
           <div class="line"><strong>Modelo y tokens:</strong> input ${item.input_tokens ?? 0} · output ${item.output_tokens ?? 0} · total ${item.total_tokens ?? 0}</div>
           <div class="line"><strong>Coste desglosado:</strong> principal ${fmtMoney(item.estimated_cost_usd)} · patch ${fmtMoney(item.patch_cost_usd)} · total ${fmtMoney(item.total_cost_usd)}</div>
           <div class="line"><strong>Tipos:</strong> pedido ${escapeHtml(item.requested_type || "-")} · IA ${escapeHtml(item.initial_ai_type || "-")} · final ${escapeHtml(item.final_type || "-")}</div>
+          <div class="line"><strong>Presupuesto:</strong> pedido ${fmtNum(requestedBudget,2)}€ · final ${fmtNum(finalCost,2)}€ · aprovechamiento ${utilization !== null ? Math.round(utilization * 100) : "-"}% · hueco ${budgetGap !== null ? fmtNum(budgetGap,2) : "-"}€</div>
           <div class="line"><strong>Python corrigió:</strong> signos ${item.sign_changes_count ?? 0} · tipo ${item.type_changed ? "sí" : "no"} · estructura ${item.structure_changed ? "sí" : "no"} · partidos ${escapeHtml((telemetry.changed_match_ids || []).join(", ") || "-")}</div>
           <div class="line"><strong>Boleto final:</strong> ${item.final_total_bets ?? "-"} apuestas · ${fmtNum(item.final_cost,2)}€ · tipo final ${escapeHtml(item.final_type || "-")}</div>
           <div class="line"><strong>Contexto externo:</strong> partidos disponibles ${item.external_matches_count ?? 0} · realmente usados ${item.external_usage_count ?? 0}</div>
