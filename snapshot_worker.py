@@ -1,10 +1,8 @@
 import atexit
-import base64
 import csv
 import ctypes
 import difflib
 import email.utils
-import hashlib
 import html
 import io
 import json
@@ -12,7 +10,7 @@ import logging
 import math
 import os
 import re
-import shutil
+import subprocess
 import threading
 import time
 import traceback
@@ -20,15 +18,11 @@ import unicodedata
 import urllib.parse
 import xml.etree.ElementTree as ET
 import sys
-import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from zoneinfo import ZoneInfo
-
-import requests
-from dotenv import load_dotenv
 
 RUNTIME_SITE_PACKAGES = (
     Path.home()
@@ -43,10 +37,53 @@ RUNTIME_SITE_PACKAGES = (
 if RUNTIME_SITE_PACKAGES.exists() and str(RUNTIME_SITE_PACKAGES) not in sys.path:
     sys.path.append(str(RUNTIME_SITE_PACKAGES))
 
+import requests
+import urllib3
+
+try:
+    from dotenv import load_dotenv as _third_party_load_dotenv
+except Exception:
+    _third_party_load_dotenv = None
+
 try:
     from pypdf import PdfReader
 except Exception:
     PdfReader = None
+
+
+def _fallback_load_dotenv(dotenv_path: str | os.PathLike[str] | None = None) -> bool:
+    path = Path(dotenv_path) if dotenv_path is not None else Path(__file__).with_name(".env")
+    if not path.exists():
+        return False
+    loaded = False
+    try:
+        for raw_line in path.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            if not key:
+                continue
+            value = value.strip()
+            if value and value[0] == value[-1] and value[0] in {"'", '"'}:
+                value = value[1:-1]
+            os.environ.setdefault(key, value)
+            loaded = True
+    except Exception:
+        return False
+    return loaded
+
+
+def load_dotenv(dotenv_path: str | os.PathLike[str] | None = None) -> bool:
+    if _third_party_load_dotenv is not None:
+        try:
+            return bool(_third_party_load_dotenv(dotenv_path=dotenv_path))
+        except TypeError:
+            return bool(_third_party_load_dotenv())
+        except Exception:
+            pass
+    return _fallback_load_dotenv(dotenv_path)
 
 
 load_dotenv()
@@ -56,7 +93,12 @@ BACKEND_URL = os.getenv(
     "https://quiniela-backend-production-cb1a.up.railway.app",
 ).rstrip("/")
 ADMIN_KEY = os.getenv("QUINIAI_ADMIN_KEY", "").strip()
-POLL_SECONDS = int(os.getenv("SNAPSHOT_POLL_SECONDS", "7200"))
+POLL_SECONDS = int(os.getenv("SNAPSHOT_POLL_SECONDS", "900"))
+AUTO_PUBLISH_MONITOR = str(os.getenv("QUINIAI_AUTO_PUBLISH_MONITOR", "1")).strip().lower() not in {
+    "0",
+    "false",
+    "no",
+}
 DATA_URL = os.getenv(
     "QUINIAI_DATA_URL",
     "https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
@@ -75,7 +117,6 @@ NEWS_CACHE_TTL_SECONDS = int(os.getenv("QUINIAI_NEWS_CACHE_TTL_SECONDS", "21600"
 MATCH_NEWS_CACHE_TTL_SECONDS = int(
     os.getenv("QUINIAI_MATCH_NEWS_CACHE_TTL_SECONDS", "21600")
 )
-MONITOR_PUBLISH_MIN_SECONDS = int(os.getenv("QUINIAI_MONITOR_PUBLISH_MIN_SECONDS", "7200"))
 WEATHER_CACHE_TTL_SECONDS = int(
     os.getenv("QUINIAI_WEATHER_CACHE_TTL_SECONDS", "21600")
 )
@@ -103,24 +144,17 @@ EDUARDO_QUINIELA_PORCENTAJES_URL = "https://www.eduardolosilla.es/quiniela/ayuda
 EDUARDO_QUINIELA_PROXIMAS_URL = "https://www.eduardolosilla.es/quiniela/ayudas/proximas"
 EDUARDO_API_QUINIELISTA_URL = "https://api.eduardolosilla.es/servicios/v1/porcentajes_quinielista"
 EDUARDO_API_LAE_URL = "https://api.eduardolosilla.es/servicios/v1/porcentajes_lae"
+LAE_PROXIMOS_URL = "https://www.loteriasyapuestas.es/servicios/proximosv3"
+LAE_PUNTO_VENTA_URL = "https://www.loteriasyapuestas.es/servicios/juegoPuntoVenta"
 QUINIELA_ROOT_URL = EDUARDO_QUINIELA_PORCENTAJES_URL
 QUINIELA_HISTORY_JORNADAS = max(5, int(os.getenv("QUINIAI_QUINIELA_HISTORY_JORNADAS", "5")))
-MONITOR_PUBLIC_JORNADAS = max(2, min(5, int(os.getenv("QUINIAI_MONITOR_PUBLIC_JORNADAS", "5"))))
-MONITOR_REPO = os.getenv("QUINIAI_MONITOR_REPO", "Macapostes/quiniai-data").strip()
-MONITOR_BRANCH = os.getenv("QUINIAI_MONITOR_BRANCH", "main").strip() or "main"
-MONITOR_PUBLISH_ENABLED = (
-    os.getenv("QUINIAI_MONITOR_PUBLISH", "1").strip().lower() not in {"0", "false", "no"}
-)
-MONITOR_PUBLISH_INDEX = (
-    os.getenv("QUINIAI_MONITOR_PUBLISH_INDEX", "0").strip().lower() in {"1", "true", "yes"}
-)
-MONITOR_GITHUB_TOKEN = os.getenv("QUINIAI_GITHUB_TOKEN", "").strip()
 TEAM_PROFILE_CACHE_VERSION = "v4"
 
 CACHE_DIR = Path(__file__).with_name("cache")
 OUTPUT_DIR = Path(__file__).with_name("output")
 LOG_DIR = Path(__file__).with_name("logs")
 MONITOR_WEB_DIR = Path(__file__).with_name("docs") / "monitor"
+LOCAL_ODDS_PATH = Path(__file__).with_name("cuotas.json")
 TEAM_PROFILE_CACHE_PATH = CACHE_DIR / "team_profiles.json"
 TEAM_NEWS_CACHE_PATH = CACHE_DIR / "team_news_cache.json"
 MATCH_NEWS_CACHE_PATH = CACHE_DIR / "match_news_cache.json"
@@ -133,7 +167,6 @@ OFFICIAL_SITE_CACHE_PATH = CACHE_DIR / "official_site_cache.json"
 RFEF_CACHE_PATH = CACHE_DIR / "rfef_cache.json"
 RUN_HISTORY_PATH = CACHE_DIR / "run_history.json"
 QUINIELA_HISTORY_PATH = CACHE_DIR / "quiniela_jornadas_history.json"
-MONITOR_PUBLISH_STATE_PATH = CACHE_DIR / "monitor_publish_state.json"
 LEGACY_SNAPSHOT_PATH = (
     Path(__file__).with_name("archive") / "pre_reorg_root_20260422" / "ia_feed_snapshot.json"
 )
@@ -147,6 +180,7 @@ DESKTOP_STATUS_JSON_PATH = DESKTOP_KINII_STATE_DIR / "Estado QuiniAI.json"
 STATUS_HTML_PATH = OUTPUT_DIR / "PANEL_QUINIAI.html"
 DESKTOP_STATUS_HTML_PATH = DESKTOP_KINII_STATE_DIR / "Panel QuiniAI.html"
 MONITOR_STATUS_JSON_PATH = MONITOR_WEB_DIR / "status.json"
+MONITOR_JORNADAS_HISTORY_PATH = MONITOR_WEB_DIR / "jornadas_history.json"
 MONITOR_INDEX_PATH = MONITOR_WEB_DIR / "index.html"
 WORKER_LOG_PATH = LOG_DIR / "worker_events.log"
 SUPERVISOR_LOG_PATH = LOG_DIR / "worker_supervisor.log"
@@ -156,43 +190,49 @@ MANUAL_REFRESH_FLAG_PATH = CACHE_DIR / "manual_refresh.flag"
 DEFAULT_HEADERS = {
     "User-Agent": "QuiniAI-Context-Worker/3.0 (+https://github.com/Macapostes/quiniai-data)"
 }
+SSL_RELAXED_HOSTS = {
+    "api.eduardolosilla.es",
+    "www.eduardolosilla.es",
+    "api.loteriasyapuestas.es",
+    "www.loteriasyapuestas.es",
+    "futbol.as.com",
+    "as.com",
+    "www.football-data.co.uk",
+}
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+LAE_HEADER_SETS = [
+    {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Referer": "https://www.loteriasyapuestas.es/es/quiniela",
+        "Origin": "https://www.loteriasyapuestas.es",
+        "Connection": "keep-alive",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-CH-UA": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+        "Sec-CH-UA-Mobile": "?0",
+        "Sec-CH-UA-Platform": '"Windows"',
+    },
+    {
+        "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 13; SM-G991B Build/TP1A.220624.014)",
+        "X-Requested-With": "es.loteriasyapuestas.android",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "es-ES,es;q=0.9",
+    },
+    {
+        "User-Agent": "okhttp/4.11.0",
+        "X-Requested-With": "es.loteriasyapuestas.android",
+        "Accept": "application/json",
+        "Accept-Language": "es-ES",
+    },
+]
 
 MADRID_TZ = ZoneInfo("Europe/Madrid")
-
-HIGH_TRUST_NEWS_DOMAINS = {
-    # ES
-    "marca.com",
-    "as.com",
-    "relevo.com",
-    "eldesmarque.com",
-    "mundodeportivo.com",
-    "sport.es",
-    "estadiodeportivo.com",
-    "superdeporte.es",
-    "cope.es",
-    "cadenaser.com",
-    # EN/UK
-    "bbc.co.uk",
-    "theguardian.com",
-    "skysports.com",
-    "premierleague.com",
-    "uefa.com",
-    "fifa.com",
-}
-
-LOW_TRUST_NEWS_DOMAINS = {
-    "youtube.com",
-    "youtu.be",
-    "tiktok.com",
-    "instagram.com",
-    "reddit.com",
-    "twitter.com",
-    "x.com",
-    "facebook.com",
-    "pinterest.com",
-    "telegram.org",
-    "whatsapp.com",
-}
 
 LEAGUE_COUNTRY_HINTS = {
     "soccer_spain_la_liga": "ES",
@@ -200,21 +240,6 @@ LEAGUE_COUNTRY_HINTS = {
     "soccer_epl": "GB",
     "soccer_efl_champ": "GB",
 }
-
-LEAGUE_KEY_ALIASES = {
-    # Algunas fuentes etiquetan Segunda como "LaLiga2".
-    "soccer_spain_la_liga2": "soccer_spain_segunda_division",
-    "soccer_spain_la_liga_2": "soccer_spain_segunda_division",
-    "soccer_spain_segunda": "soccer_spain_segunda_division",
-}
-
-
-def _canonical_league_key(value: object) -> str:
-    raw = str(value or "").strip()
-    if not raw:
-        return ""
-    return LEAGUE_KEY_ALIASES.get(raw, raw)
-
 
 LEAGUE_FOOTBALL_DATA_CODES = {
     "soccer_spain_la_liga": "SP1",
@@ -231,11 +256,6 @@ LEAGUE_PRIORITY = {
     "soccer_uefa_europa_conference_league": 4,
     "soccer_epl": 5,
     "soccer_efl_champ": 6,
-    # Competiciones internacionales (a veces salen en quiniela)
-    "soccer_fifa_world_cup": 7,
-    "soccer_uefa_european_championship": 8,
-    "soccer_conmebol_copa_america": 9,
-    "soccer_international_friendlies": 10,
 }
 
 LEAGUE_RELEGATION_START = {
@@ -245,23 +265,26 @@ LEAGUE_RELEGATION_START = {
     "soccer_spain_segunda_division": 19,
 }
 
-LEAGUE_COMPETITIVE_LINES = {
+LEAGUE_SEASON_OBJECTIVE_LINES = {
     "soccer_spain_la_liga": [
-        {"key": "title", "label": "titulo", "line_position": 1, "direction": "top"},
-        {"key": "champions", "label": "Champions", "line_position": 4, "direction": "top"},
-        {"key": "europa_league", "label": "Europa League", "line_position": 5, "direction": "top"},
-        {"key": "conference", "label": "Conference", "line_position": 6, "direction": "top"},
-        {"key": "survival", "label": "salvacion", "line_position": 17, "direction": "survival"},
+        {"key": "title", "label": "titulo", "line_position": 1},
+        {"key": "champions", "label": "Champions", "line_position": 4},
+        {"key": "europa", "label": "Europa League", "line_position": 5},
+        {"key": "conference", "label": "Conference", "line_position": 6},
+    ],
+    "soccer_epl": [
+        {"key": "title", "label": "titulo", "line_position": 1},
+        {"key": "champions", "label": "Champions", "line_position": 4},
+        {"key": "europa", "label": "Europa League", "line_position": 5},
+        {"key": "conference", "label": "Conference", "line_position": 6},
     ],
     "soccer_spain_segunda_division": [
-        {"key": "direct_promotion", "label": "ascenso directo", "line_position": 2, "direction": "top"},
-        {"key": "playoff", "label": "play-off", "line_position": 6, "direction": "top"},
-        {"key": "survival", "label": "salvacion", "line_position": 18, "direction": "survival"},
+        {"key": "promotion", "label": "ascenso directo", "line_position": 2},
+        {"key": "playoff", "label": "play-off", "line_position": 6},
     ],
     "soccer_efl_champ": [
-        {"key": "direct_promotion", "label": "ascenso directo", "line_position": 2, "direction": "top"},
-        {"key": "playoff", "label": "play-off", "line_position": 6, "direction": "top"},
-        {"key": "survival", "label": "salvacion", "line_position": 21, "direction": "survival"},
+        {"key": "promotion", "label": "ascenso directo", "line_position": 2},
+        {"key": "playoff", "label": "play-off", "line_position": 6},
     ],
 }
 
@@ -273,7 +296,6 @@ LEAGUE_RFEF_PDF_PREFIX = {
 TEAM_NAME_ALIASES = {
     "athletic de bilbao": "Athletic Bilbao",
     "athletic club": "Athletic Bilbao",
-    "athletic bilbao": "Athletic Bilbao",
     "club atletico osasuna": "CA Osasuna",
     "osasuna": "CA Osasuna",
     "real madrid": "Real Madrid",
@@ -299,17 +321,24 @@ TEAM_NAME_ALIASES = {
     "r zaragoza": "Real Zaragoza",
     "r oviedo": "Real Oviedo",
     "oviedo": "Real Oviedo",
-    "real oviedo": "Real Oviedo",
-    "elche": "Elche CF",
-    "elche cf": "Elche CF",
     "dep coruna": "Deportivo La Coruña",
     "dep la coruna": "Deportivo La Coruña",
+    "deportivo": "Deportivo La Coruña",
     "qpr": "Queens Park Rangers",
     "swans": "Swansea City",
     "coventry": "Coventry City",
     "portsmouth": "Portsmouth",
     "mirandes": "Mirandés",
     "castellon": "Castellón",
+    "cd castellon": "Castellón",
+    "cordoba": "Córdoba",
+    "cordoba cf": "Córdoba",
+    "valladolid": "Real Valladolid",
+    "r valladolid": "Real Valladolid",
+    "real valladolid cf": "Real Valladolid",
+    "las palmas": "Las Palmas",
+    "ud las palmas": "Las Palmas",
+    "eibar": "Eibar",
     "rayo v": "Rayo Vallecano",
     "athletic de bilbao": "Athletic Bilbao",
 }
@@ -353,26 +382,6 @@ LEAGUE_EXTERNAL_FEEDS = {
         {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
         {"name": "Google News Championship", "url": ""},
     ],
-    "soccer_fifa_world_cup": [
-        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
-        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
-        {"name": "Google News World Cup", "url": ""},
-    ],
-    "soccer_uefa_european_championship": [
-        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
-        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
-        {"name": "Google News EURO", "url": ""},
-    ],
-    "soccer_conmebol_copa_america": [
-        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
-        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
-        {"name": "Google News Copa America", "url": ""},
-    ],
-    "soccer_international_friendlies": [
-        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
-        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
-        {"name": "Google News International friendlies", "url": ""},
-    ],
 }
 
 LEAGUE_NEWS_SEARCH_TERMS = {
@@ -383,10 +392,6 @@ LEAGUE_NEWS_SEARCH_TERMS = {
     "soccer_uefa_europa_conference_league": "UEFA Conference League football",
     "soccer_epl": "Premier League football",
     "soccer_efl_champ": "EFL Championship football",
-    "soccer_fifa_world_cup": "FIFA World Cup football",
-    "soccer_uefa_european_championship": "UEFA European Championship football",
-    "soccer_conmebol_copa_america": "Copa America football",
-    "soccer_international_friendlies": "International friendlies football",
 }
 
 COUNTRY_LABELS = {
@@ -470,16 +475,13 @@ TEAM_LOCAL_MEDIA_HINTS = {
 }
 
 TEAM_LOCATION_OVERRIDES = {
-    "mallorca": {"query": "Palma de Mallorca, Spain", "city": "Palma", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 39.5696, "longitude": 2.6502},
-    "valencia": {"query": "Valencia, Spain", "city": "Valencia", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 39.4699, "longitude": -0.3763},
-    "girona": {"query": "Girona, Spain", "city": "Girona", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 41.9794, "longitude": 2.8214},
-    "real oviedo": {"query": "Oviedo, Asturias, Spain", "city": "Oviedo", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 43.3614, "longitude": -5.8494},
-    "real zaragoza": {"query": "Zaragoza, Spain", "city": "Zaragoza", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 41.6488, "longitude": -0.8891},
-    "levante": {"query": "Valencia, Spain", "city": "Valencia", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 39.4699, "longitude": -0.3763},
-    "elche cf": {"query": "Elche, Alicante, Spain", "city": "Elche", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 38.2699, "longitude": -0.7126},
-    "rayo vallecano": {"query": "Vallecas, Madrid, Spain", "city": "Madrid", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 40.3919, "longitude": -3.6588},
-    "real sociedad": {"query": "San Sebastian, Gipuzkoa, Spain", "city": "San Sebastian", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 43.3183, "longitude": -1.9812},
-    "villarreal": {"query": "Villarreal, Castellon, Spain", "city": "Villarreal", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 39.9383, "longitude": -0.1009},
+    "mallorca": {"query": "Palma de Mallorca, Spain"},
+    "valencia": {"query": "Valencia, Spain"},
+    "girona": {"query": "Girona, Spain"},
+    "real oviedo": {"query": "Oviedo, Asturias, Spain"},
+    "real zaragoza": {"query": "Zaragoza, Spain"},
+    "levante": {"query": "Valencia, Spain"},
+    "elche cf": {"query": "Elche, Alicante, Spain"},
     "mirandes": {"query": "Miranda de Ebro, Burgos, Spain"},
     "mirandes": {"query": "Miranda de Ebro, Burgos, Spain"},
     "castellon": {"query": "Castellon de la Plana, Spain"},
@@ -506,6 +508,43 @@ TEAM_LOCATION_OVERRIDES = {
     "plymouth argyle": {"query": "Plymouth, England"},
     "cardiff city": {"query": "Cardiff, Wales"},
     "birmingham city": {"query": "Birmingham, England"},
+}
+
+TEAM_WIKIPEDIA_TITLE_OVERRIDES = {
+    "alaves": "Deportivo Alavés",
+    "alavés": "Deportivo Alavés",
+    "girona": "Girona FC",
+    "mallorca": "RCD Mallorca",
+    "valencia": "Valencia CF",
+    "betis": "Real Betis",
+    "real betis": "Real Betis",
+    "atletico madrid": "Atlético Madrid",
+    "athletic bilbao": "Athletic Bilbao",
+    "barcelona": "FC Barcelona",
+    "getafe": "Getafe CF",
+    "rayo vallecano": "Rayo Vallecano",
+    "real sociedad": "Real Sociedad",
+    "osasuna": "CA Osasuna",
+    "sevilla": "Sevilla FC",
+    "villarreal": "Villarreal CF",
+    "real oviedo": "Real Oviedo",
+    "elche": "Elche CF",
+    "elche cf": "Elche CF",
+    "burgos": "Burgos CF",
+    "burgos cf": "Burgos CF",
+    "deportivo la coruna": "Deportivo de La Coruña",
+    "deportivo la coruña": "Deportivo de La Coruña",
+    "malaga": "Málaga CF",
+    "málaga": "Málaga CF",
+    "castellon": "CD Castellón",
+    "castellón": "CD Castellón",
+    "granada": "Granada CF",
+    "almeria": "UD Almería",
+    "almería": "UD Almería",
+    "huesca": "SD Huesca",
+    "zaragoza": "Real Zaragoza",
+    "ceuta": "AD Ceuta FC",
+    "racing santander": "Real Racing Club de Santander",
 }
 
 AMBIGUOUS_GEO_TEAM_TOKENS = {
@@ -535,9 +574,6 @@ INJURY_KEYWORDS = [
 ROTATION_KEYWORDS = [
     "rotation",
     "rotacion",
-    "rotación",
-    "rotar",
-    "rotaciones",
     "rested",
     "rest",
     "descanso",
@@ -546,11 +582,6 @@ ROTATION_KEYWORDS = [
     "congestion",
     "fixture",
     "schedule",
-    "semifinal",
-    "semi-final",
-    "champions",
-    "europa league",
-    "conference league",
 ]
 DISCIPLINE_KEYWORDS = [
     "referee",
@@ -587,15 +618,10 @@ MORALE_KEYWORDS = [
     "crisis",
     "vestuario",
     "moral",
-    "mal clima",
-    "tension",
-    "tensión",
     "racha",
     "presion",
     "presión",
-    "presión",
     "salvacion",
-    "salvación",
     "salvación",
     "descenso",
     "playoff",
@@ -624,14 +650,6 @@ NOISE_FORMAT_KEYWORDS = [
     "canal tv",
     "tv",
     "streaming",
-    "live stream",
-    "live streaming",
-    "watch live",
-    "directo",
-    "ver en vivo",
-    "a que hora",
-    "a qué hora",
-    "canal",
     "minuto a minuto",
     "live blog",
 ]
@@ -656,6 +674,7 @@ NON_PREDICTIVE_NOISE_KEYWORDS = [
     "terremotos",
     "travel",
     "turismo",
+    "cup",
 ]
 LOW_INFORMATION_SOURCE_TOKENS = [
     "onefootball",
@@ -716,8 +735,11 @@ def _ensure_cache_dir() -> None:
     CACHE_DIR.mkdir(exist_ok=True)
     OUTPUT_DIR.mkdir(exist_ok=True)
     LOG_DIR.mkdir(exist_ok=True)
-    DESKTOP_KINII_DIR.mkdir(parents=True, exist_ok=True)
-    DESKTOP_KINII_STATE_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        DESKTOP_KINII_DIR.mkdir(parents=True, exist_ok=True)
+        DESKTOP_KINII_STATE_DIR.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
 
 
 def _load_cache(path: Path) -> dict:
@@ -728,6 +750,42 @@ def _load_cache(path: Path) -> dict:
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return {}
+
+
+def _load_monitor_jornada_history() -> dict:
+    clone = lambda value: json.loads(json.dumps(value, ensure_ascii=False))
+    def parse_int(value: object) -> int | None:
+        try:
+            return int(str(value).strip())
+        except Exception:
+            return None
+    persisted = _load_cache(MONITOR_JORNADAS_HISTORY_PATH) if MONITOR_JORNADAS_HISTORY_PATH.exists() else {}
+    if (persisted or {}).get("jornadas"):
+        return persisted
+    if not MONITOR_STATUS_JSON_PATH.exists():
+        return {"updated_at": "", "jornadas": {}}
+    legacy_status = _load_cache(MONITOR_STATUS_JSON_PATH) or {}
+    jornadas = legacy_status.get("public_jornadas") or legacy_status.get("quiniela_jornadas") or []
+    normalized = {}
+    for jornada in jornadas:
+        jornada_num = parse_int(jornada.get("jornada"))
+        if not jornada_num:
+            continue
+        normalized[str(jornada_num)] = {
+            "jornada": jornada_num,
+            "label": jornada.get("label") or f"Jornada {jornada_num}",
+            "source": jornada.get("source", ""),
+            "source_url": jornada.get("source_url", ""),
+            "kickoff_from": jornada.get("kickoff_from", ""),
+            "kickoff_to": jornada.get("kickoff_to", ""),
+            "updated_at": legacy_status.get("snapshot_generated_at") or legacy_status.get("generated_at") or "",
+            "matches": clone(jornada.get("matches", [])),
+            "unmatched_slots": clone(jornada.get("matches", [])),
+        }
+    return {
+        "updated_at": legacy_status.get("snapshot_generated_at") or legacy_status.get("generated_at") or "",
+        "jornadas": normalized,
+    }
 
 
 TEAM_PROFILE_CACHE = _load_cache(TEAM_PROFILE_CACHE_PATH)
@@ -747,7 +805,7 @@ STRUCTURED_DB = _load_cache(STRUCTURED_DB_PATH) or {
 }
 RUN_HISTORY = _load_cache(RUN_HISTORY_PATH) or {"runs": []}
 QUINIELA_HISTORY = _load_cache(QUINIELA_HISTORY_PATH) or {"season": None, "current_jornada": None, "jornadas": {}}
-MONITOR_PUBLISH_STATE = _load_cache(MONITOR_PUBLISH_STATE_PATH) or {"files": {}}
+MONITOR_JORNADAS_HISTORY = _load_monitor_jornada_history() or {"updated_at": "", "jornadas": {}}
 LEGACY_SNAPSHOT = _load_cache(LEGACY_SNAPSHOT_PATH) if LEGACY_SNAPSHOT_PATH.exists() else {}
 
 
@@ -770,7 +828,7 @@ def _flush_caches() -> None:
         _save_cache(STRUCTURED_DB_PATH, STRUCTURED_DB)
         _save_cache(RUN_HISTORY_PATH, RUN_HISTORY)
         _save_cache(QUINIELA_HISTORY_PATH, QUINIELA_HISTORY)
-        _save_cache(MONITOR_PUBLISH_STATE_PATH, MONITOR_PUBLISH_STATE)
+        _save_cache(MONITOR_JORNADAS_HISTORY_PATH, MONITOR_JORNADAS_HISTORY)
 
 
 def _build_logger() -> logging.Logger:
@@ -834,11 +892,27 @@ def _release_worker_lock() -> None:
         pass
 
 
-def _acquire_worker_lock() -> None:
+def _request_manual_refresh(existing_pid: int | None = None) -> None:
+    _ensure_cache_dir()
+    payload = {
+        "requested_at": _now_iso(),
+        "requested_by_pid": os.getpid(),
+        "target_pid": existing_pid,
+    }
+    try:
+        MANUAL_REFRESH_FLAG_PATH.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+    except Exception:
+        pass
+
+
+def _acquire_worker_lock() -> bool:
     global LOCK_FD
     _ensure_cache_dir()
     if LOCK_FD is not None:
-        return
+        return True
     try:
         LOCK_FD = os.open(str(WORKER_LOCK_PATH), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
     except FileExistsError:
@@ -848,17 +922,16 @@ def _acquire_worker_lock() -> None:
             existing = {}
         existing_pid = _safe_int(existing.get("pid"), 0) or 0
         if existing_pid and _pid_is_alive(existing_pid):
+            if "--once" in sys.argv:
+                _request_manual_refresh(existing_pid)
+                print(
+                    f"[snapshot-worker] worker activo detectado (pid={existing_pid}). "
+                    "Se ha pedido una refrescada manual a la instancia existente."
+                )
+                return False
             raise SystemExit(
                 f"Otro snapshot_worker.py ya esta en ejecucion (pid={existing_pid})."
             )
-        started_at = _parse_iso_datetime(str(existing.get("started_at", "")).strip())
-        if existing_pid and started_at:
-            lock_age = (datetime.now(timezone.utc) - started_at).total_seconds()
-            if lock_age < max(POLL_SECONDS * 2, 6 * 3600):
-                raise SystemExit(
-                    f"Existe un lock reciente de snapshot_worker.py (pid={existing_pid}); "
-                    "no se arranca otra instancia para evitar duplicados."
-                )
         try:
             WORKER_LOCK_PATH.unlink(missing_ok=True)
         except Exception:
@@ -873,6 +946,7 @@ def _acquire_worker_lock() -> None:
     )
     os.fsync(LOCK_FD)
     atexit.register(_release_worker_lock)
+    return True
 
 
 def _consume_manual_refresh_flag() -> bool:
@@ -967,16 +1041,55 @@ def _season_tag_for(date_value: datetime | None = None) -> str:
     return f"{start_year}-{(start_year + 1) % 100:02d}"
 
 
+def _request_response(
+    url: str,
+    params: dict | None = None,
+    headers: dict | None = None,
+    timeout: int = 30,
+):
+    parsed = urllib.parse.urlparse(url)
+    host = (parsed.hostname or "").lower()
+    request_headers = headers or DEFAULT_HEADERS
+    try:
+        response = requests.get(url, params=params, headers=request_headers, timeout=timeout)
+        response.raise_for_status()
+        return response
+    except requests.exceptions.SSLError:
+        if host not in SSL_RELAXED_HOSTS:
+            raise
+        response = requests.get(
+            url,
+            params=params,
+            headers=request_headers,
+            timeout=timeout,
+            verify=False,
+        )
+        response.raise_for_status()
+        return response
+
+
 def _request_json(url: str, params: dict | None = None, timeout: int = 30) -> dict | list:
-    response = requests.get(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
-    response.raise_for_status()
+    response = _request_response(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
     return response.json()
 
 
 def _request_text(url: str, params: dict | None = None, timeout: int = 30) -> str:
-    response = requests.get(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
-    response.raise_for_status()
+    response = _request_response(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
     return response.text
+
+
+def _request_json_lae(url: str, params: dict | None = None, timeout: int = 20) -> dict | list:
+    last_error = None
+    for headers in LAE_HEADER_SETS:
+        try:
+            response = _request_response(url, params=params, headers=headers, timeout=timeout)
+            if response.status_code == 200:
+                return response.json()
+        except Exception as exc:
+            last_error = exc
+    if last_error:
+        raise last_error
+    raise RuntimeError(f"LAE request failed: {url}")
 
 
 def _format_madrid_datetime(value: object, include_tz: bool = True) -> str:
@@ -1146,13 +1259,12 @@ def _sort_news_items(items: list[dict]) -> list[dict]:
 
 
 def _clean_news_items(items: list[dict], max_age_days: int, limit: int) -> list[dict]:
-    filtered = [_enrich_news_item(item) for item in items if _headline_recent_enough(item, max_age_days)]
+    filtered = [item for item in items if _headline_recent_enough(item, max_age_days)]
     ordered = _sort_news_items(_dedupe_news_items(filtered))
     cleaned = []
     for item in ordered[:limit]:
         entry = dict(item)
         entry.pop("_relevance", None)
-        entry.pop("_domain", None)
         cleaned.append(entry)
     return cleaned
 
@@ -1160,7 +1272,6 @@ def _clean_news_items(items: list[dict], max_age_days: int, limit: int) -> list[
 def _competition_relevance_score(item: dict, league_key: str, league_teams: list[str] | None = None) -> float:
     title = str(item.get("title", "")).strip()
     source = str(item.get("source", "")).strip().lower()
-    domain = _safe_url_host(str(item.get("link", "")).strip())
     stop_tokens = {"football", "soccer", "league", "spain"}
     league_terms = [
         token
@@ -1175,10 +1286,6 @@ def _competition_relevance_score(item: dict, league_key: str, league_teams: list
     source_bonus = 0.0
     if source in {"uefa.com", "bbc football", "guardian football"} or source.startswith("as "):
         source_bonus = 0.2
-    if domain and domain in HIGH_TRUST_NEWS_DOMAINS:
-        source_bonus = max(source_bonus, 0.25)
-    if domain and domain in LOW_TRUST_NEWS_DOMAINS:
-        return 0.0
     base_score = token_bonus + team_bonus
     if base_score <= 0:
         return 0.0
@@ -1199,16 +1306,6 @@ def _is_low_signal_source(source_name: str) -> bool:
             "apwin",
             "sportytrader",
             "futbolfantasy",
-            "youtube",
-            "tiktok",
-            "instagram",
-            "reddit",
-            "twitter",
-            "x.com",
-            "pinterest",
-            "facebook",
-            "telegram",
-            "whatsapp",
         ]
     )
 
@@ -1431,12 +1528,9 @@ def _is_low_value_result_story(title: str) -> bool:
 def _passes_team_news_quality(item: dict, team_name: str, require_signal: bool = False) -> bool:
     title = str(item.get("title", "")).strip()
     source = str(item.get("source", "")).strip()
-    domain = _safe_url_host(str(item.get("link", "")).strip())
     if not title:
         return False
     if _is_low_signal_source(source):
-        return False
-    if domain and domain in LOW_TRUST_NEWS_DOMAINS:
         return False
     if _is_generic_preview_title(title) or _is_non_match_noise_title(title):
         return False
@@ -1458,17 +1552,9 @@ def _passes_team_news_quality(item: dict, team_name: str, require_signal: bool =
 def _passes_match_news_quality(item: dict, home_team: str, away_team: str) -> bool:
     title = str(item.get("title", "")).strip()
     source = str(item.get("source", "")).strip()
-    domain = _safe_url_host(str(item.get("link", "")).strip())
     if not title:
         return False
     if _is_low_signal_source(source):
-        return False
-    if domain and domain in LOW_TRUST_NEWS_DOMAINS:
-        return False
-    # Evita falsos positivos de equipos con nombre geográfico/ambiguo.
-    if (_requires_football_context(home_team) or _requires_football_context(away_team)) and not _has_football_context(
-        title, source
-    ):
         return False
     if _is_generic_preview_title(title) or _is_non_match_noise_title(title):
         return False
@@ -1681,33 +1767,8 @@ def _build_referee_candidates(items: list[dict]) -> list[dict]:
 
 
 def _looks_like_referee_name(candidate: str, home_team: str = "", away_team: str = "") -> bool:
-    raw_candidate = str(candidate or "").strip()
-    if not raw_candidate:
-        return False
-    if raw_candidate == raw_candidate.lower():
-        return False
     normalized = _normalize_team_name(candidate)
     if not normalized:
-        return False
-    if any(
-        token in normalized.split()
-        for token in {
-            "lashes",
-            "against",
-            "about",
-            "after",
-            "before",
-            "with",
-            "without",
-            "says",
-            "claim",
-            "claims",
-            "report",
-            "reports",
-            "preview",
-            "lineup",
-        }
-    ):
         return False
     if normalized in {
         "laliga",
@@ -1783,42 +1844,6 @@ def _build_referee_candidates_strict(
     return deduped
 
 
-def _extract_referee_name_from_text(text: str, home_team: str = "", away_team: str = "") -> str:
-    if not text:
-        return ""
-    compact = re.sub(r"\s+", " ", str(text or "")).strip()
-    patterns = [
-        r"(?:Árbitro|Arbitro|Referee|Colegiado)(?: principal)?\s*[:\-]\s*([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ]+){1,4})",
-        r"(?:dirigirá|dirigira|pitará|pitara|arbitrará|arbitrara)\s+(?:el partido|el encuentro|la contienda)?\s*([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ]+){1,4})",
-        r"(?:designación arbitral|designacion arbitral).*?([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑáéíóúñ]+){1,4})",
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, compact, flags=re.IGNORECASE)
-        if not match:
-            continue
-        candidate = match.group(1).strip(" .,:;-")
-        if _looks_like_referee_name(candidate, home_team, away_team):
-            return candidate
-    return ""
-
-
-def _fetch_article_referee_candidate(item: dict, home_team: str = "", away_team: str = "") -> str:
-    link = str(item.get("link", "")).strip()
-    if not link:
-        return ""
-    cache_key = f"article-referee:{hashlib.sha1(link.encode('utf-8')).hexdigest()}"
-    cached = _cache_get(MATCH_NEWS_CACHE, cache_key, 12 * 3600)
-    if cached is not None:
-        return str(cached)
-    try:
-        article_text = _request_text(link, timeout=18)
-    except Exception:
-        article_text = ""
-    candidate = _extract_referee_name_from_text(article_text, home_team, away_team)
-    _cache_set(MATCH_NEWS_CACHE, cache_key, candidate)
-    return candidate
-
-
 def _prune_structured_db(active_match_keys: set[str], reference_time: datetime | None = None) -> None:
     now_dt = reference_time or datetime.now(timezone.utc)
     matches = STRUCTURED_DB.setdefault("matches", {})
@@ -1855,28 +1880,6 @@ def _prune_structured_db(active_match_keys: set[str], reference_time: datetime |
             referees.pop(referee_name, None)
 
     STRUCTURED_DB.setdefault("meta", {})["last_pruned_at"] = _now_iso()
-
-
-def _briefing_excerpt_from_dict(briefing: dict) -> str:
-    if not briefing or not isinstance(briefing, dict):
-        return ""
-    parts = []
-    insight = (briefing.get("mercado_y_probabilidades") or {}).get("insight_mercado", "")
-    if insight:
-        parts.append(insight)
-    stakes = (briefing.get("contexto_deportivo") or {}).get("contexto_competitivo", "")
-    if stakes:
-        parts.append(stakes)
-    rotation = (briefing.get("contexto_deportivo") or {}).get("riesgo_rotacion_competitiva", "")
-    if rotation and "Sin senal fuerte" not in rotation:
-        parts.append(rotation)
-    cal = (briefing.get("contexto_deportivo") or {}).get("analisis_calendario_local", "")
-    if cal:
-        parts.append(cal)
-    fatiga = (briefing.get("factores_externos") or {}).get("fatiga_y_descanso", "")
-    if fatiga:
-        parts.append(fatiga)
-    return " | ".join(p for p in parts if p)
 
 
 def _snapshot_summary_lines(snapshot: dict) -> list[str]:
@@ -1927,196 +1930,6 @@ def _write_json_file(path: Path, payload: dict) -> None:
         path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception:
         pass
-
-
-def _monitor_slot_label(match: dict) -> str:
-    slot = next(
-        (
-            item
-            for item in (match.get("quiniela_slots") or [])
-            if _safe_int(item.get("position")) is not None
-        ),
-        {},
-    )
-    position = _safe_int(slot.get("position"))
-    if not position:
-        return "-"
-    return "Pleno al 15" if position == 15 else f"{position}."
-
-
-def _monitor_extract_upcoming(match: dict, side: str) -> list[dict]:
-    schedule_inputs = match.get("_schedule_inputs") or {}
-    for key in (
-        f"{side}_sportsdb_next_upcoming",
-        f"{side}_round_upcoming",
-        f"{side}_espn_upcoming",
-        f"{side}_schedule_upcoming",
-        f"{side}_feed_upcoming",
-    ):
-        items = schedule_inputs.get(key) or []
-        if items:
-            return items[:UPCOMING_FIXTURE_WINDOW]
-    return []
-
-
-def _monitor_future_summary(match: dict, side: str) -> str:
-    upcoming = _monitor_extract_upcoming(match, side)
-    if not upcoming:
-        return "sin calendario detectado"
-    parts = []
-    for item in upcoming[:5]:
-        venue = "casa" if str(item.get("venue", "")).strip().lower() == "home" else "fuera"
-        opponent = str(item.get("opponent", "")).strip() or "rival por confirmar"
-        position = _safe_int(item.get("opponent_position"))
-        position_text = f"{position}º" if position else "-"
-        competition = _fixture_competition_label(item)
-        suffix = position_text
-        if competition and _is_high_importance_nonleague_fixture(item):
-            suffix += f", {competition}"
-        parts.append(f"{venue} vs {opponent} ({suffix})")
-    return " | ".join(parts)
-
-
-def _monitor_match_payload(match: dict) -> dict:
-    history = match.get("history_context") or {}
-    analytics = match.get("analytics_context") or {}
-    competition = match.get("competition_context") or {}
-    structured = match.get("structured_context") or {}
-    home_table = ((history.get("home") or {}).get("table") or {})
-    away_table = ((history.get("away") or {}).get("table") or {})
-    home_recent = ((history.get("home") or {}).get("recent_all") or {})
-    away_recent = ((history.get("away") or {}).get("recent_all") or {})
-    market = match.get("market_context") or {}
-    referee = structured.get("referee_context") or {}
-    referee_bias = _referee_analysis_summary(referee.get("season_analysis") or {})
-    if not referee_bias:
-        referee_bias = "sin historico arbitral fiable"
-    return {
-        "slot": _monitor_slot_label(match),
-        "local": match.get("local", ""),
-        "visitante": match.get("visitante", ""),
-        "league": match.get("league", ""),
-        "kickoff": match.get("kickoff", ""),
-        "bookmaker": match.get("bookmaker", ""),
-        "odds": match.get("odds", {}),
-        "normalized_percent": market.get("normalized_percent", {}),
-        "official_percent": (
-            market.get("official_percent")
-            or match.get("official_quiniela_percentages")
-            or {}
-        ),
-        "home_table": {
-            "position": home_table.get("position"),
-            "points": home_table.get("points"),
-            "form": home_recent.get("form", ""),
-        },
-        "away_table": {
-            "position": away_table.get("position"),
-            "points": away_table.get("points"),
-            "form": away_recent.get("form", ""),
-        },
-        "pressure": {
-            "home": analytics.get("home_pressure_index", {}),
-            "away": analytics.get("away_pressure_index", {}),
-        },
-        "fatigue": {
-            "home": analytics.get("home_fatigue_index", {}),
-            "away": analytics.get("away_fatigue_index", {}),
-        },
-        "competitive_context": {
-            "season_context_phase": competition.get("season_context_phase", {}),
-            "competitive_stakes_label": competition.get("competitive_stakes_label", ""),
-            "direct_rivalry": competition.get("direct_rivalry", {}),
-            "home_objective": competition.get("home_objective", {}),
-            "away_objective": competition.get("away_objective", {}),
-            "home_must_win_index": analytics.get("home_must_win_index", 0),
-            "away_must_win_index": analytics.get("away_must_win_index", 0),
-            "home_must_not_lose_index": analytics.get("home_must_not_lose_index", 0),
-            "away_must_not_lose_index": analytics.get("away_must_not_lose_index", 0),
-            "direct_rivalry_index": analytics.get("direct_rivalry_index", 0),
-            "home_rotation_context": competition.get("home_rotation_context", {}),
-            "away_rotation_context": competition.get("away_rotation_context", {}),
-        },
-        "travel_km": _safe_float((match.get("travel_context") or {}).get("distance_km")),
-        "weather": {
-            "temperature_c": _safe_float((match.get("weather_context") or {}).get("temperature_c")),
-            "precipitation_probability": _safe_int(
-                (match.get("weather_context") or {}).get("precipitation_probability")
-            ),
-            "wind_speed_kmh": _safe_float((match.get("weather_context") or {}).get("wind_speed_kmh")),
-        },
-        "referee": {
-            "name": referee.get("assigned_referee", "") or "no confirmado",
-            "bias_summary": referee_bias,
-        },
-        "future_home": _monitor_future_summary(match, "home"),
-        "future_away": _monitor_future_summary(match, "away"),
-        "briefing_excerpt": _briefing_excerpt_from_dict(match.get("focus_ai_briefing") or {}),
-        "analysis_ready": bool(match.get("focus_ai_briefing")),
-    }
-
-
-def _select_monitor_jornadas(quiniela_jornadas: list[dict]) -> list[dict]:
-    if not quiniela_jornadas:
-        return []
-    current = next((j for j in quiniela_jornadas if j.get("is_current")), None)
-    selected = []
-    if current:
-        selected.append(current)
-        current_num = _safe_int(current.get("jornada"), 0) or 0
-        future_jornadas = sorted(
-            [
-                jornada
-                for jornada in quiniela_jornadas
-                if (_safe_int(jornada.get("jornada"), 0) or 0) > current_num
-            ],
-            key=lambda item: _safe_int(item.get("jornada"), 9999) or 9999,
-        )
-        previous_jornadas = sorted(
-            [
-                jornada
-                for jornada in quiniela_jornadas
-                if (_safe_int(jornada.get("jornada"), 0) or 0) < current_num
-            ],
-            key=lambda item: _safe_int(item.get("jornada"), 0) or 0,
-            reverse=True,
-        )
-        selected.extend(future_jornadas)
-        selected.extend(previous_jornadas)
-    if not selected:
-        selected = sorted(
-            quiniela_jornadas,
-            key=lambda item: _safe_int(item.get("jornada"), 0) or 0,
-            reverse=True,
-        )
-    seen = set()
-    deduped = []
-    for jornada in selected:
-        jornada_num = _safe_int(jornada.get("jornada"))
-        if not jornada_num or jornada_num in seen:
-            continue
-        seen.add(jornada_num)
-        deduped.append(jornada)
-    return deduped[:MONITOR_PUBLIC_JORNADAS]
-
-
-def _build_monitor_public_jornadas(status_payload: dict) -> list[dict]:
-    jornadas = _select_monitor_jornadas(status_payload.get("quiniela_jornadas") or [])
-    public_jornadas = []
-    for jornada in jornadas:
-        public_jornadas.append(
-            {
-                "jornada": jornada.get("jornada"),
-                "label": jornada.get("label") or f"Jornada {jornada.get('jornada')}",
-                "is_current": bool(jornada.get("is_current")),
-                "source": jornada.get("source", ""),
-                "kickoff_from": jornada.get("kickoff_from", ""),
-                "kickoff_to": jornada.get("kickoff_to", ""),
-                "history_only": bool(jornada.get("history_only")),
-                "matches": [_monitor_match_payload(match) for match in (jornada.get("matches") or [])],
-            }
-        )
-    return public_jornadas
 
 
 def _html_escape(value: object) -> str:
@@ -2180,6 +1993,8 @@ def _render_focus_match_detail(match: dict) -> str:
     h2h = history.get("head_to_head") or {}
     home_relegation = competition.get("home_relegation") or {}
     away_relegation = competition.get("away_relegation") or {}
+    home_objective = competition.get("home_objective") or {}
+    away_objective = competition.get("away_objective") or {}
     home_upcoming = competition.get("home_upcoming") or []
     away_upcoming = competition.get("away_upcoming") or []
     home_pressure = analytics.get("home_pressure_index") or {}
@@ -2353,7 +2168,7 @@ def _render_focus_match_detail(match: dict) -> str:
           </div>
           <div class="detail-card">
             <h3>Bloque que recibe la IA</h3>
-            <pre class="briefing">{_html_escape(json.dumps(match.get('focus_ai_briefing') or {}, ensure_ascii=False, indent=2))}</pre>
+            <pre class="briefing">{_html_escape(match.get('focus_ai_briefing', ''))}</pre>
           </div>
         </div>
       </div>
@@ -2563,7 +2378,6 @@ def _build_status_html(status_payload: dict) -> str:
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="{max(300, MONITOR_PUBLISH_MIN_SECONDS)}">
   <title>Panel QuiniAI</title>
   <style>
     :root {{
@@ -2904,6 +2718,13 @@ def _build_status_html(status_payload: dict) -> str:
 
 
 def _build_monitor_web_html() -> str:
+    try:
+        if MONITOR_INDEX_PATH.exists():
+            html_text = MONITOR_INDEX_PATH.read_text(encoding="utf-8")
+            if "<!DOCTYPE html>" in html_text and "QuiniAI Monitor" in html_text:
+                return html_text
+    except Exception:
+        pass
     return """<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -2911,7 +2732,7 @@ def _build_monitor_web_html() -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>QuiniAI Monitor</title>
   <style>
-    :root{--bg:#07101d;--panel:#122033;--panel2:#182b44;--text:#eef6ff;--muted:#96aac4;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#243754;--accent:#38bdf8}
+    :root{--bg:#07101d;--panel:#122033;--panel2:#182b44;--text:#eef6ff;--muted:#96aac4;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#243754}
     *{box-sizing:border-box} body{margin:0;font-family:Consolas,\"Cascadia Code\",monospace;background:radial-gradient(circle at top right,rgba(34,197,94,.12),transparent 28%),radial-gradient(circle at bottom left,rgba(56,189,248,.12),transparent 32%),var(--bg);color:var(--text)}
     .wrap{max-width:980px;margin:0 auto;padding:20px}
     .hero,.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
@@ -2927,18 +2748,7 @@ def _build_monitor_web_html() -> str:
     table{width:100%;border-collapse:collapse;font-size:14px} th,td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;vertical-align:top}
     .chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px}
     .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
-    .jornada{border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.03);margin-top:14px;overflow:hidden}
-    .jornada summary{cursor:pointer;list-style:none;padding:16px 18px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .jornada summary::-webkit-details-marker{display:none}
-    .jornada-body{padding:0 18px 18px}
-    .match{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;background:rgba(0,0,0,.12);margin-top:12px}
-    .match-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
-    .match-title{font-size:16px;font-weight:700}
-    .mini{font-size:12px;color:var(--muted);line-height:1.5}
-    .line{margin-top:8px;font-size:13px;line-height:1.5}
-    .line strong{color:var(--accent)}
-    .brief{white-space:pre-wrap;font-size:12px;line-height:1.45;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
-    @media (max-width:640px){.v{font-size:24px}table{font-size:12px}.match-title{font-size:15px}}
+    @media (max-width:640px){.v{font-size:24px}table{font-size:12px}}
   </style>
 </head>
 <body>
@@ -2958,22 +2768,12 @@ def _build_monitor_web_html() -> str:
         <h2>Estado actual</h2>
         <div class="chips" id="status-chips"></div>
       </div>
-      <div class="panel" id="audit-panel" style="display:none">
-        <h2>Auditoría avanzada</h2>
-        <div class="muted" id="audit-meta"></div>
-        <div class="chips" id="audit-chips" style="margin-top:12px"></div>
-      </div>
       <div class="panel">
         <h2>Ultimas ejecuciones</h2>
         <table>
           <thead><tr><th>Estado</th><th>Hora Madrid</th><th>Duracion</th><th>Jornada</th><th>Partidos</th></tr></thead>
           <tbody id="runs"></tbody>
         </table>
-      </div>
-      <div class="panel">
-        <h2>Analisis publico: jornada actual y siguiente</h2>
-        <div class="muted">Aqui puedes abrir la jornada actual y la siguiente publicada para ver si el monitor realmente esta recogiendo contexto util, no solo horas.</div>
-        <div id="jornadas"></div>
       </div>
     </div>
   </div>
@@ -2989,54 +2789,7 @@ def _build_monitor_web_html() -> str:
       const ms = Date.now() - new Date(iso).getTime();
       return (ms / 60000).toFixed(1);
     };
-    const fmtPct = (value) => value === null || value === undefined || value === "" ? "-" : `${Number(value).toFixed(2)}%`;
-    const fmtNum = (value, digits=1) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : Number(value).toFixed(digits);
     const chip = (text, cls="") => `<span class="chip ${cls}">${text}</span>`;
-    const escapeHtml = (value) => String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
-    const renderMatch = (match) => {
-      const homeTable = match.home_table || {};
-      const awayTable = match.away_table || {};
-      const homePressure = (match.pressure || {}).home || {};
-      const awayPressure = (match.pressure || {}).away || {};
-      const homeFatigue = (match.fatigue || {}).home || {};
-      const awayFatigue = (match.fatigue || {}).away || {};
-      const odds = match.odds || {};
-      const market = match.normalized_percent || {};
-      const official = match.official_percent || {};
-      const weather = match.weather || {};
-      const referee = match.referee || {};
-      const competitive = match.competitive_context || {};
-      const homeObjective = competitive.home_objective || {};
-      const awayObjective = competitive.away_objective || {};
-      const homeRotation = competitive.home_rotation_context || {};
-      const awayRotation = competitive.away_rotation_context || {};
-      const rotationLine = [homeRotation.reason ? `local ${homeRotation.reason} (${homeRotation.risk})` : "", awayRotation.reason ? `visitante ${awayRotation.reason} (${awayRotation.risk})` : ""].filter(Boolean).join(" | ");
-      return `
-        <div class="match">
-          <div class="match-head">
-            <div>
-              <div class="match-title">${escapeHtml(match.slot)} ${escapeHtml(match.local)} vs ${escapeHtml(match.visitante)}</div>
-              <div class="mini">${escapeHtml(match.league || "-")} · ${fmtMadrid(match.kickoff)} · ${escapeHtml(match.bookmaker || "sin bookmaker")}</div>
-            </div>
-            <div class="chips">
-              ${chip(`1 ${fmtNum(odds["1"],2)}`)}
-              ${chip(`X ${fmtNum(odds["X"],2)}`)}
-              ${chip(`2 ${fmtNum(odds["2"],2)}`)}
-            </div>
-          </div>
-          <div class="line"><strong>Mercado base:</strong> 1=${fmtPct(market["1"])} · X=${fmtPct(market["X"])} · 2=${fmtPct(market["2"])} | <strong>Quinielista:</strong> 1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}</div>
-          <div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>
-          <div class="line"><strong>Objetivo:</strong> ${escapeHtml(homeObjective.summary || "-")} [MW ${competitive.home_must_win_index ?? 0}, NP ${competitive.home_must_not_lose_index ?? 0}] | ${escapeHtml(awayObjective.summary || "-")} [MW ${competitive.away_must_win_index ?? 0}, NP ${competitive.away_must_not_lose_index ?? 0}]</div>
-          <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} | rivalidad ${competitive.direct_rivalry_index ?? 0}/100</div>
-          ${rotationLine ? `<div class="line"><strong>Rotacion probable:</strong> ${escapeHtml(rotationLine)}</div>` : ""}
-          <div class="line"><strong>Presion/Fatiga:</strong> local ${fmtNum(homePressure.score,2)} (${escapeHtml(homePressure.label || "-")}) y visitante ${fmtNum(awayPressure.score,2)} (${escapeHtml(awayPressure.label || "-")}) | fatiga ${fmtNum(homeFatigue.score,2)} / ${fmtNum(awayFatigue.score,2)}</div>
-          <div class="line"><strong>Arbitro:</strong> ${escapeHtml(referee.name || "no confirmado")} | <strong>Viaje visitante:</strong> ${fmtNum(match.travel_km,1)} km | <strong>Clima:</strong> ${fmtNum(weather.temperature_c,1)} C, lluvia ${weather.precipitation_probability ?? "-"}%, viento ${fmtNum(weather.wind_speed_kmh,1)} km/h</div>
-          <div class="line"><strong>Proximos 5 ${escapeHtml(match.local)}:</strong> ${escapeHtml(match.future_home || "sin calendario detectado")}</div>
-          <div class="line"><strong>Proximos 5 ${escapeHtml(match.visitante)}:</strong> ${escapeHtml(match.future_away || "sin calendario detectado")}</div>
-          <div class="line"><strong>Sesgo arbitral:</strong> ${escapeHtml(referee.bias_summary || "sin historico arbitral fiable")}</div>
-          ${match.briefing_excerpt ? `<div class="brief">${escapeHtml(match.briefing_excerpt)}</div>` : `<div class="brief">Esta jornada ya esta publicada pero este partido todavia no tiene briefing enriquecido en el monitor publico.</div>`}
-        </div>`;
-    };
     async function render() {
       const response = await fetch(`status.json?t=${Date.now()}`, {cache:"no-store"});
       const status = await response.json();
@@ -3072,35 +2825,6 @@ def _build_monitor_web_html() -> str:
           <td>${run.current_jornada ?? "-"}</td>
           <td>${run.tracked_matches ?? "-"}</td>
         </tr>`).join("") || "<tr><td colspan='5'>Sin historial.</td></tr>";
-      const jornadas = status.public_jornadas || [];
-      document.getElementById("jornadas").innerHTML = jornadas.map((jornada, index) => `
-        <details class="jornada" ${index === 0 ? "open" : ""}>
-          <summary>
-            <span>${escapeHtml(jornada.label || "Jornada")} ${jornada.is_current ? "· actual" : "· siguiente/publicada"}</span>
-            <span class="mini">${fmtMadrid(jornada.kickoff_from)} ${jornada.history_only ? "· historico/cache" : ""}</span>
-          </summary>
-          <div class="jornada-body">
-            ${(jornada.matches || []).map(renderMatch).join("") || "<div class='match'>Sin partidos publicados.</div>"}
-          </div>
-        </details>`).join("") || "<div class='match'>Todavia no hay jornadas publicas preparadas.</div>";
-
-      const audit = status.audit_news_quality || status.auditoria_avanzada || status.audit || null;
-      const auditPanel = document.getElementById("audit-panel");
-      if (auditPanel && audit) {
-        auditPanel.style.display = "block";
-        const lang = audit.news_language || (coverage.news_language ?? "-");
-        const country = audit.news_country || (coverage.news_country ?? "-");
-        document.getElementById("audit-meta").textContent =
-          `Curación de noticias activa · hl=${lang} · gl=${country}`;
-        const hi = (audit.high_trust_domains || []).length;
-        const lo = (audit.low_trust_domains || []).length;
-        document.getElementById("audit-chips").innerHTML = [
-          chip(`High-trust domains ${hi}`, "ok"),
-          chip(`Blocked domains ${lo}`, "warn"),
-          chip(`Fuentes sanas ${coverage.sources_ok || 0}/${coverage.sources_total || 0}`),
-          chip(`Titulares frescos ${coverage.fresh_headlines || 0}`),
-        ].join("");
-      }
     }
     render();
     setInterval(render, 60000);
@@ -3109,11 +2833,176 @@ def _build_monitor_web_html() -> str:
 </html>"""
 
 
+def _monitor_competitive_context(match: dict) -> dict:
+    competition = match.get("competition_context") or {}
+    analytics = match.get("analytics_context") or {}
+    structured = match.get("structured_context") or {}
+    return {
+        "competitive_stakes_label": competition.get("competitive_stakes_label", ""),
+        "season_context_phase": competition.get("season_context_phase"),
+        "home_objective": competition.get("home_objective") or {},
+        "away_objective": competition.get("away_objective") or {},
+        "direct_rivalry": competition.get("direct_rivalry") or {},
+        "home_must_win_index": analytics.get("home_must_win_index"),
+        "away_must_win_index": analytics.get("away_must_win_index"),
+        "home_must_not_lose_index": analytics.get("home_must_not_lose_index"),
+        "away_must_not_lose_index": analytics.get("away_must_not_lose_index"),
+        "home_rotation_context": (structured.get("injury_context") or {}).get("home_rotation_context") or {},
+        "away_rotation_context": (structured.get("injury_context") or {}).get("away_rotation_context") or {},
+    }
+
+
+def _monitor_match_summary(match: dict) -> dict:
+    history = match.get("history_context") or {}
+    market_context = match.get("market_context") or {}
+    weather = match.get("weather_context") or {}
+    travel = match.get("travel_context") or {}
+    analytics = match.get("analytics_context") or {}
+    structured = match.get("structured_context") or {}
+    competition = match.get("competition_context") or {}
+    referee_context = structured.get("referee_context") or {}
+    home_recent = ((history.get("home") or {}).get("recent_all") or {})
+    away_recent = ((history.get("away") or {}).get("recent_all") or {})
+    home_table = ((history.get("home") or {}).get("table") or {})
+    away_table = ((history.get("away") or {}).get("table") or {})
+    home_upcoming = competition.get("home_upcoming") or []
+    away_upcoming = competition.get("away_upcoming") or []
+    official_percent = (
+        market_context.get("official_percent")
+        or match.get("official_quiniela_percentages")
+        or {}
+    )
+    return {
+        "slot": "Pleno al 15" if any(slot.get("pleno15") for slot in (match.get("quiniela_slots") or [])) else (
+            str((match.get("quiniela_slots") or [{}])[0].get("position") or "")
+        ),
+        "local": match.get("local", ""),
+        "visitante": match.get("visitante", ""),
+        "league": match.get("league", ""),
+        "kickoff": match.get("kickoff", ""),
+        "bookmaker": match.get("bookmaker", ""),
+        "odds": match.get("odds") or {},
+        "normalized_percent": market_context.get("normalized_percent") or {},
+        "official_percent": official_percent,
+        "home_table": {
+            "position": home_table.get("position"),
+            "points": home_table.get("points"),
+            "form": home_recent.get("form") or home_table.get("form"),
+        },
+        "away_table": {
+            "position": away_table.get("position"),
+            "points": away_table.get("points"),
+            "form": away_recent.get("form") or away_table.get("form"),
+        },
+        "pressure": {
+            "home": analytics.get("home_pressure_index") or {},
+            "away": analytics.get("away_pressure_index") or {},
+        },
+        "fatigue": {
+            "home": analytics.get("home_fatigue_index") or {},
+            "away": analytics.get("away_fatigue_index") or {},
+        },
+        "competitive_context": _monitor_competitive_context(match),
+        "travel_km": travel.get("distance_km"),
+        "weather": {
+            "temperature_c": weather.get("temperature_c"),
+            "precipitation_probability": weather.get("precipitation_probability"),
+            "wind_speed_kmh": weather.get("wind_speed_kmh"),
+        },
+        "referee": {
+            "name": referee_context.get("assigned_referee", ""),
+            "bias_summary": (referee_context.get("season_analysis") or {}).get("bias_summary", ""),
+        },
+        "future_home": " | ".join(
+            f"{item.get('rival', '?')} ({item.get('days_until', '?')}d)"
+            for item in home_upcoming[:5]
+        ),
+        "future_away": " | ".join(
+            f"{item.get('rival', '?')} ({item.get('days_until', '?')}d)"
+            for item in away_upcoming[:5]
+        ),
+        "h2h": (history.get("head_to_head") or {}),
+        "briefing_excerpt": (match.get("focus_ai_briefing") or "")[:1200],
+        "analysis_ready": bool(match.get("focus_ai_briefing")),
+    }
+
+
+def _merge_jornada_records(*sources: list[dict]) -> list[dict]:
+    merged = {}
+    for source_records in sources:
+        for record in source_records or []:
+            jornada_num = _safe_int(record.get("jornada"))
+            if not jornada_num:
+                continue
+            existing = merged.get(jornada_num)
+            if not existing:
+                merged[jornada_num] = dict(record)
+                continue
+            existing_matches = len(existing.get("matches", []) or existing.get("unmatched_slots", []) or [])
+            candidate_matches = len(record.get("matches", []) or record.get("unmatched_slots", []) or [])
+            existing_updated = str(existing.get("updated_at", "") or "")
+            candidate_updated = str(record.get("updated_at", "") or "")
+            if candidate_matches > existing_matches or candidate_updated > existing_updated:
+                merged[jornada_num] = dict(record)
+    out = list(merged.values())
+    out.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
+    return out
+
+
+def _history_jornada_records() -> list[dict]:
+    return _merge_jornada_records(
+        list(((MONITOR_JORNADAS_HISTORY or {}).get("jornadas") or {}).values()),
+        list(((QUINIELA_HISTORY or {}).get("jornadas") or {}).values()),
+    )
+
+
+def _select_monitor_public_jornadas(status_payload: dict) -> list[dict]:
+    jornadas = _merge_jornada_records(
+        list(status_payload.get("quiniela_jornadas") or []),
+        _history_jornada_records(),
+    )
+    if not jornadas:
+        return []
+    jornadas.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
+    current = _safe_int((status_payload.get("coverage") or {}).get("quiniela_current_jornada"))
+    if current:
+        selected = [
+            jornada
+            for jornada in jornadas
+            if current - 3 <= (_safe_int(jornada.get("jornada")) or 0) <= current + 1
+        ]
+        if selected:
+            jornadas = selected
+    if len(jornadas) > 5:
+        jornadas = jornadas[-5:]
+    out = []
+    for jornada in jornadas:
+        out.append(
+            {
+                "jornada": _safe_int(jornada.get("jornada")),
+                "label": jornada.get("label") or f"Jornada {_safe_int(jornada.get('jornada')) or '-'}",
+                "is_current": bool(jornada.get("is_current")),
+                "source": jornada.get("source", ""),
+                "source_url": jornada.get("source_url", ""),
+                "kickoff_from": jornada.get("kickoff_from", ""),
+                "kickoff_to": jornada.get("kickoff_to", ""),
+                "history_only": bool(jornada.get("history_only")),
+                "matches": [_monitor_match_summary(match) for match in jornada.get("matches", [])],
+            }
+        )
+    out.sort(key=lambda item: item.get("jornada") or 0, reverse=True)
+    return out
+
+
 def _build_monitor_status_payload(status_payload: dict) -> dict:
     coverage = status_payload.get("coverage") or {}
     structured = status_payload.get("structured_db_summary") or {}
     integrity = status_payload.get("quiniela_integrity") or {}
-    payload = {
+    jornadas = _merge_jornada_records(
+        list(status_payload.get("quiniela_jornadas") or []),
+        _history_jornada_records(),
+    )
+    return {
         "generated_at": status_payload.get("generated_at", ""),
         "snapshot_generated_at": status_payload.get("snapshot_generated_at", ""),
         "ok": bool(status_payload.get("ok")),
@@ -3146,239 +3035,21 @@ def _build_monitor_status_payload(status_payload: dict) -> dict:
             "checked_slots": integrity.get("checked_slots"),
             "mismatch_count": integrity.get("mismatch_count"),
         },
-        "last_runs": (status_payload.get("last_runs") or [])[-12:],
-        "public_jornadas": _build_monitor_public_jornadas(status_payload),
-    }
-    for key, value in status_payload.items():
-        normalized_key = _normalize_ascii(str(key)).lower()
-        if any(
-            token in normalized_key
-            for token in ["audit", "auditoria", "price", "precio", "quality", "calidad"]
-        ):
-            payload[key] = value
-    return payload
-
-
-def _monitor_github_headers() -> dict | None:
-    headers = {
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "QuiniAI-Monitor-Publisher/1.0",
-    }
-    if MONITOR_GITHUB_TOKEN:
-        headers["Authorization"] = f"Bearer {MONITOR_GITHUB_TOKEN}"
-        return headers
-    git_candidates = [
-        os.getenv("QUINIAI_GIT_EXE", "").strip(),
-        shutil.which("git") or "",
-        r"C:\Program Files\Git\cmd\git.exe",
-        r"C:\Program Files\Git\bin\git.exe",
-    ]
-    for candidate in git_candidates:
-        if not candidate:
-            continue
-        git_path = Path(candidate)
-        if not git_path.exists():
-            continue
-        try:
-            result = subprocess.run(
-                [str(git_path), "credential", "fill"],
-                input="protocol=https\nhost=github.com\n\n",
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                timeout=12,
-                check=True,
-            )
-            parsed = {}
-            for line in result.stdout.splitlines():
-                if "=" not in line:
-                    continue
-                key, value = line.split("=", 1)
-                parsed[key.strip()] = value.strip()
-            username = parsed.get("username", "")
-            password = parsed.get("password", "")
-            if username and password:
-                auth = base64.b64encode(f"{username}:{password}".encode("utf-8")).decode("ascii")
-                headers["Authorization"] = f"Basic {auth}"
-                return headers
-        except Exception:
-            continue
-    return None
-
-
-def _github_monitor_upsert(repo_path: str, content: str) -> bool:
-    headers = _monitor_github_headers()
-    if not headers or not MONITOR_REPO:
-        return False
-    local_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
-    state_entry = ((MONITOR_PUBLISH_STATE or {}).setdefault("files", {})).get(repo_path) or {}
-    if (
-        state_entry.get("local_hash") == local_hash
-        and state_entry.get("repo") == MONITOR_REPO
-        and state_entry.get("branch") == MONITOR_BRANCH
-    ):
-        return False
-    quoted_path = urllib.parse.quote(repo_path, safe="/")
-    url = f"https://api.github.com/repos/{MONITOR_REPO}/contents/{quoted_path}"
-    existing_sha = None
-    try:
-        response = requests.get(
-            url,
-            headers=headers,
-            params={"ref": MONITOR_BRANCH},
-            timeout=25,
-        )
-        if response.status_code == 200:
-            existing_sha = (response.json() or {}).get("sha")
-        elif response.status_code != 404:
-            response.raise_for_status()
-    except Exception as exc:
-        LOGGER.warning("monitor_publish_metadata_failed path=%s error=%s", repo_path, exc)
-        return False
-    payload = {
-        "message": f"Update public monitor: {repo_path}",
-        "content": base64.b64encode(content.encode("utf-8")).decode("ascii"),
-        "branch": MONITOR_BRANCH,
-    }
-    if existing_sha:
-        payload["sha"] = existing_sha
-    try:
-        response = requests.put(url, headers=headers, json=payload, timeout=30)
-        response.raise_for_status()
-        response_payload = response.json() or {}
-        content_payload = response_payload.get("content") or {}
-        MONITOR_PUBLISH_STATE.setdefault("files", {})[repo_path] = {
-            "local_hash": local_hash,
-            "repo": MONITOR_REPO,
-            "branch": MONITOR_BRANCH,
-            "sha": content_payload.get("sha", existing_sha or ""),
-            "published_at": _now_iso(),
-        }
-        _save_cache(MONITOR_PUBLISH_STATE_PATH, MONITOR_PUBLISH_STATE)
-        return True
-    except Exception as exc:
-        LOGGER.warning("monitor_publish_failed path=%s error=%s", repo_path, exc)
-        return False
-
-
-def publish_monitor_site() -> None:
-    if not MONITOR_PUBLISH_ENABLED:
-        return
-    last_published = _parse_iso_datetime(
-        str((MONITOR_PUBLISH_STATE.get("meta") or {}).get("last_publish_attempt_at", "")).strip()
-    )
-    if last_published:
-        age_seconds = (datetime.now(timezone.utc) - last_published).total_seconds()
-        if age_seconds < MONITOR_PUBLISH_MIN_SECONDS:
-            LOGGER.info(
-                "monitor_publish_throttled age_seconds=%s min_seconds=%s",
-                round(age_seconds, 1),
-                MONITOR_PUBLISH_MIN_SECONDS,
-            )
-            return
-    files_to_publish = [("docs/monitor/status.json", MONITOR_STATUS_JSON_PATH)]
-    if MONITOR_PUBLISH_INDEX:
-        files_to_publish.insert(0, ("docs/monitor/index.html", MONITOR_INDEX_PATH))
-    updated_any = False
-    for repo_path, local_path in files_to_publish:
-        try:
-            content = local_path.read_text(encoding="utf-8")
-        except Exception as exc:
-            LOGGER.warning("monitor_publish_read_failed path=%s error=%s", local_path, exc)
-            continue
-        updated_any = _github_monitor_upsert(repo_path, content) or updated_any
-    MONITOR_PUBLISH_STATE.setdefault("meta", {})["last_publish_attempt_at"] = _now_iso()
-    _save_cache(MONITOR_PUBLISH_STATE_PATH, MONITOR_PUBLISH_STATE)
-    if updated_any:
-        LOGGER.info("monitor_publish_ok repo=%s branch=%s", MONITOR_REPO, MONITOR_BRANCH)
-        return
-
-    # Sin token (`QUINIAI_GITHUB_TOKEN`) ni credenciales API disponibles:
-    # intentamos publicar via git (usara el Git Credential Manager del equipo).
-    try:
-        if not _monitor_github_headers():
-            _git_publish_monitor([repo_path for repo_path, _ in files_to_publish])
-    except Exception as exc:
-        LOGGER.warning("monitor_publish_git_fallback_failed error=%s", exc)
-
-
-def _git_publish_monitor(repo_paths: list[str]) -> bool:
-    repo_root = Path(__file__).resolve().parent
-    git_candidates = [
-        os.getenv("QUINIAI_GIT_EXE", "").strip(),
-        shutil.which("git") or "",
-        r"C:\Program Files\Git\cmd\git.exe",
-        r"C:\Program Files\Git\bin\git.exe",
-    ]
-    git_exe = next((c for c in git_candidates if c and Path(c).exists()), "")
-    if not git_exe:
-        LOGGER.warning("monitor_git_publish_no_git")
-        return False
-    try:
-        ok = subprocess.run(
-            [git_exe, "-C", str(repo_root), "rev-parse", "--is-inside-work-tree"],
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            timeout=12,
-            check=True,
-        )
-        if "true" not in (ok.stdout or "").strip().lower():
-            return False
-    except Exception:
-        return False
-    for rel_path in repo_paths:
-        subprocess.run(
-            [git_exe, "-C", str(repo_root), "add", "--", rel_path],
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            timeout=12,
-        )
-    porcelain = subprocess.run(
-        [git_exe, "-C", str(repo_root), "status", "--porcelain"],
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        timeout=12,
-    )
-    if not (porcelain.stdout or "").strip():
-        return False
-    subprocess.run(
-        [
-            git_exe,
-            "-C",
-            str(repo_root),
-            "-c",
-            "user.name=QuiniAIWorker",
-            "-c",
-            "user.email=worker@quiniai.local",
-            "commit",
-            "-m",
-            "Update monitor snapshot",
+        "quiniela_jornadas": [
+            {
+                "jornada": _safe_int(jornada.get("jornada")),
+                "label": jornada.get("label") or f"Jornada {_safe_int(jornada.get('jornada')) or '-'}",
+            }
+            for jornada in jornadas
         ],
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        timeout=20,
-    )
-    pushed = subprocess.run(
-        [git_exe, "-C", str(repo_root), "push", "origin", f"HEAD:{MONITOR_BRANCH}"],
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        timeout=60,
-    )
-    if pushed.returncode != 0:
-        LOGGER.warning("monitor_git_publish_push_failed stderr=%s", (pushed.stderr or "").strip())
-        return False
-    LOGGER.info("monitor_git_publish_ok branch=%s", MONITOR_BRANCH)
-    return True
+        "public_jornadas": _select_monitor_public_jornadas(status_payload),
+        "last_runs": (status_payload.get("last_runs") or [])[-12:],
+    }
 
 
 def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
     timestamp = _now_iso()
+    previous_status = _load_cache(STATUS_JSON_PATH) if STATUS_JSON_PATH.exists() else {}
     status_payload = {
         "generated_at": timestamp,
         "last_error": error,
@@ -3388,6 +3059,10 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
     }
     if snapshot:
         lines = _snapshot_summary_lines(snapshot)
+        jornadas_payload = _merge_jornada_records(
+            list(snapshot.get("quiniela_jornadas", []) or []),
+            _history_jornada_records(),
+        )
         status_text = "\n".join(lines) + "\n"
         status_payload.update(
             {
@@ -3397,23 +3072,33 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
                 "competition_headlines": snapshot.get("competition_headlines", {}),
                 "context_sources": snapshot.get("context_sources", []),
                 "source_health_summary": snapshot.get("source_health_summary", {}),
-                "quiniela_jornadas": snapshot.get("quiniela_jornadas", []),
+                "quiniela_jornadas": jornadas_payload,
                 "focus_matches": snapshot.get("quiniela_focus_matches", []),
                 "quiniela_integrity": snapshot.get("quiniela_integrity", {}),
                 "last_runs": list((RUN_HISTORY or {}).get("runs", []))[-12:],
             }
         )
-        # Exponer auditorías/costes/calidad en el monitor público (GitHub Pages).
-        for key, value in snapshot.items():
-            normalized_key = _normalize_ascii(str(key)).lower()
-            if any(token in normalized_key for token in ["audit", "auditoria", "price", "precio", "quality", "calidad", "cost", "coste"]):
-                status_payload[key] = value
     else:
         status_text = (
             "QUINIAI WORKER STATUS\n"
             f"Generated at: {timestamp}\n"
             f"Last error: {error}\n"
         )
+        if previous_status:
+            for key in (
+                "snapshot_generated_at",
+                "coverage",
+                "structured_db_summary",
+                "competition_headlines",
+                "context_sources",
+                "source_health_summary",
+                "quiniela_jornadas",
+                "focus_matches",
+                "quiniela_integrity",
+                "public_jornadas",
+            ):
+                if key in previous_status and key not in status_payload:
+                    status_payload[key] = previous_status.get(key)
     _write_text_file(STATUS_FILE_PATH, status_text)
     _write_text_file(DESKTOP_STATUS_FILE_PATH, status_text)
     _write_json_file(STATUS_JSON_PATH, status_payload)
@@ -3423,7 +3108,89 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
     _write_text_file(STATUS_HTML_PATH, html)
     _write_text_file(DESKTOP_STATUS_HTML_PATH, html)
     _write_text_file(MONITOR_INDEX_PATH, _build_monitor_web_html())
-    publish_monitor_site()
+
+
+def _run_git_command(*args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        ["git", *args],
+        cwd=str(Path(__file__).resolve().parent),
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+    )
+
+
+def publish_monitor_to_github() -> bool:
+    if not AUTO_PUBLISH_MONITOR:
+        return False
+    repo_root = Path(__file__).resolve().parent
+    tracked_files = [
+        "docs/monitor/index.html",
+        "docs/monitor/status.json",
+        "docs/monitor/jornadas_history.json",
+    ]
+    status = _run_git_command("status", "--porcelain", "--", *tracked_files)
+    if status.returncode != 0:
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_status_failed",
+            stdout=status.stdout.strip(),
+            stderr=status.stderr.strip(),
+        )
+        return False
+    changed = [line for line in status.stdout.splitlines() if line.strip()]
+    if not changed:
+        return False
+
+    add = _run_git_command("add", *tracked_files)
+    if add.returncode != 0:
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_add_failed",
+            stdout=add.stdout.strip(),
+            stderr=add.stderr.strip(),
+        )
+        return False
+
+    commit_message = f"Update monitor status {_format_madrid_datetime(_now_iso())}"
+    commit = _run_git_command("commit", "-m", commit_message)
+    if commit.returncode != 0 and "nothing to commit" not in (commit.stdout + commit.stderr).lower():
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_commit_failed",
+            stdout=commit.stdout.strip(),
+            stderr=commit.stderr.strip(),
+        )
+        return False
+
+    pull = _run_git_command("pull", "--rebase", "origin", "main")
+    if pull.returncode != 0:
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_pull_failed",
+            stdout=pull.stdout.strip(),
+            stderr=pull.stderr.strip(),
+        )
+        return False
+
+    push = _run_git_command("push", "origin", "main")
+    if push.returncode != 0:
+        _log_cycle_event(
+            "warning",
+            "monitor_publish_push_failed",
+            stdout=push.stdout.strip(),
+            stderr=push.stderr.strip(),
+        )
+        return False
+
+    _log_cycle_event(
+        "info",
+        "monitor_publish_ok",
+        changed_files=tracked_files,
+        repo=str(repo_root),
+    )
+    return True
 
 
 def print_pretty_summary(snapshot: dict) -> None:
@@ -3441,54 +3208,6 @@ def _strip_google_suffix(title: str) -> str:
     if cleaned.endswith(" - Google News"):
         cleaned = cleaned[: -len(" - Google News")].strip()
     return cleaned
-
-
-def _safe_url_host(value: str) -> str:
-    url = str(value or "").strip()
-    if not url:
-        return ""
-    try:
-        parsed = urllib.parse.urlparse(url)
-        host = (parsed.netloc or "").strip().lower()
-    except Exception:
-        return ""
-    if host.startswith("www."):
-        host = host[4:]
-    return host
-
-
-def _resolve_google_news_link(value: str) -> str:
-    """Google News RSS suele traer URLs intermedias; intentamos extraer el destino real.
-
-    - /rss/articles/... a veces incluye ?url=<destino>
-    - algunos enlaces usan /articles/.. con query ?url=
-    """
-    url = str(value or "").strip()
-    if not url:
-        return ""
-    try:
-        parsed = urllib.parse.urlparse(url)
-    except Exception:
-        return url
-    if "news.google.com" not in (parsed.netloc or ""):
-        return url
-    params = urllib.parse.parse_qs(parsed.query or "")
-    # RSS suele traer `url` o `q` apuntando al destino.
-    candidate = (params.get("url") or params.get("q") or [""])[0]
-    candidate = str(candidate or "").strip()
-    if candidate.startswith("http"):
-        return candidate
-    return url
-
-
-def _enrich_news_item(item: dict) -> dict:
-    enriched = dict(item or {})
-    link = str(enriched.get("link", "")).strip()
-    resolved = _resolve_google_news_link(link)
-    if resolved and resolved != link:
-        enriched["link"] = resolved
-    enriched["_domain"] = _safe_url_host(enriched.get("link", ""))
-    return enriched
 
 
 def _normalize_ascii(value: str) -> str:
@@ -3512,20 +3231,18 @@ def _canonical_team_name(value: str) -> str:
 
 
 def _team_similarity_score(left: str, right: str) -> float:
-    left_norm = _normalize_team_name(_canonical_team_name(left))
-    right_norm = _normalize_team_name(_canonical_team_name(right))
+    left_norm = _normalize_team_name(left)
+    right_norm = _normalize_team_name(right)
     if not left_norm or not right_norm:
         return 0.0
     if left_norm == right_norm:
         return 1.0
     if left_norm in right_norm or right_norm in left_norm:
-        return 0.93
+        return 0.85
     left_tokens = set(left_norm.split())
     right_tokens = set(right_norm.split())
     if not left_tokens or not right_tokens:
         return 0.0
-    if left_tokens <= right_tokens or right_tokens <= left_tokens:
-        return 0.92
     token_score = len(left_tokens & right_tokens) / len(left_tokens | right_tokens)
     ratio_score = difflib.SequenceMatcher(a=left_norm, b=right_norm).ratio()
     return max(token_score, ratio_score)
@@ -3562,19 +3279,11 @@ def _team_location_override(team_name: str) -> dict:
     return TEAM_LOCATION_OVERRIDES.get(normalized, {})
 
 
-def _apply_location_override_fields(profile: dict, team_name: str) -> dict:
-    enriched = dict(profile or {})
-    override = _team_location_override(team_name)
-    if not override:
-        return enriched
-    for field in ["city", "country", "country_code", "timezone", "latitude", "longitude"]:
-        if override.get(field) not in {None, ""} and (
-            field in {"latitude", "longitude"} or enriched.get(field) in {None, ""}
-        ):
-            enriched[field] = override.get(field)
-    if not str(enriched.get("location_hint", "")).strip() and override.get("query"):
-        enriched["location_hint"] = override.get("query", "")
-    return enriched
+def _team_wikipedia_override(team_name: str) -> str:
+    normalized = _normalize_team_name(str(team_name or "").strip())
+    if not normalized:
+        return ""
+    return TEAM_WIKIPEDIA_TITLE_OVERRIDES.get(normalized, "")
 
 
 def _extract_location_hint(summary: str) -> str:
@@ -3600,6 +3309,9 @@ def _clean_location_hint(location_hint: str) -> str:
 
 
 def _search_wikipedia_title(team_name: str, country_hint: str | None = None) -> str:
+    override_title = _team_wikipedia_override(team_name)
+    if override_title:
+        return override_title
     country_label = COUNTRY_LABELS.get(country_hint or "", "")
     queries = [
         f"{team_name} {country_label} football club".strip(),
@@ -3738,7 +3450,7 @@ def _repair_profile_location(
     country_hint: str | None = None,
     *extra_hints: str,
 ) -> dict:
-    repaired = _apply_location_override_fields(profile or {}, team_name)
+    repaired = dict(profile or {})
     resolved_country_hint = _guess_country_hint(
         team_name,
         country_hint or repaired.get("country_code") or repaired.get("country_hint"),
@@ -3768,7 +3480,7 @@ def _repair_profile_location(
         repaired["country_code"] = geocoded.get("country_code", "")
     if not str(repaired.get("timezone", "")).strip() and geocoded.get("timezone"):
         repaired["timezone"] = geocoded.get("timezone", "")
-    return _apply_location_override_fields(repaired, team_name)
+    return repaired
 
 
 def fetch_team_profile(team_name: str, country_hint: str | None = None) -> dict:
@@ -3813,7 +3525,6 @@ def fetch_team_profile(team_name: str, country_hint: str | None = None) -> dict:
         "longitude": longitude,
         "cache_version": TEAM_PROFILE_CACHE_VERSION,
     }
-    profile = _apply_location_override_fields(profile, team_name)
     _cache_set(TEAM_PROFILE_CACHE, team_name, profile)
     return profile
 
@@ -3899,6 +3610,20 @@ def _fetch_cached_html(url: str, cache_key: str, ttl_seconds: int = 12 * 3600) -
     return html_text
 
 
+def _combine_match_datetime(date_text: str, hour_text: str) -> str:
+    date_text = str(date_text or "").strip()
+    hour_text = str(hour_text or "").strip() or "00:00"
+    if not date_text:
+        return ""
+    for fmt in ("%d/%m/%Y %H:%M", "%d/%m/%y %H:%M", "%Y-%m-%d %H:%M"):
+        try:
+            parsed = datetime.strptime(f"{date_text} {hour_text}", fmt).replace(tzinfo=MADRID_TZ)
+            return parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+        except Exception:
+            continue
+    return ""
+
+
 def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
     jornadas = []
     block_pattern = re.compile(
@@ -3950,6 +3675,151 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
                     "pleno15": next((slot for slot in slots if slot.get("position") == 15), {}),
                 }
             )
+    return jornadas
+
+
+def _find_lae_match_arrays(root, out: list | None = None, depth: int = 0) -> list[list[dict]]:
+    if out is None:
+        out = []
+    if depth > 10:
+        return out
+    if isinstance(root, list) and root and isinstance(root[0], dict):
+        keyset = {str(key).lower() for key in root[0].keys()}
+        has_match_shape = (
+            any(("local" in key or key in {"home", "equipo1"}) for key in keyset)
+            and any(("visit" in key or key in {"away", "equipo2"}) for key in keyset)
+        ) or any(key in {"partido", "match", "encuentro"} for key in keyset)
+        if has_match_shape:
+            out.append(root)
+    if isinstance(root, dict):
+        for value in root.values():
+            _find_lae_match_arrays(value, out, depth + 1)
+    elif isinstance(root, list):
+        for value in root:
+            _find_lae_match_arrays(value, out, depth + 1)
+    return out
+
+
+def _parse_lae_match_array(entries: list[dict]) -> list[dict]:
+    parsed = []
+    for raw in entries[:15]:
+        if not isinstance(raw, dict):
+            continue
+        local = str(
+            raw.get("local")
+            or raw.get("equipo1")
+            or raw.get("equipoLocal")
+            or raw.get("equipo_local")
+            or raw.get("nombre_local")
+            or raw.get("home")
+            or raw.get("homeTeam")
+            or ""
+        ).strip()
+        visitante = str(
+            raw.get("visitante")
+            or raw.get("equipo2")
+            or raw.get("equipoVisitante")
+            or raw.get("equipo_visitante")
+            or raw.get("nombre_visitante")
+            or raw.get("away")
+            or raw.get("awayTeam")
+            or ""
+        ).strip()
+        merged_name = str(raw.get("partido") or raw.get("match") or raw.get("encuentro") or "").strip()
+        if (not local or not visitante) and " - " in merged_name:
+            local, visitante = [part.strip() for part in merged_name.split(" - ", 1)]
+        if not local or not visitante:
+            continue
+        fecha = str(raw.get("fecha_completa") or raw.get("fecha") or "").strip()
+        hora = str(raw.get("hora") or "").strip()
+        kickoff = ""
+        if fecha and hora:
+            kickoff = _combine_match_datetime(fecha, hora)
+        elif fecha:
+            kickoff = _combine_match_datetime(fecha, "00:00")
+        parsed.append(
+            {
+                "position": _safe_int(raw.get("posicion") or raw.get("orden") or len(parsed) + 1),
+                "local": _canonical_team_name(local),
+                "visitante": _canonical_team_name(visitante),
+                "percentages": {},
+                "kickoff": kickoff,
+                "date_label": fecha,
+                "hour_label": hora,
+            }
+        )
+    return [item for item in parsed if item.get("position")]
+
+
+def _lae_slots_are_placeholder(slots: list[dict]) -> bool:
+    bad = ("aleatoria", "sorteo", "determinarse", "a determinar", "por determinar")
+    provisional = 0
+    for slot in slots:
+        local = str(slot.get("local", "")).lower()
+        visitante = str(slot.get("visitante", "")).lower()
+        if any(token in local or token in visitante for token in bad):
+            provisional += 1
+    return provisional >= 2
+
+
+def fetch_lae_upcoming_jornadas(limit: int = 8) -> list[dict]:
+    cache_key = f"lae:upcoming-jornadas:{limit}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, cache_key, 30 * 60)
+    if cached:
+        return list(cached)
+    jornadas = []
+    try:
+        payload = _request_json_lae(
+            LAE_PROXIMOS_URL,
+            params={"game_id": "LAQU", "num": max(2, limit)},
+            timeout=20,
+        )
+        if isinstance(payload, list):
+            for sorteo in payload:
+                if not isinstance(sorteo, dict):
+                    continue
+                jornada_num = _safe_int(sorteo.get("jornada") or sorteo.get("numero_sorteo"))
+                if not jornada_num:
+                    continue
+                arrays = _find_lae_match_arrays(sorteo)
+                slots = []
+                for arr in arrays:
+                    slots = _parse_lae_match_array(arr)
+                    if len(slots) >= 14 and not _lae_slots_are_placeholder(slots):
+                        break
+                if len(slots) < 14:
+                    sorteo_id = str(sorteo.get("id_sorteo") or "").strip()
+                    if sorteo_id:
+                        try:
+                            detail = _request_json_lae(
+                                LAE_PUNTO_VENTA_URL,
+                                params={"gameId": "LAQU", "idSorteo": sorteo_id},
+                                timeout=20,
+                            )
+                            for arr in _find_lae_match_arrays(detail):
+                                slots = _parse_lae_match_array(arr)
+                                if len(slots) >= 14 and not _lae_slots_are_placeholder(slots):
+                                    break
+                        except Exception:
+                            pass
+                if len(slots) >= 14 and not _lae_slots_are_placeholder(slots):
+                    jornadas.append(
+                        {
+                            "jornada": jornada_num,
+                            "date_label": str(sorteo.get("fecha_sorteo") or "").strip(),
+                            "matches": [slot for slot in slots if (slot.get("position") or 0) < 15],
+                            "pleno15": next(
+                                (slot for slot in slots if slot.get("position") == 15),
+                                {},
+                            ),
+                            "source": "LAE proximosv3",
+                            "source_url": f"{LAE_PROXIMOS_URL}?game_id=LAQU&num={max(2, limit)}",
+                        }
+                    )
+    except Exception:
+        jornadas = []
+    jornadas.sort(key=lambda item: _safe_int(item.get("jornada")) or 0)
+    _cache_set(EXTERNAL_FEEDS_CACHE, cache_key, jornadas)
     return jornadas
 
 
@@ -4387,7 +4257,7 @@ def fetch_team_news(team_name: str) -> dict:
 
 
 def fetch_focus_team_news(team_name: str) -> dict:
-    cache_key = f"v9:focus:{team_name}"
+    cache_key = f"v8:focus:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -4396,7 +4266,6 @@ def fetch_focus_team_news(team_name: str) -> dict:
         f'{team_query} lesion OR injury OR baja OR suspension OR sancion OR doubt OR convocatoria',
         f'{team_query} entrenador OR coach OR rueda de prensa OR alineacion OR rotation OR descanso',
         f'{team_query} descenso OR permanencia OR playoff OR ascenso OR title race OR crisis OR moral OR presion',
-        f'{team_query} Champions OR Europa League OR Conference League OR semifinal OR rotaciones OR descanso',
         f'{team_query} convocatoria OR once probable OR probable lineup OR parte medico OR medical update',
     ]
     items = []
@@ -4577,127 +4446,6 @@ def fetch_match_referee_news(home_team: str, away_team: str) -> list[dict]:
     return items
 
 
-def fetch_match_referee_news(home_team: str, away_team: str) -> list[dict]:
-    cache_key = f"v9:referee:{home_team}__{away_team}"
-    cached = _cache_get(MATCH_NEWS_CACHE, cache_key, MATCH_NEWS_CACHE_TTL_SECONDS)
-    if cached:
-        return cached
-    try:
-        items = []
-        queries = [
-            (
-                f'{_team_query_terms(home_team)} {_team_query_terms(away_team)} '
-                '"referee" OR "arbitro" OR "árbitro" OR "colegiado"'
-            ),
-            f'"{home_team}" "{away_team}" arbitro OR árbitro OR colegiado OR designacion arbitral',
-            f'"{home_team}" "{away_team}" arbitros OR árbitros OR designaciones',
-        ]
-        for query in queries:
-            xml_text = _request_text(
-                GOOGLE_NEWS_RSS_URL,
-                params={
-                    "q": query,
-                    "hl": NEWS_LANGUAGE,
-                    "gl": NEWS_COUNTRY,
-                    "ceid": f"{NEWS_COUNTRY}:{NEWS_LANGUAGE}",
-                },
-                timeout=20,
-            )
-            for item in _parse_google_news_rss(xml_text):
-                if _is_low_signal_source(item.get("source", "")):
-                    continue
-                enriched = dict(item)
-                enriched["_relevance"] = _match_relevance_score(
-                    enriched.get("title", ""),
-                    home_team,
-                    away_team,
-                )
-                if enriched["_relevance"] <= 0 and not _contains_any(
-                    enriched.get("title", ""),
-                    ["referee", "arbitro", "árbitro", "colegiado"],
-                ):
-                    continue
-                items.append(enriched)
-        filtered = [
-            item
-            for item in _predictive_news_items(items)
-            if _contains_any(f"{item.get('title', '')} {item.get('source', '')}", DISCIPLINE_KEYWORDS)
-            and (
-                _passes_match_news_quality(item, home_team, away_team)
-                or _contains_any(item.get("title", ""), ["referee", "arbitro", "árbitro", "colegiado"])
-            )
-        ]
-        items = _clean_news_items(filtered, MATCH_NEWS_MAX_AGE_DAYS, 6)
-    except Exception:
-        items = []
-    _cache_set(MATCH_NEWS_CACHE, cache_key, items)
-    return items
-
-
-def fetch_match_referee_news(home_team: str, away_team: str) -> list[dict]:
-    cache_key = f"v10:referee:{home_team}__{away_team}"
-    cached = _cache_get(MATCH_NEWS_CACHE, cache_key, MATCH_NEWS_CACHE_TTL_SECONDS)
-    if cached:
-        return cached
-    try:
-        items = []
-        queries = [
-            f'"{home_team}" "{away_team}" arbitro OR árbitro OR colegiado OR designacion arbitral OR designaciones arbitrales',
-            f'{_team_query_terms(home_team)} {_team_query_terms(away_team)} "referee" OR "arbitro" OR "colegiado"',
-            (
-                f'"{home_team}" "{away_team}" '
-                '(site:vavel.com OR site:as.com OR site:marca.com OR site:mundodeportivo.com OR site:eldesmarque.com) '
-                'arbitro OR árbitro OR colegiado'
-            ),
-        ]
-        for query in queries:
-            xml_text = _request_text(
-                GOOGLE_NEWS_RSS_URL,
-                params={
-                    "q": query,
-                    "hl": NEWS_LANGUAGE,
-                    "gl": NEWS_COUNTRY,
-                    "ceid": f"{NEWS_COUNTRY}:{NEWS_LANGUAGE}",
-                },
-                timeout=20,
-            )
-            for item in _parse_google_news_rss(xml_text):
-                if _is_low_signal_source(item.get("source", "")):
-                    continue
-                enriched = dict(item)
-                enriched["_relevance"] = _match_relevance_score(
-                    enriched.get("title", ""),
-                    home_team,
-                    away_team,
-                )
-                if enriched["_relevance"] <= 0 and not _contains_any(
-                    enriched.get("title", ""),
-                    ["referee", "arbitro", "árbitro", "colegiado", "designacion"],
-                ):
-                    continue
-                items.append(enriched)
-        filtered = [
-            item
-            for item in _predictive_news_items(items)
-            if _contains_any(
-                f"{item.get('title', '')} {item.get('source', '')}",
-                DISCIPLINE_KEYWORDS + ["designacion", "designación"],
-            )
-            and (
-                _passes_match_news_quality(item, home_team, away_team)
-                or _contains_any(
-                    item.get("title", ""),
-                    ["referee", "arbitro", "árbitro", "colegiado", "designacion", "designación"],
-                )
-            )
-        ]
-        items = _clean_news_items(filtered, MATCH_NEWS_MAX_AGE_DAYS, 8)
-    except Exception:
-        items = []
-    _cache_set(MATCH_NEWS_CACHE, cache_key, items)
-    return items
-
-
 def fetch_the_sportsdb_team(team_name: str) -> dict:
     cached = _cache_get(THESPORTSDB_CACHE, f"team:{team_name}", 7 * 24 * 3600)
     if cached:
@@ -4711,25 +4459,7 @@ def fetch_the_sportsdb_team(team_name: str) -> dict:
     except Exception:
         data = {}
     teams = (data or {}).get("teams") or []
-    payload = {}
-    if teams:
-        country_hint = _guess_country_hint(team_name)
-        best_score = -1.0
-        for candidate in teams:
-            if str(candidate.get("strSport", "")).strip().lower() != "soccer":
-                continue
-            score = max(
-                _team_similarity_score(team_name, str(candidate.get("strTeam", "")).strip()),
-                _team_similarity_score(team_name, str(candidate.get("strTeamAlternate", "")).strip()),
-            )
-            if country_hint and str(candidate.get("strCountry", "")).strip():
-                if str(candidate.get("strCountry", "")).strip().lower() == COUNTRY_LABELS.get(country_hint, "").lower():
-                    score += 0.08
-            if str(candidate.get("idESPN", "")).strip():
-                score += 0.04
-            if score > best_score:
-                best_score = score
-                payload = candidate
+    payload = teams[0] if teams else {}
     _cache_set(THESPORTSDB_CACHE, f"team:{team_name}", payload)
     return payload
 
@@ -4808,26 +4538,6 @@ def fetch_the_sportsdb_next_event(team_id: str) -> dict:
     return payload
 
 
-def fetch_the_sportsdb_next_events(team_id: str) -> list[dict]:
-    if not team_id:
-        return []
-    cached = _cache_get(THESPORTSDB_CACHE, f"next_events:v2:{team_id}", 3 * 3600)
-    if cached:
-        return list(cached)
-    try:
-        data = _request_json(
-            THESPORTSDB_EVENTS_NEXT_URL,
-            params={"id": team_id},
-            timeout=20,
-        )
-    except Exception:
-        data = {}
-    events = (data or {}).get("events") or []
-    payload = events if isinstance(events, list) else []
-    _cache_set(THESPORTSDB_CACHE, f"next_events:v2:{team_id}", payload)
-    return payload
-
-
 def fetch_the_sportsdb_round_events(league_id: str, season: str, round_value: object) -> list[dict]:
     if not league_id or not season or round_value in {None, ""}:
         return []
@@ -4849,36 +4559,6 @@ def fetch_the_sportsdb_round_events(league_id: str, season: str, round_value: ob
     return events
 
 
-def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
-    league_id_map = {
-        "4335": "soccer_spain_la_liga",
-        "4396": "soccer_spain_segunda_division",
-        "4328": "soccer_epl",
-        "4329": "soccer_efl_champ",
-    }
-    league_name_aliases = {
-        "spanish laliga": "soccer_spain_la_liga",
-        "laliga": "soccer_spain_la_liga",
-        "la liga": "soccer_spain_la_liga",
-        "spanish segunda division": "soccer_spain_segunda_division",
-        "segunda division": "soccer_spain_segunda_division",
-        "laliga2": "soccer_spain_segunda_division",
-        "english premier league": "soccer_epl",
-        "premier league": "soccer_epl",
-        "english league championship": "soccer_efl_champ",
-        "efl championship": "soccer_efl_champ",
-        "championship": "soccer_efl_champ",
-    }
-    for payload in payloads:
-        league_id = str((payload or {}).get("idLeague", "")).strip()
-        if league_id and league_id in league_id_map:
-            return league_id_map[league_id]
-        league_name = _normalize_team_name(str((payload or {}).get("strLeague", "")).strip())
-        if league_name in league_name_aliases:
-            return league_name_aliases[league_name]
-    return ""
-
-
 def _sportsdb_event_kickoff(event: dict) -> str:
     timestamp = str(event.get("strTimestamp", "")).strip()
     if timestamp:
@@ -4888,83 +4568,6 @@ def _sportsdb_event_kickoff(event: dict) -> str:
     if date_value:
         return f"{date_value}T{time_value}Z"
     return ""
-
-
-def _sportsdb_event_match_score(event: dict, home_team: str, away_team: str, kickoff: str) -> float:
-    event_home = str(event.get("strHomeTeam", "")).strip()
-    event_away = str(event.get("strAwayTeam", "")).strip()
-    if not event_home or not event_away:
-        return 0.0
-    home_score = _team_similarity_score(home_team, event_home)
-    away_score = _team_similarity_score(away_team, event_away)
-    if home_score < 0.9 or away_score < 0.9:
-        return 0.0
-    score = home_score + away_score
-    kickoff_dt = _parse_iso_datetime(kickoff)
-    event_dt = _parse_iso_datetime(_sportsdb_event_kickoff(event))
-    if kickoff_dt and event_dt:
-        delta_hours = abs((event_dt - kickoff_dt).total_seconds()) / 3600.0
-        if delta_hours <= 3:
-            score += 1.1
-        elif delta_hours <= 30:
-            score += 0.7
-        elif delta_hours <= 72:
-            score += 0.3
-    return score
-
-
-def _resolve_sportsdb_event(
-    home_team: str,
-    away_team: str,
-    kickoff: str,
-    home_team_api: dict,
-    away_team_api: dict,
-    inferred_round: int | None = None,
-) -> dict:
-    candidates = []
-    home_next = fetch_the_sportsdb_next_event(str(home_team_api.get("idTeam", "")).strip())
-    away_next = fetch_the_sportsdb_next_event(str(away_team_api.get("idTeam", "")).strip())
-    for event in [home_next, away_next]:
-        if event:
-            candidates.append(dict(event))
-    league_id = str(home_team_api.get("idLeague", "") or away_team_api.get("idLeague", "")).strip()
-    season = (
-        str(home_next.get("strSeason", "")).strip()
-        or str(away_next.get("strSeason", "")).strip()
-        or _season_tag_for(_parse_iso_datetime(kickoff))
-    )
-    round_candidates = []
-    if inferred_round:
-        round_candidates.extend([inferred_round - 1, inferred_round, inferred_round + 1, inferred_round + 2])
-    for raw_round in round_candidates:
-        if not league_id or not season or raw_round is None or raw_round <= 0:
-            continue
-        for event in fetch_the_sportsdb_round_events(league_id, season, raw_round):
-            candidates.append(dict(event))
-    best_event = {}
-    best_score = 0.0
-    seen = set()
-    for event in candidates:
-        event_id = str(event.get("idEvent", "")).strip()
-        if event_id and event_id in seen:
-            continue
-        if event_id:
-            seen.add(event_id)
-        score = _sportsdb_event_match_score(event, home_team, away_team, kickoff)
-        if score > best_score:
-            best_score = score
-            best_event = event
-    if not best_event:
-        best_event = dict(away_next or home_next or {})
-    if best_event:
-        best_event.setdefault("strHomeTeam", home_team)
-        best_event.setdefault("strAwayTeam", away_team)
-        best_event.setdefault("idLeague", league_id)
-        best_event.setdefault("strLeague", home_team_api.get("strLeague", "") or away_team_api.get("strLeague", ""))
-        best_event.setdefault("strSeason", season)
-        if inferred_round and not str(best_event.get("intRound", "")).strip():
-            best_event["intRound"] = str(inferred_round)
-    return best_event
 
 
 def fetch_espn_team_fixtures(
@@ -5169,56 +4772,6 @@ def _extract_referee_assignment(
         "var_referee": "",
         "avar_referee": "",
         "source": "thesportsdb" if official_name else ("news" if candidates else ""),
-        "candidate_articles": candidates,
-    }
-
-
-def _extract_referee_assignment(
-    league_key: str,
-    kickoff: str,
-    home_team: str,
-    away_team: str,
-    match_news_items: list[dict],
-    sportsdb_event: dict,
-) -> dict:
-    rfef_context = _extract_rfef_officials(league_key, sportsdb_event, home_team, away_team, kickoff)
-    if rfef_context.get("assigned_referee"):
-        return {
-            "assigned_referee": rfef_context.get("assigned_referee", ""),
-            "fourth_official": rfef_context.get("fourth_official", ""),
-            "var_referee": rfef_context.get("var_referee", ""),
-            "avar_referee": rfef_context.get("avar_referee", ""),
-            "source": "rfef",
-            "candidate_articles": [],
-        }
-    official_name = str(sportsdb_event.get("strOfficial", "")).strip()
-    sportsdb_home_team = str(sportsdb_event.get("strHomeTeam", "")).strip() or home_team
-    sportsdb_away_team = str(sportsdb_event.get("strAwayTeam", "")).strip() or away_team
-    if official_name and not _looks_like_referee_name(official_name, sportsdb_home_team, sportsdb_away_team):
-        official_name = ""
-    candidates = _build_referee_candidates_strict(
-        match_news_items,
-        sportsdb_home_team,
-        sportsdb_away_team,
-    )
-    assigned_referee = official_name
-    if not assigned_referee:
-        for item in match_news_items:
-            assigned_referee = _fetch_article_referee_candidate(
-                item,
-                sportsdb_home_team,
-                sportsdb_away_team,
-            )
-            if assigned_referee:
-                break
-    if not assigned_referee and candidates:
-        assigned_referee = candidates[0].get("name", "")
-    return {
-        "assigned_referee": assigned_referee,
-        "fourth_official": "",
-        "var_referee": "",
-        "avar_referee": "",
-        "source": "thesportsdb" if official_name else ("news" if (assigned_referee or candidates) else ""),
         "candidate_articles": candidates,
     }
 
@@ -5739,42 +5292,355 @@ def _future_schedule_difficulty(fixtures: list[dict]) -> dict:
     }
 
 
-def _fixture_richness_score(fixture: dict) -> int:
-    score = 0
-    if fixture.get("opponent_position") is not None:
-        score += 3
-    if fixture.get("opponent_points") is not None:
-        score += 2
-    if fixture.get("round"):
-        score += 2
-    if fixture.get("league"):
-        score += 1
-    source = str(fixture.get("source", "")).strip()
-    if source == "odds-feed":
-        score += 3
-    elif source == "sportsdb-rounds":
-        score += 2
-    elif source == "espn-fixtures":
-        score += 1
-    return score
+def _table_row_at_position(table_snapshot: dict, position: int | None) -> dict:
+    if not table_snapshot or not position or position <= 0:
+        return {}
+    return next(
+        (row for row in table_snapshot.values() if _safe_int(row.get("position")) == position),
+        {},
+    )
 
 
-def _same_future_fixture(left: dict, right: dict) -> bool:
-    if str(left.get("venue", "")).strip() != str(right.get("venue", "")).strip():
-        return False
-    if _team_similarity_score(str(left.get("opponent", "")), str(right.get("opponent", ""))) < 0.9:
-        return False
-    left_dt = _parse_iso_datetime(str(left.get("kickoff", "")).strip())
-    right_dt = _parse_iso_datetime(str(right.get("kickoff", "")).strip())
-    if left_dt and right_dt:
-        if abs((left_dt - right_dt).total_seconds()) <= 36 * 3600:
-            return True
-    return str(left.get("date", "")).strip() and str(left.get("date", "")).strip() == str(
-        right.get("date", "")
-    ).strip()
+def _urgency_from_gap(gap: int | None, *, inside: bool = False) -> str:
+    if gap is None:
+        return "medium"
+    gap = int(gap)
+    if inside:
+        if gap <= 1:
+            return "critical"
+        if gap <= 3:
+            return "high"
+        if gap <= 6:
+            return "medium"
+        return "low"
+    if gap <= 1:
+        return "critical"
+    if gap <= 3:
+        return "high"
+    if gap <= 6:
+        return "medium"
+    return "low"
 
 
-def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict) -> dict:
+def _season_objective_context(league_key: str, table_snapshot: dict, team_name: str) -> dict:
+    team_row = table_snapshot.get(team_name) or {}
+    if not team_row:
+        return {}
+
+    position = _safe_int(team_row.get("position"))
+    points = _safe_int(team_row.get("points"), 0) or 0
+    if not position:
+        return {}
+
+    objective_lines = LEAGUE_SEASON_OBJECTIVE_LINES.get(league_key) or []
+    relegation_start = LEAGUE_RELEGATION_START.get(league_key)
+    drop_zone = bool(relegation_start and position >= relegation_start)
+    drop_row = _table_row_at_position(table_snapshot, relegation_start)
+    safe_row = _table_row_at_position(table_snapshot, max(1, (relegation_start or 1) - 1))
+    drop_points = _safe_int(drop_row.get("points"), points) or points
+    safe_points = _safe_int(safe_row.get("points"), points) or points
+
+    if drop_zone:
+        gap_to_safe = max(0, safe_points - points)
+        return {
+            "objective_key": "survival",
+            "objective_label": "salvacion",
+            "status": "drop_zone",
+            "line_position": max(1, (relegation_start or 1) - 1),
+            "line_points": safe_points,
+            "gap_points": gap_to_safe,
+            "cushion_points": None,
+            "urgency": _urgency_from_gap(gap_to_safe, inside=False),
+            "summary": f"en descenso, a {gap_to_safe} pts de la salvacion",
+        }
+
+    for idx, line in enumerate(objective_lines):
+        line_position = int(line["line_position"])
+        if position > line_position:
+            continue
+        line_points = _safe_int(
+            _table_row_at_position(table_snapshot, line_position).get("points"),
+            points,
+        ) or points
+        outside_points = _safe_int(
+            _table_row_at_position(table_snapshot, line_position + 1).get("points"),
+            points,
+        )
+        cushion = max(0, points - (outside_points if outside_points is not None else points))
+        better_line = objective_lines[idx - 1] if idx > 0 else None
+        gap_to_better = None
+        if better_line:
+            better_points = _safe_int(
+                _table_row_at_position(table_snapshot, int(better_line["line_position"])).get("points"),
+                points,
+            )
+            gap_to_better = max(0, (better_points or points) - points)
+        summary = f"en zona {line['label']} con colchon de {cushion} pts"
+        if gap_to_better is not None and better_line:
+            summary += f" y a {gap_to_better} pts de {better_line['label']}"
+        return {
+            "objective_key": line["key"],
+            "objective_label": line["label"],
+            "status": "defending",
+            "line_position": line_position,
+            "line_points": line_points,
+            "gap_points": gap_to_better,
+            "cushion_points": cushion,
+            "urgency": _urgency_from_gap(cushion, inside=True),
+            "summary": summary,
+        }
+
+    if objective_lines:
+        next_line = objective_lines[-1]
+        for line in objective_lines:
+            if position > int(line["line_position"]):
+                next_line = line
+        target_position = int(next_line["line_position"])
+        target_points = _safe_int(
+            _table_row_at_position(table_snapshot, target_position).get("points"),
+            points,
+        ) or points
+        gap_to_target = max(0, target_points - points)
+        return {
+            "objective_key": next_line["key"],
+            "objective_label": next_line["label"],
+            "status": "chasing",
+            "line_position": target_position,
+            "line_points": target_points,
+            "gap_points": gap_to_target,
+            "cushion_points": None,
+            "urgency": _urgency_from_gap(gap_to_target, inside=False),
+            "summary": f"a {gap_to_target} pts de la zona {next_line['label']}",
+        }
+
+    gap_to_drop = max(0, points - drop_points) if relegation_start else None
+    if gap_to_drop is not None and gap_to_drop <= 6:
+        return {
+            "objective_key": "survival",
+            "objective_label": "salvacion",
+            "status": "protecting",
+            "line_position": max(1, (relegation_start or 1) - 1),
+            "line_points": safe_points,
+            "gap_points": None,
+            "cushion_points": gap_to_drop,
+            "urgency": _urgency_from_gap(gap_to_drop, inside=True),
+            "summary": f"{gap_to_drop} pts por encima del descenso",
+        }
+
+    return {
+        "objective_key": "midtable",
+        "objective_label": "zona media",
+        "status": "midtable",
+        "line_position": None,
+        "line_points": None,
+        "gap_points": None,
+        "cushion_points": gap_to_drop,
+        "urgency": "low",
+        "summary": "zona media sin objetivo clasificatorio inmediato",
+    }
+
+
+def _season_context_phase(table_snapshot: dict) -> str:
+    played = max((_safe_int((row or {}).get("played"), 0) or 0) for row in (table_snapshot or {}).values()) if table_snapshot else 0
+    if played <= 10:
+        return "early"
+    if played <= 24:
+        return "middle"
+    if played <= 34:
+        return "decisive"
+    return "final"
+
+
+def _phase_bonus(phase: str) -> float:
+    return {
+        "early": 0.0,
+        "middle": 5.0,
+        "decisive": 10.0,
+        "final": 15.0,
+    }.get(str(phase or "").strip().lower(), 0.0)
+
+
+def _must_win_index(objective_context: dict, phase: str) -> float:
+    if not objective_context:
+        return 18.0
+    urgency = str(objective_context.get("urgency", "")).strip().lower()
+    status = str(objective_context.get("status", "")).strip().lower()
+    objective_key = str(objective_context.get("objective_key", "")).strip().lower()
+    gap = _safe_float(objective_context.get("gap_points"))
+    cushion = _safe_float(objective_context.get("cushion_points"))
+    base = {
+        "low": 18.0,
+        "medium": 38.0,
+        "high": 62.0,
+        "critical": 82.0,
+    }.get(urgency, 24.0)
+    base += _phase_bonus(phase)
+    base += {
+        "drop_zone": 16.0,
+        "chasing": 12.0,
+        "defending": 8.0,
+        "protecting": 10.0,
+        "midtable": -10.0,
+    }.get(status, 0.0)
+    base += {
+        "title": 12.0,
+        "champions": 10.0,
+        "promotion": 10.0,
+        "europa": 8.0,
+        "conference": 6.0,
+        "playoff": 8.0,
+        "survival": 12.0,
+        "midtable": -8.0,
+    }.get(objective_key, 0.0)
+    if gap is not None and gap <= 3:
+        base += 8.0
+    if cushion is not None and cushion <= 2:
+        base += 6.0
+    return round(min(100.0, max(0.0, base)), 2)
+
+
+def _must_not_lose_index(objective_context: dict, phase: str) -> float:
+    if not objective_context:
+        return 16.0
+    urgency = str(objective_context.get("urgency", "")).strip().lower()
+    status = str(objective_context.get("status", "")).strip().lower()
+    cushion = _safe_float(objective_context.get("cushion_points"))
+    gap = _safe_float(objective_context.get("gap_points"))
+    base = {
+        "low": 14.0,
+        "medium": 30.0,
+        "high": 50.0,
+        "critical": 70.0,
+    }.get(urgency, 20.0)
+    base += _phase_bonus(phase) * 0.8
+    base += {
+        "drop_zone": 18.0,
+        "defending": 16.0,
+        "protecting": 18.0,
+        "chasing": 4.0,
+        "midtable": -8.0,
+    }.get(status, 0.0)
+    if cushion is not None and cushion <= 2:
+        base += 10.0
+    if gap is not None and gap <= 1:
+        base += 5.0
+    return round(min(100.0, max(0.0, base)), 2)
+
+
+def _objective_swing(result_key: str, objective_context: dict) -> dict:
+    if not objective_context:
+        return {}
+    status = str(objective_context.get("status", "")).strip().lower()
+    objective_label = str(objective_context.get("objective_label", "")).strip().lower()
+    gap = _safe_int(objective_context.get("gap_points"))
+    cushion = _safe_int(objective_context.get("cushion_points"))
+    if result_key == "win":
+        if status == "chasing" and gap is not None:
+            if gap <= 1:
+                return {"impact": "very_high", "summary": f"ganando puede meterse en zona {objective_label}"}
+            if gap <= 3:
+                return {"impact": "high", "summary": f"ganando se queda a tiro de la zona {objective_label}"}
+        if status == "drop_zone" and gap is not None and gap <= 3:
+            return {"impact": "very_high", "summary": "ganando puede salir del descenso o igualarse a la salvacion"}
+        if status in {"defending", "protecting"} and cushion is not None and cushion <= 2:
+            return {"impact": "high", "summary": f"ganando protege mejor su plaza de {objective_label}"}
+        return {"impact": "medium", "summary": "ganar refuerza claramente su objetivo competitivo"}
+    if result_key == "lose":
+        if status in {"defending", "protecting"} and cushion is not None and cushion <= 3:
+            return {"impact": "very_high", "summary": f"perdiendo puede comprometer su plaza de {objective_label}"}
+        if status == "drop_zone":
+            return {"impact": "high", "summary": "perdiendo agrava la situacion de descenso"}
+        if status == "chasing" and gap is not None and gap <= 3:
+            return {"impact": "high", "summary": f"perdiendo frena seriamente la persecucion de la zona {objective_label}"}
+        return {"impact": "medium", "summary": "una derrota le complica el margen competitivo"}
+    return {"impact": "low", "summary": "el empate mantiene el objetivo sin un salto brusco"}
+
+
+def _direct_rivalry_context(home_objective: dict, away_objective: dict, home_table: dict, away_table: dict) -> dict:
+    if not home_objective or not away_objective or not home_table or not away_table:
+        return {}
+    shared_key = str(home_objective.get("objective_key", "")).strip().lower()
+    away_key = str(away_objective.get("objective_key", "")).strip().lower()
+    if not shared_key or shared_key != away_key:
+        return {}
+    home_pos = _safe_int(home_table.get("position"))
+    away_pos = _safe_int(away_table.get("position"))
+    home_pts = _safe_int(home_table.get("points"))
+    away_pts = _safe_int(away_table.get("points"))
+    if home_pos is None or away_pos is None or home_pts is None or away_pts is None:
+        return {}
+    pos_gap = abs(home_pos - away_pos)
+    pts_gap = abs(home_pts - away_pts)
+    if pos_gap > 4 or pts_gap > 8:
+        return {}
+    score = 54.0 + max(0.0, 12.0 - pts_gap * 1.5) + max(0.0, 8.0 - pos_gap * 1.5)
+    label = "high" if score >= 72 else ("medium" if score >= 60 else "low")
+    objective_label = str(home_objective.get("objective_label", "")).strip() or "objetivo comun"
+    return {
+        "score": round(min(100.0, score), 2),
+        "label": label,
+        "shared_objective": shared_key,
+        "position_gap": pos_gap,
+        "points_gap": pts_gap,
+        "summary": f"duelo directo por {objective_label} con {pts_gap} pts y {pos_gap} puestos de separacion",
+    }
+
+
+def _competitive_stakes_label(
+    phase: str,
+    home_must_win: float,
+    away_must_win: float,
+    home_must_not_lose: float,
+    away_must_not_lose: float,
+    direct_rivalry: dict,
+) -> str:
+    rivalry_score = _safe_float((direct_rivalry or {}).get("score")) or 0.0
+    top_pressure = max(home_must_win, away_must_win, home_must_not_lose, away_must_not_lose)
+    if rivalry_score >= 68 and top_pressure >= 70:
+        return "duelo directo de alta tension"
+    if top_pressure >= 82:
+        return "partido de maxima urgencia competitiva"
+    if top_pressure >= 64:
+        return "partido de urgencia competitiva alta"
+    if phase == "final":
+        return "partido de final de temporada"
+    if phase == "decisive":
+        return "partido con impacto clasificatorio relevante"
+    return "partido de contexto competitivo contenido"
+
+
+def _objective_pressure(objective_context: dict) -> float:
+    if not objective_context:
+        return 18.0
+    urgency = str(objective_context.get("urgency", "")).strip().lower()
+    objective_key = str(objective_context.get("objective_key", "")).strip().lower()
+    status = str(objective_context.get("status", "")).strip().lower()
+    urgency_base = {
+        "low": 12.0,
+        "medium": 24.0,
+        "high": 38.0,
+        "critical": 52.0,
+    }.get(urgency, 18.0)
+    ambition_bonus = {
+        "title": 16.0,
+        "champions": 14.0,
+        "promotion": 14.0,
+        "europa": 10.0,
+        "conference": 8.0,
+        "playoff": 10.0,
+        "survival": 18.0,
+    }.get(objective_key, 0.0)
+    status_bonus = {
+        "drop_zone": 22.0,
+        "defending": 12.0,
+        "protecting": 14.0,
+        "chasing": 10.0,
+        "midtable": -6.0,
+    }.get(status, 0.0)
+    return round(min(100.0, max(8.0, urgency_base + ambition_bonus + status_bonus)), 2)
+
+
+def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict, objective_context: dict | None = None) -> dict:
     if not team_row:
         return {}
     position = int(team_row.get("position", 0) or 0)
@@ -5788,13 +5654,15 @@ def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict) -
         relegation_pressure = 25.0
     else:
         relegation_pressure = max(0.0, 55.0 - (float(gap_to_drop) * 12.0))
+    objective_pressure = _objective_pressure(objective_context or {})
     schedule_pressure = difficulty * 0.24 + hard_window * 4.5
     score = round(
         min(
             100.0,
-            position_pressure * 0.26
-            + points_pressure * 0.12
-            + relegation_pressure * 0.34
+            position_pressure * 0.18
+            + points_pressure * 0.08
+            + relegation_pressure * 0.24
+            + objective_pressure * 0.26
             + schedule_pressure,
         ),
         2,
@@ -5806,15 +5674,85 @@ def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict) -
         "future_difficulty": difficulty,
         "hard_window_matches": hard_window,
         "gap_to_drop_zone": gap_to_drop,
+        "objective_pressure": objective_pressure,
+        "objective_summary": (objective_context or {}).get("summary"),
     }
 
 
-def _fatigue_index(days_since_last_match: int | None, recent_match_count: int, distance_km: float | None) -> dict:
+def _next_rotation_fixture_context(upcoming: list[dict], team_name: str, signals: dict | None = None) -> dict:
+    signals = signals or {}
+    europe_count = int(signals.get("europe_count", 0) or 0)
+    for fixture in upcoming or []:
+        competition = str(
+            fixture.get("competition")
+            or fixture.get("league")
+            or fixture.get("competition_name")
+            or fixture.get("label")
+            or ""
+        ).strip()
+        comp_l = competition.lower()
+        if not any(keyword in comp_l for keyword in ("champions", "europa", "conference", "uefa")):
+            continue
+        opponent = str(fixture.get("rival") or fixture.get("opponent") or "?").strip() or "?"
+        days_until = fixture.get("days_until")
+        try:
+            days_until_num = float(days_until)
+        except Exception:
+            days_until_num = None
+        if days_until_num is not None and days_until_num <= 3.5:
+            risk = "high"
+        elif days_until_num is not None and days_until_num <= 5.0:
+            risk = "medium"
+        else:
+            risk = "medium" if europe_count >= 1 else "low"
+        reason = f"{team_name} tiene {competition or 'competición europea'} vs {opponent} en {days_until_num:.1f} dias" if days_until_num is not None else f"{team_name} tiene {competition or 'competición europea'} pronto"
+        return {
+            "risk": risk,
+            "reason": reason,
+            "competition": competition,
+            "opponent": opponent,
+            "days_until": days_until_num,
+        }
+    if europe_count >= 1:
+        return {
+            "risk": "medium",
+            "reason": f"{team_name} llega con atención europea reciente o próxima",
+            "competition": "",
+            "opponent": "",
+            "days_until": None,
+        }
+    return {}
+
+
+def _fatigue_index(
+    days_since_last_match: int | None,
+    recent_match_count: int,
+    distance_km: float | None,
+    *,
+    next_rotation_context: dict | None = None,
+) -> dict:
     rest_component = 45.0 if days_since_last_match is None else max(0.0, 50.0 - (days_since_last_match * 8.0))
     density_component = min(35.0, float(recent_match_count) * 9.0)
     travel_component = min(25.0, (float(distance_km or 0.0) / 1000.0) * 25.0)
-    score = round(min(100.0, rest_component + density_component + travel_component), 2)
-    label = "high" if score >= 70 else ("medium" if score >= 40 else "low")
+    rotation_component = 0.0
+    rotation = next_rotation_context or {}
+    if rotation:
+        risk = str(rotation.get("risk", "")).strip().lower()
+        days_until = rotation.get("days_until")
+        try:
+            days_until_num = float(days_until)
+        except Exception:
+            days_until_num = None
+        if risk == "high":
+            rotation_component += 18.0
+        elif risk == "medium":
+            rotation_component += 9.0
+        if days_until_num is not None and days_until_num <= 3.0:
+            rotation_component += 10.0
+        elif days_until_num is not None and days_until_num <= 4.0:
+            rotation_component += 6.0
+    score = round(min(100.0, rest_component + density_component + travel_component + rotation_component), 2)
+    label = "high" if score >= 62 else ("medium" if score >= 34 else "low")
     return {"score": score, "label": label}
 
 
@@ -6104,53 +6042,9 @@ def _upcoming_round_fixtures(
     return fixtures[:next_n]
 
 
-def _upcoming_sportsdb_next_fixtures(
-    team_name: str,
-    team_id: str,
-    kickoff_dt: datetime | None,
-    table_snapshot: dict,
-    history_rows: list[dict],
-    next_n: int = UPCOMING_FIXTURE_WINDOW,
-) -> list[dict]:
-    if not kickoff_dt or not team_id:
-        return []
-    fixtures = []
-    for event in fetch_the_sportsdb_next_events(team_id):
-        event_kickoff = _sportsdb_event_kickoff(event)
-        event_dt = _parse_iso_datetime(event_kickoff)
-        if not event_dt or event_dt <= kickoff_dt:
-            continue
-        home_team = str(event.get("strHomeTeam", "")).strip()
-        away_team = str(event.get("strAwayTeam", "")).strip()
-        if not home_team or not away_team:
-            continue
-        home_score = _team_similarity_score(team_name, home_team)
-        away_score = _team_similarity_score(team_name, away_team)
-        if max(home_score, away_score) < 0.86:
-            continue
-        is_home = home_score >= away_score
-        opponent = away_team if is_home else home_team
-        resolved_opponent = _resolve_csv_team_name(opponent, history_rows) if history_rows else opponent
-        fixtures.append(
-            {
-                "date": str(event.get("dateEvent", "")).strip() or event_kickoff[:10],
-                "kickoff": event_kickoff,
-                "venue": "home" if is_home else "away",
-                "opponent": opponent,
-                "opponent_position": (table_snapshot.get(resolved_opponent) or {}).get("position"),
-                "opponent_points": (table_snapshot.get(resolved_opponent) or {}).get("points"),
-                "league": str(event.get("strLeague", "")).strip(),
-                "round": str(event.get("intRound", "")).strip(),
-                "stage": str(event.get("strRound", "")).strip(),
-                "source": "sportsdb-next",
-            }
-        )
-    fixtures.sort(key=lambda item: item.get("kickoff", ""))
-    return fixtures[:next_n]
-
-
 def _merge_upcoming_fixtures(*fixture_lists: list[dict], next_n: int = UPCOMING_FIXTURE_WINDOW) -> list[dict]:
     merged = []
+    seen = set()
     for fixture_list in fixture_lists:
         for fixture in fixture_list or []:
             opponent = str(fixture.get("opponent", "")).strip()
@@ -6158,40 +6052,11 @@ def _merge_upcoming_fixtures(*fixture_lists: list[dict], next_n: int = UPCOMING_
             venue = str(fixture.get("venue", "")).strip()
             if not opponent or not kickoff:
                 continue
-            candidate = dict(fixture)
-            existing_index = next(
-                (idx for idx, current in enumerate(merged) if _same_future_fixture(current, candidate)),
-                None,
-            )
-            if existing_index is None:
-                merged.append(candidate)
+            key = (kickoff, _normalize_team_name(opponent), venue)
+            if key in seen:
                 continue
-            current = merged[existing_index]
-            if _fixture_richness_score(candidate) > _fixture_richness_score(current):
-                preferred = candidate
-                secondary = current
-            else:
-                preferred = current
-                secondary = candidate
-            for field in [
-                "date",
-                "kickoff",
-                "venue",
-                "opponent",
-                "opponent_position",
-                "opponent_points",
-                "round",
-                "league",
-            ]:
-                if preferred.get(field) in {None, ""} and secondary.get(field) not in {None, ""}:
-                    preferred[field] = secondary.get(field)
-            if secondary.get("source") and secondary.get("source") not in {
-                preferred.get("source"),
-                "",
-                None,
-            }:
-                preferred["source"] = f"{preferred.get('source', '')}+{secondary.get('source', '')}".strip("+")
-            merged[existing_index] = preferred
+            seen.add(key)
+            merged.append(dict(fixture))
     merged.sort(key=lambda item: item.get("kickoff", ""))
     return merged[:next_n]
 
@@ -6219,380 +6084,6 @@ def _relegation_context(league_key: str, table_snapshot: dict, team_name: str) -
         "gap_to_drop_zone": gap_to_drop,
         "gap_to_safe_line": gap_to_safe,
         "urgency": urgency,
-    }
-
-
-def _ordered_table_rows(table_snapshot: dict) -> list[dict]:
-    return sorted(
-        [row for row in table_snapshot.values() if row.get("position")],
-        key=lambda item: int(item.get("position", 999) or 999),
-    )
-
-
-def _league_total_rounds(table_snapshot: dict) -> int | None:
-    teams = len(table_snapshot or {})
-    if teams < 2:
-        return None
-    return max(1, (teams - 1) * 2)
-
-
-def _season_context_phase(kickoff_dt: datetime | None, table_snapshot: dict, team_row: dict) -> dict:
-    played = _safe_int(team_row.get("played"), None) if team_row else None
-    total_rounds = _league_total_rounds(table_snapshot)
-    progress = None
-    source = ""
-    if played is not None and total_rounds:
-        progress = min(1.0, max(0.0, played / float(total_rounds)))
-        source = "played_matches"
-    elif kickoff_dt:
-        month = kickoff_dt.month
-        if month in {8, 9, 10}:
-            progress = 0.2
-        elif month in {11, 12, 1, 2}:
-            progress = 0.5
-        elif month in {3, 4}:
-            progress = 0.78
-        elif month in {5, 6}:
-            progress = 0.92
-        source = "calendar_date"
-    if progress is None:
-        return {"key": "", "label": "", "played": played, "total_rounds": total_rounds, "source": ""}
-    if progress < 0.28:
-        key = "early"
-        label = "tramo temprano"
-    elif progress < 0.65:
-        key = "middle"
-        label = "tramo medio"
-    elif progress < 0.86:
-        key = "decisive"
-        label = "tramo decisivo"
-    else:
-        key = "final"
-        label = "final de temporada"
-    return {
-        "key": key,
-        "label": label,
-        "played": played,
-        "total_rounds": total_rounds,
-        "progress": round(progress, 3),
-        "source": source,
-    }
-
-
-def _urgency_from_margin(margin: int | None, phase_key: str) -> str:
-    if margin is None:
-        return "unknown"
-    phase_boost = 1 if phase_key in {"decisive", "final"} else 0
-    if margin <= 1:
-        return "critical" if phase_boost else "high"
-    if margin <= 3:
-        return "high" if phase_boost else "medium"
-    if margin <= 6:
-        return "medium"
-    return "low"
-
-
-def _objective_candidate(
-    line: dict,
-    team_row: dict,
-    ordered_rows: list[dict],
-    phase_key: str,
-) -> dict:
-    position = _safe_int(team_row.get("position"), None)
-    points = _safe_int(team_row.get("points"), None)
-    line_position = _safe_int(line.get("line_position"), None)
-    if position is None or points is None or line_position is None:
-        return {}
-    line_row = next((row for row in ordered_rows if _safe_int(row.get("position"), 0) == line_position), {})
-    line_points = _safe_int(line_row.get("points"), None)
-    if line_points is None:
-        return {}
-    direction = str(line.get("direction", "top"))
-    objective_key = str(line.get("key", ""))
-    objective_label = str(line.get("label", ""))
-    gap_points = None
-    cushion_points = None
-    status = "unknown"
-    margin = None
-    relevance = 0.0
-
-    if direction == "survival":
-        drop_position = line_position + 1
-        drop_row = next((row for row in ordered_rows if _safe_int(row.get("position"), 0) == drop_position), {})
-        drop_points = _safe_int(drop_row.get("points"), line_points)
-        if position <= line_position:
-            status = "defending"
-            cushion_points = points - int(drop_points or line_points)
-            margin = cushion_points
-            relevance = 72.0 - max(0, cushion_points or 0) * 7.0
-        else:
-            status = "chasing"
-            gap_points = line_points - points
-            margin = gap_points
-            relevance = 86.0 - max(0, gap_points or 0) * 7.0
-        if position >= line_position - 4 or (margin is not None and margin <= 8):
-            relevance += 22.0
-    else:
-        outside_row = next(
-            (row for row in ordered_rows if _safe_int(row.get("position"), 0) == line_position + 1),
-            {},
-        )
-        outside_points = _safe_int(outside_row.get("points"), line_points)
-        if position <= line_position:
-            status = "defending"
-            cushion_points = points - int(outside_points or line_points)
-            margin = cushion_points
-            relevance = 74.0 - max(0, cushion_points or 0) * 8.0
-        else:
-            status = "chasing"
-            gap_points = line_points - points
-            margin = gap_points
-            if objective_key == "title" and (gap_points is None or gap_points > 8):
-                return {}
-            if objective_key != "title" and gap_points is not None and gap_points > 12 and phase_key in {"decisive", "final"}:
-                return {}
-            relevance = 80.0 - max(0, gap_points or 0) * 8.0
-        if abs(position - line_position) <= 3 or (margin is not None and margin <= 6):
-            relevance += 20.0
-        if objective_key == "title" and position > 4:
-            relevance -= 35.0
-
-    if phase_key == "final":
-        relevance += 12.0
-    elif phase_key == "decisive":
-        relevance += 8.0
-    urgency = _urgency_from_margin(margin, phase_key)
-    if objective_key == "survival":
-        if status == "chasing":
-            urgency = "critical" if phase_key in {"decisive", "final"} else "high"
-        elif status == "defending" and position >= line_position:
-            urgency = "critical" if phase_key == "final" else "high"
-        elif status == "defending" and margin is not None and margin <= 6 and phase_key in {"decisive", "final"}:
-            urgency = "high"
-    if urgency == "critical":
-        relevance += 16.0
-    elif urgency == "high":
-        relevance += 10.0
-    elif urgency == "medium":
-        relevance += 4.0
-
-    if status == "defending":
-        if objective_key == "survival":
-            summary = f"defiende salvacion con {cushion_points} pts de colchon"
-        else:
-            summary = f"defiende {objective_label} con {cushion_points} pts de colchon"
-    elif objective_key == "survival":
-        summary = f"persigue salvacion a {gap_points} pts"
-    else:
-        summary = f"persigue {objective_label} a {gap_points} pts"
-
-    return {
-        "objective_key": objective_key,
-        "objective_label": objective_label,
-        "status": status,
-        "urgency": urgency,
-        "summary": summary,
-        "gap_points": gap_points,
-        "cushion_points": cushion_points,
-        "line_position": line_position,
-        "line_points": line_points,
-        "relevance_score": round(max(0.0, min(100.0, relevance)), 2),
-    }
-
-
-def _material_swing(team_row: dict, objective: dict, points_delta: int) -> str:
-    if not team_row or not objective:
-        return ""
-    points = _safe_int(team_row.get("points"), None)
-    if points is None:
-        return ""
-    projected = points + points_delta
-    label = objective.get("objective_label") or objective.get("objective_key") or "objetivo"
-    status = objective.get("status")
-    line_points = _safe_int(objective.get("line_points"), None)
-    gap = _safe_int(objective.get("gap_points"), None)
-    cushion = _safe_int(objective.get("cushion_points"), None)
-    if line_points is None:
-        return ""
-    if points_delta > 0:
-        if status == "chasing" and gap is not None and projected >= line_points:
-            return f"victoria le mete de lleno en {label}" if projected == line_points else f"victoria supera linea de {label}"
-        if status == "defending" and cushion is not None:
-            return f"victoria abre colchon en {label}"
-    else:
-        line_position = _safe_int(objective.get("line_position"), 0)
-        position = _safe_int(team_row.get("position"), 99)
-        if status == "defending" and cushion is not None and (
-            cushion <= 3 or (objective.get("objective_key") == "survival" and line_position and position >= line_position)
-        ):
-            if objective.get("objective_key") == "survival":
-                return "derrota puede meterle en descenso o dejarle al borde"
-            return f"derrota deja en riesgo {label}"
-        if status == "chasing" and gap is not None and gap <= 3:
-            return f"derrota aleja {label}"
-    return "impacto material bajo"
-
-
-def _objective_swing_index(objective: dict, outcome: str, phase_key: str) -> int:
-    if not objective:
-        return 0
-    margin = objective.get("gap_points")
-    if margin is None:
-        margin = objective.get("cushion_points")
-    margin = _safe_int(margin, 99)
-    margin_value = int(margin if margin is not None else 99)
-    base = max(0, 75 - margin_value * 12)
-    if phase_key == "final":
-        base += 18
-    elif phase_key == "decisive":
-        base += 12
-    if outcome == "lose" and objective.get("status") == "defending":
-        base += 8
-    if outcome == "win" and objective.get("status") == "chasing":
-        base += 8
-    return int(max(0, min(100, base)))
-
-
-def _team_objective_context(
-    league_key: str,
-    table_snapshot: dict,
-    team_name: str,
-    kickoff_dt: datetime | None,
-) -> dict:
-    team_row = table_snapshot.get(team_name) or {}
-    if not team_row:
-        return {}
-    ordered_rows = _ordered_table_rows(table_snapshot)
-    phase = _season_context_phase(kickoff_dt, table_snapshot, team_row)
-    phase_key = phase.get("key", "")
-    candidates = [
-        candidate
-        for line in LEAGUE_COMPETITIVE_LINES.get(league_key, [])
-        for candidate in [_objective_candidate(line, team_row, ordered_rows, phase_key)]
-        if candidate
-    ]
-    candidates.sort(key=lambda item: item.get("relevance_score", 0), reverse=True)
-    primary = dict(candidates[0]) if candidates else {}
-    if not primary:
-        return {"season_context_phase": phase, "objective_candidates": []}
-    margin = primary.get("gap_points")
-    if margin is None:
-        margin = primary.get("cushion_points")
-    margin = _safe_int(margin, 99)
-    margin_value = int(margin if margin is not None else 99)
-    phase_bonus = 18 if phase_key == "final" else (12 if phase_key == "decisive" else 0)
-    must_win = 0
-    must_not_lose = 0
-    if primary.get("status") == "chasing":
-        must_win = 82 - margin_value * 13 + phase_bonus
-        must_not_lose = 58 - margin_value * 7 + phase_bonus
-    elif primary.get("status") == "defending":
-        must_win = 48 - margin_value * 5 + phase_bonus
-        must_not_lose = 78 - margin_value * 12 + phase_bonus
-    if primary.get("objective_key") == "survival":
-        must_not_lose += 10
-        if primary.get("status") == "chasing":
-            must_win += 8
-        if primary.get("status") == "defending":
-            position = _safe_int(team_row.get("position"), 99)
-            line_position = _safe_int(primary.get("line_position"), 0)
-            if line_position and position >= line_position:
-                must_not_lose += 22
-                must_win += 8
-            elif margin_value <= 6 and phase_key in {"decisive", "final"}:
-                must_not_lose += 14
-    primary.update(
-        {
-            "must_win_index": int(max(0, min(100, must_win))),
-            "must_not_lose_index": int(max(0, min(100, must_not_lose))),
-            "objective_swing_if_win": _objective_swing_index(primary, "win", phase_key),
-            "objective_swing_if_lose": _objective_swing_index(primary, "lose", phase_key),
-            "swing_summary_if_win": _material_swing(team_row, primary, 3),
-            "swing_summary_if_lose": _material_swing(team_row, primary, 0),
-            "season_context_phase": phase,
-        }
-    )
-    return {
-        **primary,
-        "objective_candidates": candidates[:4],
-    }
-
-
-def _direct_rivalry_context(home_objective: dict, away_objective: dict, home_row: dict, away_row: dict) -> dict:
-    if not home_objective or not away_objective:
-        return {"is_direct_rivalry": False, "direct_rivalry_index": 0}
-    same_objective = home_objective.get("objective_key") == away_objective.get("objective_key")
-    home_points = _safe_int(home_row.get("points"), None)
-    away_points = _safe_int(away_row.get("points"), None)
-    home_position = _safe_int(home_row.get("position"), None)
-    away_position = _safe_int(away_row.get("position"), None)
-    if not same_objective or home_points is None or away_points is None or home_position is None or away_position is None:
-        return {"is_direct_rivalry": False, "direct_rivalry_index": 0}
-    points_delta = abs(home_points - away_points)
-    position_delta = abs(home_position - away_position)
-    close = points_delta <= 6 and position_delta <= 5
-    score = 0
-    if close:
-        score = 70
-        score += max(0, 18 - points_delta * 3)
-        score += max(0, 12 - position_delta * 2)
-    score = int(max(0, min(100, score)))
-    label = ""
-    if score:
-        objective_label = home_objective.get("objective_label") or home_objective.get("objective_key")
-        if home_objective.get("objective_key") == "direct_promotion":
-            label = "duelo directo por ascenso"
-        elif home_objective.get("objective_key") == "playoff":
-            label = "duelo directo por play-off"
-        elif home_objective.get("objective_key") == "survival":
-            label = "duelo directo por salvacion"
-        else:
-            label = f"duelo directo por {objective_label}"
-    return {
-        "is_direct_rivalry": bool(score),
-        "direct_rivalry_index": score,
-        "objective_key": home_objective.get("objective_key") if score else "",
-        "objective_label": home_objective.get("objective_label") if score else "",
-        "points_delta": points_delta,
-        "position_delta": position_delta,
-        "label": label,
-    }
-
-
-def _competitive_stakes_label(home_objective: dict, away_objective: dict, rivalry: dict) -> str:
-    if rivalry.get("is_direct_rivalry"):
-        return str(rivalry.get("label", "")).strip()
-    pieces = []
-    for side, objective in [("local", home_objective), ("visitante", away_objective)]:
-        if not objective:
-            continue
-        summary = str(objective.get("summary", "")).strip()
-        urgency = str(objective.get("urgency", "")).strip()
-        if summary and urgency in {"critical", "high", "medium"}:
-            pieces.append(f"{side} {summary}")
-    return "; ".join(pieces[:2]) or "contexto competitivo bajo o no calculable"
-
-
-def _season_competitive_context(
-    league_key: str,
-    table_snapshot: dict,
-    home_team: str,
-    away_team: str,
-    kickoff_dt: datetime | None,
-) -> dict:
-    home_objective = _team_objective_context(league_key, table_snapshot, home_team, kickoff_dt)
-    away_objective = _team_objective_context(league_key, table_snapshot, away_team, kickoff_dt)
-    home_row = table_snapshot.get(home_team) or {}
-    away_row = table_snapshot.get(away_team) or {}
-    rivalry = _direct_rivalry_context(home_objective, away_objective, home_row, away_row)
-    phase = home_objective.get("season_context_phase") or away_objective.get("season_context_phase") or {}
-    label = _competitive_stakes_label(home_objective, away_objective, rivalry)
-    return {
-        "season_context_phase": phase,
-        "home_objective": home_objective,
-        "away_objective": away_objective,
-        "direct_rivalry": rivalry,
-        "competitive_stakes_label": label,
     }
 
 
@@ -6805,15 +6296,6 @@ def _focus_match_digest(match: dict) -> list[str]:
     future_away = (match.get("competition_context") or {}).get("away_future_difficulty", {})
     if future_home.get("label") in {"high", "critical"} or future_away.get("label") in {"high", "critical"}:
         digest.append("ventana dura")
-    competition = match.get("competition_context") or {}
-    if (competition.get("direct_rivalry") or {}).get("is_direct_rivalry"):
-        digest.append("duelo directo")
-    elif competition.get("competitive_stakes_label"):
-        digest.append("objetivo competitivo")
-    if (competition.get("home_rotation_context") or {}).get("risk") == "high" or (
-        competition.get("away_rotation_context") or {}
-    ).get("risk") == "high":
-        digest.append("rotacion probable")
     return digest[:4]
 
 
@@ -6952,90 +6434,6 @@ def _future_window_summary(future_difficulty: dict) -> str:
     )
 
 
-def _is_high_importance_nonleague_fixture(fixture: dict) -> bool:
-    text = " ".join(
-        str(fixture.get(key, "")).lower()
-        for key in ["league", "stage", "round", "opponent", "source"]
-    )
-    return any(
-        token in text
-        for token in [
-            "champions league",
-            "uefa champions",
-            "champs_league",
-            "uefa_champs",
-            "soccer_uefa_champs_league",
-            "europa league",
-            "europa_league",
-            "conference league",
-            "conference_league",
-            "copa del rey",
-            "fa cup",
-            "efl cup",
-            "semifinal",
-            "semi-final",
-            "final",
-        ]
-    )
-
-
-def _fixture_competition_label(fixture: dict) -> str:
-    raw = str(fixture.get("league", "")).strip()
-    normalized = raw.lower()
-    labels = {
-        "soccer_uefa_champs_league": "UEFA Champions League",
-        "soccer_uefa_europa_league": "UEFA Europa League",
-        "soccer_uefa_europa_conference_league": "UEFA Conference League",
-    }
-    return labels.get(normalized, raw or "competicion europea/copera")
-
-
-def _rotation_context_from_upcoming(team_name: str, fixtures: list[dict], kickoff: str, news_signals: dict) -> dict:
-    kickoff_dt = _parse_iso_datetime(kickoff)
-    news_rotation = _safe_int((news_signals or {}).get("rotation_count"), 0) or 0
-    news_morale = _safe_int((news_signals or {}).get("morale_count"), 0) or 0
-    if not kickoff_dt:
-        return {
-            "risk": "medium" if news_rotation else "low",
-            "score": min(100, news_rotation * 18 + news_morale * 8),
-            "reason": "senales de prensa" if news_rotation else "",
-            "next_high_importance_fixture": {},
-        }
-    best_fixture = {}
-    best_days = None
-    for fixture in fixtures or []:
-        fixture_dt = _parse_iso_datetime(str(fixture.get("kickoff", "")).strip())
-        if not fixture_dt:
-            continue
-        days = (fixture_dt - kickoff_dt).total_seconds() / 86400.0
-        if days < 0 or days > 5.0:
-            continue
-        if not _is_high_importance_nonleague_fixture(fixture):
-            continue
-        if best_days is None or days < best_days:
-            best_days = days
-            best_fixture = fixture
-    score = min(100, news_rotation * 18 + news_morale * 8)
-    reason = ""
-    if best_fixture:
-        if best_days is not None and best_days <= 3.5:
-            score = max(score, 88)
-        else:
-            score = max(score, 68)
-        competition = _fixture_competition_label(best_fixture)
-        opponent = str(best_fixture.get("opponent", "")).strip() or "rival por confirmar"
-        reason = f"{team_name} tiene {competition} vs {opponent} en {best_days:.1f} dias"
-    elif news_rotation:
-        reason = "la prensa reciente apunta a rotaciones/descanso"
-    risk = "high" if score >= 75 else ("medium" if score >= 35 else "low")
-    return {
-        "risk": risk,
-        "score": int(score),
-        "reason": reason,
-        "next_high_importance_fixture": best_fixture,
-    }
-
-
 def _referee_analysis_summary(referee_analysis: dict) -> str:
     if not referee_analysis:
         return "sin historico arbitral fiable"
@@ -7055,21 +6453,51 @@ def _competitive_context_line(team_name: str, table: dict, relegation: dict, obj
     gap_to_safe = relegation.get("gap_to_safe_line")
     urgency = relegation.get("urgency", "")
     extras = []
-    objective = objective or {}
-    if objective.get("summary"):
-        extras.append(str(objective.get("summary")))
-    if objective.get("must_win_index"):
-        extras.append(f"must-win {objective.get('must_win_index')}/100")
-    if objective.get("must_not_lose_index"):
-        extras.append(f"no perder {objective.get('must_not_lose_index')}/100")
-    if gap_to_drop is not None:
-        extras.append(f"gap descenso {gap_to_drop:+}")
-    if gap_to_safe is not None and gap_to_safe > 0:
-        extras.append(f"a {gap_to_safe} pts de la salvacion")
-    if urgency:
+    objective_summary = str((objective or {}).get("summary", "")).strip()
+    objective_urgency = str((objective or {}).get("urgency", "")).strip()
+    if objective_summary:
+        extras.append(objective_summary)
+    else:
+        if gap_to_drop is not None:
+            extras.append(f"gap descenso {gap_to_drop:+}")
+        if gap_to_safe is not None and gap_to_safe > 0:
+            extras.append(f"a {gap_to_safe} pts de la salvacion")
+    if objective_urgency:
+        extras.append(f"urgencia {objective_urgency}")
+    elif urgency:
         extras.append(f"urgencia {urgency}")
     suffix = ", ".join(extras) if extras else "sin alerta clasificatoria clara"
     return f"{team_name}: puesto {position}, {points} puntos, {suffix}."
+
+
+def _competitive_stakes_summary(competition: dict) -> str:
+    if not competition:
+        return "sin lectura competitiva premium"
+    direct_rivalry = competition.get("direct_rivalry") or {}
+    phase = str(competition.get("season_context_phase", "")).strip() or "unknown"
+    stakes = str(competition.get("competitive_stakes_label", "")).strip() or "sin stakes"
+    home_win = competition.get("home_must_win_index", "-")
+    away_win = competition.get("away_must_win_index", "-")
+    home_hold = competition.get("home_must_not_lose_index", "-")
+    away_hold = competition.get("away_must_not_lose_index", "-")
+    home_swing = str((competition.get("home_objective_swing_if_win") or {}).get("summary") or "").strip()
+    away_swing = str((competition.get("away_objective_swing_if_win") or {}).get("summary") or "").strip()
+    rivalry_summary = str(direct_rivalry.get("summary", "")).strip()
+    parts = [
+        f"fase={phase}",
+        f"stakes={stakes}",
+        f"must-win local={home_win}",
+        f"must-win visitante={away_win}",
+        f"must-not-lose local={home_hold}",
+        f"must-not-lose visitante={away_hold}",
+    ]
+    if rivalry_summary:
+        parts.append(rivalry_summary)
+    if home_swing:
+        parts.append(f"local: {home_swing}")
+    if away_swing:
+        parts.append(f"visitante: {away_swing}")
+    return "; ".join(parts)
 
 
 def _enrich_quiniela_match(match: dict) -> None:
@@ -7116,25 +6544,27 @@ def _enrich_quiniela_match(match: dict) -> None:
 
     home_team_api = fetch_the_sportsdb_team(match["local"])
     away_team_api = fetch_the_sportsdb_team(match["visitante"])
+    sportsdb_event = fetch_the_sportsdb_next_event(str(home_team_api.get("idTeam", "")))
+    if not sportsdb_event:
+        sportsdb_event = fetch_the_sportsdb_next_event(str(away_team_api.get("idTeam", "")))
+    if sportsdb_event:
+        sportsdb_event = dict(sportsdb_event)
+        sportsdb_event.setdefault("strHomeTeam", match["local"])
+        sportsdb_event.setdefault("strAwayTeam", match["visitante"])
+    else:
+        sportsdb_event = {
+            "strHomeTeam": match["local"],
+            "strAwayTeam": match["visitante"],
+        }
+    sportsdb_event.setdefault("idLeague", home_team_api.get("idLeague", "") or away_team_api.get("idLeague", ""))
+    sportsdb_event.setdefault("strLeague", home_team_api.get("strLeague", "") or away_team_api.get("strLeague", ""))
+    sportsdb_event.setdefault("strSeason", _season_tag_for(_parse_iso_datetime(match.get("kickoff", ""))))
     inferred_round = max(
         int(((match.get("history_context") or {}).get("home") or {}).get("table", {}).get("played", 0) or 0),
         int(((match.get("history_context") or {}).get("away") or {}).get("table", {}).get("played", 0) or 0),
     ) + 1
-    sportsdb_event = _resolve_sportsdb_event(
-        match["local"],
-        match["visitante"],
-        match.get("kickoff", ""),
-        home_team_api,
-        away_team_api,
-        inferred_round=inferred_round,
-    ) or {
-        "strHomeTeam": match["local"],
-        "strAwayTeam": match["visitante"],
-        "idLeague": home_team_api.get("idLeague", "") or away_team_api.get("idLeague", ""),
-        "strLeague": home_team_api.get("strLeague", "") or away_team_api.get("strLeague", ""),
-        "strSeason": _season_tag_for(_parse_iso_datetime(match.get("kickoff", ""))),
-        "intRound": str(inferred_round),
-    }
+    if not str(sportsdb_event.get("intRound", "")).strip():
+        sportsdb_event["intRound"] = str(inferred_round)
 
     home_profile = _repair_profile_location(
         match["local"],
@@ -7200,15 +6630,6 @@ def _enrich_quiniela_match(match: dict) -> None:
     current_table_snapshot = _table_snapshot(
         _completed_rows_before_kickoff(season_history_for_schedule, kickoff_dt)
     )
-    home_resolved_name = ((history_context.get("home") or {}).get("resolved_name")) or match["local"]
-    away_resolved_name = ((history_context.get("away") or {}).get("resolved_name")) or match["visitante"]
-    season_competitive_context = _season_competitive_context(
-        match.get("league", ""),
-        current_table_snapshot,
-        home_resolved_name,
-        away_resolved_name,
-        kickoff_dt,
-    )
     home_espn_upcoming = fetch_espn_team_fixtures(
         match["local"],
         str(home_team_api.get("idESPN", "")).strip(),
@@ -7237,23 +6658,8 @@ def _enrich_quiniela_match(match: dict) -> None:
         current_table_snapshot,
         season_history_for_schedule,
     )
-    home_sportsdb_next_upcoming = _upcoming_sportsdb_next_fixtures(
-        match.get("local", ""),
-        str(home_team_api.get("idTeam", "")).strip(),
-        kickoff_dt,
-        current_table_snapshot,
-        season_history_for_schedule,
-    )
-    away_sportsdb_next_upcoming = _upcoming_sportsdb_next_fixtures(
-        match.get("visitante", ""),
-        str(away_team_api.get("idTeam", "")).strip(),
-        kickoff_dt,
-        current_table_snapshot,
-        season_history_for_schedule,
-    )
     schedule_inputs = match.get("_schedule_inputs") or {}
     home_upcoming = _merge_upcoming_fixtures(
-        home_sportsdb_next_upcoming,
         home_round_upcoming,
         home_espn_upcoming,
         schedule_inputs.get("home_feed_upcoming") or [],
@@ -7261,7 +6667,6 @@ def _enrich_quiniela_match(match: dict) -> None:
         schedule_inputs.get("home_espn_upcoming") or [],
     )
     away_upcoming = _merge_upcoming_fixtures(
-        away_sportsdb_next_upcoming,
         away_round_upcoming,
         away_espn_upcoming,
         schedule_inputs.get("away_feed_upcoming") or [],
@@ -7272,102 +6677,106 @@ def _enrich_quiniela_match(match: dict) -> None:
     competition_context["away_upcoming"] = away_upcoming
     competition_context["home_future_difficulty"] = _future_schedule_difficulty(home_upcoming)
     competition_context["away_future_difficulty"] = _future_schedule_difficulty(away_upcoming)
-    competition_context["season_context_phase"] = season_competitive_context.get("season_context_phase", {})
-    competition_context["home_objective"] = season_competitive_context.get("home_objective", {})
-    competition_context["away_objective"] = season_competitive_context.get("away_objective", {})
-    competition_context["direct_rivalry"] = season_competitive_context.get("direct_rivalry", {})
-    competition_context["competitive_stakes_label"] = season_competitive_context.get(
-        "competitive_stakes_label", ""
-    )
-    competition_context["home_rotation_context"] = _rotation_context_from_upcoming(
-        match["local"],
+    competition_context["home_rotation_context"] = _next_rotation_fixture_context(
         home_upcoming,
-        match.get("kickoff", ""),
-        home_focus_news.get("signals", {}),
+        match.get("local", ""),
+        (match.get("home_team_context") or {}).get("focus_news", {}).get("signals", {}),
     )
-    competition_context["away_rotation_context"] = _rotation_context_from_upcoming(
-        match["visitante"],
+    competition_context["away_rotation_context"] = _next_rotation_fixture_context(
         away_upcoming,
-        match.get("kickoff", ""),
-        away_focus_news.get("signals", {}),
+        match.get("visitante", ""),
+        (match.get("away_team_context") or {}).get("focus_news", {}).get("signals", {}),
+    )
+    competition_context["home_objective"] = _season_objective_context(
+        match.get("league", ""),
+        current_table_snapshot,
+        ((history_context.get("home") or {}).get("resolved_name") or match.get("local", "")),
+    )
+    competition_context["away_objective"] = _season_objective_context(
+        match.get("league", ""),
+        current_table_snapshot,
+        ((history_context.get("away") or {}).get("resolved_name") or match.get("visitante", "")),
+    )
+    competition_context["season_context_phase"] = _season_context_phase(current_table_snapshot)
+    competition_context["home_must_win_index"] = _must_win_index(
+        competition_context.get("home_objective") or {},
+        competition_context.get("season_context_phase", ""),
+    )
+    competition_context["away_must_win_index"] = _must_win_index(
+        competition_context.get("away_objective") or {},
+        competition_context.get("season_context_phase", ""),
+    )
+    competition_context["home_must_not_lose_index"] = _must_not_lose_index(
+        competition_context.get("home_objective") or {},
+        competition_context.get("season_context_phase", ""),
+    )
+    competition_context["away_must_not_lose_index"] = _must_not_lose_index(
+        competition_context.get("away_objective") or {},
+        competition_context.get("season_context_phase", ""),
+    )
+    competition_context["home_objective_swing_if_win"] = _objective_swing(
+        "win",
+        competition_context.get("home_objective") or {},
+    )
+    competition_context["home_objective_swing_if_lose"] = _objective_swing(
+        "lose",
+        competition_context.get("home_objective") or {},
+    )
+    competition_context["away_objective_swing_if_win"] = _objective_swing(
+        "win",
+        competition_context.get("away_objective") or {},
+    )
+    competition_context["away_objective_swing_if_lose"] = _objective_swing(
+        "lose",
+        competition_context.get("away_objective") or {},
+    )
+    competition_context["direct_rivalry"] = _direct_rivalry_context(
+        competition_context.get("home_objective") or {},
+        competition_context.get("away_objective") or {},
+        (history_context.get("home") or {}).get("table", {}),
+        (history_context.get("away") or {}).get("table", {}),
+    )
+    competition_context["competitive_stakes_label"] = _competitive_stakes_label(
+        competition_context.get("season_context_phase", ""),
+        _safe_float(competition_context.get("home_must_win_index")) or 0.0,
+        _safe_float(competition_context.get("away_must_win_index")) or 0.0,
+        _safe_float(competition_context.get("home_must_not_lose_index")) or 0.0,
+        _safe_float(competition_context.get("away_must_not_lose_index")) or 0.0,
+        competition_context.get("direct_rivalry") or {},
     )
     match["competition_context"] = competition_context
     match["analytics_context"]["home_pressure_index"] = _pressure_index(
         (history_context.get("home") or {}).get("table", {}),
         competition_context.get("home_relegation") or {},
         competition_context.get("home_future_difficulty") or {},
+        competition_context.get("home_objective") or {},
     )
     match["analytics_context"]["away_pressure_index"] = _pressure_index(
         (history_context.get("away") or {}).get("table", {}),
         competition_context.get("away_relegation") or {},
         competition_context.get("away_future_difficulty") or {},
+        competition_context.get("away_objective") or {},
     )
     match["analytics_context"]["home_fatigue_index"] = _fatigue_index(
         (match.get("schedule_context") or {}).get("home", {}).get("days_since_last_match"),
         (match.get("schedule_context") or {}).get("home", {}).get("matches_last_14_days"),
         0.0,
+        next_rotation_context=competition_context.get("home_rotation_context") or {},
     )
     match["analytics_context"]["away_fatigue_index"] = _fatigue_index(
         (match.get("schedule_context") or {}).get("away", {}).get("days_since_last_match"),
         (match.get("schedule_context") or {}).get("away", {}).get("matches_last_14_days"),
         travel_distance_km,
+        next_rotation_context=competition_context.get("away_rotation_context") or {},
     )
     match["match_signals"]["home_pressure_index"] = (match["analytics_context"]["home_pressure_index"] or {}).get("score")
     match["match_signals"]["away_pressure_index"] = (match["analytics_context"]["away_pressure_index"] or {}).get("score")
-    match["analytics_context"]["home_must_win_index"] = (
-        season_competitive_context.get("home_objective", {}) or {}
-    ).get("must_win_index", 0)
-    match["analytics_context"]["away_must_win_index"] = (
-        season_competitive_context.get("away_objective", {}) or {}
-    ).get("must_win_index", 0)
-    match["analytics_context"]["home_must_not_lose_index"] = (
-        season_competitive_context.get("home_objective", {}) or {}
-    ).get("must_not_lose_index", 0)
-    match["analytics_context"]["away_must_not_lose_index"] = (
-        season_competitive_context.get("away_objective", {}) or {}
-    ).get("must_not_lose_index", 0)
-    match["analytics_context"]["direct_rivalry_index"] = (
-        season_competitive_context.get("direct_rivalry", {}) or {}
-    ).get("direct_rivalry_index", 0)
-    match["analytics_context"]["home_objective_swing_if_win"] = (
-        season_competitive_context.get("home_objective", {}) or {}
-    ).get("objective_swing_if_win", 0)
-    match["analytics_context"]["home_objective_swing_if_lose"] = (
-        season_competitive_context.get("home_objective", {}) or {}
-    ).get("objective_swing_if_lose", 0)
-    match["analytics_context"]["away_objective_swing_if_win"] = (
-        season_competitive_context.get("away_objective", {}) or {}
-    ).get("objective_swing_if_win", 0)
-    match["analytics_context"]["away_objective_swing_if_lose"] = (
-        season_competitive_context.get("away_objective", {}) or {}
-    ).get("objective_swing_if_lose", 0)
-    match["analytics_context"]["home_rotation_risk_index"] = (
-        competition_context.get("home_rotation_context") or {}
-    ).get("score", 0)
-    match["analytics_context"]["away_rotation_risk_index"] = (
-        competition_context.get("away_rotation_context") or {}
-    ).get("score", 0)
-    match["match_signals"]["home_must_win_index"] = match["analytics_context"]["home_must_win_index"]
-    match["match_signals"]["away_must_win_index"] = match["analytics_context"]["away_must_win_index"]
-    match["match_signals"]["home_must_not_lose_index"] = match["analytics_context"]["home_must_not_lose_index"]
-    match["match_signals"]["away_must_not_lose_index"] = match["analytics_context"]["away_must_not_lose_index"]
-    match["match_signals"]["direct_rivalry_index"] = match["analytics_context"]["direct_rivalry_index"]
-    match["match_signals"]["season_context_phase"] = (
-        season_competitive_context.get("season_context_phase", {}) or {}
-    ).get("key", "")
-    match["match_signals"]["competitive_stakes_label"] = season_competitive_context.get(
-        "competitive_stakes_label", ""
-    )
-    match["match_signals"]["home_rotation_risk_index"] = match["analytics_context"]["home_rotation_risk_index"]
-    match["match_signals"]["away_rotation_risk_index"] = match["analytics_context"]["away_rotation_risk_index"]
     match["match_signals"]["home_fatigue_index"] = (match["analytics_context"]["home_fatigue_index"] or {}).get("score")
     match["match_signals"]["away_fatigue_index"] = (match["analytics_context"]["away_fatigue_index"] or {}).get("score")
     match["_schedule_inputs"] = {
         **schedule_inputs,
         "home_round_upcoming": home_round_upcoming,
         "away_round_upcoming": away_round_upcoming,
-        "home_sportsdb_next_upcoming": home_sportsdb_next_upcoming,
-        "away_sportsdb_next_upcoming": away_sportsdb_next_upcoming,
         "home_espn_upcoming": home_espn_upcoming,
         "away_espn_upcoming": away_espn_upcoming,
     }
@@ -7425,6 +6834,8 @@ def _enrich_quiniela_match(match: dict) -> None:
                 "items": away_injuries,
                 "count": len(away_injuries),
             },
+            "home_rotation_context": competition_context.get("home_rotation_context") or {},
+            "away_rotation_context": competition_context.get("away_rotation_context") or {},
         },
         "updated_at": _now_iso(),
     }
@@ -7438,220 +6849,7 @@ def _enrich_quiniela_match(match: dict) -> None:
     match["focus_ai_briefing"] = _focus_match_ai_briefing(match)
 
 
-def _describe_form(form: str) -> str:
-    if not form or form == "-":
-        return "sin datos de forma reciente"
-    wins = form.count("W")
-    losses = form.count("L")
-    total = wins + form.count("D") + losses
-    if total == 0:
-        return "sin datos de forma reciente"
-    if wins >= 3:
-        return "Buena dinámica reciente"
-    if losses >= 3:
-        return "Mala racha reciente"
-    if wins >= 2 and losses <= 1:
-        return "Dinámica positiva"
-    if losses >= 2 and wins <= 1:
-        return "Dinámica negativa"
-    return "Trayectoria irregular"
-
-
-def _insight_mercado(market: dict, quiniela_pct: dict, home: str, away: str) -> str:
-    m1 = _safe_float(market.get("1"))
-    mX = _safe_float(market.get("X"))
-    m2 = _safe_float(market.get("2"))
-    q1 = _safe_float(quiniela_pct.get("1"))
-    q2 = _safe_float(quiniela_pct.get("2"))
-    if m1 is None or m2 is None:
-        return "Sin suficientes datos de mercado para generar insight."
-    if m1 > m2 and m1 > (mX or 0):
-        fav_label, fav_market, fav_quiniela = "local", m1, q1
-    elif m2 > m1 and m2 > (mX or 0):
-        fav_label, fav_market, fav_quiniela = "visitante", m2, q2
-    else:
-        return (
-            f"El mercado apunta a un partido muy equilibrado "
-            f"(1={m1:.1f}%, X={mX:.1f}%, 2={m2:.1f}%). El empate tiene valor quinielístico."
-        )
-    if fav_quiniela is None:
-        return f"El {fav_label} es favorito para las casas de apuestas ({fav_market:.1f}%)."
-    gap = round(fav_quiniela - fav_market, 1)
-    if gap > 8:
-        return (
-            f"El {fav_label} es favorito para las casas de apuestas ({fav_market:.1f}%), "
-            f"pero el público de la quiniela lo sobrevalora aún más ({fav_quiniela:.1f}%). "
-            "Hay valor matemático en buscar la sorpresa o el empate."
-        )
-    if gap < -8:
-        return (
-            f"El {fav_label} es favorito para las casas de apuestas ({fav_market:.1f}%), "
-            f"pero el público quinielista lo infravalora ({fav_quiniela:.1f}%). "
-            "El favorito podría estar infravalorado en la quiniela."
-        )
-    return (
-        f"El {fav_label} es favorito para las casas de apuestas ({fav_market:.1f}%) "
-        f"y el público quinielista lo refleja de forma similar ({fav_quiniela:.1f}%). "
-        "Sin gran divergencia entre mercado y quiniela."
-    )
-
-
-def _insight_calendar(
-    team_name: str, future_difficulty: dict, relegation: dict, table: dict, objective: dict | None = None
-) -> str:
-    parts = []
-    objective = objective or {}
-    if objective.get("summary"):
-        phase_label = ((objective.get("season_context_phase") or {}).get("label") or "").strip()
-        swing_win = str(objective.get("swing_summary_if_win", "")).strip()
-        swing_lose = str(objective.get("swing_summary_if_lose", "")).strip()
-        objective_text = f"{team_name} {objective.get('summary')}"
-        if phase_label:
-            objective_text += f" en {phase_label}"
-        objective_text += (
-            f" (must-win {objective.get('must_win_index', 0)}/100, "
-            f"no perder {objective.get('must_not_lose_index', 0)}/100)."
-        )
-        parts.append(objective_text)
-        if swing_win and swing_win != "impacto material bajo":
-            parts.append(swing_win.capitalize() + ".")
-        if swing_lose and swing_lose != "impacto material bajo":
-            parts.append(swing_lose.capitalize() + ".")
-    label = str(future_difficulty.get("label", "")).strip().lower()
-    top6 = _safe_int(future_difficulty.get("top6_matches"), 0)
-    hard_opponents = future_difficulty.get("hard_opponents") or []
-    urgency = str(relegation.get("urgency", "")).strip().lower()
-    gap_to_drop = relegation.get("gap_to_drop_zone")
-    gap_to_safe = relegation.get("gap_to_safe_line")
-    if objective and objective.get("objective_key") != "survival":
-        urgency = ""
-        gap_to_drop = None
-        gap_to_safe = None
-    if label in ("hard", "very hard", "alta", "muy alta"):
-        opponents_text = f" ({', '.join(hard_opponents[:3])})" if hard_opponents else ""
-        parts.append(
-            f"Calendario futuro exigente con {top6} rivales del top-6{opponents_text}. "
-            "Posibles rotaciones hoy para reservar jugadores clave."
-        )
-    elif label in ("easy", "low", "baja"):
-        parts.append("Calendario próximo equilibrado, sin presión de conservar fuerzas.")
-    else:
-        if top6 > 0:
-            parts.append(f"Calendario futuro con {top6} rivales del top-6.")
-        else:
-            parts.append("Calendario próximo sin rivales especialmente exigentes.")
-    if urgency in ("high", "critical", "alta", "crítica"):
-        if gap_to_safe is not None and gap_to_safe > 0:
-            parts.append(
-                f"Urgencia clasificatoria alta, necesitan {gap_to_safe} puntos para la salvación. "
-                "Juegan con la presión del descenso."
-            )
-        else:
-            parts.append("Situación clasificatoria muy delicada, partido de alto voltaje emocional.")
-    elif urgency in ("medium", "media"):
-        parts.append("Cierta tensión clasificatoria, aunque no en zona crítica.")
-    elif gap_to_drop is not None:
-        parts.append(
-            f"Nivel de urgencia bajo ({gap_to_drop:+} puntos sobre el descenso), "
-            "juegan sin presión extrema."
-        )
-    return " ".join(parts) if parts else "Sin datos clasificatorios suficientes."
-
-
-def _insight_fatigue_and_rest(
-    home_fatigue: dict, away_fatigue: dict,
-    home_schedule: dict, away_schedule: dict,
-) -> str:
-    home_label = str(home_fatigue.get("label", "")).strip().lower()
-    away_label = str(away_fatigue.get("label", "")).strip().lower()
-    home_days = home_schedule.get("days_since_last_match")
-    away_days = away_schedule.get("days_since_last_match")
-    parts = []
-    if home_label and away_label:
-        if home_label == away_label:
-            parts.append(f"Ambos equipos llegan con una carga física similar ({home_label.capitalize()}).")
-        elif home_label in ("high", "alta") and away_label not in ("high", "alta"):
-            parts.append(
-                f"El local llega con mayor carga física ({home_label}) "
-                f"frente al visitante ({away_label}). Podría notar el cansancio."
-            )
-        elif away_label in ("high", "alta") and home_label not in ("high", "alta"):
-            parts.append(
-                f"El visitante llega con mayor carga física ({away_label}) "
-                f"frente al local ({home_label}). Ventaja física para el equipo local."
-            )
-        else:
-            parts.append(f"Carga física: local {home_label}, visitante {away_label}.")
-    if home_days is not None and away_days is not None:
-        try:
-            h, a = int(home_days), int(away_days)
-            if abs(h - a) >= 2:
-                if h > a:
-                    parts.append(f"El local descansó {h} días vs {a} días del visitante. Ligera ventaja física para el local.")
-                else:
-                    parts.append(f"El visitante descansó {a} días vs {h} días del local. Ligera ventaja física para el visitante.")
-            else:
-                parts.append(f"Tiempo de descanso similar ({h} vs {a} días).")
-        except (TypeError, ValueError):
-            pass
-    return " ".join(parts) if parts else "Sin datos de fatiga y descanso disponibles."
-
-
-def _insight_weather(weather: dict) -> str:
-    temp = _safe_float(weather.get("temperature_c"))
-    precip = _safe_float(weather.get("precipitation_probability"))
-    wind = _safe_float(weather.get("wind_speed_kmh"))
-    if temp is None:
-        return "Sin datos meteorológicos disponibles."
-    conditions = []
-    if 15 <= temp <= 25:
-        conditions.append(f"Temperatura ideal ({temp:.0f}ºC)")
-    elif temp < 8:
-        conditions.append(f"Frío notable ({temp:.0f}ºC), posible impacto en el ritmo de juego")
-    elif temp > 30:
-        conditions.append(f"Calor intenso ({temp:.0f}ºC), favorece a equipos con mayor fondo físico")
-    else:
-        conditions.append(f"Temperatura {temp:.0f}ºC")
-    if precip is not None:
-        if precip >= 60:
-            conditions.append("alta probabilidad de lluvia que puede alterar el juego técnico")
-        elif precip >= 30:
-            conditions.append("posibilidad de lluvia moderada")
-        else:
-            conditions.append("sin riesgo de lluvia")
-    if wind is not None:
-        if wind >= 40:
-            conditions.append(f"viento fuerte ({wind:.0f} km/h) que perjudica el juego combinativo")
-        elif wind >= 20:
-            conditions.append(f"viento moderado ({wind:.0f} km/h)")
-        else:
-            conditions.append("sin viento significativo")
-    base = ", ".join(conditions[:2]) if conditions else "condiciones normales"
-    wind_part = conditions[2] if len(conditions) > 2 else ""
-    if wind_part:
-        return f"{base}, {wind_part}."
-    if "ideal" in base and "lluvia" not in base:
-        return f"{base}. Condiciones perfectas para el juego técnico y los goles."
-    return f"{base}."
-
-
-def _insight_travel(travel: dict) -> str:
-    km = _safe_float(travel.get("distance_km"))
-    international = travel.get("international_trip", False)
-    if km is None:
-        return "Sin datos de desplazamiento disponibles."
-    if international:
-        return f"Desplazamiento internacional ({km:.0f} km). Impacto significativo en la preparación del visitante."
-    if km < 100:
-        return f"Desplazamiento corto para el visitante ({km:.0f} km). Impacto nulo."
-    if km < 300:
-        return f"Desplazamiento moderado para el visitante ({km:.0f} km). Impacto mínimo."
-    if km < 600:
-        return f"Viaje notable para el visitante ({km:.0f} km). Leve impacto físico."
-    return f"Viaje largo para el visitante ({km:.0f} km). Desgaste adicional a considerar."
-
-
-def _focus_match_ai_briefing(match: dict) -> dict:
+def _focus_match_ai_briefing(match: dict) -> str:
     market = (match.get("market_context") or {}).get("normalized_percent", {})
     weather = match.get("weather_context") or {}
     travel = match.get("travel_context") or {}
@@ -7660,151 +6858,167 @@ def _focus_match_ai_briefing(match: dict) -> dict:
     competition = match.get("competition_context") or {}
     analytics = match.get("analytics_context") or {}
     structured = match.get("structured_context") or {}
-    referee_context = structured.get("referee_context") or {}
-    referee_analysis = referee_context.get("season_analysis") or {}
+    referee = (structured.get("referee_context") or {}).get("assigned_referee", "")
+    fourth = (structured.get("referee_context") or {}).get("fourth_official", "")
+    var_ref = (structured.get("referee_context") or {}).get("var_referee", "")
+    referee_analysis = (structured.get("referee_context") or {}).get("season_analysis", {})
     injury_context = structured.get("injury_context") or {}
     home_injuries = (injury_context.get("home_team") or {}).get("items", [])
     away_injuries = (injury_context.get("away_team") or {}).get("items", [])
-
-    home = match.get("local", "")
-    away = match.get("visitante", "")
-
-    home_recent = (history.get("home") or {}).get("recent_all") or {}
-    away_recent = (history.get("away") or {}).get("recent_all") or {}
-    home_table = (history.get("home") or {}).get("table") or {}
-    away_table = (history.get("away") or {}).get("table") or {}
+    home_focus_news = (match.get("home_team_context") or {}).get("focus_news", {}).get("items", [])
+    away_focus_news = (match.get("away_team_context") or {}).get("focus_news", {}).get("items", [])
+    home_focus_signals = (match.get("home_team_context") or {}).get("focus_news", {}).get("signals", {})
+    away_focus_signals = (match.get("away_team_context") or {}).get("focus_news", {}).get("signals", {})
+    home_media_news = (match.get("home_team_context") or {}).get("media_news", {}).get("items", [])
+    away_media_news = (match.get("away_team_context") or {}).get("media_news", {}).get("items", [])
+    home_official = (match.get("home_team_context") or {}).get("official_site", {}).get("items", [])
+    away_official = (match.get("away_team_context") or {}).get("official_site", {}).get("items", [])
+    match_news = (match.get("match_news_context") or {}).get("items", [])
+    home_recent = ((history.get("home") or {}).get("recent_all") or {})
+    away_recent = ((history.get("away") or {}).get("recent_all") or {})
+    home_table = ((history.get("home") or {}).get("table") or {})
+    away_table = ((history.get("away") or {}).get("table") or {})
     h2h = history.get("head_to_head") or {}
-
     home_relegation = competition.get("home_relegation") or {}
     away_relegation = competition.get("away_relegation") or {}
     home_objective = competition.get("home_objective") or {}
     away_objective = competition.get("away_objective") or {}
-    direct_rivalry = competition.get("direct_rivalry") or {}
-    season_phase = competition.get("season_context_phase") or {}
-    stakes_label = competition.get("competitive_stakes_label", "")
-    home_rotation_context = competition.get("home_rotation_context") or {}
-    away_rotation_context = competition.get("away_rotation_context") or {}
+    home_upcoming = competition.get("home_upcoming") or []
+    away_upcoming = competition.get("away_upcoming") or []
     home_future_difficulty = competition.get("home_future_difficulty") or {}
     away_future_difficulty = competition.get("away_future_difficulty") or {}
+    home_rotation_context = competition.get("home_rotation_context") or {}
+    away_rotation_context = competition.get("away_rotation_context") or {}
+    home_pressure = analytics.get("home_pressure_index") or {}
+    away_pressure = analytics.get("away_pressure_index") or {}
     home_fatigue = analytics.get("home_fatigue_index") or {}
     away_fatigue = analytics.get("away_fatigue_index") or {}
-
-    quiniela_pct: dict = match.get("official_quiniela_percentages") or {}
-    if not quiniela_pct:
-        for slot in match.get("quiniela_slots") or []:
-            quiniela_pct = (
-                (slot.get("percentages") or {}).get("quinielista")
-                or (slot.get("percentages") or {}).get("lae")
-                or {}
-            )
-            if quiniela_pct:
-                break
-
-    def _fmt_pct(val: object) -> str:
-        if val is None:
-            return "-"
-        try:
-            return f"{float(val):.2f}%"
-        except (TypeError, ValueError):
-            return str(val)
-
-    cuotas_str = (
-        f"1={_fmt_pct(market.get('1'))}, "
-        f"X={_fmt_pct(market.get('X'))}, "
-        f"2={_fmt_pct(market.get('2'))}"
-    )
-    quiniela_str = (
-        f"1={_fmt_pct(quiniela_pct.get('1'))}, "
-        f"X={_fmt_pct(quiniela_pct.get('X'))}, "
-        f"2={_fmt_pct(quiniela_pct.get('2'))}"
-    ) if quiniela_pct else "Sin datos oficiales disponibles"
-
-    referee_name = referee_context.get("assigned_referee", "") or "No confirmado"
-    referee_bias = _referee_analysis_summary(referee_analysis) if referee_analysis else "Sin histórico arbitral fiable"
-
-    home_injury_names = [i.get("player", "") for i in home_injuries[:4] if i.get("player")]
-    away_injury_names = [i.get("player", "") for i in away_injuries[:4] if i.get("player")]
-    home_injury_text = (
-        f"{len(home_injuries)} baja(s) detectada(s)"
-        + (f": {', '.join(home_injury_names)}" if home_injury_names else "")
-        + "."
-    ) if home_injuries else "Sin bajas confirmadas."
-    away_injury_text = (
-        f"{len(away_injuries)} baja(s) detectada(s)"
-        + (f": {', '.join(away_injury_names)}" if away_injury_names else "")
-        + "."
-    ) if away_injuries else "Sin bajas confirmadas."
-
-    h2h_text = (
-        f"{h2h.get('meetings', 0)} encuentros históricos: "
-        f"gana {home} en {h2h.get('home_team_wins', 0)}, "
-        f"empates {h2h.get('draws', 0)}, "
-        f"gana {away} en {h2h.get('away_team_wins', 0)} "
-        f"(ventana de {h2h.get('years_span', 0)} años)."
-    ) if h2h.get("meetings") else "Sin datos de enfrentamientos directos disponibles."
-
-    home_form = str(home_recent.get("form", "-"))
-    away_form = str(away_recent.get("form", "-"))
-    competitive_summary = stakes_label or "Sin contexto competitivo material calculable."
-    if direct_rivalry.get("is_direct_rivalry"):
-        competitive_summary = (
-            f"{direct_rivalry.get('label')}: equipos separados por "
-            f"{direct_rivalry.get('points_delta')} pts y "
-            f"{direct_rivalry.get('position_delta')} puestos."
+    home_rolling = analytics.get("home_rolling") or {}
+    away_rolling = analytics.get("away_rolling") or {}
+    slot_labels = ", ".join(_quiniela_slot_labels(match)) or "sin slot oficial resuelto"
+    market_pairs = []
+    for outcome in ["1", "X", "2"]:
+        value = _safe_float(market.get(outcome))
+        if value is not None:
+            market_pairs.append((outcome, value))
+    market_pairs.sort(key=lambda item: item[1], reverse=True)
+    market_base_line = "Mercado base sin prior claro."
+    if market_pairs:
+        favorite_label, favorite_value = market_pairs[0]
+        second_value = market_pairs[1][1] if len(market_pairs) > 1 else 0.0
+        market_gap = round(favorite_value - second_value, 2)
+        market_base_line = (
+            f"Prior de mercado: el 1X2 es la senal base principal del modelo. "
+            f"Favorito inicial={favorite_label} con {favorite_value:.2f}% y brecha de {market_gap:.2f} puntos sobre la segunda opcion. "
+            "Usa lesiones confirmadas, arbitraje con sesgo real, fatiga alta o clima severo solo para modular el mercado, no para ignorarlo sin evidencia fuerte."
         )
-    rotation_parts = []
-    for side, rotation in [("local", home_rotation_context), ("visitante", away_rotation_context)]:
-        if rotation.get("risk") in {"high", "medium"} and rotation.get("reason"):
-            rotation_parts.append(f"{side}: {rotation.get('reason')} (riesgo {rotation.get('risk')})")
-    rotation_summary = " | ".join(rotation_parts) or "Sin senal fuerte de rotacion por calendario externo."
-
-    return {
-        "partido": f"{home} vs {away}",
-        "mercado_y_probabilidades": {
-            "cuotas_1X2": cuotas_str,
-            "tendencia_quinielista": quiniela_str,
-            "insight_mercado": _insight_mercado(market, quiniela_pct, home, away),
-        },
-        "contexto_deportivo": {
-            "racha_local": f"{home_form} ({_describe_form(home_form)})",
-            "racha_visitante": f"{away_form} ({_describe_form(away_form)})",
-            "fase_temporada": season_phase.get("label", ""),
-            "contexto_competitivo": competitive_summary,
-            "objetivo_local": home_objective.get("summary", ""),
-            "objetivo_visitante": away_objective.get("summary", ""),
-            "riesgo_rotacion_competitiva": rotation_summary,
-            "analisis_calendario_local": _insight_calendar(
-                home, home_future_difficulty, home_relegation, home_table, home_objective
-            ),
-            "analisis_calendario_visitante": _insight_calendar(
-                away, away_future_difficulty, away_relegation, away_table, away_objective
-            ),
-            "h2h_resumen": h2h_text,
-        },
-        "contexto_competitivo_avanzado": {
-            "season_context_phase": season_phase,
-            "competitive_stakes_label": stakes_label,
-            "direct_rivalry": direct_rivalry,
-            "home_objective": home_objective,
-            "away_objective": away_objective,
-            "home_rotation_context": home_rotation_context,
-            "away_rotation_context": away_rotation_context,
-        },
-        "factores_externos": {
-            "fatiga_y_descanso": _insight_fatigue_and_rest(
-                home_fatigue, away_fatigue,
-                schedule.get("home") or {},
-                schedule.get("away") or {},
-            ),
-            "clima_e_impacto": _insight_weather(weather),
-            "viaje": _insight_travel(travel),
-            "arbitro": f"{referee_name}. {referee_bias}",
-            "lesiones": {
-                "local": home_injury_text,
-                "visitante": away_injury_text,
-            },
-        },
-    }
+    rotation_lines = []
+    for label, rotation_context in (
+        ("local", home_rotation_context),
+        ("visitante", away_rotation_context),
+    ):
+        risk = str(rotation_context.get("risk") or "").strip().lower()
+        reason = str(rotation_context.get("reason") or "").strip()
+        if risk in {"high", "medium"} and reason:
+            rotation_lines.append(
+                f"Rotación/calendario {label}: riesgo {risk}. {reason}."
+            )
+    fatigue_line = (
+        f"Fatiga estimada: local {home_fatigue.get('score', '-')} ({home_fatigue.get('label', '-')}) "
+        f"y visitante {away_fatigue.get('score', '-')} ({away_fatigue.get('label', '-')})."
+    )
+    if rotation_lines:
+        fatigue_line += " Si la carga base parece similar pero hay cruce europeo cercano, prioriza la alerta de rotación sobre la lectura genérica de descanso."
+    lines = [
+        f"Partido de la jornada: {match.get('local', '')} vs {match.get('visitante', '')}. Slots oficiales: {slot_labels}.",
+        (
+            f"Mercado 1X2 normalizado: 1={market.get('1', '-')}, X={market.get('X', '-')}, "
+            f"2={market.get('2', '-')}. Cuotas: {match.get('odds', {}).get('1', '-')}/"
+            f"{match.get('odds', {}).get('X', '-')}/{match.get('odds', {}).get('2', '-')}. "
+            f"Bookmaker: {match.get('bookmaker', '-') or '-'}."
+        ),
+        market_base_line,
+        f"Porcentaje oficial de quiniela: {_official_quiniela_percentages_line(match)}.",
+        (
+            f"Clima estimado: temperatura {weather.get('temperature_c', '-')}, "
+            f"precipitacion {weather.get('precipitation_probability', '-')}%, "
+            f"viento {weather.get('wind_speed_kmh', '-')} km/h, riesgo {match.get('match_signals', {}).get('weather_risk', 'unknown')}."
+        ),
+        (
+            f"Viaje visitante: {travel.get('distance_km', '-')} km, tramo {travel.get('distance_bucket', 'unknown')}, "
+            f"internacional={travel.get('international_trip', False)}."
+        ),
+        (
+            f"Descanso y carga: local {schedule.get('home', {}).get('days_since_last_match', '-')} dias y "
+            f"{schedule.get('home', {}).get('matches_last_14_days', '-')} partidos en 14 dias; "
+            f"visitante {schedule.get('away', {}).get('days_since_last_match', '-')} dias y "
+            f"{schedule.get('away', {}).get('matches_last_14_days', '-')} partidos en 14 dias."
+        ),
+        _competitive_context_line(match.get("local", ""), home_table, home_relegation, home_objective),
+        _competitive_context_line(match.get("visitante", ""), away_table, away_relegation, away_objective),
+        f"Lectura stakes premium: {_competitive_stakes_summary(competition)}.",
+        *rotation_lines,
+        (
+            f"Forma ultimos 5: local {home_recent.get('form', '-')} ({home_recent.get('points', '-')} pts) "
+            f"y visitante {away_recent.get('form', '-')} ({away_recent.get('points', '-')} pts)."
+        ),
+        (
+            f"Presion competitiva: local {home_pressure.get('score', '-')} ({home_pressure.get('label', '-')}) "
+            f"y visitante {away_pressure.get('score', '-')} ({away_pressure.get('label', '-')})."
+        ),
+        fatigue_line,
+        (
+            f"ELO prepartido: local {analytics.get('home_elo', '-')} y visitante {analytics.get('away_elo', '-')}."
+        ),
+        (
+            f"Medias moviles local goles 5/10/15: "
+            f"{(home_rolling.get('5') or {}).get('avg_goals_for', '-')}/"
+            f"{(home_rolling.get('10') or {}).get('avg_goals_for', '-')}/"
+            f"{(home_rolling.get('15') or {}).get('avg_goals_for', '-')}. "
+            f"Visitante: {(away_rolling.get('5') or {}).get('avg_goals_for', '-')}/"
+            f"{(away_rolling.get('10') or {}).get('avg_goals_for', '-')}/"
+            f"{(away_rolling.get('15') or {}).get('avg_goals_for', '-')}."
+        ),
+        f"Ventana proxima local ({UPCOMING_FIXTURE_WINDOW} partidos): {_fixture_summary_deep(home_upcoming, UPCOMING_FIXTURE_WINDOW)}.",
+        f"Ventana proxima visitante ({UPCOMING_FIXTURE_WINDOW} partidos): {_fixture_summary_deep(away_upcoming, UPCOMING_FIXTURE_WINDOW)}.",
+        (
+            f"Dificultad futura: local {home_future_difficulty.get('difficulty_index', '-')} "
+            f"y visitante {away_future_difficulty.get('difficulty_index', '-')}."
+        ),
+        f"Resumen ventana local: {_future_window_summary(home_future_difficulty)}.",
+        f"Resumen ventana visitante: {_future_window_summary(away_future_difficulty)}.",
+        (
+            f"H2H previo: {h2h.get('meetings', 0)} cruces, local ganó {h2h.get('home_team_wins', 0)}, "
+            f"visitante ganó {h2h.get('away_team_wins', 0)}, empates {h2h.get('draws', 0)} "
+            f"en una ventana de {h2h.get('years_span', 0)} años."
+        ),
+        (
+            f"Arbitro detectado: {referee or 'no confirmado'}. "
+            f"Cuarto arbitro: {fourth or '-'}. VAR: {var_ref or '-'}."
+        ),
+        f"Analisis arbitral: {_referee_analysis_summary(referee_analysis)}.",
+        f"Bajas detectadas local: {len(home_injuries)}. Bajas detectadas visitante: {len(away_injuries)}.",
+        f"Web oficial local: {' || '.join(_brief_headlines(home_official, 3)) or 'sin titulares oficiales detectados'}.",
+        f"Web oficial visitante: {' || '.join(_brief_headlines(away_official, 3)) or 'sin titulares oficiales detectados'}.",
+        f"Prensa local {match.get('local', '')}: {' || '.join(_brief_headlines(home_media_news, 4)) or 'sin titulares locales de alta señal detectados'}.",
+        f"Prensa local {match.get('visitante', '')}: {' || '.join(_brief_headlines(away_media_news, 4)) or 'sin titulares locales de alta señal detectados'}.",
+        f"Noticias local: {' || '.join(_brief_headlines(home_focus_news, 4)) or 'sin noticias relevantes detectadas'}.",
+        f"Noticias visitante: {' || '.join(_brief_headlines(away_focus_news, 4)) or 'sin noticias relevantes detectadas'}.",
+        (
+            f"Señales cualitativas local: bajas {home_focus_signals.get('injury_count', 0)}, "
+            f"rueda de prensa {home_focus_signals.get('press_count', 0)}, "
+            f"convocatoria {home_focus_signals.get('squad_count', 0)}, "
+            f"moral/urgencia {home_focus_signals.get('morale_count', 0)}."
+        ),
+        (
+            f"Señales cualitativas visitante: bajas {away_focus_signals.get('injury_count', 0)}, "
+            f"rueda de prensa {away_focus_signals.get('press_count', 0)}, "
+            f"convocatoria {away_focus_signals.get('squad_count', 0)}, "
+            f"moral/urgencia {away_focus_signals.get('morale_count', 0)}."
+        ),
+        f"Noticias de partido: {' || '.join(_brief_headlines(match_news, 6)) or 'sin noticias de cruce relevantes detectadas'}.",
+    ]
+    return "\n".join(lines)
 
 
 def _best_h2h(bookmakers: list, home_team: str, away_team: str) -> tuple[dict, str]:
@@ -7832,16 +7046,55 @@ def _best_h2h(bookmakers: list, home_team: str, away_team: str) -> tuple[dict, s
 def fetch_repo_odds() -> list:
     if not DATA_URL:
         raise RuntimeError("QUINIAI_DATA_URL no configurada")
-    data = _request_json(DATA_URL, timeout=30)
-    if not isinstance(data, list):
-        raise RuntimeError("El origen de cuotas no devolvio una lista valida")
-    return data
+    try:
+        data = _request_json(DATA_URL, timeout=30)
+        if not isinstance(data, list):
+            raise RuntimeError("El origen de cuotas no devolvio una lista valida")
+        return data
+    except Exception as remote_exc:
+        try:
+            if LOCAL_ODDS_PATH.exists():
+                local_data = json.loads(LOCAL_ODDS_PATH.read_text(encoding="utf-8"))
+                if isinstance(local_data, list) and local_data:
+                    _log_cycle_event(
+                        "warning",
+                        "repo_odds_fallback_local",
+                        source=DATA_URL,
+                        fallback_path=str(LOCAL_ODDS_PATH),
+                        reason=str(remote_exc),
+                        items=len(local_data),
+                    )
+                    return local_data
+        except Exception as local_exc:
+            raise RuntimeError(
+                f"No se pudieron cargar cuotas remotas ni locales: remoto={remote_exc} local={local_exc}"
+            ) from local_exc
+        raise
+
+
+def _sleep_after_failure_seconds(exc: Exception, elapsed_seconds: float) -> int:
+    if isinstance(exc, requests.RequestException):
+        return max(30, min(120, POLL_SECONDS // 3))
+    error_text = str(exc).lower()
+    if any(
+        token in error_text
+        for token in (
+            "failed to resolve",
+            "max retries exceeded",
+            "nameresolutionerror",
+            "connectionerror",
+            "timeout",
+            "temporarily unavailable",
+        )
+    ):
+        return max(30, min(120, POLL_SECONDS // 3))
+    return max(30, POLL_SECONDS - int(elapsed_seconds))
 
 
 def _team_country_hints(raw_matches: list) -> dict:
     hints = {}
     for item in raw_matches:
-        country_hint = LEAGUE_COUNTRY_HINTS.get(_canonical_league_key(item.get("sport_key", "")))
+        country_hint = LEAGUE_COUNTRY_HINTS.get(str(item.get("sport_key", "")))
         for team_name in [item.get("home_team", ""), item.get("away_team", "")]:
             team_name = str(team_name).strip()
             if team_name and country_hint and team_name not in hints:
@@ -7883,6 +7136,52 @@ def _match_similarity_breakdown(home_team: str, away_team: str, match: dict) -> 
 def _is_confident_slot_match(home_team: str, away_team: str, match: dict) -> bool:
     home_score, away_score, total_score = _match_similarity_breakdown(home_team, away_team, match)
     return home_score >= 0.7 and away_score >= 0.7 and total_score >= 1.55
+
+
+def _slot_kickoff_matches(slot: dict, match: dict, max_gap_hours: int = 36) -> bool:
+    slot_dt = _parse_iso_datetime(str(slot.get("kickoff", "")).strip())
+    match_dt = _parse_iso_datetime(str(match.get("kickoff", "")).strip())
+    if not slot_dt or not match_dt:
+        return True
+    gap_seconds = abs((slot_dt - match_dt).total_seconds())
+    return gap_seconds <= max_gap_hours * 3600
+
+
+def _guess_slot_league(home_team: str, away_team: str, kickoff: str) -> str:
+    kickoff_dt = _parse_iso_datetime(kickoff) or datetime.now(timezone.utc)
+    season_code = _season_code_for(kickoff_dt)
+    candidate_leagues = [
+        "soccer_spain_la_liga",
+        "soccer_spain_segunda_division",
+        "soccer_uefa_champs_league",
+        "soccer_uefa_europa_league",
+        "soccer_uefa_europa_conference_league",
+        "soccer_epl",
+        "soccer_efl_champ",
+    ]
+    best_league = ""
+    best_score = 0.0
+    for league_key in candidate_leagues:
+        history_rows = _season_rows(fetch_league_history(league_key), season_code)
+        if not history_rows:
+            continue
+        teams = set()
+        for row in history_rows:
+            home_name = str(row.get("HomeTeam", "")).strip()
+            away_name = str(row.get("AwayTeam", "")).strip()
+            if home_name:
+                teams.add(home_name)
+            if away_name:
+                teams.add(away_name)
+        if not teams:
+            continue
+        home_score = max((_team_similarity_score(home_team, team) for team in teams), default=0.0)
+        away_score = max((_team_similarity_score(away_team, team) for team in teams), default=0.0)
+        total = home_score + away_score
+        if home_score >= 0.82 and away_score >= 0.82 and total > best_score:
+            best_score = total
+            best_league = league_key
+    return best_league
 
 
 def _find_match_by_teams(matches: list[dict], home_team: str, away_team: str) -> dict | None:
@@ -7988,15 +7287,21 @@ def _find_cached_quiniela_match(
     return _json_clone(best)
 
 
-def _build_quiniela_placeholder(slot: dict, jornada: int, cached_match: dict | None = None) -> dict:
+def _build_quiniela_placeholder(
+    slot: dict,
+    jornada: int,
+    cached_match: dict | None = None,
+    inferred_league: str = "",
+    inferred_kickoff: str = "",
+) -> dict:
     if cached_match:
         placeholder = cached_match
     else:
         placeholder = {
             "local": slot.get("local", ""),
             "visitante": slot.get("visitante", ""),
-            "league": "",
-            "kickoff": "",
+            "league": inferred_league,
+            "kickoff": inferred_kickoff,
             "bookmaker": "",
             "odds": {},
             "market_context": {"normalized_percent": {}},
@@ -8012,11 +7317,15 @@ def _build_quiniela_placeholder(slot: dict, jornada: int, cached_match: dict | N
             "match_news_context": {"items": [], "signals": {}},
             "match_signals": {},
             "focus_digest": [],
-            "focus_ai_briefing": {},
+            "focus_ai_briefing": "",
             "notes": [],
         }
     placeholder.setdefault("local", slot.get("local", ""))
     placeholder.setdefault("visitante", slot.get("visitante", ""))
+    if inferred_league and not placeholder.get("league"):
+        placeholder["league"] = inferred_league
+    if inferred_kickoff and not placeholder.get("kickoff"):
+        placeholder["kickoff"] = inferred_kickoff
     placeholder["match_key"] = placeholder.get("match_key") or _match_key(
         "quiniela_cache",
         placeholder.get("local", ""),
@@ -8033,55 +7342,48 @@ def _build_quiniela_placeholder(slot: dict, jornada: int, cached_match: dict | N
     return placeholder
 
 
-def _merge_upcoming_slot_metadata(slots: list[dict], upcoming_payload: dict | None = None) -> list[dict]:
-    if not slots:
-        return []
-    upcoming_by_position = {
-        _safe_int(item.get("position")): item
-        for item in list((upcoming_payload or {}).get("matches", []))
-        + ([((upcoming_payload or {}).get("pleno15") or {})] if (upcoming_payload or {}).get("pleno15") else [])
-        if _safe_int(item.get("position"))
-    }
-    merged = []
-    for slot in slots:
-        position = _safe_int(slot.get("position"))
-        enriched = dict(slot)
-        extra = upcoming_by_position.get(position) or {}
-        for field in ["kickoff", "date_label", "local", "visitante"]:
-            if enriched.get(field) in {None, ""} and extra.get(field) not in {None, ""}:
-                enriched[field] = extra.get(field)
-        merged.append(enriched)
-    return merged
-
-
 def _persist_quiniela_history(quiniela_jornadas: list[dict]) -> None:
     jornadas_store = QUINIELA_HISTORY.setdefault("jornadas", {})
+    monitor_store = MONITOR_JORNADAS_HISTORY.setdefault("jornadas", {})
     QUINIELA_HISTORY["updated_at"] = _now_iso()
+    MONITOR_JORNADAS_HISTORY["updated_at"] = QUINIELA_HISTORY["updated_at"]
     if quiniela_jornadas:
         QUINIELA_HISTORY["current_jornada"] = next(
             (jornada.get("jornada") for jornada in quiniela_jornadas if jornada.get("is_current")),
             quiniela_jornadas[0].get("jornada"),
         )
-    keep_jornadas = set()
+        MONITOR_JORNADAS_HISTORY["current_jornada"] = QUINIELA_HISTORY["current_jornada"]
     for jornada in quiniela_jornadas:
         jornada_num = _safe_int(jornada.get("jornada"))
         if not jornada_num:
             continue
-        keep_jornadas.add(jornada_num)
-        jornadas_store[str(jornada_num)] = {
+        jornada_payload = {
             "jornada": jornada_num,
             "label": jornada.get("label") or f"Jornada {jornada_num}",
             "source": jornada.get("source", ""),
             "source_url": jornada.get("source_url", ""),
             "kickoff_from": jornada.get("kickoff_from", ""),
             "kickoff_to": jornada.get("kickoff_to", ""),
+            "is_current": bool(jornada.get("is_current")),
+            "history_only": bool(jornada.get("history_only")),
             "updated_at": _now_iso(),
             "matches": [_json_clone(match) for match in jornada.get("matches", [])],
             "unmatched_slots": _json_clone(jornada.get("unmatched_slots", [])),
         }
-    for jornada_key in list(jornadas_store.keys()):
-        if _safe_int(jornada_key, 0) not in keep_jornadas:
-            jornadas_store.pop(jornada_key, None)
+        jornadas_store[str(jornada_num)] = jornada_payload
+        monitor_store[str(jornada_num)] = dict(jornada_payload)
+    current_anchor = _safe_int(QUINIELA_HISTORY.get("current_jornada"))
+    if current_anchor:
+        lower_bound = max(1, current_anchor - max(6, QUINIELA_HISTORY_JORNADAS))
+        upper_bound = current_anchor + 2
+        for jornada_key in list(jornadas_store.keys()):
+            jornada_num = _safe_int(jornada_key, 0)
+            if jornada_num < lower_bound or jornada_num > upper_bound:
+                jornadas_store.pop(jornada_key, None)
+        for jornada_key in list(monitor_store.keys()):
+            jornada_num = _safe_int(jornada_key, 0)
+            if jornada_num < lower_bound or jornada_num > upper_bound:
+                monitor_store.pop(jornada_key, None)
 
 
 def _audit_quiniela_integrity(
@@ -8146,7 +7448,9 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
     current_context = _eduardo_current_context()
     current_jornada = _safe_int(current_context.get("jornada"))
     current_season = _safe_int(current_context.get("temporada"))
-    upcoming_jornadas = fetch_eduardo_upcoming_jornadas()
+    upcoming_jornadas = fetch_lae_upcoming_jornadas()
+    if not upcoming_jornadas:
+        upcoming_jornadas = fetch_eduardo_upcoming_jornadas()
     upcoming_map = {
         _safe_int(jornada.get("jornada")): jornada
         for jornada in upcoming_jornadas
@@ -8164,9 +7468,9 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
     target_jornadas = list(range(first_jornada, latest_available_jornada + 1))
     for jornada_num in reversed(target_jornadas):
         payload = fetch_quiniela_jornada_page(jornada_num, temporada=current_season)
-        upcoming_payload = upcoming_map.get(jornada_num) or {}
         history_only = False
         if not payload.get("ok"):
+            upcoming_payload = upcoming_map.get(jornada_num) or {}
             if upcoming_payload.get("matches"):
                 payload = {
                     "ok": True,
@@ -8177,7 +7481,11 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
                     "matches": list(upcoming_payload.get("matches", [])),
                     "pleno15": dict(upcoming_payload.get("pleno15") or {}),
                 }
-        history_record = ((QUINIELA_HISTORY or {}).get("jornadas") or {}).get(str(jornada_num)) or {}
+        history_record = (
+            ((QUINIELA_HISTORY or {}).get("jornadas") or {}).get(str(jornada_num))
+            or ((MONITOR_JORNADAS_HISTORY or {}).get("jornadas") or {}).get(str(jornada_num))
+            or {}
+        )
         if not payload.get("ok") and not history_record.get("matches"):
             continue
         if not payload.get("ok"):
@@ -8198,12 +7506,8 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
             continue
         jornada_matches = []
         unmatched_slots = []
-        slots = _merge_upcoming_slot_metadata(list(payload.get("matches", [])), upcoming_payload)
-        pleno_slot = dict(payload.get("pleno15") or {})
-        upcoming_pleno = dict(upcoming_payload.get("pleno15") or {})
-        for field in ["kickoff", "date_label", "local", "visitante"]:
-            if pleno_slot.get(field) in {None, ""} and upcoming_pleno.get(field) not in {None, ""}:
-                pleno_slot[field] = upcoming_pleno.get(field)
+        slots = list(payload.get("matches", []))
+        pleno_slot = payload.get("pleno15") or {}
         if pleno_slot:
             slots.append(pleno_slot)
         for slot in slots:
@@ -8211,6 +7515,8 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
             if not position:
                 continue
             match = _find_match_by_teams(matches, slot.get("local", ""), slot.get("visitante", ""))
+            if match and not _slot_kickoff_matches(slot, match):
+                match = None
             if not match:
                 cached_match = _find_cached_quiniela_match(
                     jornada_num,
@@ -8218,7 +7524,19 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
                     slot_local=slot.get("local", ""),
                     slot_visitante=slot.get("visitante", ""),
                 )
-                placeholder = _build_quiniela_placeholder(slot, jornada_num, cached_match=cached_match)
+                inferred_kickoff = str(slot.get("kickoff", "")).strip()
+                inferred_league = _guess_slot_league(
+                    str(slot.get("local", "")).strip(),
+                    str(slot.get("visitante", "")).strip(),
+                    inferred_kickoff,
+                )
+                placeholder = _build_quiniela_placeholder(
+                    slot,
+                    jornada_num,
+                    cached_match=cached_match,
+                    inferred_league=inferred_league,
+                    inferred_kickoff=inferred_kickoff,
+                )
                 if slot.get("kickoff") and not placeholder.get("kickoff"):
                     placeholder["kickoff"] = slot.get("kickoff", "")
                 jornada_matches.append(placeholder)
@@ -8259,385 +7577,12 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
     return jornadas, all_keys, current_keys
 
 
-def _bootstrap_quiniela_placeholder(
-    match: dict,
-    raw_matches: list[dict],
-    team_contexts: dict,
-    histories: dict,
-) -> None:
-    home_team = str(match.get("local", "")).strip()
-    away_team = str(match.get("visitante", "")).strip()
-    if not home_team or not away_team:
-        return
-
-    home_context = team_contexts.get(home_team)
-    if not home_context:
-        home_context = _enrich_team(home_team, _guess_country_hint(home_team))
-        team_contexts[home_team] = home_context
-    away_context = team_contexts.get(away_team)
-    if not away_context:
-        away_context = _enrich_team(away_team, _guess_country_hint(away_team))
-        team_contexts[away_team] = away_context
-
-    home_profile = _repair_profile_location(
-        home_team,
-        (home_context or {}).get("profile", {}),
-        _guess_country_hint(home_team),
-    )
-    away_profile = _repair_profile_location(
-        away_team,
-        (away_context or {}).get("profile", {}),
-        _guess_country_hint(away_team),
-    )
-    match.setdefault("home_team_context", {})["profile"] = home_profile
-    match.setdefault("away_team_context", {})["profile"] = away_profile
-    match["home_team_context"].setdefault("news", (home_context or {}).get("news", {}).get("items", []))
-    match["away_team_context"].setdefault("news", (away_context or {}).get("news", {}).get("items", []))
-    match["home_team_context"].setdefault("signals", (home_context or {}).get("news", {}).get("signals", {}))
-    match["away_team_context"].setdefault("signals", (away_context or {}).get("news", {}).get("signals", {}))
-    match["home_team_context"].setdefault(
-        "rotation_risk",
-        _rotation_risk((home_context or {}).get("news", {}).get("signals", {})),
-    )
-    match["away_team_context"].setdefault(
-        "rotation_risk",
-        _rotation_risk((away_context or {}).get("news", {}).get("signals", {})),
-    )
-    match["home_team_context"].setdefault("focus_news", {"items": [], "signals": {}})
-    match["away_team_context"].setdefault("focus_news", {"items": [], "signals": {}})
-    match["home_team_context"].setdefault("media_news", {"items": [], "signals": {}})
-    match["away_team_context"].setdefault("media_news", {"items": [], "signals": {}})
-    match["home_team_context"].setdefault("official_site", {"website": "", "items": []})
-    match["away_team_context"].setdefault("official_site", {"website": "", "items": []})
-
-    home_team_api = fetch_the_sportsdb_team(home_team)
-    away_team_api = fetch_the_sportsdb_team(away_team)
-    inferred_league = match.get("league", "") or _infer_league_key_from_sportsdb(home_team_api, away_team_api)
-    kickoff = str(match.get("kickoff", "")).strip()
-    sportsdb_event = _resolve_sportsdb_event(home_team, away_team, kickoff, home_team_api, away_team_api) or {}
-    if not kickoff:
-        kickoff = _sportsdb_event_kickoff(sportsdb_event)
-        if kickoff:
-            match["kickoff"] = kickoff
-    if not match.get("league") and inferred_league:
-        match["league"] = inferred_league
-    if not match.get("league"):
-        match["league"] = _infer_league_key_from_sportsdb(sportsdb_event, home_team_api, away_team_api)
-
-    league_key = str(match.get("league", "")).strip()
-    if not league_key:
-        return
-    if league_key not in histories:
-        histories[league_key] = fetch_league_history(league_key)
-    league_history = histories.get(league_key, [])
-    kickoff_dt = _parse_iso_datetime(match.get("kickoff", ""))
-    season_code = _season_code_for(kickoff_dt or datetime.now(timezone.utc))
-    season_history = _season_rows(league_history, season_code)
-    completed_history = _completed_rows_before_kickoff(season_history, kickoff_dt)
-    all_completed_history = _completed_rows_before_kickoff(league_history, kickoff_dt)
-    current_table_snapshot = _table_snapshot(completed_history)
-    home_history = _team_history_context(league_history, home_team, kickoff_dt)
-    away_history = _team_history_context(league_history, away_team, kickoff_dt)
-    home_resolved_name = home_history.get("resolved_name", home_team)
-    away_resolved_name = away_history.get("resolved_name", away_team)
-    h2h_history = _head_to_head_metrics(
-        all_completed_history,
-        home_resolved_name,
-        away_resolved_name,
-    )
-    home_rest_days = _days_since_last_match(league_history, home_resolved_name, kickoff_dt)
-    away_rest_days = _days_since_last_match(league_history, away_resolved_name, kickoff_dt)
-    home_recent_matches = _matches_in_recent_days(league_history, home_resolved_name, kickoff_dt, 14)
-    away_recent_matches = _matches_in_recent_days(league_history, away_resolved_name, kickoff_dt, 14)
-
-    home_feed_upcoming = _upcoming_feed_fixtures(
-        raw_matches,
-        home_team,
-        kickoff_dt,
-        league_key,
-        current_table_snapshot,
-        season_history,
-    )
-    away_feed_upcoming = _upcoming_feed_fixtures(
-        raw_matches,
-        away_team,
-        kickoff_dt,
-        league_key,
-        current_table_snapshot,
-        season_history,
-    )
-    home_schedule_upcoming = _upcoming_team_fixtures(
-        season_history,
-        home_resolved_name,
-        kickoff_dt,
-        current_table_snapshot,
-    )
-    away_schedule_upcoming = _upcoming_team_fixtures(
-        season_history,
-        away_resolved_name,
-        kickoff_dt,
-        current_table_snapshot,
-    )
-    home_espn_upcoming = fetch_espn_team_fixtures(
-        home_team,
-        str(home_team_api.get("idESPN", "")).strip(),
-        kickoff_dt,
-        current_table_snapshot,
-        season_history,
-    )
-    away_espn_upcoming = fetch_espn_team_fixtures(
-        away_team,
-        str(away_team_api.get("idESPN", "")).strip(),
-        kickoff_dt,
-        current_table_snapshot,
-        season_history,
-    )
-    home_sportsdb_next_upcoming = _upcoming_sportsdb_next_fixtures(
-        home_team,
-        str(home_team_api.get("idTeam", "")).strip(),
-        kickoff_dt,
-        current_table_snapshot,
-        season_history,
-    )
-    away_sportsdb_next_upcoming = _upcoming_sportsdb_next_fixtures(
-        away_team,
-        str(away_team_api.get("idTeam", "")).strip(),
-        kickoff_dt,
-        current_table_snapshot,
-        season_history,
-    )
-    if sportsdb_event:
-        home_round_upcoming = _upcoming_round_fixtures(
-            home_team,
-            kickoff_dt,
-            sportsdb_event,
-            current_table_snapshot,
-            season_history,
-        )
-        away_round_upcoming = _upcoming_round_fixtures(
-            away_team,
-            kickoff_dt,
-            sportsdb_event,
-            current_table_snapshot,
-            season_history,
-        )
-    else:
-        home_round_upcoming = []
-        away_round_upcoming = []
-
-    home_upcoming = _merge_upcoming_fixtures(
-        home_sportsdb_next_upcoming,
-        home_round_upcoming,
-        home_feed_upcoming,
-        home_schedule_upcoming,
-        home_espn_upcoming,
-    )
-    away_upcoming = _merge_upcoming_fixtures(
-        away_sportsdb_next_upcoming,
-        away_round_upcoming,
-        away_feed_upcoming,
-        away_schedule_upcoming,
-        away_espn_upcoming,
-    )
-    home_relegation = _relegation_context(league_key, current_table_snapshot, home_resolved_name)
-    away_relegation = _relegation_context(league_key, current_table_snapshot, away_resolved_name)
-    season_competitive_context = _season_competitive_context(
-        league_key,
-        current_table_snapshot,
-        home_resolved_name,
-        away_resolved_name,
-        kickoff_dt,
-    )
-    home_future_difficulty = _future_schedule_difficulty(home_upcoming)
-    away_future_difficulty = _future_schedule_difficulty(away_upcoming)
-    home_rotation_context = _rotation_context_from_upcoming(
-        home_team,
-        home_upcoming,
-        match.get("kickoff", ""),
-        ((match.get("home_team_context") or {}).get("focus_news") or {}).get("signals", {}),
-    )
-    away_rotation_context = _rotation_context_from_upcoming(
-        away_team,
-        away_upcoming,
-        match.get("kickoff", ""),
-        ((match.get("away_team_context") or {}).get("focus_news") or {}).get("signals", {}),
-    )
-
-    travel_distance_km = _haversine_km(
-        home_profile.get("latitude"),
-        home_profile.get("longitude"),
-        away_profile.get("latitude"),
-        away_profile.get("longitude"),
-    )
-    weather = fetch_weather_context(home_profile, match.get("kickoff", ""))
-    home_fatigue_index = _fatigue_index(home_rest_days, home_recent_matches, 0.0)
-    away_fatigue_index = _fatigue_index(away_rest_days, away_recent_matches, travel_distance_km)
-    home_pressure_index = _pressure_index(home_history.get("table", {}), home_relegation, home_future_difficulty)
-    away_pressure_index = _pressure_index(away_history.get("table", {}), away_relegation, away_future_difficulty)
-
-    match.setdefault("market_context", {}).setdefault(
-        "official_percent",
-        (match.get("official_quiniela_percentages") or {}).copy(),
-    )
-    if not (match.get("market_context") or {}).get("normalized_percent"):
-        match.setdefault("market_context", {})["normalized_percent"] = (
-            match.get("official_quiniela_percentages") or {}
-        ).copy()
-    match["travel_context"] = {
-        "distance_km": travel_distance_km,
-        "distance_bucket": _distance_bucket(travel_distance_km),
-        "home_country": home_profile.get("country", ""),
-        "away_country": away_profile.get("country", ""),
-        "international_trip": bool(
-            home_profile.get("country_code")
-            and away_profile.get("country_code")
-            and home_profile.get("country_code") != away_profile.get("country_code")
-        ),
-    }
-    match["weather_context"] = weather
-    match["history_context"] = {
-        "supported": bool(league_history),
-        "home": home_history,
-        "away": away_history,
-        "head_to_head": h2h_history,
-    }
-    match["competition_context"] = {
-        "season_code": season_code,
-        "home_relegation": home_relegation,
-        "away_relegation": away_relegation,
-        "season_context_phase": season_competitive_context.get("season_context_phase", {}),
-        "home_objective": season_competitive_context.get("home_objective", {}),
-        "away_objective": season_competitive_context.get("away_objective", {}),
-        "direct_rivalry": season_competitive_context.get("direct_rivalry", {}),
-        "competitive_stakes_label": season_competitive_context.get("competitive_stakes_label", ""),
-        "home_rotation_context": home_rotation_context,
-        "away_rotation_context": away_rotation_context,
-        "home_upcoming": home_upcoming,
-        "away_upcoming": away_upcoming,
-        "home_future_difficulty": home_future_difficulty,
-        "away_future_difficulty": away_future_difficulty,
-    }
-    match["schedule_context"] = {
-        "home": {
-            "days_since_last_match": home_rest_days,
-            "matches_last_14_days": home_recent_matches,
-            "fatigue": _fatigue_rating(home_rest_days, home_recent_matches),
-            "fatigue_index": home_fatigue_index,
-        },
-        "away": {
-            "days_since_last_match": away_rest_days,
-            "matches_last_14_days": away_recent_matches,
-            "fatigue": _fatigue_rating(away_rest_days, away_recent_matches),
-            "fatigue_index": away_fatigue_index,
-        },
-    }
-    match["analytics_context"] = {
-        "home_pressure_index": home_pressure_index,
-        "away_pressure_index": away_pressure_index,
-        "home_fatigue_index": home_fatigue_index,
-        "away_fatigue_index": away_fatigue_index,
-        "home_elo": home_history.get("elo_rating"),
-        "away_elo": away_history.get("elo_rating"),
-        "home_trend": home_history.get("streak", {}),
-        "away_trend": away_history.get("streak", {}),
-        "home_rolling": home_history.get("rolling", {}),
-        "away_rolling": away_history.get("rolling", {}),
-        "home_must_win_index": (
-            season_competitive_context.get("home_objective", {}) or {}
-        ).get("must_win_index", 0),
-        "away_must_win_index": (
-            season_competitive_context.get("away_objective", {}) or {}
-        ).get("must_win_index", 0),
-        "home_must_not_lose_index": (
-            season_competitive_context.get("home_objective", {}) or {}
-        ).get("must_not_lose_index", 0),
-        "away_must_not_lose_index": (
-            season_competitive_context.get("away_objective", {}) or {}
-        ).get("must_not_lose_index", 0),
-        "direct_rivalry_index": (
-            season_competitive_context.get("direct_rivalry", {}) or {}
-        ).get("direct_rivalry_index", 0),
-        "home_objective_swing_if_win": (
-            season_competitive_context.get("home_objective", {}) or {}
-        ).get("objective_swing_if_win", 0),
-        "home_objective_swing_if_lose": (
-            season_competitive_context.get("home_objective", {}) or {}
-        ).get("objective_swing_if_lose", 0),
-        "away_objective_swing_if_win": (
-            season_competitive_context.get("away_objective", {}) or {}
-        ).get("objective_swing_if_win", 0),
-        "away_objective_swing_if_lose": (
-            season_competitive_context.get("away_objective", {}) or {}
-        ).get("objective_swing_if_lose", 0),
-    }
-    match["_schedule_inputs"] = {
-        "home_feed_upcoming": home_feed_upcoming,
-        "away_feed_upcoming": away_feed_upcoming,
-        "home_schedule_upcoming": home_schedule_upcoming,
-        "away_schedule_upcoming": away_schedule_upcoming,
-        "home_espn_upcoming": home_espn_upcoming,
-        "away_espn_upcoming": away_espn_upcoming,
-        "home_sportsdb_next_upcoming": home_sportsdb_next_upcoming,
-        "away_sportsdb_next_upcoming": away_sportsdb_next_upcoming,
-        "home_round_upcoming": home_round_upcoming,
-        "away_round_upcoming": away_round_upcoming,
-    }
-    match.setdefault("match_news_context", {"items": [], "signals": {}})
-    match.setdefault("structured_context", {})
-    match.setdefault("match_signals", {})
-    match["match_signals"].update(
-        {
-            "weather_risk": _weather_risk(weather),
-            "travel_burden_away": _distance_bucket(travel_distance_km),
-            "home_form_points_last_5": home_history.get("recent_all", {}).get("points"),
-            "away_form_points_last_5": away_history.get("recent_all", {}).get("points"),
-            "home_league_position": home_history.get("table", {}).get("position"),
-            "away_league_position": away_history.get("table", {}).get("position"),
-            "home_league_points": home_history.get("table", {}).get("points"),
-            "away_league_points": away_history.get("table", {}).get("points"),
-            "home_gap_to_drop": home_relegation.get("gap_to_drop_zone"),
-            "away_gap_to_drop": away_relegation.get("gap_to_drop_zone"),
-            "home_rest_days": home_rest_days,
-            "away_rest_days": away_rest_days,
-            "home_matches_last_14_days": home_recent_matches,
-            "away_matches_last_14_days": away_recent_matches,
-            "home_pressure_index": home_pressure_index.get("score"),
-            "away_pressure_index": away_pressure_index.get("score"),
-            "home_must_win_index": (season_competitive_context.get("home_objective", {}) or {}).get("must_win_index", 0),
-            "away_must_win_index": (season_competitive_context.get("away_objective", {}) or {}).get("must_win_index", 0),
-            "home_must_not_lose_index": (season_competitive_context.get("home_objective", {}) or {}).get("must_not_lose_index", 0),
-            "away_must_not_lose_index": (season_competitive_context.get("away_objective", {}) or {}).get("must_not_lose_index", 0),
-            "direct_rivalry_index": (season_competitive_context.get("direct_rivalry", {}) or {}).get("direct_rivalry_index", 0),
-            "season_context_phase": (season_competitive_context.get("season_context_phase", {}) or {}).get("key", ""),
-            "competitive_stakes_label": season_competitive_context.get("competitive_stakes_label", ""),
-            "home_fatigue_index": home_fatigue_index.get("score"),
-            "away_fatigue_index": away_fatigue_index.get("score"),
-            "home_elo": home_history.get("elo_rating"),
-            "away_elo": away_history.get("elo_rating"),
-        }
-    )
-
-
 def _select_focus_match_indexes(matches: list[dict]) -> set[int]:
     ordered = sorted(range(len(matches)), key=lambda idx: _focus_sort_key(matches[idx]))
     return set(ordered[: max(0, FOCUS_MATCH_COUNT)])
 
 
 def build_snapshot(raw_matches: list) -> dict:
-    # Normaliza claves de liga (p.ej. Segunda -> LaLiga2 en algunas fuentes)
-    normalized_raw = []
-    for item in raw_matches or []:
-        if not isinstance(item, dict):
-            continue
-        cloned = dict(item)
-        raw_key = str(cloned.get("sport_key", "")).strip()
-        canonical = _canonical_league_key(raw_key)
-        if canonical and canonical != raw_key:
-            cloned["sport_key_raw"] = raw_key
-            cloned["sport_key"] = canonical
-        normalized_raw.append(cloned)
-    raw_matches = normalized_raw
-
     country_hints = _team_country_hints(raw_matches)
     unique_teams = sorted(
         {
@@ -8793,53 +7738,30 @@ def build_snapshot(raw_matches: list) -> dict:
             current_table_snapshot,
             season_history,
         )
-        home_sportsdb_next_upcoming = _upcoming_sportsdb_next_fixtures(
-            home_team,
-            str(home_team_api.get("idTeam", "")).strip(),
-            kickoff_dt,
-            current_table_snapshot,
-            season_history,
-        )
-        away_sportsdb_next_upcoming = _upcoming_sportsdb_next_fixtures(
-            away_team,
-            str(away_team_api.get("idTeam", "")).strip(),
-            kickoff_dt,
-            current_table_snapshot,
-            season_history,
-        )
         home_upcoming = _merge_upcoming_fixtures(
-            home_sportsdb_next_upcoming,
             home_feed_upcoming,
             home_schedule_upcoming,
             home_espn_upcoming,
         )
         away_upcoming = _merge_upcoming_fixtures(
-            away_sportsdb_next_upcoming,
             away_feed_upcoming,
             away_schedule_upcoming,
             away_espn_upcoming,
         )
         home_relegation = _relegation_context(league, current_table_snapshot, home_resolved_name)
         away_relegation = _relegation_context(league, current_table_snapshot, away_resolved_name)
-        season_competitive_context = _season_competitive_context(
-            league,
-            current_table_snapshot,
-            home_resolved_name,
-            away_resolved_name,
-            kickoff_dt,
-        )
+        home_objective = _season_objective_context(league, current_table_snapshot, home_resolved_name)
+        away_objective = _season_objective_context(league, current_table_snapshot, away_resolved_name)
         home_future_difficulty = _future_schedule_difficulty(home_upcoming)
         away_future_difficulty = _future_schedule_difficulty(away_upcoming)
-        home_rotation_context = _rotation_context_from_upcoming(
-            home_team,
+        home_rotation_context = _next_rotation_fixture_context(
             home_upcoming,
-            kickoff,
+            home_team,
             home_news.get("signals", {}),
         )
-        away_rotation_context = _rotation_context_from_upcoming(
-            away_team,
+        away_rotation_context = _next_rotation_fixture_context(
             away_upcoming,
-            kickoff,
+            away_team,
             away_news.get("signals", {}),
         )
 
@@ -8850,10 +7772,30 @@ def build_snapshot(raw_matches: list) -> dict:
             away_profile.get("longitude"),
         )
         weather = fetch_weather_context(home_profile, kickoff)
-        home_fatigue_index = _fatigue_index(home_rest_days, home_recent_matches, 0.0)
-        away_fatigue_index = _fatigue_index(away_rest_days, away_recent_matches, travel_distance_km)
-        home_pressure_index = _pressure_index(home_history.get("table", {}), home_relegation, home_future_difficulty)
-        away_pressure_index = _pressure_index(away_history.get("table", {}), away_relegation, away_future_difficulty)
+        home_fatigue_index = _fatigue_index(
+            home_rest_days,
+            home_recent_matches,
+            0.0,
+            next_rotation_context=home_rotation_context,
+        )
+        away_fatigue_index = _fatigue_index(
+            away_rest_days,
+            away_recent_matches,
+            travel_distance_km,
+            next_rotation_context=away_rotation_context,
+        )
+        home_pressure_index = _pressure_index(
+            home_history.get("table", {}),
+            home_relegation,
+            home_future_difficulty,
+            home_objective,
+        )
+        away_pressure_index = _pressure_index(
+            away_history.get("table", {}),
+            away_relegation,
+            away_future_difficulty,
+            away_objective,
+        )
         match_key = _match_key(league, home_team, away_team, kickoff)
 
         matches.append(
@@ -8888,17 +7830,14 @@ def build_snapshot(raw_matches: list) -> dict:
                     "season_code": season_code,
                     "home_relegation": home_relegation,
                     "away_relegation": away_relegation,
-                    "season_context_phase": season_competitive_context.get("season_context_phase", {}),
-                    "home_objective": season_competitive_context.get("home_objective", {}),
-                    "away_objective": season_competitive_context.get("away_objective", {}),
-                    "direct_rivalry": season_competitive_context.get("direct_rivalry", {}),
-                    "competitive_stakes_label": season_competitive_context.get("competitive_stakes_label", ""),
-                    "home_rotation_context": home_rotation_context,
-                    "away_rotation_context": away_rotation_context,
+                    "home_objective": home_objective,
+                    "away_objective": away_objective,
                     "home_upcoming": home_upcoming,
                     "away_upcoming": away_upcoming,
                     "home_future_difficulty": home_future_difficulty,
                     "away_future_difficulty": away_future_difficulty,
+                    "home_rotation_context": home_rotation_context,
+                    "away_rotation_context": away_rotation_context,
                 },
                 "schedule_context": {
                     "home": {
@@ -8925,13 +7864,6 @@ def build_snapshot(raw_matches: list) -> dict:
                     "away_trend": away_history.get("streak", {}),
                     "home_rolling": home_history.get("rolling", {}),
                     "away_rolling": away_history.get("rolling", {}),
-                    "home_must_win_index": (season_competitive_context.get("home_objective", {}) or {}).get("must_win_index", 0),
-                    "away_must_win_index": (season_competitive_context.get("away_objective", {}) or {}).get("must_win_index", 0),
-                    "home_must_not_lose_index": (season_competitive_context.get("home_objective", {}) or {}).get("must_not_lose_index", 0),
-                    "away_must_not_lose_index": (season_competitive_context.get("away_objective", {}) or {}).get("must_not_lose_index", 0),
-                    "direct_rivalry_index": (season_competitive_context.get("direct_rivalry", {}) or {}).get("direct_rivalry_index", 0),
-                    "home_rotation_risk_index": home_rotation_context.get("score", 0),
-                    "away_rotation_risk_index": away_rotation_context.get("score", 0),
                 },
                 "home_team_context": {
                     "profile": home_profile,
@@ -8979,15 +7911,6 @@ def build_snapshot(raw_matches: list) -> dict:
                     "away_matches_last_14_days": away_recent_matches,
                     "home_pressure_index": home_pressure_index.get("score"),
                     "away_pressure_index": away_pressure_index.get("score"),
-                    "home_must_win_index": (season_competitive_context.get("home_objective", {}) or {}).get("must_win_index", 0),
-                    "away_must_win_index": (season_competitive_context.get("away_objective", {}) or {}).get("must_win_index", 0),
-                    "home_must_not_lose_index": (season_competitive_context.get("home_objective", {}) or {}).get("must_not_lose_index", 0),
-                    "away_must_not_lose_index": (season_competitive_context.get("away_objective", {}) or {}).get("must_not_lose_index", 0),
-                    "direct_rivalry_index": (season_competitive_context.get("direct_rivalry", {}) or {}).get("direct_rivalry_index", 0),
-                    "season_context_phase": (season_competitive_context.get("season_context_phase", {}) or {}).get("key", ""),
-                    "competitive_stakes_label": season_competitive_context.get("competitive_stakes_label", ""),
-                    "home_rotation_risk_index": home_rotation_context.get("score", 0),
-                    "away_rotation_risk_index": away_rotation_context.get("score", 0),
                     "home_fatigue_index": home_fatigue_index.get("score"),
                     "away_fatigue_index": away_fatigue_index.get("score"),
                     "home_elo": home_history.get("elo_rating"),
@@ -8998,7 +7921,7 @@ def build_snapshot(raw_matches: list) -> dict:
                 "quiniela_tracked": False,
                 "structured_context": {},
                 "focus_digest": [],
-                "focus_ai_briefing": {},
+                "focus_ai_briefing": "",
                 "_schedule_inputs": {
                     "home_feed_upcoming": home_feed_upcoming,
                     "away_feed_upcoming": away_feed_upcoming,
@@ -9006,8 +7929,6 @@ def build_snapshot(raw_matches: list) -> dict:
                     "away_schedule_upcoming": away_schedule_upcoming,
                     "home_espn_upcoming": home_espn_upcoming,
                     "away_espn_upcoming": away_espn_upcoming,
-                    "home_sportsdb_next_upcoming": home_sportsdb_next_upcoming,
-                    "away_sportsdb_next_upcoming": away_sportsdb_next_upcoming,
                 },
                 "notes": [
                     f"bookmaker={bookmaker}" if bookmaker else "",
@@ -9065,17 +7986,6 @@ def build_snapshot(raw_matches: list) -> dict:
         for jornada in quiniela_jornadas:
             for match in jornada.get("matches", []):
                 competition_context = match.get("competition_context") or {}
-                needs_bootstrap = (
-                    not match.get("league")
-                    or not match.get("kickoff")
-                    or not competition_context.get("home_upcoming")
-                    or not competition_context.get("away_upcoming")
-                )
-                if needs_bootstrap:
-                    _bootstrap_quiniela_placeholder(match, raw_matches, team_contexts, histories)
-        for jornada in quiniela_jornadas:
-            for match in jornada.get("matches", []):
-                competition_context = match.get("competition_context") or {}
                 home_upcoming = competition_context.get("home_upcoming") or []
                 away_upcoming = competition_context.get("away_upcoming") or []
                 should_refresh = (
@@ -9114,18 +8024,6 @@ def build_snapshot(raw_matches: list) -> dict:
             quiniela_focus_matches = list(jornada.get("matches", []))
             break
         _persist_quiniela_history(quiniela_jornadas)
-        for jornada in quiniela_jornadas:
-            for match in jornada.get("matches", []):
-                competition_context = match.get("competition_context") or {}
-                if (
-                    not match.get("league")
-                    or not match.get("kickoff")
-                    or not competition_context.get("home_upcoming")
-                    or not competition_context.get("away_upcoming")
-                ):
-                    _bootstrap_quiniela_placeholder(match, raw_matches, team_contexts, histories)
-                if match.get("league") and match.get("kickoff") and not match.get("focus_ai_briefing"):
-                    _enrich_quiniela_match(match)
     quiniela_integrity = _audit_quiniela_integrity(
         quiniela_jornadas,
         _safe_int(_eduardo_current_context().get("temporada")),
@@ -9248,13 +8146,6 @@ def build_snapshot(raw_matches: list) -> dict:
         "quiniela_focus_matches": quiniela_focus_matches,
         "quiniela_tracked_matches": tracked_matches,
         "matches": matches,
-        "audit_news_quality": {
-            "news_language": NEWS_LANGUAGE,
-            "news_country": NEWS_COUNTRY,
-            "high_trust_domains": sorted(HIGH_TRUST_NEWS_DOMAINS),
-            "low_trust_domains": sorted(LOW_TRUST_NEWS_DOMAINS),
-            "notes": "Se resuelven enlaces de Google News RSS cuando incluyen url/q, se filtra ruido y se prioriza prensa fiable.",
-        },
     }
     _flush_caches()
     return snapshot
@@ -9307,6 +8198,7 @@ def run_once(print_summary: bool = False) -> dict:
     )
     _persist_run_history()
     write_status_files(snapshot=snapshot)
+    publish_monitor_to_github()
     _log_cycle_event(
         "info",
         "cycle_completed",
@@ -9330,6 +8222,7 @@ def run_once(print_summary: bool = False) -> dict:
 def run_forever() -> None:
     while True:
         started = time.time()
+        failed_exc: Exception | None = None
         try:
             snapshot = run_once(print_summary=False)
             print(
@@ -9341,6 +8234,7 @@ def run_forever() -> None:
             _log_cycle_event("warning", "worker_interrupted")
             raise
         except Exception as exc:
+            failed_exc = exc
             duration_seconds = round(time.time() - started, 2)
             _append_run_history(
                 {
@@ -9353,6 +8247,14 @@ def run_forever() -> None:
             )
             _persist_run_history()
             write_status_files(snapshot=None, error=str(exc))
+            try:
+                publish_monitor_to_github()
+            except Exception as publish_exc:
+                _log_cycle_event(
+                    "warning",
+                    "monitor_publish_after_error_failed",
+                    error=str(publish_exc),
+                )
             _log_cycle_event(
                 "error",
                 "cycle_failed",
@@ -9362,7 +8264,11 @@ def run_forever() -> None:
             )
             print(f"[snapshot-worker] error: {exc}")
         elapsed = time.time() - started
-        sleep_for = max(30, POLL_SECONDS - int(elapsed))
+        sleep_for = (
+            _sleep_after_failure_seconds(failed_exc, elapsed)
+            if failed_exc is not None
+            else max(30, POLL_SECONDS - int(elapsed))
+        )
         _log_cycle_event("info", "cycle_sleep", sleep_for_seconds=sleep_for)
         remaining = sleep_for
         while remaining > 0:
@@ -9375,7 +8281,9 @@ def run_forever() -> None:
 
 
 if __name__ == "__main__":
-    _acquire_worker_lock()
+    lock_acquired = _acquire_worker_lock()
+    if not lock_acquired:
+        sys.exit(0)
     if "--once" in sys.argv:
         snapshot = run_once(print_summary="--pretty" in sys.argv)
         if "--pretty" not in sys.argv:
