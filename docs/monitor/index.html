@@ -139,7 +139,7 @@
           <div class="panel-head">
             <div>
               <h2>Auditoría IA avanzada</h2>
-              <div class="muted">Solo se usan generaciones con telemetría real para medias de coste, calidad y tokens. La clave admin se guarda solo en este navegador.</div>
+              <div class="muted">Solo se usan generaciones con telemetría real para medias de coste, calidad y tokens. La clave admin se conserva solo durante esta sesión del navegador.</div>
             </div>
           </div>
           <div class="controls" style="margin-top:14px">
@@ -182,7 +182,7 @@
     const iaMemoryUserSelect = document.getElementById("ia-memory-user");
     const jornadaFilter = document.getElementById("jornada-filter");
     const sectionButtons = [...document.querySelectorAll("[data-section-target]")];
-    const storedAdminKey = localStorage.getItem("quiniai_admin_key") || "";
+    const storedAdminKey = sessionStorage.getItem("quiniai_admin_key") || "";
     if (storedAdminKey) adminKeyInput.value = storedAdminKey;
     let latestIaAuditItems = [];
 
@@ -545,7 +545,7 @@
         document.getElementById("ia-audit-status").textContent = "Pega primero la x-admin-key.";
         return;
       }
-      localStorage.setItem("quiniai_admin_key", adminKey);
+      sessionStorage.setItem("quiniai_admin_key", adminKey);
       document.getElementById("ia-audit-status").textContent = "Cargando auditoría medida...";
       try {
         const response = await fetch(`${backendBase}/admin/ia-generation/recent?limit=30&measured_only=1`, {
@@ -604,10 +604,10 @@
     }
 
     saveAdminKeyButton.addEventListener("click", () => {
-      localStorage.setItem("quiniai_admin_key", adminKeyInput.value.trim());
+      sessionStorage.setItem("quiniai_admin_key", adminKeyInput.value.trim());
       document.getElementById("ia-audit-status").textContent = adminKeyInput.value.trim()
-        ? "Clave guardada en este navegador."
-        : "Clave eliminada de este navegador.";
+        ? "Clave guardada solo para esta sesión."
+        : "Clave eliminada de esta sesión.";
     });
     loadIaAuditButton.addEventListener("click", () => {
       setActiveSection("ia-audit");
