@@ -173,6 +173,7 @@ LEGACY_SNAPSHOT_PATH = (
 DESKTOP_KINII_DIR = Path.home() / "Desktop" / "Kinii"
 DESKTOP_KINII_STATE_DIR = DESKTOP_KINII_DIR / "Estado"
 SNAPSHOT_OUTPUT_PATH = OUTPUT_DIR / "ia_feed_snapshot.json"
+PUBLISHED_SNAPSHOT_PATH = Path(__file__).resolve().parent / "ia_feed_snapshot.json"
 STATUS_FILE_PATH = OUTPUT_DIR / "ULTIMO_ESTADO_QUINIAI.txt"
 DESKTOP_STATUS_FILE_PATH = DESKTOP_KINII_STATE_DIR / "Estado QuiniAI.txt"
 STATUS_JSON_PATH = OUTPUT_DIR / "ULTIMO_ESTADO_QUINIAI.json"
@@ -3126,6 +3127,7 @@ def publish_monitor_to_github() -> bool:
         return False
     repo_root = Path(__file__).resolve().parent
     tracked_files = [
+        "ia_feed_snapshot.json",
         "docs/monitor/index.html",
         "docs/monitor/status.json",
         "docs/monitor/jornadas_history.json",
@@ -8159,6 +8161,8 @@ def fetch_snapshot() -> dict:
 def save_local_snapshot(snapshot: dict) -> None:
     _ensure_cache_dir()
     with open(SNAPSHOT_OUTPUT_PATH, "w", encoding="utf-8") as handle:
+        json.dump(snapshot, handle, ensure_ascii=False, indent=2)
+    with open(PUBLISHED_SNAPSHOT_PATH, "w", encoding="utf-8") as handle:
         json.dump(snapshot, handle, ensure_ascii=False, indent=2)
 
 
