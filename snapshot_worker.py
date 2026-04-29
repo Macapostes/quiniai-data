@@ -157,6 +157,9 @@ MONITOR_WEB_DIR = Path(__file__).with_name("docs") / "monitor"
 LOCAL_ODDS_PATH = Path(__file__).with_name("cuotas.json")
 UPDATE_ODDS_SCRIPT_PATH = Path(__file__).with_name("update_odds.py")
 ODDS_API_KEY = os.getenv("ODDS_API_KEY", "").strip()
+ENABLE_LOCAL_ODDS_REFRESH = str(
+    os.getenv("QUINIAI_ENABLE_LOCAL_ODDS_REFRESH", "0")
+).strip().lower() in {"1", "true", "yes", "si"}
 LOCAL_ODDS_MAX_AGE_SECONDS = max(
     1800, int(os.getenv("QUINIAI_LOCAL_ODDS_MAX_AGE_SECONDS", "43200"))
 )
@@ -7067,7 +7070,7 @@ def _local_odds_age_seconds() -> float | None:
 
 
 def _refresh_local_odds_feed(reason: str) -> bool:
-    if not ODDS_API_KEY:
+    if not ENABLE_LOCAL_ODDS_REFRESH or not ODDS_API_KEY:
         return False
     if not UPDATE_ODDS_SCRIPT_PATH.exists():
         _log_cycle_event(
@@ -7124,7 +7127,7 @@ def fetch_repo_odds() -> list:
     if not DATA_URL:
         raise RuntimeError("QUINIAI_DATA_URL no configurada")
     local_age = _local_odds_age_seconds()
-    if ODDS_API_KEY and (local_age is None or local_age > LOCAL_ODDS_MAX_AGE_SECONDS):
+    if ENABLE_LOCAL_ODDS_REFRESH and ODDS_API_KEY and (local_age is None or local_age > LOCAL_ODDS_MAX_AGE_SECONDS):
         if _refresh_local_odds_feed(
             "local_missing_or_stale" if local_age is None else f"stale_{int(local_age)}s"
         ):
@@ -7145,7 +7148,7 @@ def fetch_repo_odds() -> list:
         return data
     except Exception as remote_exc:
         try:
-            if ODDS_API_KEY and _refresh_local_odds_feed("remote_fetch_failed"):
+            if ENABLE_LOCAL_ODDS_REFRESH and ODDS_API_KEY and _refresh_local_odds_feed("remote_fetch_failed"):
                 refreshed_local_data = _read_local_odds_feed()
                 if refreshed_local_data:
                     _log_cycle_event(

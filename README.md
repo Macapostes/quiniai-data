@@ -13,6 +13,7 @@ QUINIAI_BACKEND_URL=https://quiniela-backend-production-cb1a.up.railway.app
 SNAPSHOT_POLL_SECONDS=900
 QUINIAI_DATA_URL=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json
 ODDS_API_KEY=tu_odds_api_key_opcional
+QUINIAI_ENABLE_LOCAL_ODDS_REFRESH=0
 ```
 
 ## Arranque rapido en Windows
@@ -23,7 +24,7 @@ ODDS_API_KEY=tu_odds_api_key_opcional
 ## Que hace ahora mismo
 
 1. Descarga las cuotas publicadas en `quiniai-data`.
-   - Si el worker tiene `ODDS_API_KEY` y detecta que `cuotas.json` local esta ausente o caducado, primero lo regenera con `update_odds.py`.
+   - Solo si activas `QUINIAI_ENABLE_LOCAL_ODDS_REFRESH=1` y ademas existe `ODDS_API_KEY`, el worker puede regenerar `cuotas.json` local cuando detecta que falta o esta caducado.
 2. Enriquece cada partido con contexto adicional:
    - noticias recientes por equipo
    - noticias especificas de partido para los 15 focos quiniela
@@ -42,7 +43,7 @@ ODDS_API_KEY=tu_odds_api_key_opcional
 ## Actualizacion automatica de `cuotas.json`
 
 - El repo trae un workflow programado en `.github/workflows/main.yml`.
-- Ese workflow regenera `cuotas.json` con `update_odds.py`, hace commit/push del archivo si cambia y despues lo envia al backend.
+- Ese workflow regenera `cuotas.json` con `update_odds.py` 2 veces al dia, hace commit/push del archivo si cambia y despues lo envia al backend.
 - Sin ese paso, el worker solo consume el JSON publicado; no lo refresca por arte de magia.
 
 ## Cobertura actual del snapshot

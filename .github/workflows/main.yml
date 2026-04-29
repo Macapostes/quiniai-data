@@ -2,11 +2,10 @@ name: Actualizar cuotas y enviar datos
 
 on:
   schedule:
-    # 4 ejecuciones diarias en UTC → horario Madrid (CEST verano = UTC+2)
-    - cron: '0 0 * * *'   # 02:00 Madrid
-    - cron: '0 8 * * *'   # 10:00 Madrid
-    - cron: '0 13 * * *'  # 15:00 Madrid
-    - cron: '0 18 * * *'  # 20:00 Madrid
+    # 2 ejecuciones diarias en UTC.
+    # En horario de Madrid suelen caer por la mañana y por la tarde-noche.
+    - cron: '0 8 * * *'   # 10:00 Madrid aprox. en verano
+    - cron: '0 18 * * *'  # 20:00 Madrid aprox. en verano
   workflow_dispatch:
 
 permissions:
