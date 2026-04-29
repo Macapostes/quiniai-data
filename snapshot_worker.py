@@ -155,6 +155,11 @@ OUTPUT_DIR = Path(__file__).with_name("output")
 LOG_DIR = Path(__file__).with_name("logs")
 MONITOR_WEB_DIR = Path(__file__).with_name("docs") / "monitor"
 LOCAL_ODDS_PATH = Path(__file__).with_name("cuotas.json")
+UPDATE_ODDS_SCRIPT_PATH = Path(__file__).with_name("update_odds.py")
+ODDS_API_KEY = os.getenv("ODDS_API_KEY", "").strip()
+LOCAL_ODDS_MAX_AGE_SECONDS = max(
+    1800, int(os.getenv("QUINIAI_LOCAL_ODDS_MAX_AGE_SECONDS", "43200"))
+)
 TEAM_PROFILE_CACHE_PATH = CACHE_DIR / "team_profiles.json"
 TEAM_NEWS_CACHE_PATH = CACHE_DIR / "team_news_cache.json"
 MATCH_NEWS_CACHE_PATH = CACHE_DIR / "match_news_cache.json"
@@ -7045,9 +7050,94 @@ def _best_h2h(bookmakers: list, home_team: str, away_team: str) -> tuple[dict, s
     return best, book_name
 
 
+def _read_local_odds_feed() -> list:
+    if not LOCAL_ODDS_PATH.exists():
+        return []
+    data = json.loads(LOCAL_ODDS_PATH.read_text(encoding="utf-8"))
+    return data if isinstance(data, list) else []
+
+
+def _local_odds_age_seconds() -> float | None:
+    try:
+        if not LOCAL_ODDS_PATH.exists():
+            return None
+        return max(0.0, time.time() - LOCAL_ODDS_PATH.stat().st_mtime)
+    except Exception:
+        return None
+
+
+def _refresh_local_odds_feed(reason: str) -> bool:
+    if not ODDS_API_KEY:
+        return False
+    if not UPDATE_ODDS_SCRIPT_PATH.exists():
+        _log_cycle_event(
+            "warning",
+            "local_odds_refresh_missing_script",
+            reason=reason,
+            path=str(UPDATE_ODDS_SCRIPT_PATH),
+        )
+        return False
+    started = time.time()
+    try:
+        completed = subprocess.run(
+            [sys.executable, str(UPDATE_ODDS_SCRIPT_PATH)],
+            cwd=str(Path(__file__).resolve().parent),
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=300,
+            env=os.environ.copy(),
+        )
+        duration = round(time.time() - started, 2)
+        if completed.returncode != 0:
+            _log_cycle_event(
+                "error",
+                "local_odds_refresh_failed",
+                reason=reason,
+                returncode=completed.returncode,
+                duration_seconds=duration,
+                stdout=(completed.stdout or "")[-1200:],
+                stderr=(completed.stderr or "")[-1200:],
+            )
+            return False
+        local_data = _read_local_odds_feed()
+        _log_cycle_event(
+            "info",
+            "local_odds_refresh_ok",
+            reason=reason,
+            duration_seconds=duration,
+            items=len(local_data),
+            path=str(LOCAL_ODDS_PATH),
+        )
+        return bool(local_data)
+    except Exception as exc:
+        _log_cycle_event(
+            "error",
+            "local_odds_refresh_exception",
+            reason=reason,
+            error=str(exc),
+        )
+        return False
+
+
 def fetch_repo_odds() -> list:
     if not DATA_URL:
         raise RuntimeError("QUINIAI_DATA_URL no configurada")
+    local_age = _local_odds_age_seconds()
+    if ODDS_API_KEY and (local_age is None or local_age > LOCAL_ODDS_MAX_AGE_SECONDS):
+        if _refresh_local_odds_feed(
+            "local_missing_or_stale" if local_age is None else f"stale_{int(local_age)}s"
+        ):
+            local_data = _read_local_odds_feed()
+            if local_data:
+                _log_cycle_event(
+                    "info",
+                    "repo_odds_prefer_fresh_local",
+                    items=len(local_data),
+                    age_seconds=0,
+                    source_path=str(LOCAL_ODDS_PATH),
+                )
+                return local_data
     try:
         data = _request_json(DATA_URL, timeout=30)
         if not isinstance(data, list):
@@ -7055,8 +7145,20 @@ def fetch_repo_odds() -> list:
         return data
     except Exception as remote_exc:
         try:
+            if ODDS_API_KEY and _refresh_local_odds_feed("remote_fetch_failed"):
+                refreshed_local_data = _read_local_odds_feed()
+                if refreshed_local_data:
+                    _log_cycle_event(
+                        "warning",
+                        "repo_odds_fallback_refreshed_local",
+                        source=DATA_URL,
+                        fallback_path=str(LOCAL_ODDS_PATH),
+                        reason=str(remote_exc),
+                        items=len(refreshed_local_data),
+                    )
+                    return refreshed_local_data
             if LOCAL_ODDS_PATH.exists():
-                local_data = json.loads(LOCAL_ODDS_PATH.read_text(encoding="utf-8"))
+                local_data = _read_local_odds_feed()
                 if isinstance(local_data, list) and local_data:
                     _log_cycle_event(
                         "warning",
