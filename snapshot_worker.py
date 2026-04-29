@@ -191,6 +191,9 @@ DESKTOP_STATUS_HTML_PATH = DESKTOP_KINII_STATE_DIR / "Panel QuiniAI.html"
 MONITOR_STATUS_JSON_PATH = MONITOR_WEB_DIR / "status.json"
 MONITOR_JORNADAS_HISTORY_PATH = MONITOR_WEB_DIR / "jornadas_history.json"
 MONITOR_INDEX_PATH = MONITOR_WEB_DIR / "index.html"
+PUBLIC_STATUS_JSON_PATH = Path(__file__).resolve().parent / "status.json"
+PUBLIC_JORNADAS_HISTORY_PATH = Path(__file__).resolve().parent / "jornadas_history.json"
+PUBLIC_INDEX_PATH = Path(__file__).resolve().parent / "index.html"
 WORKER_LOG_PATH = LOG_DIR / "worker_events.log"
 SUPERVISOR_LOG_PATH = LOG_DIR / "worker_supervisor.log"
 WORKER_LOCK_PATH = CACHE_DIR / "snapshot_worker.lock"
@@ -838,6 +841,7 @@ def _flush_caches() -> None:
         _save_cache(RUN_HISTORY_PATH, RUN_HISTORY)
         _save_cache(QUINIELA_HISTORY_PATH, QUINIELA_HISTORY)
         _save_cache(MONITOR_JORNADAS_HISTORY_PATH, MONITOR_JORNADAS_HISTORY)
+        _save_cache(PUBLIC_JORNADAS_HISTORY_PATH, MONITOR_JORNADAS_HISTORY)
 
 
 def _build_logger() -> logging.Logger:
@@ -3113,10 +3117,13 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
     _write_json_file(STATUS_JSON_PATH, status_payload)
     _write_json_file(DESKTOP_STATUS_JSON_PATH, status_payload)
     _write_json_file(MONITOR_STATUS_JSON_PATH, _build_monitor_status_payload(status_payload))
+    _write_json_file(PUBLIC_STATUS_JSON_PATH, _build_monitor_status_payload(status_payload))
     html = _build_status_html(status_payload)
     _write_text_file(STATUS_HTML_PATH, html)
     _write_text_file(DESKTOP_STATUS_HTML_PATH, html)
-    _write_text_file(MONITOR_INDEX_PATH, _build_monitor_web_html())
+    monitor_html = _build_monitor_web_html()
+    _write_text_file(MONITOR_INDEX_PATH, monitor_html)
+    _write_text_file(PUBLIC_INDEX_PATH, monitor_html)
 
 
 def _run_git_command(*args: str) -> subprocess.CompletedProcess:
@@ -3136,6 +3143,9 @@ def publish_monitor_to_github() -> bool:
     repo_root = Path(__file__).resolve().parent
     tracked_files = [
         "ia_feed_snapshot.json",
+        "index.html",
+        "status.json",
+        "jornadas_history.json",
         "docs/monitor/index.html",
         "docs/monitor/status.json",
         "docs/monitor/jornadas_history.json",

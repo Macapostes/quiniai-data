@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QuiniAI Monitor</title>
+  <style>
+    :root{--bg:#07101d;--panel:#122033;--panel2:#182b44;--text:#eef6ff;--muted:#96aac4;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--border:#243754;--accent:#38bdf8}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Consolas,"Cascadia Code",monospace;background:radial-gradient(circle at top right,rgba(34,197,94,.12),transparent 28%),radial-gradient(circle at bottom left,rgba(56,189,248,.12),transparent 32%),var(--bg);color:var(--text)}
+    .wrap{max-width:1380px;margin:0 auto;padding:20px}
+    .hero,.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+    .hero{padding:22px}
+    .panel{padding:18px}
+    .top,.panel-head,.controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .app-shell{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;align-items:start}
+    .sidebar{position:sticky;top:18px;padding:18px}
+    .sidebar-title{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+    .sidebar-nav{display:grid;gap:10px}
+    .sidebar-btn{width:100%;text-align:left;padding:14px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;font:inherit;font-weight:700;transition:.18s ease}
+    .sidebar-btn small{display:block;margin-top:4px;color:var(--muted);font-weight:500}
+    .sidebar-btn:hover{background:rgba(255,255,255,.06)}
+    .sidebar-btn.active{background:linear-gradient(180deg,rgba(56,189,248,.18),rgba(56,189,248,.08));border-color:rgba(56,189,248,.35);box-shadow:0 12px 30px rgba(56,189,248,.12)}
+    .sidebar-mini{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}
+    .content-stack{display:grid;gap:16px}
+    .section-pane{display:none}
+    .section-pane.active{display:block}
+    h1,h2,h3{margin:0}
+    h1{font-size:28px}
+    h2{font-size:18px}
+    h3{font-size:15px}
+    .muted{color:var(--muted);line-height:1.5}
+    .badge{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-weight:700}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--ok);box-shadow:0 0 14px var(--ok)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+    .card{padding:14px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.03)}
+    .k{font-size:12px;color:var(--muted);text-transform:uppercase}
+    .v{font-size:24px;font-weight:800;margin-top:8px}
+    .stack{display:grid;gap:16px;margin-top:18px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px}
+    .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+    .nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .nav a{color:var(--text);text-decoration:none;padding:10px 14px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.04)}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;vertical-align:top}
+    .input,.button,.select{border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);padding:12px 14px;font:inherit}
+    .input{min-width:260px;flex:1}
+    .select{min-width:220px}
+    .button{cursor:pointer;font-weight:700}
+    .button:hover{background:rgba(255,255,255,.08)}
+    .match{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;background:rgba(0,0,0,.12);margin-top:12px}
+    .match-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .match-title{font-size:16px;font-weight:700}
+    .mini{font-size:12px;color:var(--muted);line-height:1.5}
+    .line{margin-top:8px;font-size:13px;line-height:1.55}
+    .line strong{color:var(--accent)}
+    .brief{white-space:pre-wrap;font-size:12px;line-height:1.45;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .audit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:14px 0}
+    .log-card{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;background:rgba(255,255,255,.03);margin-top:12px}
+    .summary-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .summary-meta{font-size:12px;color:var(--muted)}
+    .summary-pills{display:flex;gap:8px;flex-wrap:wrap}
+    details.match-group{margin-top:14px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.03);overflow:hidden}
+    details.match-group summary{list-style:none;cursor:pointer;padding:16px 18px}
+    details.match-group summary::-webkit-details-marker{display:none}
+    details.match-group[open] summary{border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+    .group-body{padding:0 14px 14px}
+    .section-anchor{scroll-margin-top:24px}
+    @media (max-width:980px){.app-shell{grid-template-columns:1fr}.sidebar{position:static}}
+    @media (max-width:640px){.v{font-size:20px}table{font-size:12px}.match-title{font-size:15px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="app-shell">
+      <aside class="hero sidebar">
+        <div>
+          <h1>QuiniAI Monitor</h1>
+          <div class="muted" style="margin-top:8px">Panel de control para revisar el worker, las jornadas y toda la IA avanzada sin perderte en scroll infinito.</div>
+        </div>
+        <div class="badge" style="margin-top:18px"><span class="dot" id="dot"></span><span id="alive">Cargando...</span></div>
+        <div class="sidebar-mini">
+          <div class="sidebar-title">Secciones</div>
+          <div class="sidebar-nav">
+            <button class="sidebar-btn active" data-section-target="dashboard">
+              Resumen general
+              <small>Estado rápido del worker y cobertura.</small>
+            </button>
+            <button class="sidebar-btn" data-section-target="ia-audit">
+              Auditoría IA
+              <small>Coste, quality, comité, memoria y backtesting.</small>
+            </button>
+            <button class="sidebar-btn" data-section-target="publico">
+              Jornadas públicas
+              <small>Partidos visibles, horarios y contexto.</small>
+            </button>
+            <button class="sidebar-btn" data-section-target="ejecuciones">
+              Ejecuciones
+              <small>Últimos ciclos del worker y duración.</small>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content-stack">
+        <section class="hero section-pane active" id="dashboard">
+          <div class="top">
+            <div>
+              <h2>Resumen general</h2>
+              <div class="muted">Estado del worker, jornadas publicadas y salud global del sistema en horario de Madrid.</div>
+            </div>
+            <div class="chips" id="dashboard-pills"></div>
+          </div>
+          <div class="grid" id="cards"></div>
+        </section>
+
+        <section class="panel section-anchor section-pane" id="publico">
+          <div class="panel-head">
+            <div>
+              <h2>Jornadas públicas</h2>
+              <div class="muted">Ventana útil para revisar la jornada actual, la siguiente publicada y varias anteriores sin tragarte toda la lista de golpe.</div>
+            </div>
+            <select class="select" id="jornada-filter"></select>
+          </div>
+          <div class="chips" id="status-chips" style="margin-top:14px"></div>
+          <div id="jornadas" style="margin-top:14px"></div>
+        </section>
+
+        <section class="panel section-anchor section-pane" id="ejecuciones">
+          <h2>Últimas ejecuciones del worker</h2>
+          <table>
+            <thead><tr><th>Estado</th><th>Hora Madrid</th><th>Duración</th><th>Jornada</th><th>Partidos</th></tr></thead>
+            <tbody id="runs"></tbody>
+          </table>
+        </section>
+
+        <section class="panel section-anchor section-pane" id="ia-audit">
+          <div class="panel-head">
+            <div>
+              <h2>Auditoría IA avanzada</h2>
+              <div class="muted">Solo se usan generaciones con telemetría real para medias de coste, calidad y tokens. La clave admin se conserva solo durante esta sesión del navegador.</div>
+            </div>
+          </div>
+          <div class="controls" style="margin-top:14px">
+            <input class="input" id="admin-key" type="password" placeholder="Pega aquí la x-admin-key">
+            <button class="button" id="save-admin-key" type="button">Guardar clave</button>
+            <button class="button" id="load-ia-audit" type="button">Cargar auditoría</button>
+          </div>
+          <div class="muted" id="ia-audit-status" style="margin-top:10px">Sin cargar todavía.</div>
+          <div class="audit-grid" id="ia-audit-cards"></div>
+          <div class="panel" style="margin-top:14px;padding:14px">
+            <div class="panel-head">
+              <div>
+                <h3>Memoria aprendida</h3>
+                <div class="muted">Patrones persistentes que la IA avanzada está guardando por usuario a partir de quinielas ya resueltas.</div>
+              </div>
+            </div>
+            <div class="controls" style="margin-top:12px">
+              <select class="select" id="ia-memory-user">
+                <option value="">Selecciona un uid de la auditoría</option>
+              </select>
+              <button class="button" id="load-ia-memory" type="button">Cargar memoria</button>
+            </div>
+            <div class="muted" id="ia-memory-status" style="margin-top:10px">Sin cargar todavía.</div>
+            <div class="audit-grid" id="ia-memory-cards"></div>
+            <div id="ia-memory-teams"></div>
+            <div id="ia-backtesting-panel"></div>
+          </div>
+          <div id="ia-audit-logs"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const backendBase = "https://quiniela-backend-production-cb1a.up.railway.app";
+    const adminKeyInput = document.getElementById("admin-key");
+    const saveAdminKeyButton = document.getElementById("save-admin-key");
+    const loadIaAuditButton = document.getElementById("load-ia-audit");
+    const loadIaMemoryButton = document.getElementById("load-ia-memory");
+    const iaMemoryUserSelect = document.getElementById("ia-memory-user");
+    const jornadaFilter = document.getElementById("jornada-filter");
+    const sectionButtons = [...document.querySelectorAll("[data-section-target]")];
+    const storedAdminKey = sessionStorage.getItem("quiniai_admin_key") || "";
+    if (storedAdminKey) adminKeyInput.value = storedAdminKey;
+    let latestIaAuditItems = [];
+
+    const parseUtcish = (iso) => {
+      if (!iso) return null;
+      const value = String(iso).trim();
+      if (!value) return null;
+      const normalized = /([zZ]|[+\-]\d{2}:\d{2})$/.test(value) ? value : `${value}Z`;
+      const date = new Date(normalized);
+      return Number.isNaN(date.getTime()) ? null : date;
+    };
+    const fmtMadrid = (iso) => {
+      const date = parseUtcish(iso);
+      if (!date) return "-";
+      try {
+        return new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"medium"}).format(date);
+      } catch { return iso; }
+    };
+    const ageMinutes = (iso) => {
+      const date = parseUtcish(iso);
+      if (!date) return "-";
+      const ms = Date.now() - date.getTime();
+      return (ms / 60000).toFixed(1);
+    };
+    const fmtPct = (value) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : `${Number(value).toFixed(2)}%`;
+    const fmtNum = (value, digits=1) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : Number(value).toFixed(digits);
+    const fmtMoney = (value, digits=4) => value === null || value === undefined || value === "" || Number.isNaN(Number(value)) ? "-" : `$${Number(value).toFixed(digits)}`;
+    const chip = (text, cls="") => `<span class="chip ${cls}">${text}</span>`;
+    const escapeHtml = (value) => String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    let latestStatus = null;
+
+    function setActiveSection(sectionId) {
+      document.querySelectorAll(".section-pane").forEach(section => {
+        section.classList.toggle("active", section.id === sectionId);
+      });
+      sectionButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.sectionTarget === sectionId);
+      });
+    }
+
+    sectionButtons.forEach(button => {
+      button.addEventListener("click", () => setActiveSection(button.dataset.sectionTarget));
+    });
+
+    const h2hLine = (h2h) => {
+      if (!h2h || !h2h.meetings) return "sin H2H fiable";
+      return `${h2h.meetings} cruces · local ${h2h.home_team_wins ?? 0} · X ${h2h.draws ?? 0} · visitante ${h2h.away_team_wins ?? 0}`;
+    };
+
+    const objectiveLine = (objective, mw, mnl) => {
+      const summary = objective?.summary || "sin objetivo detallado";
+      return `${summary} [MW ${mw ?? 0}, NP ${mnl ?? 0}]`;
+    };
+
+    const renderMatch = (match) => {
+      const homeTable = match.home_table || {};
+      const awayTable = match.away_table || {};
+      const pressure = match.pressure || {};
+      const fatigue = match.fatigue || {};
+      const competitive = match.competitive_context || {};
+      const direct = competitive.direct_rivalry || {};
+      const seasonPhase = typeof competitive.season_context_phase === "object"
+        ? (competitive.season_context_phase.label || competitive.season_context_phase.key || "-")
+        : (competitive.season_context_phase || "-");
+      const official = match.official_percent || {};
+      const hasOfficial = Object.values(official).some(v => v !== null && v !== undefined && v !== "");
+      return `
+        <div class="match">
+          <div class="match-head">
+            <div>
+              <div class="match-title">${escapeHtml(match.slot || "-")} · ${escapeHtml(match.local)} vs ${escapeHtml(match.visitante)}</div>
+              <div class="mini">${escapeHtml(match.league || "-")} · ${fmtMadrid(match.kickoff)} · ${escapeHtml(match.bookmaker || "sin bookmaker")}</div>
+            </div>
+            <div class="chips">
+              ${chip(`1 ${fmtNum((match.odds || {})["1"],2)}`)}
+              ${chip(`X ${fmtNum((match.odds || {})["X"],2)}`)}
+              ${chip(`2 ${fmtNum((match.odds || {})["2"],2)}`)}
+            </div>
+          </div>
+          <div class="line"><strong>Mercado 1X2:</strong> 1=${fmtPct((match.normalized_percent || {})["1"])} · X=${fmtPct((match.normalized_percent || {})["X"])} · 2=${fmtPct((match.normalized_percent || {})["2"])}</div>
+          <div class="line"><strong>Porcentaje oficial quiniela:</strong> ${hasOfficial ? `1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}` : "no disponible en este snapshot"}</div>
+          <div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>
+          <div class="line"><strong>Objetivo local:</strong> ${escapeHtml(objectiveLine(competitive.home_objective, competitive.home_must_win_index, competitive.home_must_not_lose_index))}</div>
+          <div class="line"><strong>Objetivo visitante:</strong> ${escapeHtml(objectiveLine(competitive.away_objective, competitive.away_must_win_index, competitive.away_must_not_lose_index))}</div>
+          <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} · fase ${escapeHtml(seasonPhase)} · rivalidad ${direct.direct_rivalry_index ?? direct.score ?? 0}/100</div>
+          <div class="line"><strong>H2H:</strong> ${escapeHtml(h2hLine(match.h2h || {}))}</div>
+          <div class="line"><strong>Presión / fatiga:</strong> local ${fmtNum((pressure.home || {}).score,2)} (${escapeHtml((pressure.home || {}).label || "-")}) y visitante ${fmtNum((pressure.away || {}).score,2)} (${escapeHtml((pressure.away || {}).label || "-")}) | fatiga ${fmtNum((fatigue.home || {}).score,2)} / ${fmtNum((fatigue.away || {}).score,2)}</div>
+          <div class="line"><strong>Clima y viaje:</strong> ${fmtNum((match.weather || {}).temperature_c,1)} C · lluvia ${(match.weather || {}).precipitation_probability ?? "-"}% · viento ${fmtNum((match.weather || {}).wind_speed_kmh,1)} km/h · viaje visitante ${fmtNum(match.travel_km,1)} km</div>
+          <div class="line"><strong>Árbitro:</strong> ${escapeHtml((match.referee || {}).name || "no confirmado")} ${((match.referee || {}).bias_summary || "").trim() ? `· ${escapeHtml((match.referee || {}).bias_summary)}` : ""}</div>
+          <div class="line"><strong>Próximos 5 local:</strong> ${escapeHtml(match.future_home || "sin calendario")}</div>
+          <div class="line"><strong>Próximos 5 visitante:</strong> ${escapeHtml(match.future_away || "sin calendario")}</div>
+          ${match.briefing_excerpt ? `<div class="brief">${escapeHtml(match.briefing_excerpt)}</div>` : ""}
+        </div>`;
+    };
+
+    const renderJornadas = (status) => {
+      const jornadas = status.public_jornadas || [];
+      const selected = jornadaFilter.value || "all";
+      const filtered = selected === "all"
+        ? jornadas
+        : jornadas.filter(j => String(j.jornada ?? "") === selected);
+
+      document.getElementById("jornadas").innerHTML = filtered.map((jornada) => `
+        <details class="match-group" ${jornada.is_current ? "open" : ""}>
+          <summary>
+            <div class="summary-row">
+              <div>
+                <h3>${escapeHtml(jornada.label || `Jornada ${jornada.jornada ?? "-"}`)} ${jornada.is_current ? "· actual" : ""}</h3>
+                <div class="summary-meta">Desde ${fmtMadrid(jornada.kickoff_from)} · hasta ${fmtMadrid(jornada.kickoff_to)} ${jornada.history_only ? "· histórico/cache" : ""}</div>
+              </div>
+              <div class="summary-pills">
+                ${chip(`J${jornada.jornada ?? "-"}`)}
+                ${chip(`${(jornada.matches || []).length} partidos`)}
+              </div>
+            </div>
+          </summary>
+          <div class="group-body">
+            ${(jornada.matches || []).map(renderMatch).join("") || "<div class='match'>Sin partidos publicados.</div>"}
+          </div>
+        </details>
+      `).join("") || "<div class='card'>Todavía no hay jornadas públicas preparadas.</div>";
+    };
+
+    const renderIaAuditLog = (item) => {
+      const telemetry = item.telemetry || {};
+      const quality = item.quality_breakdown || {};
+      const penalties = Object.entries(quality.penalties || {}).map(([k,v]) => `${k} ${v}`).join(" · ");
+      const bonuses = Object.entries(quality.bonuses || {}).map(([k,v]) => `${k} ${v}`).join(" · ");
+      const startedAt = parseUtcish(item.hora_inicio);
+      const finishedAt = parseUtcish(item.hora_fin);
+      const durationSec = startedAt && finishedAt ? Math.max(0, Math.round((finishedAt.getTime() - startedAt.getTime()) / 1000)) : null;
+      const externalMissing = (item.external_matches_count ?? 0) === 0;
+      const requestedBudget = Number(item.presupuesto ?? telemetry.requested_budget ?? 0);
+      const finalCost = Number(item.final_cost ?? telemetry.final_cost ?? 0);
+      const utilization = requestedBudget > 0 ? (finalCost / requestedBudget) : null;
+      const budgetGap = requestedBudget > 0 ? Math.max(0, requestedBudget - finalCost) : null;
+      const candidateMode = telemetry.candidate_mode || "-";
+      const candidateSelected = telemetry.candidate_selected || "-";
+      const candidateSelectedRole = telemetry.candidate_selected_role || "-";
+      const candidateSelectedScore = telemetry.candidate_selected_score;
+      const candidateRuns = Array.isArray(telemetry.candidate_runs) ? telemetry.candidate_runs : [];
+      const selectedCritic = telemetry.selected_candidate_critic || {};
+      const scoreBreakdown = selectedCritic.score_breakdown || {};
+      const breakdownLine = Object.entries(scoreBreakdown)
+        .map(([k,v]) => `${k} ${fmtNum(v,2)}`)
+        .join(" · ");
+      const committeeSummary = telemetry.committee_summary || {};
+      const committeeSummaryLine = committeeSummary.selected_role
+        ? `Ganó ${escapeHtml(committeeSummary.selected_label || "-")} · ${escapeHtml(committeeSummary.selected_role || "-")}`
+        : "";
+      const candidateCards = candidateRuns.length ? `
+        <div class="line" style="margin-top:12px"><strong>Comité:</strong> ${escapeHtml(candidateMode)} · seleccionada ${escapeHtml(candidateSelected)} ${candidateSelectedRole && candidateSelectedRole !== "-" ? `(${escapeHtml(candidateSelectedRole)})` : ""} ${candidateSelectedScore !== null && candidateSelectedScore !== undefined ? `· score ${fmtNum(candidateSelectedScore,2)}` : ""}</div>
+        <div class="chips" style="margin-top:8px">
+          ${candidateRuns.map(run => {
+            const isSelected = String(run.label || "") === String(candidateSelected || "");
+            const score = run.score !== undefined ? fmtNum(run.score,2) : "-";
+            return chip(`${run.label || "?"} ${run.role || ""} · ${score}`, isSelected ? "ok" : "");
+          }).join("")}
+        </div>
+        <div class="line"><strong>Detalle candidatas:</strong></div>
+        ${candidateRuns.map(run => {
+          const breakdown = run.score_breakdown || {};
+          const breakdownItems = Object.entries(breakdown).map(([k,v]) => `${k} ${fmtNum(v,2)}`).join(" · ");
+          return `
+            <div class="brief" style="margin-top:8px">
+              <strong>${escapeHtml(run.label || "-")} · ${escapeHtml(run.role || "-")}</strong>
+              ${run.error ? `<div style="margin-top:6px" class="bad">${escapeHtml(run.error)}</div>` : `
+                <div style="margin-top:6px">score ${fmtNum(run.score,2)} · sorpresas ${run.defendable_surprises ?? 0} · trampas ${run.opened_traps ?? 0} · favoritos públicos ${run.public_copy_fijos ?? 0} · cambios Python ${run.python_sign_changes ?? 0}</div>
+                ${run.headline ? `<div style="margin-top:6px">${escapeHtml(run.headline)}</div>` : ""}
+                ${breakdownItems ? `<div style="margin-top:6px" class="mini">${escapeHtml(breakdownItems)}</div>` : ""}
+              `}
+            </div>`;
+        }).join("")}
+      ` : "";
+      const backtestingRecent = telemetry.backtesting_recent || {};
+      const backtestingLine = backtestingRecent && Number(backtestingRecent.resolved_runs || 0) > 0
+        ? `<div class="line"><strong>Backtesting reciente:</strong> ${backtestingRecent.resolved_runs} jornadas resueltas · media ${fmtNum(backtestingRecent.avg_hits,2)}/14 · quality ${fmtNum(backtestingRecent.avg_quality_score,2)} · mejor perfil ${escapeHtml(backtestingRecent.best_label || "-")} ${backtestingRecent.best_role ? `(${escapeHtml(backtestingRecent.best_role)})` : ""}</div>`
+        : "";
+      return `
+        <div class="log-card">
+          <div class="match-head">
+            <div>
+              <div class="match-title">J${item.jornada ?? "-"} · ${escapeHtml(item.requested_type || "-")} → ${escapeHtml(item.final_type || "-")}</div>
+              <div class="mini">${escapeHtml(item.model_used || "-")} · inicio ${fmtMadrid(item.hora_inicio)} · fin ${fmtMadrid(item.hora_fin)} · uid ${escapeHtml(item.user_id || "-")}</div>
+            </div>
+            <div class="chips">
+              ${chip(`Score ${fmtNum(item.quality_score,2)}`, (item.quality_score ?? 0) >= 85 ? "ok" : ((item.quality_score ?? 0) >= 55 ? "warn" : "bad"))}
+              ${chip(`Coste ${fmtMoney(item.total_cost_usd)}`)}
+              ${chip(`Tokens ${item.total_tokens ?? 0}`)}
+              ${durationSec !== null ? chip(`Duración ${durationSec}s`) : ""}
+              ${externalMissing ? chip("Sin contexto externo", "bad") : ""}
+            </div>
+          </div>
+          <div class="line"><strong>Proveedor:</strong> calls ${item.provider_calls ?? 0} · intents ${item.attempts_used ?? 0} · patch ${item.narrative_patch_calls ?? 0} · reached ${item.request_reached_provider ? "sí" : "no"}</div>
+          <div class="line"><strong>Modelo y tokens:</strong> input ${item.input_tokens ?? 0} · output ${item.output_tokens ?? 0} · total ${item.total_tokens ?? 0}</div>
+          <div class="line"><strong>Coste desglosado:</strong> principal ${fmtMoney(item.estimated_cost_usd)} · patch ${fmtMoney(item.patch_cost_usd)} · total ${fmtMoney(item.total_cost_usd)}</div>
+          <div class="line"><strong>Tipos:</strong> pedido ${escapeHtml(item.requested_type || "-")} · IA ${escapeHtml(item.initial_ai_type || "-")} · final ${escapeHtml(item.final_type || "-")}</div>
+          <div class="line"><strong>Presupuesto:</strong> pedido ${fmtNum(requestedBudget,2)}€ · final ${fmtNum(finalCost,2)}€ · aprovechamiento ${utilization !== null ? Math.round(utilization * 100) : "-"}% · hueco ${budgetGap !== null ? fmtNum(budgetGap,2) : "-"}€</div>
+          <div class="line"><strong>Python corrigió:</strong> signos ${item.sign_changes_count ?? 0} · tipo ${item.type_changed ? "sí" : "no"} · estructura ${item.structure_changed ? "sí" : "no"} · partidos ${escapeHtml((telemetry.changed_match_ids || []).join(", ") || "-")}</div>
+          <div class="line"><strong>Boleto final:</strong> ${item.final_total_bets ?? "-"} apuestas · ${fmtNum(item.final_cost,2)}€ · tipo final ${escapeHtml(item.final_type || "-")}</div>
+          <div class="line"><strong>Contexto externo:</strong> partidos disponibles ${item.external_matches_count ?? 0} · realmente usados ${item.external_usage_count ?? 0}</div>
+          ${committeeSummaryLine ? `<div class="line"><strong>Resumen comité:</strong> ${committeeSummaryLine}</div>` : ""}
+          ${backtestingLine}
+          ${breakdownLine ? `<div class="line"><strong>Score breakdown ganador:</strong> ${escapeHtml(breakdownLine)}</div>` : ""}
+          ${penalties ? `<div class="line"><strong>Penalizaciones:</strong> ${escapeHtml(penalties)}</div>` : ""}
+          ${bonuses ? `<div class="line"><strong>Bonos:</strong> ${escapeHtml(bonuses)}</div>` : ""}
+          ${candidateCards}
+          ${item.error_msg ? `<div class="line"><strong>Error:</strong> ${escapeHtml(item.error_msg)}</div>` : ""}
+        </div>`;
+    };
+
+    function populateIaMemoryUsers(items) {
+      const uniqueUsers = [...new Set((items || []).map(item => String(item.user_id || "").trim()).filter(Boolean))];
+      iaMemoryUserSelect.innerHTML = [
+        `<option value="">Selecciona un uid de la auditoría</option>`,
+        ...uniqueUsers.map(uid => `<option value="${escapeHtml(uid)}">${escapeHtml(uid)}</option>`)
+      ].join("");
+    }
+
+    function renderIaMemory(data) {
+      const pattern = data.pattern || {};
+      const teams = data.teams || [];
+      document.getElementById("ia-memory-cards").innerHTML = [
+        ["Quinielas resueltas", pattern.resolved_generations ?? 0],
+        ["Media aciertos", pattern.avg_hits !== undefined ? fmtNum(pattern.avg_hits,2) : "-"],
+        ["Fallos totales", pattern.total_misses ?? 0],
+        ["Fallos por fijos", pattern.rigid_single_misses ?? 0],
+        ["Fallos por favorito fijo", pattern.favorite_single_misses ?? 0],
+        ["Gen. corregidas", pattern.python_corrected_generations ?? 0],
+        ["Signos corregidos", pattern.python_sign_overrides_total ?? 0],
+        ["Cambios estructura", pattern.python_structure_changes ?? 0],
+        ["Cambios de tipo", pattern.python_type_changes ?? 0],
+        ["Última jornada resuelta", pattern.last_resolved_jornada ?? "-"],
+      ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+
+      const summary = (pattern.recent_summary || []).map(item =>
+        chip(`J${item.jornada} ${item.hits}/14 ${escapeHtml(item.tipo || "")}`)
+      ).join("");
+      const examples = (pattern.recent_examples || []).map(item =>
+        `<div class="line">${escapeHtml(item)}</div>`
+      ).join("");
+      const correctionExamples = (pattern.correction_examples || []).map(item =>
+        `<div class="line">${escapeHtml(item)}</div>`
+      ).join("");
+      const teamRows = teams.map(team => `
+        <tr>
+          <td>${escapeHtml(team.team_label || team.team_norm || "-")}</td>
+          <td>${team.appearances ?? 0}</td>
+          <td>${team.misses ?? 0}</td>
+          <td>${team.single_miss_count ?? 0}</td>
+          <td>${team.hit_count ?? 0}</td>
+          <td>${team.last_jornada ?? "-"}</td>
+        </tr>
+      `).join("");
+
+      document.getElementById("ia-memory-teams").innerHTML = `
+        <div class="log-card">
+          <div class="line"><strong>Resumen reciente:</strong> ${summary || "Sin resumen todavía."}</div>
+          ${examples ? `<div class="line"><strong>Errores recientes a no repetir:</strong></div>${examples}` : ""}
+          ${correctionExamples ? `<div class="line" style="margin-top:12px"><strong>Correcciones de Python que la IA debe aprender:</strong></div>${correctionExamples}` : ""}
+          <div class="line" style="margin-top:12px"><strong>Equipos que más castigan la lectura</strong></div>
+          <table style="margin-top:8px">
+            <thead><tr><th>Equipo</th><th>Apariciones</th><th>Fallos</th><th>Fallos fijo</th><th>Aciertos</th><th>Última J</th></tr></thead>
+            <tbody>${teamRows || "<tr><td colspan='6'>Sin datos de equipos todavía.</td></tr>"}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderIaBacktesting(data) {
+      const backtesting = data.backtesting || {};
+      const labelStats = Object.values(backtesting.label_stats || {});
+      const recentRuns = backtesting.recent_runs || [];
+      const labelCards = [
+        ["Jornadas resueltas", backtesting.resolved_runs ?? 0],
+        ["Media aciertos comité", backtesting.avg_hits !== undefined ? `${fmtNum(backtesting.avg_hits,2)}/14` : "-"],
+        ["Quality media", fmtNum(backtesting.avg_quality_score,2)],
+        ["Cambios Python medios", fmtNum(backtesting.avg_sign_changes,2)],
+        ["Mejor perfil", backtesting.best_label || "-"],
+        ["Rol más fiable", backtesting.best_role || "-"],
+      ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+
+      const rows = labelStats.map(item => `
+        <tr>
+          <td>${escapeHtml(item.label || "-")}</td>
+          <td>${escapeHtml(item.role || "-")}</td>
+          <td>${item.resolved_runs ?? 0}</td>
+          <td>${fmtNum(item.avg_hits,2)}</td>
+          <td>${fmtNum(item.avg_quality_score,2)}</td>
+          <td>${fmtNum(item.avg_sign_changes,2)}</td>
+          <td>${fmtNum(item.avg_public_copy,2)}</td>
+          <td>${fmtNum(item.avg_candidate_score,2)}</td>
+        </tr>
+      `).join("");
+      const recentChips = recentRuns.map(run =>
+        chip(`J${run.jornada} · ${run.candidate_selected || "-"} · ${run.hits}/14 · Q ${fmtNum(run.quality_score,2)}`, String(run.candidate_selected || "") === String(backtesting.best_label || "") ? "ok" : "")
+      ).join("");
+
+      document.getElementById("ia-backtesting-panel").innerHTML = `
+        <div class="log-card" style="margin-top:14px">
+          <div class="panel-head">
+            <div>
+              <h3>Backtesting del comité</h3>
+              <div class="muted">Qué perfil del comité viene rindiendo mejor en las jornadas avanzadas ya resueltas de este usuario.</div>
+            </div>
+          </div>
+          <div class="audit-grid" style="margin-top:12px">${labelCards}</div>
+          <div class="line"><strong>Últimos cierres comparables:</strong> ${recentChips || "Sin histórico comparable todavía."}</div>
+          <table style="margin-top:10px">
+            <thead><tr><th>Perfil</th><th>Rol</th><th>Muestras</th><th>Media hits</th><th>Media quality</th><th>Media cambios</th><th>Media favoritos</th><th>Score medio</th></tr></thead>
+            <tbody>${rows || "<tr><td colspan='8'>Todavía no hay backtesting suficiente para comparar A/B/C.</td></tr>"}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    async function loadIaMemory(userId) {
+      const adminKey = adminKeyInput.value.trim();
+      const targetUser = String(userId || iaMemoryUserSelect.value || "").trim();
+      if (!adminKey) {
+        document.getElementById("ia-memory-status").textContent = "Pega primero la x-admin-key.";
+        return;
+      }
+      if (!targetUser) {
+        document.getElementById("ia-memory-status").textContent = "Selecciona primero un uid.";
+        return;
+      }
+      document.getElementById("ia-memory-status").textContent = `Cargando memoria de ${targetUser}...`;
+      try {
+        const [memoryResponse, backtestingResponse] = await Promise.all([
+          fetch(`${backendBase}/admin/ia-memory/${encodeURIComponent(targetUser)}?refresh=1`, {
+            headers: {"x-admin-key": adminKey},
+            cache: "no-store",
+          }),
+          fetch(`${backendBase}/admin/ia-backtesting/${encodeURIComponent(targetUser)}`, {
+            headers: {"x-admin-key": adminKey},
+            cache: "no-store",
+          }),
+        ]);
+        if (!memoryResponse.ok) throw new Error(`HTTP ${memoryResponse.status}`);
+        if (!backtestingResponse.ok) throw new Error(`HTTP ${backtestingResponse.status}`);
+        const [memoryData, backtestingData] = await Promise.all([
+          memoryResponse.json(),
+          backtestingResponse.json(),
+        ]);
+        renderIaMemory(memoryData);
+        renderIaBacktesting(backtestingData);
+        document.getElementById("ia-memory-status").textContent = `Memoria y backtesting cargados para ${targetUser}.`;
+      } catch (error) {
+        document.getElementById("ia-memory-status").textContent = `No se pudo cargar la memoria/backtesting: ${error.message}`;
+        document.getElementById("ia-memory-cards").innerHTML = "";
+        document.getElementById("ia-memory-teams").innerHTML = "";
+        document.getElementById("ia-backtesting-panel").innerHTML = "";
+      }
+    }
+
+    async function loadIaAudit() {
+      const adminKey = adminKeyInput.value.trim();
+      if (!adminKey) {
+        document.getElementById("ia-audit-status").textContent = "Pega primero la x-admin-key.";
+        return;
+      }
+      sessionStorage.setItem("quiniai_admin_key", adminKey);
+      document.getElementById("ia-audit-status").textContent = "Cargando auditoría medida...";
+      try {
+        const response = await fetch(`${backendBase}/admin/ia-generation/recent?limit=30&measured_only=1`, {
+          headers: {"x-admin-key": adminKey},
+          cache: "no-store",
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        const items = data.items || [];
+        latestIaAuditItems = items;
+        populateIaMemoryUsers(items);
+        const committeeItems = items.filter(item => item.telemetry && item.telemetry.candidate_mode);
+        const selectedLabels = committeeItems
+          .map(item => String(item.telemetry.candidate_selected || "").trim())
+          .filter(Boolean);
+        const labelCounts = selectedLabels.reduce((acc, label) => {
+          acc[label] = (acc[label] || 0) + 1;
+          return acc;
+        }, {});
+        const topLabel = Object.entries(labelCounts).sort((a,b) => b[1] - a[1])[0]?.[0] || "-";
+        const avgCommitteeScore = committeeItems.length
+          ? committeeItems.reduce((sum, item) => sum + Number(item.telemetry?.candidate_selected_score || 0), 0) / committeeItems.length
+          : null;
+        const telemetryCount = data.telemetry_count ?? items.length;
+        const completedMeasured = data.measured_completed_count ?? 0;
+        const costMeasured = data.cost_measured_completed_count ?? completedMeasured;
+        const qualityMeasured = data.quality_measured_completed_count ?? costMeasured;
+        const completedCount = data.completed_count ?? items.filter(item => item.status === "completed").length;
+        document.getElementById("ia-audit-cards").innerHTML = [
+          ["Con telemetría", telemetryCount],
+          ["Completadas medidas", completedMeasured],
+          ["Con coste real", costMeasured],
+          ["Quality con coste", qualityMeasured],
+          ["Completadas totales", completedCount],
+          ["Con comité", committeeItems.length],
+          ["Perfil más elegido", topLabel],
+          ["Score comité medio", avgCommitteeScore !== null ? fmtNum(avgCommitteeScore,2) : "-"],
+          ["Quality media real", fmtNum(data.avg_quality_score_completed,2)],
+          ["Coste medio medido", fmtMoney(data.avg_total_cost_usd_completed)],
+          ["Última medida", items[0]?.hora_fin ? fmtMadrid(items[0].hora_fin) : "-"],
+        ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+        document.getElementById("ia-audit-logs").innerHTML = items.map(renderIaAuditLog).join("") || "<div class='log-card'>Sin auditoría medida todavía.</div>";
+        document.getElementById("ia-audit-status").textContent = `Auditoría cargada: ${telemetryCount} con telemetría; ${committeeItems.length} ya pasan por comité; ${costMeasured} con coste real; ${qualityMeasured} usadas para la quality media. Horas convertidas a Madrid.`;
+        if (items[0]?.user_id) {
+          iaMemoryUserSelect.value = items[0].user_id;
+          await loadIaMemory(items[0].user_id);
+        }
+      } catch (error) {
+        document.getElementById("ia-audit-status").textContent = `No se pudo cargar la auditoría: ${error.message}`;
+        document.getElementById("ia-audit-cards").innerHTML = "";
+        document.getElementById("ia-audit-logs").innerHTML = "";
+        document.getElementById("ia-memory-cards").innerHTML = "";
+        document.getElementById("ia-memory-teams").innerHTML = "";
+        document.getElementById("ia-backtesting-panel").innerHTML = "";
+      }
+    }
+
+    saveAdminKeyButton.addEventListener("click", () => {
+      sessionStorage.setItem("quiniai_admin_key", adminKeyInput.value.trim());
+      document.getElementById("ia-audit-status").textContent = adminKeyInput.value.trim()
+        ? "Clave guardada solo para esta sesión."
+        : "Clave eliminada de esta sesión.";
+    });
+    loadIaAuditButton.addEventListener("click", () => {
+      setActiveSection("ia-audit");
+      loadIaAudit();
+    });
+    loadIaMemoryButton.addEventListener("click", () => {
+      setActiveSection("ia-audit");
+      loadIaMemory();
+    });
+
+    jornadaFilter.addEventListener("change", () => {
+      if (latestStatus) renderJornadas(latestStatus);
+    });
+
+    async function render() {
+      const response = await fetch(`status.json?t=${Date.now()}`, {cache:"no-store"});
+      const status = await response.json();
+      latestStatus = status;
+      const coverage = status.coverage || {};
+      const integrity = status.quiniela_integrity || {};
+
+      document.getElementById("alive").textContent = status.ok ? "Worker sano" : "Worker con error";
+      document.getElementById("dot").style.background = status.ok ? "var(--ok)" : "var(--bad)";
+      document.getElementById("dot").style.boxShadow = status.ok ? "0 0 14px var(--ok)" : "0 0 14px var(--bad)";
+
+      document.getElementById("cards").innerHTML = [
+        ["Último snapshot", fmtMadrid(status.snapshot_generated_at)],
+        ["Antigüedad", `${ageMinutes(status.snapshot_generated_at)} min`],
+        ["Jornada actual", coverage.quiniela_current_jornada ?? "-"],
+        ["Última oficial", coverage.quiniela_latest_available_jornada ?? "-"],
+        ["Jornadas visibles", (status.public_jornadas || []).length],
+        ["Integridad", integrity.ok ? "OK" : "ERROR"],
+      ].map(([k,v]) => `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+      document.getElementById("dashboard-pills").innerHTML = [
+        chip(`Fuentes ${coverage.sources_ok || 0}/${coverage.sources_total || 0}`, "ok"),
+        chip(`J actual ${coverage.quiniela_current_jornada ?? "-"}`),
+        chip(`J visible ${(status.public_jornadas || []).length}`),
+        chip(`Fallos ${integrity.mismatch_count || 0}`, integrity.ok ? "ok" : "bad"),
+      ].join("");
+
+      document.getElementById("status-chips").innerHTML = [
+        chip(`Fuentes ${coverage.sources_ok || 0}/${coverage.sources_total || 0}`, "ok"),
+        chip(`Weather ${coverage.weather_matches || 0}`),
+        chip(`Travel ${coverage.travel_matches || 0}`),
+        chip(`History ${coverage.history_matches || 0}`),
+        chip(`Referees ${coverage.structured_referees || 0}`),
+        chip(`Slots auditados ${integrity.checked_slots || 0}`),
+        chip(`Fallos ${integrity.mismatch_count || 0}`, integrity.ok ? "ok" : "bad"),
+      ].join("");
+
+      const jornadas = status.public_jornadas || [];
+      const currentFilter = jornadaFilter.value;
+      jornadaFilter.innerHTML = [
+        `<option value="all">Todas las jornadas visibles</option>`,
+        ...jornadas.map(j => `<option value="${j.jornada}">${escapeHtml(j.label || `Jornada ${j.jornada}`)}</option>`)
+      ].join("");
+      if ([...jornadaFilter.options].some(opt => opt.value === currentFilter)) {
+        jornadaFilter.value = currentFilter;
+      }
+      renderJornadas(status);
+
+      const runs = (status.last_runs || []).slice(-10).reverse();
+      document.getElementById("runs").innerHTML = runs.map((run) => `
+        <tr>
+          <td class="${run.ok ? "ok" : "bad"}">${run.ok ? "OK" : "ERROR"}</td>
+          <td>${fmtMadrid(run.finished_at)}</td>
+          <td>${run.duration_seconds ?? "-"}s</td>
+          <td>${run.current_jornada ?? "-"}</td>
+          <td>${run.tracked_matches ?? "-"}</td>
+        </tr>`).join("") || "<tr><td colspan='5'>Sin historial.</td></tr>";
+    }
+
+    render();
+    if (storedAdminKey) {
+      setActiveSection("ia-audit");
+      loadIaAudit();
+    }
+    setInterval(render, 60000);
+  </script>
+</body>
+</html>
