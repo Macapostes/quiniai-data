@@ -93,7 +93,7 @@ BACKEND_URL = os.getenv(
     "https://quiniela-backend-production-cb1a.up.railway.app",
 ).rstrip("/")
 ADMIN_KEY = os.getenv("QUINIAI_ADMIN_KEY", "").strip()
-POLL_SECONDS = int(os.getenv("SNAPSHOT_POLL_SECONDS", "900"))
+POLL_SECONDS = int(os.getenv("SNAPSHOT_POLL_SECONDS", "7200"))
 AUTO_PUBLISH_MONITOR = str(os.getenv("QUINIAI_AUTO_PUBLISH_MONITOR", "1")).strip().lower() not in {
     "0",
     "false",
