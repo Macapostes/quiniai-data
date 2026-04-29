@@ -1,6 +1,12 @@
 name: Actualizar cuotas y enviar datos
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/main.yml'
+      - 'update_odds.py'
   schedule:
     # 2 ejecuciones diarias en UTC.
     # En horario de Madrid suelen caer por la mañana y por la tarde-noche.
