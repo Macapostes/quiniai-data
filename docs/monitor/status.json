@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-03T13:23:46.130344+00:00",
-  "snapshot_generated_at": "2026-05-03T13:23:41.270941+00:00",
+  "generated_at": "2026-05-03T17:21:24.465605+00:00",
+  "snapshot_generated_at": "2026-05-03T17:21:19.983123+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -11,7 +11,7 @@
     "quiniela_jornadas": 5,
     "quiniela_current_jornada": 61,
     "quiniela_latest_available_jornada": 61,
-    "weather_matches": 48,
+    "weather_matches": 49,
     "travel_matches": 46,
     "history_matches": 43,
     "sources_total": 24,
@@ -24,7 +24,7 @@
     "teams": 106,
     "matches": 129,
     "referees": 22,
-    "last_pruned_at": "2026-05-03T13:23:41.270558+00:00"
+    "last_pruned_at": "2026-05-03T17:21:19.982760+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,24 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-05-02T15:07:33.348709+00:00",
-      "finished_at": "2026-05-02T15:15:18.499787+00:00",
-      "ok": true,
-      "duration_seconds": 465.15,
-      "monitored_matches": 65,
-      "tracked_matches": 75,
-      "current_jornada": 60
-    },
-    {
-      "started_at": "2026-05-02T17:07:34.771596+00:00",
-      "finished_at": "2026-05-02T17:15:45.638707+00:00",
-      "ok": true,
-      "duration_seconds": 490.87,
-      "monitored_matches": 65,
-      "tracked_matches": 75,
-      "current_jornada": 60
-    },
     {
       "started_at": "2026-05-02T19:07:59.156053+00:00",
       "finished_at": "2026-05-02T19:16:09.199936+00:00",
@@ -136,6 +118,24 @@
       "finished_at": "2026-05-03T13:23:46.129108+00:00",
       "ok": true,
       "duration_seconds": 930.77,
+      "monitored_matches": 49,
+      "tracked_matches": 74,
+      "current_jornada": 61
+    },
+    {
+      "started_at": "2026-05-03T15:08:17.215544+00:00",
+      "finished_at": "2026-05-03T15:23:39.136837+00:00",
+      "ok": true,
+      "duration_seconds": 921.92,
+      "monitored_matches": 49,
+      "tracked_matches": 74,
+      "current_jornada": 61
+    },
+    {
+      "started_at": "2026-05-03T17:08:18.443320+00:00",
+      "finished_at": "2026-05-03T17:21:24.464279+00:00",
+      "ok": true,
+      "duration_seconds": 786.02,
       "monitored_matches": 49,
       "tracked_matches": 74,
       "current_jornada": 61
@@ -577,7 +577,7 @@
             "direct_rivalry_index": 75,
             "home_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 16,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -822,7 +822,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "high",
-              "score": 80,
+              "score": 100,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -1089,7 +1089,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs Girona (15º) | casa vs Valencia (12º) | fuera vs Espanyol (13º)",
-          "future_away": "casa vs Elche (14º) | fuera vs Barcelona (1º) | casa vs Levante (19º) | fuera vs Arsenal (1º)",
+          "future_away": "casa vs Elche (14º) | fuera vs Barcelona (1º) | casa vs Levante (19º)",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (43.1%) y el público quinielista lo refleja de forma similar (41.9%). Sin gran divergencia entre mercado y quiniela. | local persigue Conference a 1 pts; visitante defiende Europa League con 6 pts de colchon | Real Sociedad persigue Conference a 1 pts en final de temporada (must-win 87/100, no perder 69/100). Victoria supera linea de conference. Derrota aleja conference. Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 15 días vs 13 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         },
@@ -1761,7 +1761,7 @@
           },
           "referee": {
             "name": "Miguel Sesma",
-            "bias_summary": "sin historico arbitral fiable"
+            "bias_summary": "muestra 3 partidos, local 33.33% vs base 49.09%, visitante 33.33% vs base 25.76%, sesgo neutral"
           },
           "future_home": "fuera vs Real Madrid (2º) | casa vs Deportivo Alavés (16º) | fuera vs Mallorca (17º)",
           "future_away": "casa vs Mallorca (17º) | fuera vs Elche (14º) | casa vs Osasuna (9º)",
@@ -2206,17 +2206,17 @@
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
-              "risk": "low",
-              "score": 32,
+              "risk": "medium",
+              "score": 40,
               "reason": "",
               "next_high_importance_fixture": {}
             }
           },
           "travel_km": null,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 17.0,
+            "precipitation_probability": 27,
+            "wind_speed_kmh": 19.0
           },
           "referee": {
             "name": "no confirmado",
@@ -2224,7 +2224,7 @@
           },
           "future_home": "casa vs Málaga (8º) | fuera vs FC Andorra (9º) | casa vs Albacete (13º)",
           "future_away": "casa vs Cádiz (18º) | fuera vs Huesca (19º) | casa vs Eibar (6º)",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (48.2%), pero el público de la quiniela lo sobrevalora aún más (64.9%). Hay valor matemático en buscar la sorpresa o el empate. | visitante persigue ascenso directo a 3 pts | AD Ceuta FC persigue play-off a 10 pts en final de temporada (must-win 0/100, no perder 6/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 14 días).",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (48.2%), pero el público de la quiniela lo sobrevalora aún más (64.9%). Hay valor matemático en buscar la sorpresa o el empate. | visitante persigue ascenso directo a 3 pts | AD Ceuta FC persigue play-off a 10 pts en final de temporada (must-win 0/100, no perder 6/100). Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 14 días).",
           "analysis_ready": true
         },
         {
@@ -2261,9 +2261,9 @@
           },
           "pressure": {
             "home": {
-              "score": 19.13,
+              "score": 29.86,
               "label": "low",
-              "future_difficulty": 0.0,
+              "future_difficulty": 44.72,
               "hard_window_matches": 0,
               "gap_to_drop_zone": 25
             },
@@ -2455,9 +2455,9 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "casa vs Las Palmas (5º) | fuera vs Sporting Gijón (11º) | casa vs Real Valladolid (15º)",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (38.3%), pero el público de la quiniela lo sobrevalora aún más (48.0%). Hay valor matemático en buscar la sorpresa o el empate. | local persigue play-off a 0 pts; visitante defiende ascenso directo con 2 pts de colchon | Burgos CF persigue play-off a 0 pts en final de temporada (must-win 100/100, no perder 76/100). Victoria supera linea de play-off. Derrota aleja play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
+          "future_home": "fuera vs Granada (14º) | fuera vs Cultural Leonesa (22º) | casa vs FC Andorra (9º)",
+          "future_away": "casa vs Las Palmas (5º) | fuera vs Sporting de Gijón (11º) | casa vs Real Valladolid (15º)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (38.3%), pero el público de la quiniela lo sobrevalora aún más (48.0%). Hay valor matemático en buscar la sorpresa o el empate. | local persigue play-off a 0 pts; visitante defiende ascenso directo con 2 pts de colchon | Burgos CF persigue play-off a 0 pts en final de temporada (must-win 100/100, no perder 76/100). Victoria supera linea de play-off. Derrota aleja play-off. Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -3256,11 +3256,11 @@
             "wind_speed_kmh": 8.0
           },
           "referee": {
-            "name": "no confirmado",
+            "name": "Jesús Gil",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Deportivo Alavés (16º) | casa vs Real Betis (5º) | fuera vs Valencia (12º)",
-          "future_away": "casa vs Real Oviedo (20º) | fuera vs Sevilla (18º) | casa vs Athletic Bilbao (10º)",
+          "future_home": "fuera vs Alavés (16º) | casa vs Real Betis (5º) | fuera vs Valencia (12º)",
+          "future_away": "casa vs Real Oviedo (20º) | fuera vs Sevilla (18º) | casa vs Athletic Club (10º)",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (52.5%). | contexto competitivo bajo o no calculable | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Barcelona defiende titulo con 11 pts de colchon en final de temporada (must-win 11/100, no perder 0/100). Victoria abre colchon en titulo. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (15 vs 16 días).",
           "analysis_ready": true
         }
@@ -3501,7 +3501,7 @@
           },
           "referee": {
             "name": "Alejandro José Hernández",
-            "bias_summary": "muestra 2 partidos, local 50.0% vs base 49.09%, visitante 0.0% vs base 25.76%, sesgo neutral"
+            "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs Mallorca (17º)",
           "future_away": "casa vs Osasuna (9º)",
@@ -3733,7 +3733,7 @@
             },
             "away_rotation_context": {
               "risk": "high",
-              "score": 88,
+              "score": 100,
               "reason": "Atlético Madrid tiene UEFA Champions League vs Arsenal en 3.2 dias",
               "next_high_importance_fixture": {
                 "date": "2026-05-05",
@@ -4018,10 +4018,10 @@
           },
           "pressure": {
             "home": {
-              "score": 43.61,
-              "label": "medium",
-              "future_difficulty": 67.47,
-              "hard_window_matches": 2,
+              "score": 23.64,
+              "label": "low",
+              "future_difficulty": 21.75,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 8
             },
             "away": {
@@ -4224,9 +4224,9 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Atlético Madrid (4º) | casa vs Espanyol (13º) | fuera vs Getafe (7º)",
+          "future_home": "fuera vs Levante (19º)",
           "future_away": "casa vs Real Madrid (2º)",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (67.0%) y el público quinielista lo refleja de forma similar (67.0%). Sin gran divergencia entre mercado y quiniela. | local persigue Conference a 2 pts | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | CA Osasuna persigue Conference a 2 pts en final de temporada (must-win 74/100, no perder 62/100). Victoria supera linea de conference. Derrota aleja conference. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 7 días).",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (67.0%) y el público quinielista lo refleja de forma similar (67.0%). Sin gran divergencia entre mercado y quiniela. | local persigue Conference a 2 pts | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | CA Osasuna persigue Conference a 2 pts en final de temporada (must-win 74/100, no perder 62/100). Victoria supera linea de conference. Derrota aleja conference. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -4450,8 +4450,8 @@
           "travel_km": 809.6,
           "weather": {
             "temperature_c": 15.0,
-            "precipitation_probability": 45,
-            "wind_speed_kmh": 7.2
+            "precipitation_probability": 80,
+            "wind_speed_kmh": 6.8
           },
           "referee": {
             "name": "no confirmado",
@@ -4691,13 +4691,13 @@
           },
           "travel_km": 11.5,
           "weather": {
-            "temperature_c": 18.3,
-            "precipitation_probability": 33,
-            "wind_speed_kmh": 11.3
+            "temperature_c": 18.1,
+            "precipitation_probability": 48,
+            "wind_speed_kmh": 12.6
           },
           "referee": {
             "name": "Miguel Sesma",
-            "bias_summary": "sin historico arbitral fiable"
+            "bias_summary": "muestra 3 partidos, local 33.33% vs base 49.09%, visitante 33.33% vs base 25.76%, sesgo neutral"
           },
           "future_home": "fuera vs Real Oviedo (20º) | casa vs Mallorca (17º) | fuera vs Elche (14º) | casa vs Osasuna (9º)",
           "future_away": "casa vs Girona (15º) | fuera vs Valencia (12º) | casa vs Villarreal (3º) | fuera vs Deportivo Alavés (16º)",
@@ -4914,11 +4914,11 @@
           "weather": {
             "temperature_c": 24.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 16.9
+            "wind_speed_kmh": 16.4
           },
           "referee": {
             "name": "Adrián Cordero",
-            "bias_summary": "muestra 3 partidos, local 100.0% vs base 49.09%, visitante 0.0% vs base 25.76%, sesgo home-lean"
+            "bias_summary": "muestra 1 partidos, local 100.0% vs base 49.09%, visitante 0.0% vs base 25.76%, sesgo home-lean"
           },
           "future_home": "fuera vs Real Sociedad (8º) | casa vs Elche (14º) | fuera vs Barcelona (1º) | casa vs Levante (19º)",
           "future_away": "casa vs Getafe (7º) | fuera vs Real Madrid (2º) | casa vs Deportivo Alavés (16º) | fuera vs Mallorca (17º)",
@@ -5157,9 +5157,9 @@
           },
           "travel_km": 494.2,
           "weather": {
-            "temperature_c": 17.6,
+            "temperature_c": 18.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 9.5
+            "wind_speed_kmh": 9.2
           },
           "referee": {
             "name": "Jesús Gil",
@@ -5204,17 +5204,17 @@
           },
           "pressure": {
             "home": {
-              "score": 56.3,
+              "score": 66.66,
               "label": "high",
-              "future_difficulty": 65.25,
-              "hard_window_matches": 0,
+              "future_difficulty": 70.95,
+              "hard_window_matches": 2,
               "gap_to_drop_zone": -4
             },
             "away": {
-              "score": 48.38,
-              "label": "medium",
-              "future_difficulty": 100.0,
-              "hard_window_matches": 1,
+              "score": 57.34,
+              "label": "high",
+              "future_difficulty": 99.82,
+              "hard_window_matches": 3,
               "gap_to_drop_zone": 2
             }
           },
@@ -5356,8 +5356,8 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs Albacete (13º)",
-          "future_away": "casa vs Deportivo La Coruña (3º)",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (44.6%) y el público quinielista lo refleja de forma similar (44.6%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 6 pts y 4 puestos. | Cultural Leonesa persigue salvacion a 6 pts en final de temporada (must-win 30/100, no perder 44/100). Calendario próximo sin rivales especialmente exigentes. Urgencia clasificatoria alta, necesitan 6 puntos para la salvación. Juegan con la presión del descenso. | Carga física: local low, visitante medium. Tiempo de descanso similar (6 vs 5 días).",
+          "future_away": "casa vs Deportivo de La Coruña (3º) | fuera vs Castellón (4º) | casa vs Leganés (16º) | fuera vs Racing de Santander (1º)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (44.6%) y el público quinielista lo refleja de forma similar (44.6%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 6 pts y 4 puestos. | Cultural Leonesa persigue salvacion a 6 pts en final de temporada (must-win 30/100, no perder 44/100). Calendario futuro con 1 rivales del top-6. Urgencia clasificatoria alta, necesitan 6 puntos para la salvación. Juegan con la presión del descenso. | Carga física: local low, visitante medium. Tiempo de descanso similar (6 vs 5 días).",
           "analysis_ready": true
         },
         {
@@ -5554,8 +5554,8 @@
             "away_must_not_lose_index": 27,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "low",
-              "score": 32,
+              "risk": "medium",
+              "score": 40,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -5574,10 +5574,10 @@
           },
           "referee": {
             "name": "Eder Mallo",
-            "bias_summary": "sin historico arbitral fiable"
+            "bias_summary": "muestra 1 partidos, local 0.0% vs base 45.21%, visitante 100.0% vs base 29.24%, sesgo away-lean"
           },
           "future_home": "fuera vs Ceuta (12º)",
-          "future_away": "casa vs Granada (14º) | casa vs Albacete (13º) | fuera vs Eibar (6º) | casa vs Huesca (19º)",
+          "future_away": "casa vs Granada (14º)",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (71.7%) y el público quinielista lo refleja de forma similar (71.7%). Sin gran divergencia entre mercado y quiniela. | local persigue ascenso directo a 3 pts | CD Castellón persigue ascenso directo a 3 pts en final de temporada (must-win 61/100, no perder 55/100). Victoria le mete de lleno en ascenso directo. Derrota aleja ascenso directo. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
           "analysis_ready": true
         },
@@ -5856,9 +5856,9 @@
               "gap_to_drop_zone": 16
             },
             "away": {
-              "score": 32.07,
+              "score": 33.12,
               "label": "low",
-              "future_difficulty": 54.37,
+              "future_difficulty": 58.72,
               "hard_window_matches": 0,
               "gap_to_drop_zone": 14
             }
@@ -5943,7 +5943,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "fuera vs Racing Santander (12º) | casa vs Real Sociedad II (13º) | fuera vs Leganés (15º) | casa vs Castellón (14º) | fuera vs Córdoba (9º)",
+          "future_away": "fuera vs Racing de Santander (9º)",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (82.9%) y el público quinielista lo refleja de forma similar (82.9%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 2 pts y 2 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (5 vs 5 días).",
           "analysis_ready": true
         },
@@ -6148,9 +6148,9 @@
           },
           "travel_km": null,
           "weather": {
-            "temperature_c": 16.3,
+            "temperature_c": 16.1,
             "precipitation_probability": 90,
-            "wind_speed_kmh": 15.7
+            "wind_speed_kmh": 14.8
           },
           "referee": {
             "name": "no confirmado",
@@ -6357,13 +6357,13 @@
           },
           "travel_km": 1790.0,
           "weather": {
-            "temperature_c": 19.8,
+            "temperature_c": 20.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 6.1
+            "wind_speed_kmh": 8.0
           },
           "referee": {
             "name": "Jon Ander González",
-            "bias_summary": "muestra 4 partidos, local 75.0% vs base 45.21%, visitante 0.0% vs base 29.24%, sesgo home-lean"
+            "bias_summary": "muestra 1 partidos, local 100.0% vs base 45.21%, visitante 0.0% vs base 29.24%, sesgo home-lean"
           },
           "future_home": "fuera vs FC Andorra (9º) | fuera vs Almería (2º) | casa vs Real Zaragoza (21º) | fuera vs Deportivo de La Coruña (3º)",
           "future_away": "casa vs Real Zaragoza (21º) | fuera vs Racing de Santander (1º) | casa vs Deportivo de La Coruña (3º) | fuera vs Almería (2º)",
@@ -6565,7 +6565,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 16,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -6578,13 +6578,13 @@
           },
           "travel_km": 741.4,
           "weather": {
-            "temperature_c": 24.0,
+            "temperature_c": 24.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 12.3
+            "wind_speed_kmh": 10.8
           },
           "referee": {
             "name": "Juan Martínez",
-            "bias_summary": "sin historico arbitral fiable"
+            "bias_summary": "muestra 1 partidos, local 100.0% vs base 49.09%, visitante 0.0% vs base 25.76%, sesgo home-lean"
           },
           "future_home": "casa vs Espanyol (13º) | fuera vs Villarreal (3º) | casa vs Real Madrid (2º) | fuera vs Celta Vigo (6º)",
           "future_away": "casa vs Real Betis (5º) | fuera vs Girona (15º) | casa vs Valencia (12º) | fuera vs Espanyol (13º)",
@@ -10692,7 +10692,7 @@
           },
           "referee": {
             "name": "Miguel Sesma",
-            "bias_summary": "sin historico arbitral fiable"
+            "bias_summary": "muestra 3 partidos, local 33.33% vs base 49.09%, visitante 33.33% vs base 25.76%, sesgo neutral"
           },
           "future_home": "fuera vs Real Madrid (2º) | casa vs Deportivo Alavés (16º) | fuera vs Mallorca (17º)",
           "future_away": "casa vs Mallorca (17º) | fuera vs Elche (14º) | casa vs Osasuna (9º)",
@@ -10896,7 +10896,7 @@
           "travel_km": 181.9,
           "weather": {
             "temperature_c": 12.7,
-            "precipitation_probability": 100,
+            "precipitation_probability": 99,
             "wind_speed_kmh": 11.5
           },
           "referee": {
@@ -12108,7 +12108,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "casa vs Granada (12º) | casa vs Albacete (15º) | fuera vs Eibar (1º) | casa vs Huesca (8º)",
+          "future_away": "casa vs Granada (12º)",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (45.2%) y el público quinielista lo refleja de forma similar (45.2%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local medium, visitante low. El visitante descansó 8 días vs 4 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         },
@@ -12793,7 +12793,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "medium",
-              "score": 60,
+              "score": 52,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -12807,7 +12807,7 @@
           "travel_km": 86.4,
           "weather": {
             "temperature_c": 15.4,
-            "precipitation_probability": 43,
+            "precipitation_probability": 42,
             "wind_speed_kmh": 12.2
           },
           "referee": {
