@@ -1,0 +1,43 @@
+QUINIAI WORKER - USO RAPIDO
+
+1. Para arrancarlo ahora:
+   Haz doble clic en:
+   Iniciar QuiniAI Worker.cmd
+
+2. Para que se arranque solo al iniciar sesion:
+   Haz doble clic una sola vez en:
+   Activar Autoarranque QuiniAI Worker.cmd
+
+3. Que hace exactamente:
+   - Lee cuotas desde:
+     https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json
+   - Enriquece cada partido con noticias, perfiles de equipos, clima y viajes
+   - Calcula senales de lesiones, rotaciones, disciplina y contexto del mercado
+   - Mete historicos, forma reciente y H2H cuando hay datos gratuitos disponibles
+   - Marca 15 partidos en foco quiniela dentro del snapshot
+   - Guarda una base estructurada local de equipos, partidos y arbitros
+   - Borra automaticamente los partidos viejos que ya no interesan
+   - Las transforma al formato del backend
+   - Las sube a /admin/ia-feed
+   - Repite cada 15 minutos
+
+4. Lo que si hace ahora mismo:
+   - Noticias recientes por equipo
+   - Noticias especificas del partido en los 15 focos quiniela
+   - Clima previsto del partido
+   - Distancia aproximada de viaje cuando se puede resolver
+   - Perfiles base de equipos
+   - Senales de lesiones, rotaciones y disciplina a partir de noticias
+   - Historicos, forma reciente y H2H en ligas soportadas
+   - Base estructurada local en cache/structured_context_db.json
+
+5. Lo que todavia no hace de forma estructurada:
+   - Base historica completa de arbitros por equipo en todas las ligas
+   - Base estructurada oficial de lesiones de todos los clubes
+   - Historicos profundos partido a partido de todas las competiciones europeas
+
+6. Archivos importantes:
+   - Configuracion: .env
+   - Worker: snapshot_worker.py
+   - Ultimo snapshot local: ia_feed_snapshot.json
+   - Log de ejecucion: worker_events.log
