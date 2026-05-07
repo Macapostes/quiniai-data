@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-07T13:53:41.305019+00:00",
-  "snapshot_generated_at": "2026-05-07T13:53:38.188632+00:00",
+  "generated_at": "2026-05-07T16:15:54.501687+00:00",
+  "snapshot_generated_at": "2026-05-07T16:15:51.285517+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -24,7 +24,7 @@
     "teams": 110,
     "matches": 150,
     "referees": 16,
-    "last_pruned_at": "2026-05-07T13:53:38.188375+00:00"
+    "last_pruned_at": "2026-05-07T16:15:51.285275+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,15 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-05-07T00:33:57.510649+00:00",
-      "finished_at": "2026-05-07T00:53:42.768467+00:00",
-      "ok": true,
-      "duration_seconds": 1185.26,
-      "monitored_matches": 67,
-      "tracked_matches": 75,
-      "current_jornada": 61
-    },
     {
       "started_at": "2026-05-07T02:33:58.674527+00:00",
       "finished_at": "2026-05-07T02:47:28.873843+00:00",
@@ -136,6 +127,15 @@
       "finished_at": "2026-05-07T13:53:41.304189+00:00",
       "ok": true,
       "duration_seconds": 1369.09,
+      "monitored_matches": 67,
+      "tracked_matches": 75,
+      "current_jornada": 61
+    },
+    {
+      "started_at": "2026-05-07T15:53:41.437690+00:00",
+      "finished_at": "2026-05-07T16:15:54.500426+00:00",
+      "ok": true,
+      "duration_seconds": 1333.06,
       "monitored_matches": 67,
       "tracked_matches": 75,
       "current_jornada": 61
@@ -8729,58 +8729,121 @@
           "slot": "13.",
           "local": "Castellón",
           "visitante": "CÁDIZ",
-          "league": "",
+          "league": "soccer_epl",
           "kickoff": "2026-05-16T18:30:00Z",
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {},
           "official_percent": {},
           "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
+            "position": 13,
+            "points": 45,
+            "form": "LLLLW"
           },
           "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
+            "position": 9,
+            "points": 48,
+            "form": "LLLLL"
           },
           "pressure": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 42.54,
+              "label": "medium",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
+              "gap_to_drop_zone": 9
+            },
+            "away": {
+              "score": 41.24,
+              "label": "medium",
+              "future_difficulty": 78.16,
+              "hard_window_matches": 1,
+              "gap_to_drop_zone": 12
+            }
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 0.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 25.82,
+              "label": "low"
+            }
           },
           "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 35,
+              "total_rounds": 38,
+              "progress": 0.921,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "duelo directo por None",
+            "direct_rivalry": {
+              "is_direct_rivalry": true,
+              "direct_rivalry_index": 83,
+              "objective_key": null,
+              "objective_label": null,
+              "points_delta": 3,
+              "position_delta": 4,
+              "label": "duelo directo por None"
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 35,
+                "total_rounds": 38,
+                "progress": 0.921,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 35,
+                "total_rounds": 38,
+                "progress": 0.921,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
             "home_must_win_index": 0,
             "away_must_win_index": 0,
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "direct_rivalry_index": 83,
+            "home_rotation_context": {
+              "risk": "medium",
+              "score": 60,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 16,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 672.9,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 15.3,
+            "precipitation_probability": 35,
+            "wind_speed_kmh": 6.6
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Huesca (9º) | casa vs Eibar (1º)",
+          "future_away": "casa vs Leganés (14º) | fuera vs Racing de Santander (7º)",
+          "briefing_excerpt": "Sin suficientes datos de mercado para generar insight. | duelo directo por None: equipos separados por 3 pts y 4 puestos. | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El local descansó 14 días vs 12 días del visitante. Ligera ventaja física para el local.",
+          "analysis_ready": true
         },
         {
           "slot": "14.",
