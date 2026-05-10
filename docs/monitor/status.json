@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-10T01:14:42.621499+00:00",
-  "snapshot_generated_at": "2026-05-10T01:14:38.040832+00:00",
+  "generated_at": "2026-05-10T05:20:07.484449+00:00",
+  "snapshot_generated_at": "2026-05-10T05:20:02.594484+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -24,7 +24,7 @@
     "teams": 102,
     "matches": 133,
     "referees": 13,
-    "last_pruned_at": "2026-05-10T01:14:38.040400+00:00"
+    "last_pruned_at": "2026-05-10T05:20:02.594061+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,24 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-05-09T02:02:34.493301+00:00",
-      "finished_at": "2026-05-09T02:25:12.757595+00:00",
-      "ok": true,
-      "duration_seconds": 1358.26,
-      "monitored_matches": 67,
-      "tracked_matches": 75,
-      "current_jornada": 61
-    },
-    {
-      "started_at": "2026-05-09T04:02:39.235291+00:00",
-      "finished_at": "2026-05-09T04:13:48.429778+00:00",
-      "ok": true,
-      "duration_seconds": 669.19,
-      "monitored_matches": 67,
-      "tracked_matches": 75,
-      "current_jornada": 61
-    },
     {
       "started_at": "2026-05-09T06:02:44.209785+00:00",
       "finished_at": "2026-05-09T06:18:17.526422+00:00",
@@ -136,6 +118,22 @@
       "finished_at": "2026-05-10T01:14:42.615741+00:00",
       "ok": true,
       "duration_seconds": 1667.63,
+      "monitored_matches": 59,
+      "tracked_matches": 75,
+      "current_jornada": 62
+    },
+    {
+      "started_at": "2026-05-10T02:46:56.497227+00:00",
+      "finished_at": "2026-05-10T03:01:16.211072+00:00",
+      "ok": false,
+      "duration_seconds": 859.71,
+      "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+      "started_at": "2026-05-10T04:46:58.395756+00:00",
+      "finished_at": "2026-05-10T05:20:07.482900+00:00",
+      "ok": true,
+      "duration_seconds": 1989.09,
       "monitored_matches": 59,
       "tracked_matches": 75,
       "current_jornada": 62
@@ -2162,7 +2160,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 16,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -3511,7 +3509,7 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 16,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             }
@@ -5441,9 +5439,9 @@
           },
           "travel_km": 6389.4,
           "weather": {
-            "temperature_c": 12.5,
-            "precipitation_probability": 14,
-            "wind_speed_kmh": 15.5
+            "temperature_c": 6.2,
+            "precipitation_probability": 15,
+            "wind_speed_kmh": 13.0
           },
           "referee": {
             "name": "no confirmado",
@@ -5672,16 +5670,16 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             }
           },
           "travel_km": 1553.0,
           "weather": {
-            "temperature_c": 15.6,
-            "precipitation_probability": 9,
-            "wind_speed_kmh": 6.5
+            "temperature_c": 22.6,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 17.0
           },
           "referee": {
             "name": "no confirmado",
@@ -5889,7 +5887,7 @@
           "travel_km": 666.7,
           "weather": {
             "temperature_c": 16.6,
-            "precipitation_probability": 24,
+            "precipitation_probability": 34,
             "wind_speed_kmh": 5.0
           },
           "referee": {
@@ -6016,9 +6014,9 @@
           },
           "travel_km": 654.4,
           "weather": {
-            "temperature_c": 9.4,
-            "precipitation_probability": 21,
-            "wind_speed_kmh": 6.9
+            "temperature_c": 13.1,
+            "precipitation_probability": 15,
+            "wind_speed_kmh": 8.0
           },
           "referee": {
             "name": "no confirmado",
@@ -8055,7 +8053,7 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 16,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             }
@@ -8961,7 +8959,7 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             }
@@ -9280,8 +9278,8 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 0,
-              "reason": "",
+              "score": 18,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
@@ -9794,9 +9792,9 @@
           },
           "travel_km": 57.2,
           "weather": {
-            "temperature_c": 15.1,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 4.6
+            "temperature_c": 15.3,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 2.9
           },
           "referee": {
             "name": "no confirmado",
@@ -10048,9 +10046,9 @@
           },
           "travel_km": 302.4,
           "weather": {
-            "temperature_c": 16.8,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 4.7
+            "temperature_c": 16.6,
+            "precipitation_probability": 20,
+            "wind_speed_kmh": 0.5
           },
           "referee": {
             "name": "no confirmado",
@@ -10269,9 +10267,9 @@
           },
           "travel_km": 51.2,
           "weather": {
-            "temperature_c": 11.9,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 1.8
+            "temperature_c": 13.1,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 10.5
           },
           "referee": {
             "name": "no confirmado",
@@ -10514,9 +10512,9 @@
           },
           "travel_km": 349.9,
           "weather": {
-            "temperature_c": 13.7,
-            "precipitation_probability": 38,
-            "wind_speed_kmh": 8.6
+            "temperature_c": 15.9,
+            "precipitation_probability": 13,
+            "wind_speed_kmh": 14.3
           },
           "referee": {
             "name": "no confirmado",
@@ -10736,8 +10734,8 @@
           "travel_km": 809.6,
           "weather": {
             "temperature_c": 13.7,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 6.6
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 9.4
           },
           "referee": {
             "name": "no confirmado",
@@ -10982,9 +10980,9 @@
           },
           "travel_km": 11.5,
           "weather": {
-            "temperature_c": 13.8,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 5.7
+            "temperature_c": 12.3,
+            "precipitation_probability": 83,
+            "wind_speed_kmh": 7.2
           },
           "referee": {
             "name": "no confirmado",
@@ -11203,9 +11201,9 @@
           },
           "travel_km": 664.7,
           "weather": {
-            "temperature_c": 16.7,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 7.4
+            "temperature_c": 15.9,
+            "precipitation_probability": 68,
+            "wind_speed_kmh": 8.2
           },
           "referee": {
             "name": "no confirmado",
@@ -11436,9 +11434,9 @@
           },
           "travel_km": 494.2,
           "weather": {
-            "temperature_c": 15.3,
-            "precipitation_probability": 5,
-            "wind_speed_kmh": 3.1
+            "temperature_c": 14.5,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 3.0
           },
           "referee": {
             "name": "no confirmado",
@@ -11626,9 +11624,9 @@
           },
           "travel_km": 676.3,
           "weather": {
-            "temperature_c": 9.5,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 4.1
+            "temperature_c": 8.2,
+            "precipitation_probability": 8,
+            "wind_speed_kmh": 11.1
           },
           "referee": {
             "name": "no confirmado",
@@ -11857,16 +11855,16 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 0,
-              "reason": "",
+              "score": 18,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             }
           },
           "travel_km": 470.8,
           "weather": {
-            "temperature_c": 14.7,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 5.4
+            "temperature_c": 15.2,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 3.7
           },
           "referee": {
             "name": "no confirmado",
@@ -12102,9 +12100,9 @@
           },
           "travel_km": 737.6,
           "weather": {
-            "temperature_c": 13.3,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 4.2
+            "temperature_c": 17.2,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 10.7
           },
           "referee": {
             "name": "no confirmado",
@@ -12230,9 +12228,9 @@
           },
           "travel_km": 6648.6,
           "weather": {
-            "temperature_c": 7.1,
-            "precipitation_probability": 1,
-            "wind_speed_kmh": 1.3
+            "temperature_c": 3.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 9.7
           },
           "referee": {
             "name": "no confirmado",
@@ -12444,9 +12442,9 @@
           },
           "travel_km": null,
           "weather": {
-            "temperature_c": 14.3,
-            "precipitation_probability": 5,
-            "wind_speed_kmh": 9.0
+            "temperature_c": 14.9,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 13.2
           },
           "referee": {
             "name": "no confirmado",
@@ -12640,7 +12638,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -12653,9 +12651,9 @@
           },
           "travel_km": 1790.0,
           "weather": {
-            "temperature_c": 18.0,
-            "precipitation_probability": 10,
-            "wind_speed_kmh": 0.6
+            "temperature_c": 17.9,
+            "precipitation_probability": 11,
+            "wind_speed_kmh": 5.4
           },
           "referee": {
             "name": "no confirmado",
@@ -12874,9 +12872,9 @@
           },
           "travel_km": 741.4,
           "weather": {
-            "temperature_c": 16.7,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 7.4
+            "temperature_c": 15.9,
+            "precipitation_probability": 68,
+            "wind_speed_kmh": 8.2
           },
           "referee": {
             "name": "no confirmado",
@@ -15840,9 +15838,9 @@
           },
           "travel_km": 6725.4,
           "weather": {
-            "temperature_c": 17.4,
+            "temperature_c": 17.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 6.0
+            "wind_speed_kmh": 7.4
           },
           "referee": {
             "name": "no confirmado",
