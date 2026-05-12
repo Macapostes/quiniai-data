@@ -111,7 +111,7 @@ FOCUS_MATCH_COUNT = int(os.getenv("QUINIAI_FOCUS_MATCH_COUNT", "15"))
 FOCUS_TEAM_NEWS_ITEMS = int(os.getenv("QUINIAI_FOCUS_TEAM_NEWS_ITEMS", "10"))
 LOCAL_MEDIA_NEWS_ITEMS = int(os.getenv("QUINIAI_LOCAL_MEDIA_NEWS_ITEMS", "8"))
 MAX_WORKERS = max(2, int(os.getenv("QUINIAI_MAX_WORKERS", "6")))
-HISTORY_SEASONS_BACK = max(6, int(os.getenv("QUINIAI_HISTORY_SEASONS_BACK", "10")))
+HISTORY_SEASONS_BACK = max(2, min(6, int(os.getenv("QUINIAI_HISTORY_SEASONS_BACK", "3"))))
 UPCOMING_FIXTURE_WINDOW = max(5, int(os.getenv("QUINIAI_UPCOMING_FIXTURE_WINDOW", "5")))
 NEWS_CACHE_TTL_SECONDS = int(os.getenv("QUINIAI_NEWS_CACHE_TTL_SECONDS", "21600"))
 MATCH_NEWS_CACHE_TTL_SECONDS = int(
@@ -147,7 +147,10 @@ EDUARDO_API_LAE_URL = "https://api.eduardolosilla.es/servicios/v1/porcentajes_la
 LAE_PROXIMOS_URL = "https://www.loteriasyapuestas.es/servicios/proximosv3"
 LAE_PUNTO_VENTA_URL = "https://www.loteriasyapuestas.es/servicios/juegoPuntoVenta"
 QUINIELA_ROOT_URL = EDUARDO_QUINIELA_PORCENTAJES_URL
-QUINIELA_HISTORY_JORNADAS = max(5, int(os.getenv("QUINIAI_QUINIELA_HISTORY_JORNADAS", "5")))
+QUINIELA_HISTORY_JORNADAS = max(2, min(5, int(os.getenv("QUINIAI_QUINIELA_HISTORY_JORNADAS", "3"))))
+MONITOR_PUBLIC_JORNADAS = max(2, min(3, int(os.getenv("QUINIAI_MONITOR_PUBLIC_JORNADAS", "3"))))
+GENERIC_CACHE_MAX_AGE_SECONDS = int(os.getenv("QUINIAI_GENERIC_CACHE_MAX_AGE_SECONDS", str(14 * 24 * 3600)))
+GENERIC_CACHE_MAX_ENTRIES = max(100, int(os.getenv("QUINIAI_GENERIC_CACHE_MAX_ENTRIES", "500")))
 TEAM_PROFILE_CACHE_VERSION = "v4"
 
 CACHE_DIR = Path(__file__).with_name("cache")
@@ -826,8 +829,60 @@ def _save_cache(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def _cache_entry_timestamp(entry: object) -> float:
+    if not isinstance(entry, dict):
+        return 0.0
+    fetched_at = _parse_iso_datetime(str(entry.get("fetched_at", "")))
+    if not fetched_at:
+        return 0.0
+    if fetched_at.tzinfo is None:
+        fetched_at = fetched_at.replace(tzinfo=timezone.utc)
+    return fetched_at.timestamp()
+
+
+def _prune_ttl_cache(
+    cache: dict,
+    *,
+    max_entries: int = GENERIC_CACHE_MAX_ENTRIES,
+    max_age_seconds: int = GENERIC_CACHE_MAX_AGE_SECONDS,
+) -> None:
+    if not isinstance(cache, dict):
+        return
+    now_ts = datetime.now(timezone.utc).timestamp()
+    for key, entry in list(cache.items()):
+        fetched_ts = _cache_entry_timestamp(entry)
+        if fetched_ts and max_age_seconds > 0 and now_ts - fetched_ts > max_age_seconds:
+            cache.pop(key, None)
+    if len(cache) <= max_entries:
+        return
+    ordered_keys = sorted(cache.keys(), key=lambda item: _cache_entry_timestamp(cache.get(item)))
+    for key in ordered_keys[: max(0, len(cache) - max_entries)]:
+        cache.pop(key, None)
+
+
+def _prune_history_cache() -> None:
+    allowed_seasons = set(_recent_season_codes(HISTORY_SEASONS_BACK))
+    for key in list(HISTORY_CACHE.keys()):
+        season_code = str(key).rsplit(":", 1)[-1]
+        if season_code not in allowed_seasons:
+            HISTORY_CACHE.pop(key, None)
+
+
+def _prune_persistent_caches() -> None:
+    news_age_seconds = max(NEWS_CACHE_TTL_SECONDS, MATCH_NEWS_CACHE_TTL_SECONDS, 3 * 24 * 3600)
+    _prune_ttl_cache(TEAM_NEWS_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=news_age_seconds)
+    _prune_ttl_cache(MATCH_NEWS_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=news_age_seconds)
+    _prune_ttl_cache(WEATHER_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=GENERIC_CACHE_MAX_AGE_SECONDS)
+    _prune_ttl_cache(THESPORTSDB_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=GENERIC_CACHE_MAX_AGE_SECONDS)
+    _prune_ttl_cache(EXTERNAL_FEEDS_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=GENERIC_CACHE_MAX_AGE_SECONDS)
+    _prune_ttl_cache(OFFICIAL_SITE_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=GENERIC_CACHE_MAX_AGE_SECONDS)
+    _prune_ttl_cache(RFEF_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=GENERIC_CACHE_MAX_AGE_SECONDS)
+    _prune_history_cache()
+
+
 def _flush_caches() -> None:
     with CACHE_LOCK:
+        _prune_persistent_caches()
         _save_cache(TEAM_PROFILE_CACHE_PATH, TEAM_PROFILE_CACHE)
         _save_cache(TEAM_NEWS_CACHE_PATH, TEAM_NEWS_CACHE)
         _save_cache(MATCH_NEWS_CACHE_PATH, MATCH_NEWS_CACHE)
@@ -2986,8 +3041,8 @@ def _select_monitor_public_jornadas(status_payload: dict) -> list[dict]:
         ]
         if selected:
             jornadas = selected
-    if len(jornadas) > 5:
-        jornadas = jornadas[-5:]
+    if len(jornadas) > MONITOR_PUBLIC_JORNADAS:
+        jornadas = jornadas[-MONITOR_PUBLIC_JORNADAS:]
     out = []
     for jornada in jornadas:
         out.append(
@@ -7470,10 +7525,12 @@ def _persist_quiniela_history(quiniela_jornadas: list[dict]) -> None:
             quiniela_jornadas[0].get("jornada"),
         )
         MONITOR_JORNADAS_HISTORY["current_jornada"] = QUINIELA_HISTORY["current_jornada"]
+    keep_jornadas = set()
     for jornada in quiniela_jornadas:
         jornada_num = _safe_int(jornada.get("jornada"))
         if not jornada_num:
             continue
+        keep_jornadas.add(jornada_num)
         jornada_payload = {
             "jornada": jornada_num,
             "label": jornada.get("label") or f"Jornada {jornada_num}",
@@ -7489,18 +7546,12 @@ def _persist_quiniela_history(quiniela_jornadas: list[dict]) -> None:
         }
         jornadas_store[str(jornada_num)] = jornada_payload
         monitor_store[str(jornada_num)] = dict(jornada_payload)
-    current_anchor = _safe_int(QUINIELA_HISTORY.get("current_jornada"))
-    if current_anchor:
-        lower_bound = max(1, current_anchor - max(6, QUINIELA_HISTORY_JORNADAS))
-        upper_bound = current_anchor + 2
-        for jornada_key in list(jornadas_store.keys()):
-            jornada_num = _safe_int(jornada_key, 0)
-            if jornada_num < lower_bound or jornada_num > upper_bound:
-                jornadas_store.pop(jornada_key, None)
-        for jornada_key in list(monitor_store.keys()):
-            jornada_num = _safe_int(jornada_key, 0)
-            if jornada_num < lower_bound or jornada_num > upper_bound:
-                monitor_store.pop(jornada_key, None)
+    for jornada_key in list(jornadas_store.keys()):
+        if _safe_int(jornada_key, 0) not in keep_jornadas:
+            jornadas_store.pop(jornada_key, None)
+    for jornada_key in list(monitor_store.keys()):
+        if _safe_int(jornada_key, 0) not in keep_jornadas:
+            monitor_store.pop(jornada_key, None)
 
 
 def _audit_quiniela_integrity(
