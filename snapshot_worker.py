@@ -254,6 +254,8 @@ LEAGUE_COUNTRY_HINTS = {
     "soccer_spain_segunda_division": "ES",
     "soccer_epl": "GB",
     "soccer_efl_champ": "GB",
+    "soccer_spl": "SC",
+    "soccer_fifa_world_cup": "",
 }
 
 LEAGUE_FOOTBALL_DATA_CODES = {
@@ -261,6 +263,7 @@ LEAGUE_FOOTBALL_DATA_CODES = {
     "soccer_spain_segunda_division": "SP2",
     "soccer_epl": "E0",
     "soccer_efl_champ": "E1",
+    "soccer_spl": "SC0",
 }
 
 LEAGUE_PRIORITY = {
@@ -271,6 +274,8 @@ LEAGUE_PRIORITY = {
     "soccer_uefa_europa_conference_league": 4,
     "soccer_epl": 5,
     "soccer_efl_champ": 6,
+    "soccer_spl": 7,
+    "soccer_fifa_world_cup": 8,
 }
 
 LEAGUE_RELEGATION_START = {
@@ -278,6 +283,7 @@ LEAGUE_RELEGATION_START = {
     "soccer_epl": 18,
     "soccer_efl_champ": 22,
     "soccer_spain_segunda_division": 19,
+    "soccer_spl": 11,
 }
 
 LEAGUE_SEASON_OBJECTIVE_LINES = {
@@ -300,6 +306,11 @@ LEAGUE_SEASON_OBJECTIVE_LINES = {
     "soccer_efl_champ": [
         {"key": "promotion", "label": "ascenso directo", "line_position": 2},
         {"key": "playoff", "label": "play-off", "line_position": 6},
+    ],
+    "soccer_spl": [
+        {"key": "title", "label": "titulo", "line_position": 1},
+        {"key": "europe", "label": "Europa", "line_position": 3},
+        {"key": "championship_group", "label": "grupo campeonato", "line_position": 6},
     ],
 }
 
@@ -397,6 +408,16 @@ LEAGUE_EXTERNAL_FEEDS = {
         {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
         {"name": "Google News Championship", "url": ""},
     ],
+    "soccer_spl": [
+        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
+        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
+        {"name": "Google News Scottish Premiership", "url": ""},
+    ],
+    "soccer_fifa_world_cup": [
+        {"name": "BBC Football", "url": BBC_FOOTBALL_RSS_URL},
+        {"name": "Guardian Football", "url": GUARDIAN_FOOTBALL_RSS_URL},
+        {"name": "Google News FIFA World Cup", "url": ""},
+    ],
 }
 
 LEAGUE_NEWS_SEARCH_TERMS = {
@@ -407,11 +428,14 @@ LEAGUE_NEWS_SEARCH_TERMS = {
     "soccer_uefa_europa_conference_league": "UEFA Conference League football",
     "soccer_epl": "Premier League football",
     "soccer_efl_champ": "EFL Championship football",
+    "soccer_spl": "Scottish Premiership football",
+    "soccer_fifa_world_cup": "FIFA World Cup football",
 }
 
 COUNTRY_LABELS = {
     "ES": "Spain",
     "GB": "England",
+    "SC": "Scotland",
 }
 
 LOCAL_MEDIA_SOURCE_TOKENS = [
@@ -4522,7 +4546,8 @@ def fetch_match_referee_news(home_team: str, away_team: str) -> list[dict]:
 
 
 def fetch_the_sportsdb_team(team_name: str) -> dict:
-    cached = _cache_get(THESPORTSDB_CACHE, f"team:{team_name}", 7 * 24 * 3600)
+    cache_key = f"team:v2:{team_name}"
+    cached = _cache_get(THESPORTSDB_CACHE, cache_key, 7 * 24 * 3600)
     if cached:
         return cached
     try:
@@ -4534,8 +4559,21 @@ def fetch_the_sportsdb_team(team_name: str) -> dict:
     except Exception:
         data = {}
     teams = (data or {}).get("teams") or []
-    payload = teams[0] if teams else {}
-    _cache_set(THESPORTSDB_CACHE, f"team:{team_name}", payload)
+    payload = {}
+    best_score = 0.0
+    for team in teams:
+        candidates = [
+            str(team.get("strTeam", "")).strip(),
+            str(team.get("strTeamAlternate", "")).strip(),
+            str(team.get("strKeywords", "")).strip(),
+        ]
+        score = max((_team_similarity_score(team_name, candidate) for candidate in candidates if candidate), default=0.0)
+        if score > best_score:
+            best_score = score
+            payload = team
+    if best_score < 0.55:
+        payload = {}
+    _cache_set(THESPORTSDB_CACHE, cache_key, payload)
     return payload
 
 
@@ -4611,6 +4649,24 @@ def fetch_the_sportsdb_next_event(team_id: str) -> dict:
     payload = events[0] if events else {}
     _cache_set(THESPORTSDB_CACHE, f"next_event:{team_id}", payload)
     return payload
+
+
+def _sportsdb_event_matches(event: dict, home_team: str, away_team: str) -> bool:
+    if not event:
+        return False
+    event_home = str(event.get("strHomeTeam", "")).strip()
+    event_away = str(event.get("strAwayTeam", "")).strip()
+    if not event_home or not event_away:
+        return False
+    direct = (
+        _team_similarity_score(event_home, home_team) >= 0.68
+        and _team_similarity_score(event_away, away_team) >= 0.68
+    )
+    swapped = (
+        _team_similarity_score(event_home, away_team) >= 0.68
+        and _team_similarity_score(event_away, home_team) >= 0.68
+    )
+    return direct or swapped
 
 
 def fetch_the_sportsdb_round_events(league_id: str, season: str, round_value: object) -> list[dict]:
@@ -6620,8 +6676,12 @@ def _enrich_quiniela_match(match: dict) -> None:
     home_team_api = fetch_the_sportsdb_team(match["local"])
     away_team_api = fetch_the_sportsdb_team(match["visitante"])
     sportsdb_event = fetch_the_sportsdb_next_event(str(home_team_api.get("idTeam", "")))
+    if sportsdb_event and not _sportsdb_event_matches(sportsdb_event, match["local"], match["visitante"]):
+        sportsdb_event = {}
     if not sportsdb_event:
         sportsdb_event = fetch_the_sportsdb_next_event(str(away_team_api.get("idTeam", "")))
+        if sportsdb_event and not _sportsdb_event_matches(sportsdb_event, match["local"], match["visitante"]):
+            sportsdb_event = {}
     if sportsdb_event:
         sportsdb_event = dict(sportsdb_event)
         sportsdb_event.setdefault("strHomeTeam", match["local"])

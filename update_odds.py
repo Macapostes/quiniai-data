@@ -16,6 +16,8 @@ LEAGUES = [
     'soccer_uefa_europa_conference_league',
     'soccer_epl',
     'soccer_efl_champ',
+    'soccer_spl',
+    'soccer_fifa_world_cup',
 ]
 
 def get_odds():
