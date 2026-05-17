@@ -105,7 +105,7 @@ if ($alreadyRunning) {
         "Bypass",
         "-File",
         "`"$supervisor`""
-    ) -WindowStyle Minimized
+    ) -WindowStyle Hidden
     Write-Host "  Worker en segundo plano: supervisor iniciado correctamente." -ForegroundColor Green
 }
 
