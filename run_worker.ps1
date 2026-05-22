@@ -40,8 +40,27 @@ while ($true) {
 
     try {
         Write-SupervisorLog "Lanzando proceso Python persistente del worker"
-        & $python -u $script *>> $workerStdoutLog
-        $exitCode = $LASTEXITCODE
+        # CreateNoWindow=true evita cualquier ventana visible aunque el padre sea hidden
+        $psi = New-Object System.Diagnostics.ProcessStartInfo
+        $psi.FileName        = $python
+        $psi.Arguments       = "-u `"$script`""
+        $psi.CreateNoWindow  = $true
+        $psi.UseShellExecute = $false
+        $psi.RedirectStandardOutput = $true
+        $psi.RedirectStandardError  = $true
+        $p = [System.Diagnostics.Process]::Start($psi)
+        $outTask = $p.StandardOutput.ReadToEndAsync()
+        $errTask = $p.StandardError.ReadToEndAsync()
+        $p.WaitForExit()
+        $outTask.Wait()
+        $errTask.Wait()
+        if ($outTask.Result) {
+            $outTask.Result | Out-File -FilePath $workerStdoutLog -Encoding utf8 -Append
+        }
+        if ($errTask.Result) {
+            $errTask.Result | Out-File -FilePath $workerStdoutLog -Encoding utf8 -Append
+        }
+        $exitCode = $p.ExitCode
         Write-SupervisorLog "El proceso Python termino con codigo $exitCode" "WARN"
         if ($exitCode -eq 0) {
             exit 0
