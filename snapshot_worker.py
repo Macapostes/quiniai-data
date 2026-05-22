@@ -810,6 +810,10 @@ def _load_monitor_jornada_history() -> dict:
         jornada_num = parse_int(jornada.get("jornada"))
         if not jornada_num:
             continue
+        # AUTO-PURGE: Ignorar jornadas futuras cacheadas por si tienen fechas basura (como la 65).
+        # Así se limpiarán automáticamente en la próxima ejecución.
+        if jornada_num > 64:
+            continue
         normalized[str(jornada_num)] = {
             "jornada": jornada_num,
             "label": jornada.get("label") or f"Jornada {jornada_num}",
@@ -3747,14 +3751,18 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
             local_team, away_team = [part.strip() for part in title.split(" - ", 1)]
             kickoff = ""
             if jornada_date and hour:
-                try:
-                    local_dt = datetime.strptime(
-                        f"{jornada_date} {hour}",
-                        "%d/%m/%Y %H:%M",
-                    ).replace(tzinfo=MADRID_TZ)
-                    kickoff = local_dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
-                except Exception:
+                # Filtrar horas por defecto que usa Losilla cuando no sabe la fecha
+                if "por def" in hour.lower() or not hour.strip():
                     kickoff = ""
+                else:
+                    try:
+                        local_dt = datetime.strptime(
+                            f"{jornada_date} {hour}",
+                            "%d/%m/%Y %H:%M",
+                        ).replace(tzinfo=MADRID_TZ)
+                        kickoff = local_dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+                    except Exception:
+                        kickoff = ""
             slots.append(
                 {
                     "position": position,
@@ -3762,7 +3770,7 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
                     "visitante": _canonical_team_name(away_team),
                     "percentages": {},
                     "kickoff": kickoff,
-                    "date_label": jornada_date,
+                    "date_label": jornada_date if kickoff else "",
                 }
             )
         if slots:
