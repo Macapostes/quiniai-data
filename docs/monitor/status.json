@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-05-24T08:52:20.505450+00:00",
-  "snapshot_generated_at": "2026-05-24T08:52:17.760171+00:00",
+  "generated_at": "2026-05-24T12:39:02.100913+00:00",
+  "snapshot_generated_at": "2026-05-24T12:38:59.481661+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
   "coverage": {
-    "monitored_matches": 107,
+    "monitored_matches": 99,
     "focus_matches": 15,
     "tracked_quiniela_matches": 60,
     "quiniela_jornadas": 4,
     "quiniela_current_jornada": 65,
     "quiniela_latest_available_jornada": 66,
-    "weather_matches": 105,
-    "travel_matches": 104,
-    "history_matches": 32,
+    "weather_matches": 97,
+    "travel_matches": 96,
+    "history_matches": 24,
     "sources_total": 20,
     "sources_ok": 20,
     "fresh_headlines": 23,
@@ -22,9 +22,9 @@
   },
   "structured_db_summary": {
     "teams": 89,
-    "matches": 155,
+    "matches": 154,
     "referees": 1,
-    "last_pruned_at": "2026-05-24T08:52:17.759929+00:00"
+    "last_pruned_at": "2026-05-24T12:38:59.481433+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,24 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-05-23T10:03:34.862457+00:00",
-      "finished_at": "2026-05-23T11:06:57.261958+00:00",
-      "ok": true,
-      "duration_seconds": 3802.4,
-      "monitored_matches": 107,
-      "tracked_matches": 60,
-      "current_jornada": 64
-    },
-    {
-      "started_at": "2026-05-23T12:03:35.301315+00:00",
-      "finished_at": "2026-05-23T12:43:34.561840+00:00",
-      "ok": true,
-      "duration_seconds": 2399.26,
-      "monitored_matches": 107,
-      "tracked_matches": 60,
-      "current_jornada": 64
-    },
     {
       "started_at": "2026-05-23T14:03:36.125797+00:00",
       "finished_at": "2026-05-23T14:48:27.179341+00:00",
@@ -135,6 +117,24 @@
       "ok": true,
       "duration_seconds": 2916.58,
       "monitored_matches": 107,
+      "tracked_matches": 60,
+      "current_jornada": 65
+    },
+    {
+      "started_at": "2026-05-24T10:03:44.407651+00:00",
+      "finished_at": "2026-05-24T10:50:57.367160+00:00",
+      "ok": true,
+      "duration_seconds": 2832.96,
+      "monitored_matches": 99,
+      "tracked_matches": 60,
+      "current_jornada": 65
+    },
+    {
+      "started_at": "2026-05-24T12:03:44.871682+00:00",
+      "finished_at": "2026-05-24T12:39:02.100019+00:00",
+      "ok": true,
+      "duration_seconds": 2117.23,
+      "monitored_matches": 99,
       "tracked_matches": 60,
       "current_jornada": 65
     }
@@ -392,9 +392,9 @@
           },
           "travel_km": 17089.2,
           "weather": {
-            "temperature_c": 14.4,
+            "temperature_c": 14.2,
             "precipitation_probability": 20,
-            "wind_speed_kmh": 17.7
+            "wind_speed_kmh": 17.6
           },
           "referee": {
             "name": "no confirmado",
@@ -535,16 +535,20 @@
         },
         {
           "slot": "4.",
-          "local": "GRANADA",
-          "visitante": "SPORTING",
-          "league": "soccer_epl",
+          "local": "Granada CF",
+          "visitante": "Sporting Gijón",
+          "league": "soccer_spain_segunda_division",
           "kickoff": "2026-05-30T19:00:00Z",
-          "bookmaker": "",
-          "odds": {},
+          "bookmaker": "PMU (FR)",
+          "odds": {
+            "1": 2.2,
+            "X": 3.05,
+            "2": 2.85
+          },
           "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
+            "1": 40.11,
+            "X": 28.93,
+            "2": 30.96
           },
           "official_percent": {
             "1": 0.0,
@@ -552,38 +556,38 @@
             "2": 0.0
           },
           "home_table": {
-            "position": 10,
-            "points": 51,
-            "form": "LLDDW"
+            "position": 14,
+            "points": 48,
+            "form": "LLWLL"
           },
           "away_table": {
             "position": 12,
-            "points": 49,
-            "form": "LLDDL"
+            "points": 55,
+            "form": "WLLLW"
           },
           "pressure": {
             "home": {
-              "score": 16.73,
+              "score": 12.78,
               "label": "low",
               "future_difficulty": 0.0,
               "hard_window_matches": 0,
-              "gap_to_drop_zone": 15
+              "gap_to_drop_zone": 11
             },
             "away": {
-              "score": 14.79,
+              "score": 14.36,
               "label": "low",
               "future_difficulty": 0.0,
               "hard_window_matches": 0,
-              "gap_to_drop_zone": 13
+              "gap_to_drop_zone": 18
             }
           },
           "fatigue": {
             "home": {
-              "score": 9.0,
+              "score": 0.0,
               "label": "low"
             },
             "away": {
-              "score": 34.0,
+              "score": 27.2,
               "label": "low"
             }
           },
@@ -591,48 +595,113 @@
             "season_context_phase": {
               "key": "final",
               "label": "final de temporada",
-              "played": 37,
-              "total_rounds": 38,
-              "progress": 0.974,
+              "played": 40,
+              "total_rounds": 42,
+              "progress": 0.952,
               "source": "played_matches"
             },
-            "competitive_stakes_label": "duelo directo por None",
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
             "direct_rivalry": {
-              "is_direct_rivalry": true,
-              "direct_rivalry_index": 90,
-              "objective_key": null,
-              "objective_label": null,
-              "points_delta": 2,
-              "position_delta": 2,
-              "label": "duelo directo por None"
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
             },
             "home_objective": {
+              "objective_key": "survival",
+              "objective_label": "salvacion",
+              "status": "defending",
+              "urgency": "low",
+              "summary": "defiende salvacion con 11 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 11,
+              "line_position": 18,
+              "line_points": 40,
+              "relevance_score": 29.0,
+              "must_win_index": 11,
+              "must_not_lose_index": 0,
+              "objective_swing_if_win": 18,
+              "objective_swing_if_lose": 26,
+              "swing_summary_if_win": "victoria abre colchon en salvacion",
+              "swing_summary_if_lose": "impacto material bajo",
               "season_context_phase": {
                 "key": "final",
                 "label": "final de temporada",
-                "played": 37,
-                "total_rounds": 38,
-                "progress": 0.974,
+                "played": 40,
+                "total_rounds": 42,
+                "progress": 0.952,
                 "source": "played_matches"
               },
-              "objective_candidates": []
+              "objective_candidates": [
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 11 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 11,
+                  "line_position": 18,
+                  "line_points": 40,
+                  "relevance_score": 29.0
+                }
+              ]
             },
             "away_objective": {
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "status": "chasing",
+              "urgency": "low",
+              "summary": "persigue play-off a 11 pts",
+              "gap_points": 11,
+              "cushion_points": null,
+              "line_position": 6,
+              "line_points": 66,
+              "relevance_score": 4.0,
+              "must_win_index": 0,
+              "must_not_lose_index": 0,
+              "objective_swing_if_win": 26,
+              "objective_swing_if_lose": 18,
+              "swing_summary_if_win": "impacto material bajo",
+              "swing_summary_if_lose": "impacto material bajo",
               "season_context_phase": {
                 "key": "final",
                 "label": "final de temporada",
-                "played": 37,
-                "total_rounds": 38,
-                "progress": 0.974,
+                "played": 40,
+                "total_rounds": 42,
+                "progress": 0.952,
                 "source": "played_matches"
               },
-              "objective_candidates": []
+              "objective_candidates": [
+                {
+                  "objective_key": "playoff",
+                  "objective_label": "play-off",
+                  "status": "chasing",
+                  "urgency": "low",
+                  "summary": "persigue play-off a 11 pts",
+                  "gap_points": 11,
+                  "cushion_points": null,
+                  "line_position": 6,
+                  "line_points": 66,
+                  "relevance_score": 4.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 18 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 18,
+                  "line_position": 18,
+                  "line_points": 40,
+                  "relevance_score": 0.0
+                }
+              ]
             },
-            "home_must_win_index": 0,
+            "home_must_win_index": 11,
             "away_must_win_index": 0,
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 90,
+            "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
               "score": 0,
@@ -646,11 +715,11 @@
               "next_high_importance_fixture": {}
             }
           },
-          "travel_km": 6187.0,
+          "travel_km": 727.9,
           "weather": {
-            "temperature_c": 33.3,
+            "temperature_c": 32.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 11.2
+            "wind_speed_kmh": 14.8
           },
           "referee": {
             "name": "no confirmado",
@@ -658,7 +727,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | duelo directo por None: equipos separados por 2 pts y 2 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (40.1%), pero el público quinielista lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | contexto competitivo bajo o no calculable | Granada CF defiende salvacion con 11 pts de colchon en final de temporada (must-win 11/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Nivel de urgencia bajo (+11 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1246,9 +1315,9 @@
           },
           "travel_km": 6611.7,
           "weather": {
-            "temperature_c": 6.8,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 7.9
+            "temperature_c": 16.9,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 12.5
           },
           "referee": {
             "name": "no confirmado",
@@ -1374,9 +1443,9 @@
           },
           "travel_km": 1255.7,
           "weather": {
-            "temperature_c": 17.5,
+            "temperature_c": 18.1,
             "precipitation_probability": 2,
-            "wind_speed_kmh": 13.4
+            "wind_speed_kmh": 7.2
           },
           "referee": {
             "name": "no confirmado",
@@ -1623,16 +1692,16 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 0,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             }
           },
           "travel_km": 427.6,
           "weather": {
-            "temperature_c": 23.6,
+            "temperature_c": 30.4,
             "precipitation_probability": 2,
-            "wind_speed_kmh": 19.6
+            "wind_speed_kmh": 4.9
           },
           "referee": {
             "name": "no confirmado",
@@ -1724,7 +1793,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 0,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -1737,9 +1806,9 @@
           },
           "travel_km": 14264.1,
           "weather": {
-            "temperature_c": 22.2,
+            "temperature_c": 17.9,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 19.2
+            "wind_speed_kmh": 24.1
           },
           "referee": {
             "name": "no confirmado",
@@ -1865,9 +1934,9 @@
           },
           "travel_km": 16948.1,
           "weather": {
-            "temperature_c": 24.5,
-            "precipitation_probability": 47,
-            "wind_speed_kmh": 2.8
+            "temperature_c": 28.9,
+            "precipitation_probability": 17,
+            "wind_speed_kmh": 5.1
           },
           "referee": {
             "name": "no confirmado",
@@ -1993,9 +2062,9 @@
           },
           "travel_km": 9657.2,
           "weather": {
-            "temperature_c": 21.5,
-            "precipitation_probability": 91,
-            "wind_speed_kmh": 1.1
+            "temperature_c": 23.2,
+            "precipitation_probability": 93,
+            "wind_speed_kmh": 3.5
           },
           "referee": {
             "name": "no confirmado",
@@ -2087,7 +2156,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "medium",
-              "score": 44,
+              "score": 62,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -2100,9 +2169,9 @@
           },
           "travel_km": 9426.9,
           "weather": {
-            "temperature_c": 30.9,
+            "temperature_c": 27.7,
             "precipitation_probability": 5,
-            "wind_speed_kmh": 9.7
+            "wind_speed_kmh": 2.6
           },
           "referee": {
             "name": "no confirmado",
@@ -2239,9 +2308,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -2367,9 +2436,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -2495,9 +2564,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -2623,9 +2692,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -2751,9 +2820,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -2879,9 +2948,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3007,9 +3076,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3135,9 +3204,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3263,9 +3332,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3391,9 +3460,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3519,9 +3588,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3647,9 +3716,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3775,9 +3844,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3903,9 +3972,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -4031,9 +4100,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 32.7,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.4
+            "temperature_c": 32.2,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -4068,9 +4137,9 @@
             "2": 3.4
           },
           "normalized_percent": {
-            "1": 44.57,
-            "X": 28.55,
-            "2": 26.87
+            "1": 37.18,
+            "X": 28.76,
+            "2": 34.06
           },
           "official_percent": {
             "1": 37.18,
@@ -4282,7 +4351,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "fuera vs Crystal Palace (13º, UEFA Conference League)",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (44.6%) y el público quinielista lo refleja de forma similar (37.2%). Sin gran divergencia entre mercado y quiniela. | local defiende salvacion con 3 pts de colchon; visitante persigue Conference a 4 pts | visitante: Rayo Vallecano tiene UEFA Conference League vs Crystal Palace en 4.0 dias (riesgo medium) | Alavés defiende salvacion con 3 pts de colchon en final de temporada (must-win 51/100, no perder 84/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario próximo equilibrado, sin presión de conservar fuerzas. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (37.2%) y el público quinielista lo refleja de forma similar (37.2%). Sin gran divergencia entre mercado y quiniela. | local defiende salvacion con 3 pts de colchon; visitante persigue Conference a 4 pts | visitante: Rayo Vallecano tiene UEFA Conference League vs Crystal Palace en 4.0 dias (riesgo medium) | Alavés defiende salvacion con 3 pts de colchon en final de temporada (must-win 51/100, no perder 84/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario próximo equilibrado, sin presión de conservar fuerzas. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -4298,9 +4367,9 @@
             "2": 5.29
           },
           "normalized_percent": {
-            "1": 59.33,
-            "X": 22.84,
-            "2": 17.83
+            "1": 46.12,
+            "X": 31.16,
+            "2": 22.72
           },
           "official_percent": {
             "1": 46.12,
@@ -4515,7 +4584,7 @@
           },
           "future_home": "fuera vs Arsenal (1º)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (59.3%), pero el público quinielista lo infravalora (46.1%). El favorito podría estar infravalorado en la quiniela. | local defiende Europa League con 6 pts de colchon; visitante defiende salvacion con 2 pts de colchon | Real Betis defiende Europa League con 6 pts de colchon en final de temporada (must-win 36/100, no perder 24/100). Victoria abre colchon en europa league. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (46.1%) y el público quinielista lo refleja de forma similar (46.1%). Sin gran divergencia entre mercado y quiniela. | local defiende Europa League con 6 pts de colchon; visitante defiende salvacion con 2 pts de colchon | Real Betis defiende Europa League con 6 pts de colchon en final de temporada (must-win 36/100, no perder 24/100). Victoria abre colchon en europa league. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -4531,9 +4600,9 @@
             "2": 4.1
           },
           "normalized_percent": {
-            "1": 48.13,
-            "X": 29.33,
-            "2": 22.54
+            "1": 69.94,
+            "X": 21.04,
+            "2": 9.02
           },
           "official_percent": {
             "1": 69.94,
@@ -4736,7 +4805,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (48.1%), pero el público de la quiniela lo sobrevalora aún más (69.9%). Hay valor matemático en buscar la sorpresa o el empate. | local defiende Conference con 3 pts de colchon; visitante defiende salvacion con 3 pts de colchon | Celta Vigo defiende Conference con 3 pts de colchon en final de temporada (must-win 51/100, no perder 60/100). Victoria abre colchon en conference. Derrota deja en riesgo conference. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (69.9%) y el público quinielista lo refleja de forma similar (69.9%). Sin gran divergencia entre mercado y quiniela. | local defiende Conference con 3 pts de colchon; visitante defiende salvacion con 3 pts de colchon | Celta Vigo defiende Conference con 3 pts de colchon en final de temporada (must-win 51/100, no perder 60/100). Victoria abre colchon en conference. Derrota deja en riesgo conference. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -4752,9 +4821,9 @@
             "2": 2.78
           },
           "normalized_percent": {
-            "1": 40.78,
-            "X": 26.22,
-            "2": 33.01
+            "1": 45.46,
+            "X": 30.98,
+            "2": 23.56
           },
           "official_percent": {
             "1": 45.46,
@@ -4974,7 +5043,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "fuera vs Albacete (13º)",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (40.8%) y el público quinielista lo refleja de forma similar (45.5%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 0 pts y 1 puestos. | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Espanyol defiende salvacion con 5 pts de colchon en final de temporada (must-win 41/100, no perder 60/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (45.5%) y el público quinielista lo refleja de forma similar (45.5%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 0 pts y 1 puestos. | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Espanyol defiende salvacion con 5 pts de colchon en final de temporada (must-win 41/100, no perder 60/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -4990,9 +5059,9 @@
             "2": 2.99
           },
           "normalized_percent": {
-            "1": 28.62,
-            "X": 39.6,
-            "2": 31.78
+            "1": 40.81,
+            "X": 35.3,
+            "2": 23.89
           },
           "official_percent": {
             "1": 40.81,
@@ -5195,7 +5264,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=28.6%, X=39.6%, 2=31.8%). El empate tiene valor quinielístico. | local persigue Conference a 3 pts; visitante defiende salvacion con 2 pts de colchon | local: la prensa reciente apunta a rotaciones/descanso (riesgo high) | Getafe persigue Conference a 3 pts en final de temporada (must-win 61/100, no perder 55/100). Victoria le mete de lleno en conference. Derrota aleja conference. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (40.8%) y el público quinielista lo refleja de forma similar (40.8%). Sin gran divergencia entre mercado y quiniela. | local persigue Conference a 3 pts; visitante defiende salvacion con 2 pts de colchon | local: la prensa reciente apunta a rotaciones/descanso (riesgo high) | Getafe persigue Conference a 3 pts en final de temporada (must-win 61/100, no perder 55/100). Victoria le mete de lleno en conference. Derrota aleja conference. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -5211,9 +5280,9 @@
             "2": 7.66
           },
           "normalized_percent": {
-            "1": 64.85,
-            "X": 22.7,
-            "2": 12.45
+            "1": 87.83,
+            "X": 8.87,
+            "2": 3.3
           },
           "official_percent": {
             "1": 87.83,
@@ -5397,7 +5466,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (64.8%), pero el público de la quiniela lo sobrevalora aún más (87.8%). Hay valor matemático en buscar la sorpresa o el empate. | local persigue salvacion a 3 pts; visitante persigue salvacion a 13 pts | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Mallorca persigue salvacion a 3 pts en final de temporada (must-win 69/100, no perder 65/100). Victoria le mete de lleno en salvacion. Derrota aleja salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Urgencia clasificatoria alta, necesitan 3 puntos para la salvación. Juegan con la presión del descenso. | Carga física: local low, visitante medium. Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (87.8%) y el público quinielista lo refleja de forma similar (87.8%). Sin gran divergencia entre mercado y quiniela. | local persigue salvacion a 3 pts; visitante persigue salvacion a 13 pts | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Mallorca persigue salvacion a 3 pts en final de temporada (must-win 69/100, no perder 65/100). Victoria le mete de lleno en salvacion. Derrota aleja salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Urgencia clasificatoria alta, necesitan 3 puntos para la salvación. Juegan con la presión del descenso. | Carga física: local low, visitante medium. Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -5408,14 +5477,14 @@
           "kickoff": "2026-05-24T19:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 2.52,
-            "X": 3.73,
-            "2": 2.72
+            "1": 2.57,
+            "X": 3.95,
+            "2": 2.6
           },
           "normalized_percent": {
-            "1": 38.43,
-            "X": 25.96,
-            "2": 35.61
+            "1": 37.89,
+            "X": 24.65,
+            "2": 37.45
           },
           "official_percent": {
             "1": 37.51,
@@ -5649,9 +5718,9 @@
           },
           "travel_km": 310.6,
           "weather": {
-            "temperature_c": 25.8,
+            "temperature_c": 26.0,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 11.0
+            "wind_speed_kmh": 10.3
           },
           "referee": {
             "name": "no confirmado",
@@ -5659,7 +5728,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (38.4%) y el público quinielista lo refleja de forma similar (37.5%). Sin gran divergencia entre mercado y quiniela. | duelo directo por Champions: equipos separados por 0 pts y 1 puestos. | Villarreal defiende Champions con 12 pts de colchon en final de temporada (must-win 6/100, no perder 0/100). Victoria abre colchon en champions. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (37.9%) y el público quinielista lo refleja de forma similar (37.5%). Sin gran divergencia entre mercado y quiniela. | duelo directo por Champions: equipos separados por 0 pts y 1 puestos. | Villarreal defiende Champions con 12 pts de colchon en final de temporada (must-win 6/100, no perder 0/100). Victoria abre colchon en champions. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -5675,9 +5744,9 @@
             "2": 2.02
           },
           "normalized_percent": {
-            "1": 29.22,
-            "X": 25.22,
-            "2": 45.56
+            "1": 27.35,
+            "X": 24.89,
+            "2": 47.76
           },
           "official_percent": {
             "1": 27.35,
@@ -5904,7 +5973,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (45.6%) y el público quinielista lo refleja de forma similar (47.8%). Sin gran divergencia entre mercado y quiniela. | local persigue Conference a 5 pts | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Valencia persigue Conference a 5 pts en final de temporada (must-win 35/100, no perder 41/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (47.8%) y el público quinielista lo refleja de forma similar (47.8%). Sin gran divergencia entre mercado y quiniela. | local persigue Conference a 5 pts | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Valencia persigue Conference a 5 pts en final de temporada (must-win 35/100, no perder 41/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -5920,9 +5989,9 @@
             "2": 4.2
           },
           "normalized_percent": {
-            "1": 51.07,
-            "X": 27.04,
-            "2": 21.89
+            "1": 57.04,
+            "X": 26.29,
+            "2": 16.67
           },
           "official_percent": {
             "1": 57.04,
@@ -6118,7 +6187,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (51.1%) y el público quinielista lo refleja de forma similar (57.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 2 pts y 2 puestos. | Girona persigue salvacion a 2 pts en final de temporada (must-win 82/100, no perder 72/100). Victoria supera linea de salvacion. Derrota aleja salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Urgencia clasificatoria alta, necesitan 2 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (57.0%) y el público quinielista lo refleja de forma similar (57.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 2 pts y 2 puestos. | Girona persigue salvacion a 2 pts en final de temporada (must-win 82/100, no perder 72/100). Victoria supera linea de salvacion. Derrota aleja salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Urgencia clasificatoria alta, necesitan 2 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -6257,14 +6326,14 @@
           "kickoff": "2026-05-24T14:15:00Z",
           "bookmaker": "Unibet (FR)",
           "odds": {
-            "1": 1.44,
-            "X": 4.1,
-            "2": 4.75
+            "1": 1.36,
+            "X": 4.45,
+            "2": 5.6
           },
           "normalized_percent": {
-            "1": 60.45,
-            "X": 21.23,
-            "2": 18.32
+            "1": 64.58,
+            "X": 19.74,
+            "2": 15.68
           },
           "official_percent": {
             "1": 66.56,
@@ -6450,9 +6519,9 @@
           },
           "travel_km": null,
           "weather": {
-            "temperature_c": 28.6,
+            "temperature_c": 28.8,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 17.6
+            "wind_speed_kmh": 17.7
           },
           "referee": {
             "name": "no confirmado",
@@ -6460,7 +6529,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "casa vs Albacete (11º)",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (60.5%) y el público quinielista lo refleja de forma similar (66.6%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 3 pts y 3 puestos. | Andorra CF persigue play-off a 8 pts en final de temporada (must-win 0/100, no perder 20/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (64.6%) y el público quinielista lo refleja de forma similar (66.6%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 3 pts y 3 puestos. | Andorra CF persigue play-off a 8 pts en final de temporada (must-win 0/100, no perder 20/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
           "analysis_ready": true
         },
         {
@@ -6680,14 +6749,14 @@
           "kickoff": "2026-05-24T16:30:00Z",
           "bookmaker": "LeoVegas (SE)",
           "odds": {
-            "1": 1.7,
-            "X": 3.6,
-            "2": 4.4
+            "1": 1.64,
+            "X": 3.7,
+            "2": 4.6
           },
           "normalized_percent": {
-            "1": 53.8,
-            "X": 25.41,
-            "2": 20.79
+            "1": 55.56,
+            "X": 24.63,
+            "2": 19.81
           },
           "official_percent": {
             "1": 74.72,
@@ -6885,9 +6954,9 @@
           },
           "travel_km": 620.6,
           "weather": {
-            "temperature_c": 31.1,
+            "temperature_c": 31.0,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 8.7
+            "wind_speed_kmh": 9.0
           },
           "referee": {
             "name": "no confirmado",
@@ -6895,7 +6964,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (53.8%), pero el público de la quiniela lo sobrevalora aún más (74.7%). Hay valor matemático en buscar la sorpresa o el empate. | duelo directo por play-off: equipos separados por 4 pts y 1 puestos. | SD Eibar persigue play-off a 2 pts en final de temporada (must-win 74/100, no perder 62/100). Victoria supera linea de play-off. Derrota aleja play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 9 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (55.6%), pero el público de la quiniela lo sobrevalora aún más (74.7%). Hay valor matemático en buscar la sorpresa o el empate. | duelo directo por play-off: equipos separados por 4 pts y 1 puestos. | SD Eibar persigue play-off a 2 pts en final de temporada (must-win 74/100, no perder 62/100). Victoria supera linea de play-off. Derrota aleja play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 9 días).",
           "analysis_ready": true
         },
         {
@@ -6906,14 +6975,14 @@
           "kickoff": "2026-05-24T16:30:00Z",
           "bookmaker": "Unibet (FR)",
           "odds": {
-            "1": 3.75,
+            "1": 3.7,
             "X": 3.7,
-            "2": 1.63
+            "2": 1.67
           },
           "normalized_percent": {
-            "1": 23.18,
-            "X": 23.49,
-            "2": 53.33
+            "1": 23.72,
+            "X": 23.72,
+            "2": 52.56
           },
           "official_percent": {
             "1": 13.09,
@@ -6932,9 +7001,9 @@
           },
           "pressure": {
             "home": {
-              "score": 14.36,
+              "score": 28.28,
               "label": "low",
-              "future_difficulty": 0.0,
+              "future_difficulty": 58.0,
               "hard_window_matches": 0,
               "gap_to_drop_zone": 18
             },
@@ -7106,17 +7175,17 @@
           },
           "travel_km": 793.7,
           "weather": {
-            "temperature_c": 23.0,
+            "temperature_c": 22.6,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 22.1
+            "wind_speed_kmh": 26.5
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "fuera vs Granada CF (14º)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (53.3%), pero el público de la quiniela lo sobrevalora aún más (63.8%). Hay valor matemático en buscar la sorpresa o el empate. | visitante persigue ascenso directo a 3 pts | Sporting Gijón persigue play-off a 11 pts en final de temporada (must-win 0/100, no perder 0/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (52.6%), pero el público de la quiniela lo sobrevalora aún más (63.8%). Hay valor matemático en buscar la sorpresa o el empate. | visitante persigue ascenso directo a 3 pts | Sporting Gijón persigue play-off a 11 pts en final de temporada (must-win 0/100, no perder 0/100). Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
           "analysis_ready": true
         },
         {
@@ -7132,9 +7201,9 @@
             "2": 4.4
           },
           "normalized_percent": {
-            "1": 56.71,
-            "X": 22.41,
-            "2": 20.88
+            "1": null,
+            "X": null,
+            "2": null
           },
           "official_percent": {
             "1": null,
@@ -7361,7 +7430,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (56.7%). | visitante defiende salvacion con 5 pts de colchon | Real Madrid defiende Champions con 26 pts de colchon en final de temporada (must-win 0/100, no perder 0/100). Victoria abre colchon en champions. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "Sin suficientes datos de mercado para generar insight. | visitante defiende salvacion con 5 pts de colchon | Real Madrid defiende Champions con 26 pts de colchon en final de temporada (must-win 0/100, no perder 0/100). Victoria abre colchon en champions. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         }
       ]
