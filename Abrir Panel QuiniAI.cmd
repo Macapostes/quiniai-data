@@ -1,13 +1,5 @@
 @echo off
-setlocal
-cd /d "%~dp0"
-
-set "PANEL=%~dp0docs\monitor\index.html"
-if not exist "%PANEL%" (
-  echo No se encontro %PANEL%
-  pause
-  exit /b 1
-)
-
-start "" "%PANEL%"
-endlocal
+set "APP_DIR=%~dp0"
+set "PANEL_PATH=%APP_DIR%Estado\Panel QuiniAI.html"
+if not exist "%PANEL_PATH%" set "PANEL_PATH=%APP_DIR%output\PANEL_QUINIAI.html"
+start "" "%PANEL_PATH%"

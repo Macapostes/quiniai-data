@@ -25,7 +25,18 @@ function Get-WorkerFromLock {
         if (-not $lock.pid) {
             return $null
         }
-        return Get-Process -Id ([int]$lock.pid) -ErrorAction SilentlyContinue
+        $pidFromLock = [int]$lock.pid
+        $process = Get-CimInstance Win32_Process -Filter "ProcessId=$pidFromLock" -ErrorAction SilentlyContinue
+        if (-not $process) {
+            Remove-Item -Path $workerLock -Force -ErrorAction SilentlyContinue
+            return $null
+        }
+        $cmdline = [string]$process.CommandLine
+        if ($cmdline -notmatch 'snapshot_worker\.py') {
+            Remove-Item -Path $workerLock -Force -ErrorAction SilentlyContinue
+            return $null
+        }
+        return Get-Process -Id $pidFromLock -ErrorAction SilentlyContinue
     } catch {
         return $null
     }
