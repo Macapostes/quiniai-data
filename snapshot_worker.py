@@ -772,6 +772,46 @@ def _load_cache(path: Path) -> dict:
         return {}
 
 
+def _load_monitor_jornada_history() -> dict:
+    clone = lambda value: json.loads(json.dumps(value, ensure_ascii=False))
+    def parse_int(value: object) -> int | None:
+        try:
+            return int(str(value).strip())
+        except Exception:
+            return None
+    persisted = _load_cache(MONITOR_JORNADAS_HISTORY_PATH) if MONITOR_JORNADAS_HISTORY_PATH.exists() else {}
+    if (persisted or {}).get("jornadas"):
+        return persisted
+    if not MONITOR_STATUS_JSON_PATH.exists():
+        return {"updated_at": "", "jornadas": {}}
+    legacy_status = _load_cache(MONITOR_STATUS_JSON_PATH) or {}
+    jornadas = legacy_status.get("public_jornadas") or legacy_status.get("quiniela_jornadas") or []
+    normalized = {}
+    for jornada in jornadas:
+        jornada_num = parse_int(jornada.get("jornada"))
+        if not jornada_num:
+            continue
+        # AUTO-PURGE: Ignorar jornadas futuras cacheadas por si tienen fechas basura (como la 65).
+        # Así se limpiarán automáticamente en la próxima ejecución.
+        if jornada_num > 64:
+            continue
+        normalized[str(jornada_num)] = {
+            "jornada": jornada_num,
+            "label": jornada.get("label") or f"Jornada {jornada_num}",
+            "source": jornada.get("source", ""),
+            "source_url": jornada.get("source_url", ""),
+            "kickoff_from": jornada.get("kickoff_from", ""),
+            "kickoff_to": jornada.get("kickoff_to", ""),
+            "updated_at": legacy_status.get("snapshot_generated_at") or legacy_status.get("generated_at") or "",
+            "matches": clone(jornada.get("matches", [])),
+            "unmatched_slots": clone(jornada.get("matches", [])),
+        }
+    return {
+        "updated_at": legacy_status.get("snapshot_generated_at") or legacy_status.get("generated_at") or "",
+        "jornadas": normalized,
+    }
+
+
 TEAM_PROFILE_CACHE = _load_cache(TEAM_PROFILE_CACHE_PATH)
 TEAM_NEWS_CACHE = _load_cache(TEAM_NEWS_CACHE_PATH)
 MATCH_NEWS_CACHE = _load_cache(MATCH_NEWS_CACHE_PATH)
@@ -4122,14 +4162,18 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
             local_team, away_team = [part.strip() for part in title.split(" - ", 1)]
             kickoff = ""
             if jornada_date and hour:
-                try:
-                    local_dt = datetime.strptime(
-                        f"{jornada_date} {hour}",
-                        "%d/%m/%Y %H:%M",
-                    ).replace(tzinfo=MADRID_TZ)
-                    kickoff = local_dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
-                except Exception:
+                # Filtrar horas por defecto que usa Losilla cuando no sabe la fecha
+                if "por def" in hour.lower() or not hour.strip():
                     kickoff = ""
+                else:
+                    try:
+                        local_dt = datetime.strptime(
+                            f"{jornada_date} {hour}",
+                            "%d/%m/%Y %H:%M",
+                        ).replace(tzinfo=MADRID_TZ)
+                        kickoff = local_dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+                    except Exception:
+                        kickoff = ""
             slots.append(
                 {
                     "position": position,
@@ -4137,7 +4181,7 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
                     "visitante": _canonical_team_name(away_team),
                     "percentages": {},
                     "kickoff": kickoff,
-                    "date_label": jornada_date,
+                    "date_label": jornada_date if kickoff else "",
                 }
             )
         if slots:
