@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 import sys
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -790,10 +790,6 @@ def _load_monitor_jornada_history() -> dict:
     for jornada in jornadas:
         jornada_num = parse_int(jornada.get("jornada"))
         if not jornada_num:
-            continue
-        # AUTO-PURGE: Ignorar jornadas futuras cacheadas por si tienen fechas basura (como la 65).
-        # Así se limpiarán automáticamente en la próxima ejecución.
-        if jornada_num > 64:
             continue
         normalized[str(jornada_num)] = {
             "jornada": jornada_num,
@@ -4148,6 +4144,8 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
         r'<p[^>]*title="([^"]+?)"[^>]*>.*?<span[^>]*c-equipos__number[^>]*>\s*(\d+)\s*</span>.*?<div[^>]*c-marcador-horario__time__hour[^>]*>\s*([^<]*)\s*</div>',
         flags=re.IGNORECASE | re.DOTALL,
     )
+    day_pattern = re.compile(r'<div[^>]*c-marcador-horario__time__day[^>]*>\s*([^<]*)\s*</div>', flags=re.IGNORECASE)
+    
     for jornada_match in block_pattern.finditer(html_text):
         jornada_num = _safe_int(jornada_match.group(1))
         jornada_date = html.unescape(jornada_match.group(2)).strip()
@@ -4157,6 +4155,10 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
             title = html.unescape(slot_match.group(1)).strip()
             position = _safe_int(slot_match.group(2))
             hour = html.unescape(slot_match.group(3)).strip()
+            
+            day_match = day_pattern.search(slot_match.group(0))
+            day_str = html.unescape(day_match.group(1)).strip().upper() if day_match else ""
+            
             if not position or " - " not in title:
                 continue
             local_team, away_team = [part.strip() for part in title.split(" - ", 1)]
@@ -4167,8 +4169,18 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
                     kickoff = ""
                 else:
                     try:
+                        base_dt = datetime.strptime(jornada_date, "%d/%m/%Y")
+                        day_map = {"LUN": 0, "MAR": 1, "MIE": 2, "JUE": 3, "VIE": 4, "SAB": 5, "DOM": 6}
+                        if day_str in day_map:
+                            target_day = day_map[day_str]
+                            base_day = base_dt.weekday()
+                            diff = (target_day - base_day + 3) % 7 - 3
+                            match_date_str = (base_dt + timedelta(days=diff)).strftime("%d/%m/%Y")
+                        else:
+                            match_date_str = jornada_date
+                            
                         local_dt = datetime.strptime(
-                            f"{jornada_date} {hour}",
+                            f"{match_date_str} {hour}",
                             "%d/%m/%Y %H:%M",
                         ).replace(tzinfo=MADRID_TZ)
                         kickoff = local_dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
