@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-01T01:04:00.167065+00:00",
-  "snapshot_generated_at": "2026-06-01T01:03:57.920222+00:00",
+  "generated_at": "2026-06-01T05:11:08.817711+00:00",
+  "snapshot_generated_at": "2026-06-01T05:11:06.344762+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -16,7 +16,7 @@
     "history_matches": 8,
     "sources_total": 6,
     "sources_ok": 6,
-    "fresh_headlines": 8,
+    "fresh_headlines": 9,
     "structured_focus_matches": 60,
     "structured_referees": 2
   },
@@ -24,7 +24,7 @@
     "teams": 123,
     "matches": 166,
     "referees": 2,
-    "last_pruned_at": "2026-06-01T01:03:57.920067+00:00"
+    "last_pruned_at": "2026-06-01T05:11:06.344607+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,24 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-05-30T01:42:00.318333+00:00",
-      "finished_at": "2026-05-30T02:39:26.151805+00:00",
-      "ok": true,
-      "duration_seconds": 3445.83,
-      "monitored_matches": 84,
-      "tracked_matches": 60,
-      "current_jornada": 65
-    },
-    {
-      "started_at": "2026-05-30T03:42:01.399788+00:00",
-      "finished_at": "2026-05-30T04:55:05.453579+00:00",
-      "ok": true,
-      "duration_seconds": 4384.05,
-      "monitored_matches": 84,
-      "tracked_matches": 60,
-      "current_jornada": 65
-    },
     {
       "started_at": "2026-05-30T05:42:02.290518+00:00",
       "finished_at": "2026-05-30T06:49:15.327450+00:00",
@@ -139,6 +121,22 @@
       "monitored_matches": 80,
       "tracked_matches": 60,
       "current_jornada": 66
+    },
+    {
+      "started_at": "2026-06-01T02:08:43.360271+00:00",
+      "finished_at": "2026-06-01T03:00:22.872612+00:00",
+      "ok": false,
+      "duration_seconds": 3099.51,
+      "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+      "started_at": "2026-06-01T04:08:44.333430+00:00",
+      "finished_at": "2026-06-01T05:11:08.816793+00:00",
+      "ok": true,
+      "duration_seconds": 3744.48,
+      "monitored_matches": 80,
+      "tracked_matches": 60,
+      "current_jornada": 66
     }
   ],
   "public_jornadas": [
@@ -160,9 +158,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 43.9,
-            "X": 39.91,
-            "2": 16.19
+            "1": 56.81,
+            "X": 28.86,
+            "2": 14.33
           },
           "official_percent": {
             "1": 43.9,
@@ -222,8 +220,8 @@
           },
           "travel_km": 412.8,
           "weather": {
-            "temperature_c": 23.6,
-            "precipitation_probability": 4,
+            "temperature_c": 23.1,
+            "precipitation_probability": 2,
             "wind_speed_kmh": 1.9
           },
           "referee": {
@@ -232,7 +230,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (43.9%) y el público quinielista lo refleja de forma similar (43.9%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (56.8%) y el público quinielista lo refleja de forma similar (56.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -244,9 +242,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 47.67,
-            "X": 29.05,
-            "2": 23.28
+            "1": 38.23,
+            "X": 23.49,
+            "2": 38.28
           },
           "official_percent": {
             "1": 47.67,
@@ -306,9 +304,9 @@
           },
           "travel_km": 1406.0,
           "weather": {
-            "temperature_c": 19.4,
+            "temperature_c": 21.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 12.3
+            "wind_speed_kmh": 13.0
           },
           "referee": {
             "name": "no confirmado",
@@ -316,7 +314,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (47.7%) y el público quinielista lo refleja de forma similar (47.7%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (38.3%) y el público quinielista lo refleja de forma similar (38.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -328,9 +326,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 91.35,
-            "X": 6.65,
-            "2": 2.0
+            "1": 95.29,
+            "X": 3.38,
+            "2": 1.33
           },
           "official_percent": {
             "1": 0.0,
@@ -434,9 +432,9 @@
           },
           "travel_km": 8455.5,
           "weather": {
-            "temperature_c": 19.0,
-            "precipitation_probability": 20,
-            "wind_speed_kmh": 17.8
+            "temperature_c": 16.5,
+            "precipitation_probability": 22,
+            "wind_speed_kmh": 12.8
           },
           "referee": {
             "name": "no confirmado",
@@ -444,7 +442,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (91.3%) y el público quinielista lo refleja de forma similar (91.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (95.3%) y el público quinielista lo refleja de forma similar (95.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -456,9 +454,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 59.65,
-            "X": 35.92,
-            "2": 4.43
+            "1": 55.07,
+            "X": 30.04,
+            "2": 14.89
           },
           "official_percent": {
             "1": 0.0,
@@ -562,9 +560,9 @@
           },
           "travel_km": 230.9,
           "weather": {
-            "temperature_c": 18.3,
-            "precipitation_probability": 53,
-            "wind_speed_kmh": 10.2
+            "temperature_c": 24.0,
+            "precipitation_probability": 40,
+            "wind_speed_kmh": 18.1
           },
           "referee": {
             "name": "no confirmado",
@@ -572,7 +570,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (59.6%) y el público quinielista lo refleja de forma similar (59.6%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 4 pts y 5 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (55.1%) y el público quinielista lo refleja de forma similar (55.1%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 4 pts y 5 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -584,9 +582,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 79.16,
-            "X": 15.74,
-            "2": 5.1
+            "1": 72.01,
+            "X": 16.94,
+            "2": 11.05
           },
           "official_percent": {
             "1": 0.0,
@@ -690,9 +688,9 @@
           },
           "travel_km": 10583.3,
           "weather": {
-            "temperature_c": 24.5,
-            "precipitation_probability": 31,
-            "wind_speed_kmh": 17.5
+            "temperature_c": 24.2,
+            "precipitation_probability": 25,
+            "wind_speed_kmh": 15.6
           },
           "referee": {
             "name": "no confirmado",
@@ -700,7 +698,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (79.2%) y el público quinielista lo refleja de forma similar (79.2%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 5 pts y 1 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (72.0%) y el público quinielista lo refleja de forma similar (72.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 5 pts y 1 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -712,9 +710,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 87.58,
-            "X": 9.09,
-            "2": 3.33
+            "1": 79.68,
+            "X": 12.64,
+            "2": 7.68
           },
           "official_percent": {
             "1": 0.0,
@@ -804,23 +802,23 @@
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
+              "risk": "medium",
+              "score": 36,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 0,
-              "reason": "",
+              "score": 18,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             }
           },
           "travel_km": 10386.3,
           "weather": {
-            "temperature_c": 26.1,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 20.0
+            "temperature_c": 28.4,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 15.0
           },
           "referee": {
             "name": "no confirmado",
@@ -828,7 +826,7 @@
           },
           "future_home": "casa vs DR Congo (13º) | casa vs Uzbekistan (8º) | fuera vs Colombia (10º)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (87.6%) y el público quinielista lo refleja de forma similar (87.6%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (79.7%) y el público quinielista lo refleja de forma similar (79.7%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -840,9 +838,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 50.11,
-            "X": 36.81,
-            "2": 13.08
+            "1": 45.6,
+            "X": 34.6,
+            "2": 19.8
           },
           "official_percent": {
             "1": 0.0,
@@ -947,7 +945,7 @@
           "travel_km": 12102.6,
           "weather": {
             "temperature_c": 14.2,
-            "precipitation_probability": 11,
+            "precipitation_probability": 25,
             "wind_speed_kmh": 15.0
           },
           "referee": {
@@ -956,7 +954,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (50.1%) y el público quinielista lo refleja de forma similar (50.1%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (45.6%) y el público quinielista lo refleja de forma similar (45.6%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -968,9 +966,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 93.35,
-            "X": 5.76,
-            "2": 0.89
+            "1": 79.79,
+            "X": 10.59,
+            "2": 9.62
           },
           "official_percent": {
             "1": 0.0,
@@ -1075,7 +1073,7 @@
           "travel_km": 8537.1,
           "weather": {
             "temperature_c": 14.6,
-            "precipitation_probability": 42,
+            "precipitation_probability": 45,
             "wind_speed_kmh": 16.6
           },
           "referee": {
@@ -1084,7 +1082,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (93.3%) y el público quinielista lo refleja de forma similar (93.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (79.8%) y el público quinielista lo refleja de forma similar (79.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1096,9 +1094,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 87.36,
-            "X": 7.1,
-            "2": 5.54
+            "1": 65.46,
+            "X": 18.37,
+            "2": 16.17
           },
           "official_percent": {
             "1": 0.0,
@@ -1202,9 +1200,9 @@
           },
           "travel_km": 14758.5,
           "weather": {
-            "temperature_c": 7.8,
-            "precipitation_probability": 24,
-            "wind_speed_kmh": 3.1
+            "temperature_c": 5.5,
+            "precipitation_probability": 25,
+            "wind_speed_kmh": 6.5
           },
           "referee": {
             "name": "no confirmado",
@@ -1212,7 +1210,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "casa vs Turkey (19º) | fuera vs USA (11º) | fuera vs Paraguay (1º)",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (87.4%) y el público quinielista lo refleja de forma similar (87.4%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (65.5%) y el público quinielista lo refleja de forma similar (65.5%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1224,9 +1222,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 20.18,
-            "X": 25.5,
-            "2": 54.32
+            "1": 23.9,
+            "X": 24.77,
+            "2": 51.33
           },
           "official_percent": {
             "1": 0.0,
@@ -1331,7 +1329,7 @@
           "travel_km": 2818.1,
           "weather": {
             "temperature_c": 22.6,
-            "precipitation_probability": 16,
+            "precipitation_probability": 10,
             "wind_speed_kmh": 8.6
           },
           "referee": {
@@ -1340,7 +1338,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (54.3%) y el público quinielista lo refleja de forma similar (54.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (51.3%) y el público quinielista lo refleja de forma similar (51.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1352,9 +1350,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 17.74,
-            "X": 16.85,
-            "2": 65.41
+            "1": 20.88,
+            "X": 25.95,
+            "2": 53.17
           },
           "official_percent": {
             "1": 0.0,
@@ -1458,9 +1456,9 @@
           },
           "travel_km": 7147.4,
           "weather": {
-            "temperature_c": 16.1,
-            "precipitation_probability": 19,
-            "wind_speed_kmh": 5.9
+            "temperature_c": 14.9,
+            "precipitation_probability": 25,
+            "wind_speed_kmh": 6.2
           },
           "referee": {
             "name": "no confirmado",
@@ -1468,7 +1466,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (65.4%) y el público quinielista lo refleja de forma similar (65.4%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 0 pts y 0 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (53.2%) y el público quinielista lo refleja de forma similar (53.2%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 0 pts y 0 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1480,9 +1478,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 56.98,
-            "X": 36.81,
-            "2": 6.21
+            "1": 60.59,
+            "X": 24.31,
+            "2": 15.1
           },
           "official_percent": {
             "1": 0.0,
@@ -1587,7 +1585,7 @@
           "travel_km": 13558.2,
           "weather": {
             "temperature_c": 15.1,
-            "precipitation_probability": 2,
+            "precipitation_probability": 3,
             "wind_speed_kmh": 5.4
           },
           "referee": {
@@ -1596,7 +1594,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (57.0%) y el público quinielista lo refleja de forma similar (57.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (60.6%) y el público quinielista lo refleja de forma similar (60.6%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1608,9 +1606,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 83.81,
-            "X": 13.53,
-            "2": 2.66
+            "1": 75.74,
+            "X": 14.89,
+            "2": 9.37
           },
           "official_percent": {
             "1": 0.0,
@@ -1714,9 +1712,9 @@
           },
           "travel_km": 106.3,
           "weather": {
-            "temperature_c": 22.2,
-            "precipitation_probability": 18,
-            "wind_speed_kmh": 6.5
+            "temperature_c": 21.7,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 2.5
           },
           "referee": {
             "name": "no confirmado",
@@ -1724,7 +1722,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (83.8%) y el público quinielista lo refleja de forma similar (83.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (75.7%) y el público quinielista lo refleja de forma similar (75.7%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1736,9 +1734,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 60.53,
-            "X": 22.62,
-            "2": 16.85
+            "1": 48.82,
+            "X": 28.86,
+            "2": 22.32
           },
           "official_percent": {
             "1": 0.0,
@@ -1843,7 +1841,7 @@
           "travel_km": 1758.1,
           "weather": {
             "temperature_c": 26.3,
-            "precipitation_probability": 40,
+            "precipitation_probability": 68,
             "wind_speed_kmh": 16.7
           },
           "referee": {
@@ -1852,7 +1850,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (60.5%) y el público quinielista lo refleja de forma similar (60.5%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (48.8%) y el público quinielista lo refleja de forma similar (48.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1971,7 +1969,7 @@
           "travel_km": 6803.9,
           "weather": {
             "temperature_c": 19.5,
-            "precipitation_probability": 3,
+            "precipitation_probability": 5,
             "wind_speed_kmh": 6.2
           },
           "referee": {
@@ -2066,7 +2064,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2150,7 +2148,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2234,7 +2232,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2318,7 +2316,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2402,7 +2400,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2486,7 +2484,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2570,7 +2568,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2654,7 +2652,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2738,7 +2736,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2822,7 +2820,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2906,7 +2904,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -2990,7 +2988,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -3074,7 +3072,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -3158,7 +3156,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -3242,7 +3240,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.6,
-            "precipitation_probability": 47,
+            "precipitation_probability": 52,
             "wind_speed_kmh": 4.1
           },
           "referee": {
@@ -3483,16 +3481,16 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 0,
-              "reason": "",
+              "score": 18,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             }
           },
           "travel_km": 408.8,
           "weather": {
-            "temperature_c": 29.0,
+            "temperature_c": 22.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 12.5
+            "wind_speed_kmh": 3.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3687,9 +3685,9 @@
           },
           "travel_km": 308.1,
           "weather": {
-            "temperature_c": 38.2,
+            "temperature_c": 28.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 12.4
+            "wind_speed_kmh": 4.6
           },
           "referee": {
             "name": "no confirmado",
@@ -3913,16 +3911,16 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 0,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             }
           },
           "travel_km": 1808.6,
           "weather": {
-            "temperature_c": 20.5,
+            "temperature_c": 15.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 14.7
+            "wind_speed_kmh": 4.5
           },
           "referee": {
             "name": "no confirmado",
@@ -4117,9 +4115,9 @@
           },
           "travel_km": 727.9,
           "weather": {
-            "temperature_c": 22.2,
+            "temperature_c": 23.0,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 6.5
+            "wind_speed_kmh": 7.6
           },
           "referee": {
             "name": "no confirmado",
@@ -4307,9 +4305,9 @@
           },
           "travel_km": 590.1,
           "weather": {
-            "temperature_c": 32.7,
+            "temperature_c": 24.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 12.4
+            "wind_speed_kmh": 6.2
           },
           "referee": {
             "name": "no confirmado",
@@ -4516,9 +4514,9 @@
           },
           "travel_km": 569.8,
           "weather": {
-            "temperature_c": 28.8,
+            "temperature_c": 24.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 10.2
+            "wind_speed_kmh": 2.5
           },
           "referee": {
             "name": "no confirmado",
@@ -4717,7 +4715,7 @@
             "direct_rivalry_index": 91,
             "home_rotation_context": {
               "risk": "low",
-              "score": 0,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -5041,16 +5039,16 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             }
           },
           "travel_km": 158.5,
           "weather": {
-            "temperature_c": 17.8,
+            "temperature_c": 16.4,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 18.4
+            "wind_speed_kmh": 17.4
           },
           "referee": {
             "name": "no confirmado",
@@ -5244,7 +5242,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 16,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -5257,9 +5255,9 @@
           },
           "travel_km": 627.9,
           "weather": {
-            "temperature_c": 30.8,
+            "temperature_c": 21.6,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 12.5
+            "wind_speed_kmh": 21.0
           },
           "referee": {
             "name": "no confirmado",
@@ -5483,9 +5481,9 @@
           },
           "travel_km": 307.9,
           "weather": {
-            "temperature_c": 26.6,
+            "temperature_c": 16.4,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 19.3
+            "wind_speed_kmh": 17.4
           },
           "referee": {
             "name": "no confirmado",
@@ -5953,9 +5951,9 @@
           },
           "travel_km": 9426.9,
           "weather": {
-            "temperature_c": 22.9,
-            "precipitation_probability": 6,
-            "wind_speed_kmh": 6.1
+            "temperature_c": 18.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 8.3
           },
           "referee": {
             "name": "Soy Referee",
