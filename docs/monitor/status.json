@@ -1,30 +1,30 @@
 {
-  "generated_at": "2026-06-01T15:34:48.738185+00:00",
-  "snapshot_generated_at": "2026-06-01T15:34:46.420788+00:00",
+  "generated_at": "2026-06-01T19:19:08.655411+00:00",
+  "snapshot_generated_at": "2026-06-01T19:19:06.422694+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
   "coverage": {
-    "monitored_matches": 80,
+    "monitored_matches": 74,
     "focus_matches": 15,
     "tracked_quiniela_matches": 60,
     "quiniela_jornadas": 4,
     "quiniela_current_jornada": 66,
     "quiniela_latest_available_jornada": 67,
-    "weather_matches": 80,
-    "travel_matches": 80,
-    "history_matches": 8,
+    "weather_matches": 74,
+    "travel_matches": 74,
+    "history_matches": 2,
     "sources_total": 6,
     "sources_ok": 6,
-    "fresh_headlines": 9,
+    "fresh_headlines": 8,
     "structured_focus_matches": 60,
     "structured_referees": 2
   },
   "structured_db_summary": {
     "teams": 123,
-    "matches": 166,
+    "matches": 123,
     "referees": 2,
-    "last_pruned_at": "2026-06-01T15:34:46.420614+00:00"
+    "last_pruned_at": "2026-06-01T19:19:06.422547+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,24 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-05-30T13:42:05.277702+00:00",
-      "finished_at": "2026-05-30T14:19:51.812231+00:00",
-      "ok": true,
-      "duration_seconds": 2266.53,
-      "monitored_matches": 84,
-      "tracked_matches": 60,
-      "current_jornada": 65
-    },
-    {
-      "started_at": "2026-05-30T15:42:06.346316+00:00",
-      "finished_at": "2026-05-30T16:31:22.150761+00:00",
-      "ok": true,
-      "duration_seconds": 2955.8,
-      "monitored_matches": 84,
-      "tracked_matches": 60,
-      "current_jornada": 65
-    },
     {
       "started_at": "2026-05-30T17:42:07.469121+00:00",
       "finished_at": "2026-05-30T18:47:23.615091+00:00",
@@ -137,6 +119,24 @@
       "monitored_matches": 80,
       "tracked_matches": 60,
       "current_jornada": 66
+    },
+    {
+      "started_at": "2026-06-01T15:35:50.084493+00:00",
+      "finished_at": "2026-06-01T16:20:05.638569+00:00",
+      "ok": true,
+      "duration_seconds": 2655.55,
+      "monitored_matches": 80,
+      "tracked_matches": 60,
+      "current_jornada": 66
+    },
+    {
+      "started_at": "2026-06-01T18:20:05.809193+00:00",
+      "finished_at": "2026-06-01T19:19:08.654623+00:00",
+      "ok": true,
+      "duration_seconds": 3542.85,
+      "monitored_matches": 74,
+      "tracked_matches": 60,
+      "current_jornada": 66
     }
   ],
   "public_jornadas": [
@@ -146,69 +146,223 @@
       "is_current": true,
       "source": "Eduardo Losilla Quinielista",
       "kickoff_from": "2026-06-06T13:00:00Z",
-      "kickoff_to": "2026-08-05T18:30:00Z",
+      "kickoff_to": "2026-06-07T19:00:00Z",
       "history_only": false,
       "matches": [
         {
           "slot": "1.",
-          "local": "Castellón",
-          "visitante": "ALMERÍA",
-          "league": "soccer_epl",
-          "kickoff": "2026-08-05T18:30:00Z",
-          "bookmaker": "",
-          "odds": {},
+          "local": "CD Castellón",
+          "visitante": "Almería",
+          "league": "soccer_spain_segunda_division",
+          "kickoff": "2026-06-06T19:00:00Z",
+          "bookmaker": "LeoVegas (SE)",
+          "odds": {
+            "1": 1.75,
+            "X": 3.85,
+            "2": 3.8
+          },
           "normalized_percent": {
-            "1": 54.26,
-            "X": 30.4,
-            "2": 15.34
+            "1": 52.22,
+            "X": 23.74,
+            "2": 24.05
           },
           "official_percent": {
-            "1": 43.9,
-            "X": 39.91,
-            "2": 16.19
+            "1": 51.88,
+            "X": 30.22,
+            "2": 17.9
           },
           "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
+            "position": 6,
+            "points": 72,
+            "form": "LDDWW"
           },
           "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
+            "position": 3,
+            "points": 74,
+            "form": "WDLLW"
           },
           "pressure": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 19.76,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 32
+            },
+            "away": {
+              "score": 22.88,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 34
+            }
           },
           "fatigue": {
             "home": {
-              "score": 45.0,
-              "label": "medium"
+              "score": 20.0,
+              "label": "low"
             },
             "away": {
-              "score": 55.32,
-              "label": "medium"
+              "score": 30.2,
+              "label": "low"
             }
           },
           "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
-            "direct_rivalry": {
-              "is_direct_rivalry": false,
-              "direct_rivalry_index": 0
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 42,
+              "total_rounds": 42,
+              "progress": 1.0,
+              "source": "played_matches"
             },
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
+            "competitive_stakes_label": "duelo directo por play-off",
+            "direct_rivalry": {
+              "is_direct_rivalry": true,
+              "direct_rivalry_index": 88,
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "points_delta": 2,
+              "position_delta": 3,
+              "label": "duelo directo por play-off"
+            },
+            "home_objective": {
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "status": "defending",
+              "urgency": "critical",
+              "summary": "defiende play-off con 0 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 0,
+              "line_position": 6,
+              "line_points": 72,
+              "relevance_score": 100.0,
+              "must_win_index": 66,
+              "must_not_lose_index": 96,
+              "objective_swing_if_win": 93,
+              "objective_swing_if_lose": 100,
+              "swing_summary_if_win": "victoria abre colchon en play-off",
+              "swing_summary_if_lose": "derrota deja en riesgo play-off",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 42,
+                "total_rounds": 42,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "playoff",
+                  "objective_label": "play-off",
+                  "status": "defending",
+                  "urgency": "critical",
+                  "summary": "defiende play-off con 0 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 0,
+                  "line_position": 6,
+                  "line_points": 72,
+                  "relevance_score": 100.0
+                },
+                {
+                  "objective_key": "direct_promotion",
+                  "objective_label": "ascenso directo",
+                  "status": "chasing",
+                  "urgency": "medium",
+                  "summary": "persigue ascenso directo a 5 pts",
+                  "gap_points": 5,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 77,
+                  "relevance_score": 76.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 32 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 32,
+                  "line_position": 18,
+                  "line_points": 43,
+                  "relevance_score": 0.0
+                }
+              ]
+            },
+            "away_objective": {
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "status": "defending",
+              "urgency": "high",
+              "summary": "defiende play-off con 2 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 2,
+              "line_position": 6,
+              "line_points": 72,
+              "relevance_score": 100.0,
+              "must_win_index": 56,
+              "must_not_lose_index": 72,
+              "objective_swing_if_win": 69,
+              "objective_swing_if_lose": 77,
+              "swing_summary_if_win": "victoria abre colchon en play-off",
+              "swing_summary_if_lose": "derrota deja en riesgo play-off",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 42,
+                "total_rounds": 42,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "playoff",
+                  "objective_label": "play-off",
+                  "status": "defending",
+                  "urgency": "high",
+                  "summary": "defiende play-off con 2 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 2,
+                  "line_position": 6,
+                  "line_points": 72,
+                  "relevance_score": 100.0
+                },
+                {
+                  "objective_key": "direct_promotion",
+                  "objective_label": "ascenso directo",
+                  "status": "chasing",
+                  "urgency": "high",
+                  "summary": "persigue ascenso directo a 3 pts",
+                  "gap_points": 3,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 77,
+                  "relevance_score": 98.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 34 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 34,
+                  "line_position": 18,
+                  "line_points": 43,
+                  "relevance_score": 0.0
+                }
+              ]
+            },
+            "home_must_win_index": 66,
+            "away_must_win_index": 56,
+            "home_must_not_lose_index": 96,
+            "away_must_not_lose_index": 72,
+            "direct_rivalry_index": 88,
             "home_rotation_context": {
               "risk": "low",
-              "score": 18,
-              "reason": "la prensa reciente apunta a rotaciones/descanso",
+              "score": 0,
+              "reason": "",
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
@@ -218,11 +372,11 @@
               "next_high_importance_fixture": {}
             }
           },
-          "travel_km": 412.8,
+          "travel_km": 408.1,
           "weather": {
-            "temperature_c": 23.1,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 4.0
+            "temperature_c": 24.6,
+            "precipitation_probability": 12,
+            "wind_speed_kmh": 12.1
           },
           "referee": {
             "name": "no confirmado",
@@ -230,83 +384,237 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (54.3%) y el público quinielista lo refleja de forma similar (54.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (52.2%) y el público quinielista lo refleja de forma similar (51.9%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 2 pts y 3 puestos. | CD Castellón defiende play-off con 0 pts de colchon en final de temporada (must-win 66/100, no perder 96/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
           "slot": "2.",
-          "local": "LAS PALMAS",
-          "visitante": "MÁLAGA",
-          "league": "soccer_epl",
-          "kickoff": "2026-08-05T18:30:00Z",
-          "bookmaker": "",
-          "odds": {},
+          "local": "Las Palmas",
+          "visitante": "Málaga",
+          "league": "soccer_spain_segunda_division",
+          "kickoff": "2026-06-07T19:00:00Z",
+          "bookmaker": "LeoVegas (SE)",
+          "odds": {
+            "1": 1.87,
+            "X": 3.45,
+            "2": 3.75
+          },
           "normalized_percent": {
-            "1": 40.33,
-            "X": 30.32,
-            "2": 29.35
+            "1": 49.0,
+            "X": 26.56,
+            "2": 24.44
           },
           "official_percent": {
-            "1": 47.67,
-            "X": 29.05,
-            "2": 23.28
+            "1": 40.51,
+            "X": 30.98,
+            "2": 28.51
           },
           "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
+            "position": 5,
+            "points": 73,
+            "form": "WLWDW"
           },
           "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
+            "position": 4,
+            "points": 73,
+            "form": "WWWDW"
           },
           "pressure": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 20.8,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 33
+            },
+            "away": {
+              "score": 21.84,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 33
+            }
           },
           "fatigue": {
             "home": {
-              "score": 45.0,
-              "label": "medium"
+              "score": 9.0,
+              "label": "low"
             },
             "away": {
-              "score": 70.0,
-              "label": "high"
+              "score": 34.0,
+              "label": "low"
             }
           },
           "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
-            "direct_rivalry": {
-              "is_direct_rivalry": false,
-              "direct_rivalry_index": 0
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 42,
+              "total_rounds": 42,
+              "progress": 1.0,
+              "source": "played_matches"
             },
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
+            "competitive_stakes_label": "duelo directo por play-off",
+            "direct_rivalry": {
+              "is_direct_rivalry": true,
+              "direct_rivalry_index": 98,
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "points_delta": 0,
+              "position_delta": 1,
+              "label": "duelo directo por play-off"
+            },
+            "home_objective": {
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "status": "defending",
+              "urgency": "critical",
+              "summary": "defiende play-off con 1 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 1,
+              "line_position": 6,
+              "line_points": 72,
+              "relevance_score": 100.0,
+              "must_win_index": 61,
+              "must_not_lose_index": 84,
+              "objective_swing_if_win": 81,
+              "objective_swing_if_lose": 89,
+              "swing_summary_if_win": "victoria abre colchon en play-off",
+              "swing_summary_if_lose": "derrota deja en riesgo play-off",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 42,
+                "total_rounds": 42,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "playoff",
+                  "objective_label": "play-off",
+                  "status": "defending",
+                  "urgency": "critical",
+                  "summary": "defiende play-off con 1 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 1,
+                  "line_position": 6,
+                  "line_points": 72,
+                  "relevance_score": 100.0
+                },
+                {
+                  "objective_key": "direct_promotion",
+                  "objective_label": "ascenso directo",
+                  "status": "chasing",
+                  "urgency": "medium",
+                  "summary": "persigue ascenso directo a 4 pts",
+                  "gap_points": 4,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 77,
+                  "relevance_score": 84.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 33 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 33,
+                  "line_position": 18,
+                  "line_points": 43,
+                  "relevance_score": 0.0
+                }
+              ]
+            },
+            "away_objective": {
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "status": "defending",
+              "urgency": "critical",
+              "summary": "defiende play-off con 1 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 1,
+              "line_position": 6,
+              "line_points": 72,
+              "relevance_score": 100.0,
+              "must_win_index": 61,
+              "must_not_lose_index": 84,
+              "objective_swing_if_win": 81,
+              "objective_swing_if_lose": 89,
+              "swing_summary_if_win": "victoria abre colchon en play-off",
+              "swing_summary_if_lose": "derrota deja en riesgo play-off",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 42,
+                "total_rounds": 42,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "playoff",
+                  "objective_label": "play-off",
+                  "status": "defending",
+                  "urgency": "critical",
+                  "summary": "defiende play-off con 1 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 1,
+                  "line_position": 6,
+                  "line_points": 72,
+                  "relevance_score": 100.0
+                },
+                {
+                  "objective_key": "direct_promotion",
+                  "objective_label": "ascenso directo",
+                  "status": "chasing",
+                  "urgency": "medium",
+                  "summary": "persigue ascenso directo a 4 pts",
+                  "gap_points": 4,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 77,
+                  "relevance_score": 84.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 33 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 33,
+                  "line_position": 18,
+                  "line_points": 43,
+                  "relevance_score": 0.0
+                }
+              ]
+            },
+            "home_must_win_index": 61,
+            "away_must_win_index": 61,
+            "home_must_not_lose_index": 84,
+            "away_must_not_lose_index": 84,
+            "direct_rivalry_index": 98,
             "home_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 0,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             }
           },
           "travel_km": 1406.0,
           "weather": {
-            "temperature_c": 19.7,
+            "temperature_c": 21.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 20.0
+            "wind_speed_kmh": 22.3
           },
           "referee": {
             "name": "no confirmado",
@@ -314,7 +622,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (40.3%) y el público quinielista lo refleja de forma similar (40.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (49.0%), pero el público quinielista lo infravalora (40.5%). El favorito podría estar infravalorado en la quiniela. | duelo directo por play-off: equipos separados por 0 pts y 1 puestos. | Las Palmas defiende play-off con 1 pts de colchon en final de temporada (must-win 61/100, no perder 84/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -326,9 +634,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 94.84,
-            "X": 4.05,
-            "2": 1.11
+            "1": 93.13,
+            "X": 4.17,
+            "2": 2.7
           },
           "official_percent": {
             "1": 0.0,
@@ -432,9 +740,9 @@
           },
           "travel_km": 8455.5,
           "weather": {
-            "temperature_c": 15.6,
-            "precipitation_probability": 22,
-            "wind_speed_kmh": 13.2
+            "temperature_c": 17.2,
+            "precipitation_probability": 23,
+            "wind_speed_kmh": 8.8
           },
           "referee": {
             "name": "no confirmado",
@@ -442,7 +750,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (94.8%) y el público quinielista lo refleja de forma similar (94.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (93.1%) y el público quinielista lo refleja de forma similar (93.1%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -454,9 +762,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 65.17,
-            "X": 25.83,
-            "2": 9.0
+            "1": 61.72,
+            "X": 29.57,
+            "2": 8.71
           },
           "official_percent": {
             "1": 0.0,
@@ -560,9 +868,9 @@
           },
           "travel_km": 230.9,
           "weather": {
-            "temperature_c": 18.4,
-            "precipitation_probability": 40,
-            "wind_speed_kmh": 4.3
+            "temperature_c": 17.5,
+            "precipitation_probability": 57,
+            "wind_speed_kmh": 8.9
           },
           "referee": {
             "name": "no confirmado",
@@ -570,7 +878,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (65.2%) y el público quinielista lo refleja de forma similar (65.2%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 4 pts y 5 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (61.7%) y el público quinielista lo refleja de forma similar (61.7%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 4 pts y 5 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -582,9 +890,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 81.44,
-            "X": 12.58,
-            "2": 5.98
+            "1": 81.41,
+            "X": 11.96,
+            "2": 6.63
           },
           "official_percent": {
             "1": 0.0,
@@ -688,9 +996,9 @@
           },
           "travel_km": 10583.3,
           "weather": {
-            "temperature_c": 24.4,
-            "precipitation_probability": 25,
-            "wind_speed_kmh": 13.2
+            "temperature_c": 24.2,
+            "precipitation_probability": 49,
+            "wind_speed_kmh": 17.8
           },
           "referee": {
             "name": "no confirmado",
@@ -710,9 +1018,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 87.69,
-            "X": 7.96,
-            "2": 4.35
+            "1": 89.79,
+            "X": 6.96,
+            "2": 3.25
           },
           "official_percent": {
             "1": 0.0,
@@ -802,8 +1110,8 @@
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "medium",
-              "score": 36,
+              "risk": "low",
+              "score": 18,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -816,9 +1124,9 @@
           },
           "travel_km": 10386.3,
           "weather": {
-            "temperature_c": 28.4,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 18.6
+            "temperature_c": 28.5,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 16.3
           },
           "referee": {
             "name": "no confirmado",
@@ -826,7 +1134,7 @@
           },
           "future_home": "casa vs DR Congo (13º) | casa vs Uzbekistan (8º) | fuera vs Colombia (10º)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (87.7%) y el público quinielista lo refleja de forma similar (87.7%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (89.8%) y el público quinielista lo refleja de forma similar (89.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -838,9 +1146,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 49.5,
-            "X": 31.71,
-            "2": 18.79
+            "1": 49.87,
+            "X": 32.81,
+            "2": 17.32
           },
           "official_percent": {
             "1": 0.0,
@@ -944,9 +1252,9 @@
           },
           "travel_km": 12102.6,
           "weather": {
-            "temperature_c": 15.2,
-            "precipitation_probability": 25,
-            "wind_speed_kmh": 4.3
+            "temperature_c": 13.6,
+            "precipitation_probability": 33,
+            "wind_speed_kmh": 13.2
           },
           "referee": {
             "name": "no confirmado",
@@ -954,7 +1262,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (49.5%) y el público quinielista lo refleja de forma similar (49.5%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (49.9%) y el público quinielista lo refleja de forma similar (49.9%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -966,9 +1274,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 87.45,
-            "X": 6.34,
-            "2": 6.21
+            "1": 90.55,
+            "X": 4.89,
+            "2": 4.56
           },
           "official_percent": {
             "1": 0.0,
@@ -1073,7 +1381,7 @@
           "travel_km": 8537.1,
           "weather": {
             "temperature_c": 12.0,
-            "precipitation_probability": 45,
+            "precipitation_probability": 30,
             "wind_speed_kmh": 10.4
           },
           "referee": {
@@ -1082,7 +1390,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (87.5%) y el público quinielista lo refleja de forma similar (87.5%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (90.5%) y el público quinielista lo refleja de forma similar (90.5%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1094,9 +1402,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 58.55,
-            "X": 23.67,
-            "2": 17.78
+            "1": 58.84,
+            "X": 20.59,
+            "2": 20.57
           },
           "official_percent": {
             "1": 0.0,
@@ -1200,9 +1508,9 @@
           },
           "travel_km": 14758.5,
           "weather": {
-            "temperature_c": 5.5,
-            "precipitation_probability": 25,
-            "wind_speed_kmh": 6.1
+            "temperature_c": 0.3,
+            "precipitation_probability": 33,
+            "wind_speed_kmh": 10.7
           },
           "referee": {
             "name": "no confirmado",
@@ -1210,7 +1518,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "casa vs Turkey (19º) | fuera vs USA (11º) | fuera vs Paraguay (1º)",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (58.5%) y el público quinielista lo refleja de forma similar (58.5%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (58.8%) y el público quinielista lo refleja de forma similar (58.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1222,9 +1530,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 13.39,
-            "X": 20.88,
-            "2": 65.73
+            "1": 12.76,
+            "X": 17.82,
+            "2": 69.42
           },
           "official_percent": {
             "1": 0.0,
@@ -1315,7 +1623,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 18,
+              "score": 26,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -1328,9 +1636,9 @@
           },
           "travel_km": 2818.1,
           "weather": {
-            "temperature_c": 22.8,
-            "precipitation_probability": 10,
-            "wind_speed_kmh": 8.4
+            "temperature_c": 22.6,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 4.8
           },
           "referee": {
             "name": "no confirmado",
@@ -1338,7 +1646,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (65.7%) y el público quinielista lo refleja de forma similar (65.7%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (69.4%) y el público quinielista lo refleja de forma similar (69.4%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1350,9 +1658,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 27.78,
-            "X": 29.52,
-            "2": 42.7
+            "1": 28.91,
+            "X": 24.9,
+            "2": 46.19
           },
           "official_percent": {
             "1": 0.0,
@@ -1456,9 +1764,9 @@
           },
           "travel_km": 7147.4,
           "weather": {
-            "temperature_c": 14.9,
-            "precipitation_probability": 25,
-            "wind_speed_kmh": 5.2
+            "temperature_c": 11.4,
+            "precipitation_probability": 20,
+            "wind_speed_kmh": 4.8
           },
           "referee": {
             "name": "no confirmado",
@@ -1466,7 +1774,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (42.7%) y el público quinielista lo refleja de forma similar (42.7%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 0 pts y 0 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (46.2%) y el público quinielista lo refleja de forma similar (46.2%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 0 pts y 0 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1478,9 +1786,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 54.04,
-            "X": 26.95,
-            "2": 19.01
+            "1": 55.61,
+            "X": 23.64,
+            "2": 20.75
           },
           "official_percent": {
             "1": 0.0,
@@ -1584,9 +1892,9 @@
           },
           "travel_km": 13558.2,
           "weather": {
-            "temperature_c": 15.4,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 5.6
+            "temperature_c": 13.6,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 6.1
           },
           "referee": {
             "name": "no confirmado",
@@ -1594,7 +1902,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (54.0%) y el público quinielista lo refleja de forma similar (54.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (55.6%) y el público quinielista lo refleja de forma similar (55.6%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1606,9 +1914,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 85.82,
-            "X": 8.67,
-            "2": 5.51
+            "1": 88.1,
+            "X": 7.9,
+            "2": 4.0
           },
           "official_percent": {
             "1": 0.0,
@@ -1712,9 +2020,9 @@
           },
           "travel_km": 106.3,
           "weather": {
-            "temperature_c": 21.7,
-            "precipitation_probability": 21,
-            "wind_speed_kmh": 3.1
+            "temperature_c": 18.1,
+            "precipitation_probability": 28,
+            "wind_speed_kmh": 0.8
           },
           "referee": {
             "name": "no confirmado",
@@ -1722,7 +2030,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (85.8%) y el público quinielista lo refleja de forma similar (85.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (88.1%) y el público quinielista lo refleja de forma similar (88.1%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1734,9 +2042,9 @@
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {
-            "1": 47.22,
-            "X": 26.6,
-            "2": 26.18
+            "1": 46.28,
+            "X": 27.53,
+            "2": 26.19
           },
           "official_percent": {
             "1": 0.0,
@@ -1840,9 +2148,9 @@
           },
           "travel_km": 1758.1,
           "weather": {
-            "temperature_c": 27.7,
-            "precipitation_probability": 68,
-            "wind_speed_kmh": 24.2
+            "temperature_c": 27.6,
+            "precipitation_probability": 14,
+            "wind_speed_kmh": 21.3
           },
           "referee": {
             "name": "Alto Voltaje",
@@ -1850,7 +2158,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (47.2%) y el público quinielista lo refleja de forma similar (47.2%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (46.3%) y el público quinielista lo refleja de forma similar (46.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -1968,9 +2276,9 @@
           },
           "travel_km": 6803.9,
           "weather": {
-            "temperature_c": 19.3,
+            "temperature_c": 17.5,
             "precipitation_probability": 5,
-            "wind_speed_kmh": 4.6
+            "wind_speed_kmh": 5.7
           },
           "referee": {
             "name": "no confirmado",
@@ -2064,7 +2372,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2148,7 +2456,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2232,7 +2540,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2316,7 +2624,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2400,7 +2708,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2484,7 +2792,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2568,7 +2876,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2652,7 +2960,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2736,7 +3044,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2820,7 +3128,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2904,7 +3212,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -2988,7 +3296,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -3072,7 +3380,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -3156,7 +3464,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -3240,7 +3548,7 @@
           "travel_km": 0.0,
           "weather": {
             "temperature_c": 25.0,
-            "precipitation_probability": 64,
+            "precipitation_probability": 44,
             "wind_speed_kmh": 2.6
           },
           "referee": {
@@ -3276,9 +3584,9 @@
             "2": 5.1
           },
           "normalized_percent": {
-            "1": 59.77,
-            "X": 22.3,
-            "2": 17.93
+            "1": 60.46,
+            "X": 21.15,
+            "2": 18.39
           },
           "official_percent": {
             "1": 60.46,
@@ -3297,10 +3605,10 @@
           },
           "pressure": {
             "home": {
-              "score": 19.76,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 48.26,
+              "label": "medium",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": 32
             },
             "away": {
@@ -3496,9 +3804,9 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "casa vs Almería (3º)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (59.8%) y el público quinielista lo refleja de forma similar (60.5%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 5 pts y 2 puestos. | CD Castellón defiende play-off con 0 pts de colchon en final de temporada (must-win 66/100, no perder 96/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (60.5%) y el público quinielista lo refleja de forma similar (60.5%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 5 pts y 2 puestos. | CD Castellón defiende play-off con 0 pts de colchon en final de temporada (must-win 66/100, no perder 96/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 1 rivales del top-6. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -3514,9 +3822,9 @@
             "2": 5.75
           },
           "normalized_percent": {
-            "1": 58.45,
-            "X": 25.69,
-            "2": 15.86
+            "1": 63.97,
+            "X": 23.28,
+            "2": 12.75
           },
           "official_percent": {
             "1": 63.97,
@@ -3695,7 +4003,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (58.5%) y el público quinielista lo refleja de forma similar (64.0%). Sin gran divergencia entre mercado y quiniela. | visitante persigue salvacion a 5 pts | Córdoba persigue play-off a 11 pts en final de temporada (must-win 0/100, no perder 0/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (64.0%) y el público quinielista lo refleja de forma similar (64.0%). Sin gran divergencia entre mercado y quiniela. | visitante persigue salvacion a 5 pts | Córdoba persigue play-off a 11 pts en final de temporada (must-win 0/100, no perder 0/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -3711,9 +4019,9 @@
             "2": 2.28
           },
           "normalized_percent": {
-            "1": 30.91,
-            "X": 27.73,
-            "2": 41.35
+            "1": 27.57,
+            "X": 27.42,
+            "2": 45.01
           },
           "official_percent": {
             "1": 27.57,
@@ -3739,10 +4047,10 @@
               "gap_to_drop_zone": 37
             },
             "away": {
-              "score": 20.8,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 49.3,
+              "label": "medium",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": 33
             }
           },
@@ -3927,8 +4235,8 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (41.4%) y el público quinielista lo refleja de forma similar (45.0%). Sin gran divergencia entre mercado y quiniela. | local defiende ascenso directo con 3 pts de colchon; visitante defiende play-off con 1 pts de colchon | Deportivo La Coruña defiende ascenso directo con 3 pts de colchon en final de temporada (must-win 51/100, no perder 60/100). Victoria abre colchon en ascenso directo. Derrota deja en riesgo ascenso directo. Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "future_away": "casa vs Málaga (4º)",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (45.0%) y el público quinielista lo refleja de forma similar (45.0%). Sin gran divergencia entre mercado y quiniela. | local defiende ascenso directo con 3 pts de colchon; visitante defiende play-off con 1 pts de colchon | Deportivo La Coruña defiende ascenso directo con 3 pts de colchon en final de temporada (must-win 51/100, no perder 60/100). Victoria abre colchon en ascenso directo. Derrota deja en riesgo ascenso directo. Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -4141,9 +4449,9 @@
             "2": 3.15
           },
           "normalized_percent": {
-            "1": 44.62,
-            "X": 27.47,
-            "2": 27.91
+            "1": 44.73,
+            "X": 27.92,
+            "2": 27.35
           },
           "official_percent": {
             "1": 44.73,
@@ -4315,7 +4623,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "casa vs New Zealand (1º) | fuera vs Belgium (11º) | fuera vs Egypt (11º)",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (44.6%) y el público quinielista lo refleja de forma similar (44.7%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 6 pts y 3 puestos. | Leganés defiende salvacion con 6 pts de colchon en final de temporada (must-win 36/100, no perder 48/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Nivel de urgencia bajo (+6 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (High). Tiempo de descanso similar (0 vs 0 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (44.7%) y el público quinielista lo refleja de forma similar (44.7%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 6 pts y 3 puestos. | Leganés defiende salvacion con 6 pts de colchon en final de temporada (must-win 36/100, no perder 48/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Nivel de urgencia bajo (+6 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (High). Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -4331,9 +4639,9 @@
             "2": 7.5
           },
           "normalized_percent": {
-            "1": 69.28,
-            "X": 18.43,
-            "2": 12.29
+            "1": 82.14,
+            "X": 12.32,
+            "2": 5.54
           },
           "official_percent": {
             "1": 82.14,
@@ -4352,10 +4660,10 @@
           },
           "pressure": {
             "home": {
-              "score": 22.88,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 51.38,
+              "label": "medium",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": 34
             },
             "away": {
@@ -4522,9 +4830,9 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "fuera vs CD Castellón (6º)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (69.3%), pero el público de la quiniela lo sobrevalora aún más (82.1%). Hay valor matemático en buscar la sorpresa o el empate. | local defiende play-off con 2 pts de colchon; visitante defiende salvacion con 6 pts de colchon | Almería defiende play-off con 2 pts de colchon en final de temporada (must-win 56/100, no perder 72/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (82.1%) y el público quinielista lo refleja de forma similar (82.1%). Sin gran divergencia entre mercado y quiniela. | local defiende play-off con 2 pts de colchon; visitante defiende salvacion con 6 pts de colchon | Almería defiende play-off con 2 pts de colchon en final de temporada (must-win 56/100, no perder 72/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 1 rivales del top-6. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -4715,7 +5023,7 @@
             "direct_rivalry_index": 90,
             "home_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -4778,9 +5086,9 @@
               "gap_to_drop_zone": 14
             },
             "away": {
-              "score": 30.58,
+              "score": 16.66,
               "label": "low",
-              "future_difficulty": 58.0,
+              "future_difficulty": 0.0,
               "hard_window_matches": 0,
               "gap_to_drop_zone": 13
             }
@@ -4865,7 +5173,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "fuera vs Real Racing Club de Santander (-)",
+          "future_away": "sin calendario detectado",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (77.1%) y el público quinielista lo refleja de forma similar (77.1%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 1 pts y 2 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
@@ -5039,7 +5347,7 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             }
@@ -5072,9 +5380,9 @@
             "2": 1.64
           },
           "normalized_percent": {
-            "1": 18.75,
-            "X": 27.53,
-            "2": 53.72
+            "1": 13.89,
+            "X": 24.18,
+            "2": 61.93
           },
           "official_percent": {
             "1": 13.89,
@@ -5100,10 +5408,10 @@
               "gap_to_drop_zone": -4
             },
             "away": {
-              "score": 21.84,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 50.34,
+              "label": "medium",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": 33
             }
           },
@@ -5264,8 +5572,8 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (53.7%), pero el público de la quiniela lo sobrevalora aún más (61.9%). Hay valor matemático en buscar la sorpresa o el empate. | local persigue salvacion a 7 pts; visitante defiende play-off con 1 pts de colchon | Zaragoza persigue salvacion a 7 pts en final de temporada (must-win 17/100, no perder 37/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. Urgencia clasificatoria alta, necesitan 7 puntos para la salvación. Juegan con la presión del descenso. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "future_away": "fuera vs Las Palmas (5º)",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (61.9%) y el público quinielista lo refleja de forma similar (61.9%). Sin gran divergencia entre mercado y quiniela. | local persigue salvacion a 7 pts; visitante defiende play-off con 1 pts de colchon | Zaragoza persigue salvacion a 7 pts en final de temporada (must-win 17/100, no perder 37/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. Urgencia clasificatoria alta, necesitan 7 puntos para la salvación. Juegan con la presión del descenso. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -5281,9 +5589,9 @@
             "2": 5.8
           },
           "normalized_percent": {
-            "1": 61.43,
-            "X": 23.43,
-            "2": 15.15
+            "1": 70.21,
+            "X": 18.81,
+            "2": 10.98
           },
           "official_percent": {
             "1": 70.21,
@@ -5474,7 +5782,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (61.4%), pero el público de la quiniela lo sobrevalora aún más (70.2%). Hay valor matemático en buscar la sorpresa o el empate. | local persigue play-off a 0 pts | Burgos CF persigue play-off a 0 pts en final de temporada (must-win 100/100, no perder 76/100). Victoria supera linea de play-off. Derrota aleja play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (70.2%) y el público quinielista lo refleja de forma similar (70.2%). Sin gran divergencia entre mercado y quiniela. | local persigue play-off a 0 pts | Burgos CF persigue play-off a 0 pts en final de temporada (must-win 100/100, no perder 76/100). Victoria supera linea de play-off. Derrota aleja play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -5558,8 +5866,8 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 0,
-              "reason": "",
+              "score": 26,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
@@ -5572,8 +5880,8 @@
           "travel_km": 14264.1,
           "weather": {
             "temperature_c": 16.3,
-            "precipitation_probability": 29,
-            "wind_speed_kmh": 3.9
+            "precipitation_probability": 59,
+            "wind_speed_kmh": 4.2
           },
           "referee": {
             "name": "Soy Referee",
@@ -5699,9 +6007,9 @@
           },
           "travel_km": 16948.1,
           "weather": {
-            "temperature_c": 25.3,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 4.2
+            "temperature_c": 25.9,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 1.4
           },
           "referee": {
             "name": "no confirmado",
@@ -5827,9 +6135,9 @@
           },
           "travel_km": 9657.2,
           "weather": {
-            "temperature_c": 21.3,
-            "precipitation_probability": 88,
-            "wind_speed_kmh": 9.1
+            "temperature_c": 21.7,
+            "precipitation_probability": 96,
+            "wind_speed_kmh": 1.7
           },
           "referee": {
             "name": "no confirmado",
