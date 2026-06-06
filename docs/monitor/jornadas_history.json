@@ -9,7 +9,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-05-30T01:00:00Z",
       "kickoff_to": "2026-05-31T19:00:00Z",
-      "updated_at": "2026-06-06T18:08:05.236919+00:00",
+      "updated_at": "2026-06-06T20:07:15.175029+00:00",
       "matches": [
         {
           "match_key": "soccer_spain_segunda_division|cd castellon|sd eibar|2026-05-31T16:30:00Z",
@@ -1009,7 +1009,7 @@
             "match_weather_attention": 0,
             "structured_home_injuries": 0,
             "structured_away_injuries": 0,
-            "structured_referee_known": false
+            "structured_referee_known": true
           },
           "quiniela_slots": [
             {
@@ -1036,23 +1036,52 @@
           "structured_context": {
             "match_key": "soccer_spain_segunda_division|cd castellon|sd eibar|2026-05-31T16:30:00Z",
             "event_context": {
-              "sportsdb_event_id": "2478908",
+              "sportsdb_event_id": "2280454",
               "sportsdb_home_team_id": "138286",
               "sportsdb_away_team_id": "",
               "venue": "Estadio Castalia",
               "stadium_city": "Castellón, Spain",
               "league": "Spanish La Liga 2",
-              "round": "0",
-              "status": "NS"
+              "round": "42",
+              "status": "FT"
             },
             "referee_context": {
-              "assigned_referee": "",
-              "fourth_official": "",
-              "var_referee": "",
-              "avar_referee": "",
-              "source": "",
+              "assigned_referee": "Carlos Muñiz",
+              "fourth_official": "Juan Antonio Campos",
+              "var_referee": "Javier Iglesias",
+              "avar_referee": "Óliver De La Fuente",
+              "source": "rfef",
               "candidate_articles": [],
-              "season_analysis": {}
+              "season_analysis": {
+                "sample_matches": 4,
+                "season": "2025-2026",
+                "overall": {
+                  "home_win_pct": 75.0,
+                  "draw_pct": 0.0,
+                  "away_win_pct": 25.0,
+                  "baseline_home_win_pct": 44.81,
+                  "baseline_away_win_pct": 30.3,
+                  "home_bias_delta": 30.19,
+                  "away_bias_delta": -5.3,
+                  "avg_home_yellows": 1.5,
+                  "avg_away_yellows": 2.5,
+                  "avg_home_reds": 0.0,
+                  "avg_away_reds": 0.0,
+                  "bias_label": "home-lean"
+                },
+                "home_team": {
+                  "matches": 1,
+                  "wins": 1,
+                  "draws": 0,
+                  "losses": 0,
+                  "points_per_match": 3.0,
+                  "avg_yellows_for": 4.0,
+                  "avg_yellows_against": 2.0,
+                  "avg_reds_for": 0.0,
+                  "avg_reds_against": 0.0
+                },
+                "away_team": {}
+              }
             },
             "injury_context": {
               "home_team": {
@@ -1066,13 +1095,13 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:04:33.897390+00:00"
+            "updated_at": "2026-06-06T20:03:43.205082+00:00"
           },
           "focus_digest": [
             "contexto mental",
+            "arbitro identificado",
             "calendario apretado",
-            "ventana dura",
-            "duelo directo"
+            "ventana dura"
           ],
           "focus_ai_briefing": {
             "partido": "CD Castellón vs SD Eibar",
@@ -1257,7 +1286,7 @@
               "fatiga_y_descanso": "El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
               "clima_e_impacto": "Temperatura ideal (19ºC), sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Viaje notable para el visitante (409 km). Leve impacto físico.",
-              "arbitro": "No confirmado. Sin histórico arbitral fiable",
+              "arbitro": "Carlos Muñiz. muestra 4 partidos, local 75.0% vs base 44.81%, visitante 25.0% vs base 30.3%, sesgo home-lean",
               "lesiones": {
                 "local": "Sin bajas confirmadas.",
                 "visitante": "Sin bajas confirmadas."
@@ -1325,6 +1354,7 @@
             "bookmaker=LeoVegas (SE)",
             "id=1515f82cb56fe27b7d52364adf5e0c10",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -2549,7 +2579,7 @@
                 "count": 1
               }
             },
-            "updated_at": "2026-06-06T18:04:46.749143+00:00"
+            "updated_at": "2026-06-06T20:03:56.456414+00:00"
           },
           "focus_digest": [
             "bajas local 2",
@@ -2722,6 +2752,7 @@
             "bookmaker=LeoVegas (SE)",
             "id=ad5705b0b0ac75e1d73d7c5158050b7f",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -3191,9 +3222,9 @@
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
-              "risk": "low",
-              "score": 16,
-              "reason": "",
+              "risk": "medium",
+              "score": 42,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "home_upcoming": [],
@@ -3365,7 +3396,7 @@
             "away_objective_swing_if_win": 81,
             "away_objective_swing_if_lose": 89,
             "home_rotation_risk_index": 0,
-            "away_rotation_risk_index": 16
+            "away_rotation_risk_index": 42
           },
           "home_team_context": {
             "profile": {
@@ -3503,11 +3534,46 @@
                   "_signal": 4.8
                 },
                 {
+                  "title": "Esta es la convocatoria del Málaga CF para la ida de la semifinal del play off contra Las Palmas - La Opinión de Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOTENha3d5QW1CQlU5TjdDMWhZcXREZjZCYUlDdWZXWDFTc1lGODYtb29ScWVhWlBqTTM0MU5HZWttSzBUdEFKeExNOUtlNURCTWQwbkJPMTRMSHhnRmNwQ0oyUGRVek5KWWd4OXVCY2hVV0hSTExuYzlWZXpXaUJaVVgwaFQ3OXBkTUpLeHd5a2JLS1gzTXVwZ1QwWk5iN0R0eFFBcUo5TURSV1dLZWfSAa4BQVVfeXFMTkxDYWt3eUFtQkJVOU43QzFoWXF0RGY2QmFJQ3VmV1gxU3NZRjg2LW9vUnFlYVpQak0zNDFOR2VrbUswVHRBSnhMTTlLZTVEQk1kMG5CTzE0TEh4Z0ZjcENKMlBkVXpOSllneDl1QmNoVVdIUkxMbmM5VmV6V2lCWlVYMGhUNzlwZE1KS3h3eWtiS0tYM011cGdUMFpOYjdEdHhRQXFKOU1EUldXS2Vn?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:20:32 GMT",
+                  "source": "La Opinión de Málaga",
+                  "_signal": 3.7
+                },
+                {
+                  "title": "Convocatoria Málaga CF: Haitam se cae de la ida del playoff en Las Palmas - Radio Marca Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5FQ0ZSSVRBemlVTVJTamE2akZpelBYZl9QdVNGMy1nN0JqVmJGbUo3M0ZnWnhWdlhJVEpNRmpFSko5SHNfZW4yRVhTZktYbzc3ODFNV2xLWFMzY3NaeWlCZG1mMDZ0TzZvTzNZQjVIdWJ2S1BCc3g5bWJ0SXhkZw?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:21:15 GMT",
+                  "source": "Radio Marca Málaga",
+                  "_signal": 3.5
+                },
+                {
                   "title": "Funes le da la presión a Las Palmas - MARCA",
                   "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNbTZ3cGMyTmZJdUxWWk1QN0p2bEhkVzI1MFM1R3QwV2FjdEtPaGQwdFY2Q0RaOEVDX040YWdpbGFsY1ZZNEY4b1FCM0RteEdaamNRMG1kN2tyN1FYYTNUYmdGV1BOMHh3Z2dmYzBkcEVhQldNclZncFpSNzZJQzQzMU8xTHnSAYQBQVVfeXFMTW02d3BjMk5mSXVMVlpNUDdKdmxIZFcyNTBTNUd0MFdhY3RLT2hkMHRWNkNEWjhFQ19ONGFnaWxhbGNWWTRGOG9RQjNEbXhHWmpjUTBtZDdrcjdRWGEzVGJnRldQTjB4d2dnZmMwZHBFYUJXTXJWZ3BaUjc2SUM0MzFPMUx5?oc=5",
                   "published_at": "Fri, 05 Jun 2026 14:07:52 GMT",
                   "source": "MARCA",
                   "_signal": 1.8
+                },
+                {
+                  "title": "Esta es la convocatoria del Málaga para el partido frente a Las Palmas - Diario Sur",
+                  "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOY0ZEb3YtbVk5WU5UcWI3Rkd1TVRFU054QnNhTHlDZjE4b1U4dmJmS2JsZXIzU0VremhpOGxDRUJJWnhIYW1nRGg3bzg4cDFHVS1ZaGZyb3g3eEJxNTBnUHE1anN0azQ4SlBOdkE0RmlFVHZRMV85cFFkMlhXaHBHYzlKX3Jha1NjdXV2VVVRdko1NUtlX2fSAZsBQVVfeXFMT0wxQkhiSF9FMGFzbUZ0Z2plLVFfRjFzZVIxX01WUUR1RU93dnZ2dTVUSUhDMG5IWXVYZ21pNWVFUkh6MDVJRTFWT1VtU09wTFJtVzRTbzhnN2tacnExMjFVQ3pvNGg4SHhYbkhzZTNrSXBlSElJU0tEbmMzV09od0VsQnZuT0dLOV9IMWpYLVE0T2k2VVRVNWtpUDg?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 18:29:40 GMT",
+                  "source": "Diario Sur",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "Convocatoria del Málaga CF para Las Palmas: 24 futbolistas y sin Haitam - Málaga Hoy",
+                  "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPZlloYUZibHlkakF0QW83NmdEZEI3dWJFWXVoUzN6VmV1M1VyZHJsYndDLXlheEFSdW43ZDg3RzFIcFZKbjR0QXpOci1WUGp4UjRydUJMU0pDeEZHSGw3VmF2SFBuRWFGa3BSY2NFc2NYc2hIYzVOenlqanJrLW80U0VaWGc4Sl9iYTJXV0VB0gGTAUFVX3lxTE5lNmZlZzZNMGphNzE4NTFJRzBJR1h3QmtqZG5oeFkzUlRzOWJQU1pITnNYcVpCTXhUX0NUVWlMWktEYkI1WmJGTkZ6R2VaME52Ml8ydDJ3YUFJN2xOcTNpSXNHdDNMelJxT1JHRTFwVkRfTWI2Nm9rdndrbVZxVlZCcXVEV0xTc3VqQWhFRl9naG5vNA?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:17:56 GMT",
+                  "source": "Málaga Hoy",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "Rueda de prensa de Luis García previa al partido UD Las Palmas vs Málaga CF - UD Las Palmas",
+                  "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQb2xIQlhaaHBzSm82bzFNYjU4eUJvZ1lUdUNlR1daVklTN1JLbUNTZHNUUFZMeVRvZ0hXWnB1SlJnMEJzZXhzLU16RUhlOEl1SVFYRzZoMHJkTUNRV0k4cmZ0QVB6Y0ZFRTVDOTFfN3g5dGRmRWEySlpHdGs3clBIZUs4eEIySlB4a25YN21vLWl1dkxJNDJpMVRBVlZpbm50bXItVzc2YzcybHVUQUFsdzFXanZZMjgybllzaDFrMnBqWEo3eFE1TU1xT3JhRW52?oc=5",
+                  "published_at": "Fri, 05 Jun 2026 10:07:44 GMT",
+                  "source": "UD Las Palmas",
+                  "_signal": 1.7
                 },
                 {
                   "title": "Rueda de prensa de Luis García previa al Deportivo de La Coruña - UD Las Palmas - La Provincia",
@@ -3519,18 +3585,32 @@
               ],
               "signals": {
                 "injury_count": 1,
-                "rotation_count": 0,
+                "rotation_count": 1,
                 "discipline_count": 0,
                 "europe_count": 0,
                 "weather_count": 0,
-                "press_count": 1,
-                "squad_count": 0,
-                "morale_count": 2
+                "press_count": 2,
+                "squad_count": 4,
+                "morale_count": 3
               },
               "query_count": 5
             },
             "media_news": {
               "items": [
+                {
+                  "title": "Esta es la convocatoria del Málaga CF para la ida de la semifinal del play off contra Las Palmas - La Opinión de Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQWFl3b2pxTndBUVRDeDJXWm9jMXotMTQ3MFNGUi1Ed0VlOWpuUG4ydzRIVUVwbXpPZ21qNFQtWUpVQU44RTZvcTdVNzg3SjhjWXdOLVZ1bzNfbzhwaE1pSTJrUFZXU2VoZVAtN2ZEOElsN1hSazNUcnlWTXdPVFRaQ2dfMXJUZHlFREUwRC1uV2Y1R3VDMGpCeHBGVEZhanVveGNYMWQya1jSAa4BQVVfeXFMTkxDYWt3eUFtQkJVOU43QzFoWXF0RGY2QmFJQ3VmV1gxU3NZRjg2LW9vUnFlYVpQak0zNDFOR2VrbUswVHRBSnhMTTlLZTVEQk1kMG5CTzE0TEh4Z0ZjcENKMlBkVXpOSllneDl1QmNoVVdIUkxMbmM5VmV6V2lCWlVYMGhUNzlwZE1KS3h3eWtiS0tYM011cGdUMFpOYjdEdHhRQXFKOU1EUldXS2Vn?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:20:32 GMT",
+                  "source": "La Opinión de Málaga",
+                  "_signal": 3.7
+                },
+                {
+                  "title": "Convocatoria Málaga CF: Haitam se cae de la ida del playoff en Las Palmas - Radio Marca Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5FQ0ZSSVRBemlVTVJTamE2akZpelBYZl9QdVNGMy1nN0JqVmJGbUo3M0ZnWnhWdlhJVEpNRmpFSko5SHNfZW4yRVhTZktYbzc3ODFNV2xLWFMzY3NaeWlCZG1mMDZ0TzZvTzNZQjVIdWJ2S1BCc3g5bWJ0SXhkZw?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:21:15 GMT",
+                  "source": "Radio Marca Málaga",
+                  "_signal": 3.5
+                },
                 {
                   "title": "Rueda de prensa de Luis García previa al partido UD Las Palmas vs Málaga CF - UD Las Palmas",
                   "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQb2xIQlhaaHBzSm82bzFNYjU4eUJvZ1lUdUNlR1daVklTN1JLbUNTZHNUUFZMeVRvZ0hXWnB1SlJnMEJzZXhzLU16RUhlOEl1SVFYRzZoMHJkTUNRV0k4cmZ0QVB6Y0ZFRTVDOTFfN3g5dGRmRWEySlpHdGs3clBIZUs4eEIySlB4a25YN21vLWl1dkxJNDJpMVRBVlZpbm50bXItVzc2YzcybHVUQUFsdzFXanZZMjgybllzaDFrMnBqWEo3eFE1TU1xT3JhRW52?oc=5",
@@ -3548,13 +3628,13 @@
               ],
               "signals": {
                 "injury_count": 0,
-                "rotation_count": 0,
+                "rotation_count": 1,
                 "discipline_count": 0,
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 1,
-                "squad_count": 1,
-                "morale_count": 0
+                "squad_count": 3,
+                "morale_count": 1
               },
               "query_count": 3
             },
@@ -3649,7 +3729,7 @@
             "season_context_phase": "final",
             "competitive_stakes_label": "local defiende ascenso directo con 3 pts de colchon; visitante defiende play-off con 1 pts de colchon",
             "home_rotation_risk_index": 0,
-            "away_rotation_risk_index": 16,
+            "away_rotation_risk_index": 42,
             "home_fatigue_index": 68.0,
             "away_fatigue_index": 93.0,
             "home_elo": 1586.84,
@@ -3687,14 +3767,14 @@
           "structured_context": {
             "match_key": "soccer_spain_segunda_division|deportivo la coruna|las palmas|2026-05-31T16:30:00Z",
             "event_context": {
-              "sportsdb_event_id": "2478909",
+              "sportsdb_event_id": "2280457",
               "sportsdb_home_team_id": "133816",
               "sportsdb_away_team_id": "134259",
-              "venue": "Estadio de Gran Canaria",
+              "venue": "Estadio Abanca-Riazor",
               "stadium_city": "A Coruña",
               "league": "Spanish La Liga 2",
-              "round": "0",
-              "status": "NS"
+              "round": "42",
+              "status": "FT"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -3717,13 +3797,13 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:04:49.163770+00:00"
+            "updated_at": "2026-06-06T20:03:59.969612+00:00"
           },
           "focus_digest": [
             "clima duro",
             "viaje largo",
             "contexto mental",
-            "calendario apretado"
+            "convocatoria"
           ],
           "focus_ai_briefing": {
             "partido": "Deportivo La Coruña vs Las Palmas",
@@ -3739,7 +3819,7 @@
               "contexto_competitivo": "local defiende ascenso directo con 3 pts de colchon; visitante defiende play-off con 1 pts de colchon",
               "objetivo_local": "defiende ascenso directo con 3 pts de colchon",
               "objetivo_visitante": "defiende play-off con 1 pts de colchon",
-              "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
+              "riesgo_rotacion_competitiva": "visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium)",
               "analisis_calendario_local": "Deportivo La Coruña defiende ascenso directo con 3 pts de colchon en final de temporada (must-win 51/100, no perder 60/100). Victoria abre colchon en ascenso directo. Derrota deja en riesgo ascenso directo. Calendario próximo equilibrado, sin presión de conservar fuerzas.",
               "analisis_calendario_visitante": "Las Palmas defiende play-off con 1 pts de colchon en final de temporada (must-win 61/100, no perder 84/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 2 rivales del top-6.",
               "h2h_resumen": "2 encuentros históricos: gana Deportivo La Coruña en 0, empates 1, gana Las Palmas en 1 (ventana de 0 años)."
@@ -3893,9 +3973,9 @@
                 "next_high_importance_fixture": {}
               },
               "away_rotation_context": {
-                "risk": "low",
-                "score": 16,
-                "reason": "",
+                "risk": "medium",
+                "score": 42,
+                "reason": "la prensa reciente apunta a rotaciones/descanso",
                 "next_high_importance_fixture": {}
               }
             },
@@ -3971,6 +4051,7 @@
             "bookmaker=Unibet (NL)",
             "id=291b968f6c03689fc9d571b0db8f68c6",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -4893,7 +4974,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:04:53.923100+00:00"
+            "updated_at": "2026-06-06T20:04:04.032405+00:00"
           },
           "focus_digest": [
             "calendario apretado",
@@ -5064,6 +5145,7 @@
             "bookmaker=PMU (FR)",
             "id=e6d4c1e7f23196517c94edf2e105259a",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -6138,7 +6220,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:04:59.578443+00:00"
+            "updated_at": "2026-06-06T20:04:58.165728+00:00"
           },
           "focus_digest": [
             "contexto mental",
@@ -6335,6 +6417,7 @@
             "bookmaker=PMU (FR)",
             "id=6e7dbb756b26aca56c81577545755e71",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -7263,7 +7346,7 @@
             "match_weather_attention": 0,
             "structured_home_injuries": 0,
             "structured_away_injuries": 0,
-            "structured_referee_known": false
+            "structured_referee_known": true
           },
           "quiniela_slots": [
             {
@@ -7290,23 +7373,42 @@
           "structured_context": {
             "match_key": "soccer_spain_segunda_division|almeria|real valladolid cf|2026-05-31T16:30:00Z",
             "event_context": {
-              "sportsdb_event_id": "2478908",
+              "sportsdb_event_id": "2280453",
               "sportsdb_home_team_id": "133817",
               "sportsdb_away_team_id": "133841",
-              "venue": "Estadio Castalia",
+              "venue": "UD Almería Stadium",
               "stadium_city": "Almería",
               "league": "Spanish La Liga 2",
-              "round": "0",
-              "status": "NS"
+              "round": "42",
+              "status": "FT"
             },
             "referee_context": {
-              "assigned_referee": "",
-              "fourth_official": "",
-              "var_referee": "",
-              "avar_referee": "",
-              "source": "",
+              "assigned_referee": "Manuel Ángel Pérez",
+              "fourth_official": "José David Martínez",
+              "var_referee": "Valentín Pizarro",
+              "avar_referee": "Luis Bestard",
+              "source": "rfef",
               "candidate_articles": [],
-              "season_analysis": {}
+              "season_analysis": {
+                "sample_matches": 4,
+                "season": "2025-2026",
+                "overall": {
+                  "home_win_pct": 50.0,
+                  "draw_pct": 0.0,
+                  "away_win_pct": 50.0,
+                  "baseline_home_win_pct": 44.81,
+                  "baseline_away_win_pct": 30.3,
+                  "home_bias_delta": 5.19,
+                  "away_bias_delta": 19.7,
+                  "avg_home_yellows": 2.75,
+                  "avg_away_yellows": 3.25,
+                  "avg_home_reds": 0.0,
+                  "avg_away_reds": 0.5,
+                  "bias_label": "away-lean"
+                },
+                "home_team": {},
+                "away_team": {}
+              }
             },
             "injury_context": {
               "home_team": {
@@ -7320,13 +7422,13 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:05:02.141313+00:00"
+            "updated_at": "2026-06-06T20:05:01.784696+00:00"
           },
           "focus_digest": [
             "contexto mental",
             "convocatoria",
-            "calendario apretado",
-            "ventana dura"
+            "arbitro identificado",
+            "calendario apretado"
           ],
           "focus_ai_briefing": {
             "partido": "Almería vs Real Valladolid CF",
@@ -7482,7 +7584,7 @@
               "fatiga_y_descanso": "El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
               "clima_e_impacto": "Temperatura ideal (23ºC), sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Viaje notable para el visitante (570 km). Leve impacto físico.",
-              "arbitro": "No confirmado. Sin histórico arbitral fiable",
+              "arbitro": "Manuel Ángel Pérez. muestra 4 partidos, local 50.0% vs base 44.81%, visitante 50.0% vs base 30.3%, sesgo away-lean",
               "lesiones": {
                 "local": "Sin bajas confirmadas.",
                 "visitante": "Sin bajas confirmadas."
@@ -7550,6 +7652,7 @@
             "bookmaker=LeoVegas (SE)",
             "id=906247c494cc4d838337689527fbb550",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -8508,7 +8611,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:05:08.771650+00:00"
+            "updated_at": "2026-06-06T20:05:06.049518+00:00"
           },
           "focus_digest": [
             "convocatoria",
@@ -8697,6 +8800,7 @@
             "bookmaker=PMU (FR)",
             "id=f8b9192576504fcf4b2c52d2ed5f5217",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -9271,7 +9375,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:05:58.312176+00:00"
+            "updated_at": "2026-06-06T20:05:29.394512+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -9696,6 +9800,7 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -10746,7 +10851,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:06:09.383785+00:00"
+            "updated_at": "2026-06-06T20:06:03.582193+00:00"
           },
           "focus_digest": [
             "calendario apretado",
@@ -10910,6 +11015,7 @@
             "bookmaker=PMU (FR)",
             "id=38695e21baf982910f4560f1422c4121",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -11376,9 +11482,9 @@
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
-              "risk": "low",
-              "score": 24,
-              "reason": "",
+              "risk": "medium",
+              "score": 50,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "home_upcoming": [],
@@ -11550,7 +11656,7 @@
             "away_objective_swing_if_win": 81,
             "away_objective_swing_if_lose": 89,
             "home_rotation_risk_index": 0,
-            "away_rotation_risk_index": 24
+            "away_rotation_risk_index": 50
           },
           "home_team_context": {
             "profile": {
@@ -11690,6 +11796,20 @@
             "focus_news": {
               "items": [
                 {
+                  "title": "Esta es la convocatoria del Málaga CF para la ida de la semifinal del play off contra Las Palmas - La Opinión de Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOTENha3d5QW1CQlU5TjdDMWhZcXREZjZCYUlDdWZXWDFTc1lGODYtb29ScWVhWlBqTTM0MU5HZWttSzBUdEFKeExNOUtlNURCTWQwbkJPMTRMSHhnRmNwQ0oyUGRVek5KWWd4OXVCY2hVV0hSTExuYzlWZXpXaUJaVVgwaFQ3OXBkTUpLeHd5a2JLS1gzTXVwZ1QwWk5iN0R0eFFBcUo5TURSV1dLZWfSAa4BQVVfeXFMTkxDYWt3eUFtQkJVOU43QzFoWXF0RGY2QmFJQ3VmV1gxU3NZRjg2LW9vUnFlYVpQak0zNDFOR2VrbUswVHRBSnhMTTlLZTVEQk1kMG5CTzE0TEh4Z0ZjcENKMlBkVXpOSllneDl1QmNoVVdIUkxMbmM5VmV6V2lCWlVYMGhUNzlwZE1KS3h3eWtiS0tYM011cGdUMFpOYjdEdHhRQXFKOU1EUldXS2Vn?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:20:32 GMT",
+                  "source": "La Opinión de Málaga",
+                  "_signal": 3.7
+                },
+                {
+                  "title": "Convocatoria Málaga CF: Haitam se cae de la ida del playoff en Las Palmas - Radio Marca Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5FQ0ZSSVRBemlVTVJTamE2akZpelBYZl9QdVNGMy1nN0JqVmJGbUo3M0ZnWnhWdlhJVEpNRmpFSko5SHNfZW4yRVhTZktYbzc3ODFNV2xLWFMzY3NaeWlCZG1mMDZ0TzZvTzNZQjVIdWJ2S1BCc3g5bWJ0SXhkZw?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:21:15 GMT",
+                  "source": "Radio Marca Málaga",
+                  "_signal": 3.5
+                },
+                {
                   "title": "Málaga para Vivir eleva la presión y plantea una huelga general tras la manifestación por la vivienda del 27 de junio - Andalucía Información",
                   "link": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxQU3lmd1d0SEpkSE5OT3BJclhvYkM1YXdLeGxpbFFjaUlkZXJrdUljeHJaemxYT0c0bVoxcVFQaHE0ZXlSWk1IT3FYQWJjVG1xdWdGZDNiMTlUOFhESnMyYThQTzlxRjh2WTlBRS1INmdaU2w3R3hDXzRtOHRDTWc3WXNYVE8wZGNsY3Bub2ZNTHA4TFpjZTk4X3Nmclp0QVBhdm1JTjBBTjMwX3FlNFFITGNSRi1oNTktWUFXcTlpZzJTQmFTWmJvWkhhMDVIWk9mN3BPSFR6aDdaVU1JSWUtc1R5RFhXVkxkbnU5UjlmczBjZUQ1bFY3M1hTM2tOd9IBgwJBVV95cUxOLXFQT0hwOGsybWludmQ4Mm9kcmJOWXpRNU1LZUg5YVYtb29MaXRnWVhOc1dsVkVqa2ZaVEJMQXB6b0RGRFBrVENmbUdIRVpsRFE2cl81dzhuRE40OTRDaW5fcGNfa0JDdXp5b3lKaURrUzFFUGNHMm41OUVPYjAtZ0ZBQW9zcDBIeUNkNHpqNVE3Si0tdHBBb3V4dkRRSHJpeFpoQ0w3TWdMQ3IyVk1UVFp4Zno5TGRUVlRiSlcydENvaDhhT0lKVXJpY015RnBFc3g4T2V5MEExNGFXeDF4NnBFMDEzSndINGtFQndTOVA5OG9kTTgtSmFNcGVkYkgwd080?oc=5",
                   "published_at": "Thu, 04 Jun 2026 14:36:31 GMT",
@@ -11709,6 +11829,20 @@
                   "published_at": "Wed, 03 Jun 2026 14:39:59 GMT",
                   "source": "Cadena SER",
                   "_signal": 1.8
+                },
+                {
+                  "title": "Esta es la convocatoria del Málaga para el partido frente a Las Palmas - Diario Sur",
+                  "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOY0ZEb3YtbVk5WU5UcWI3Rkd1TVRFU054QnNhTHlDZjE4b1U4dmJmS2JsZXIzU0VremhpOGxDRUJJWnhIYW1nRGg3bzg4cDFHVS1ZaGZyb3g3eEJxNTBnUHE1anN0azQ4SlBOdkE0RmlFVHZRMV85cFFkMlhXaHBHYzlKX3Jha1NjdXV2VVVRdko1NUtlX2fSAZsBQVVfeXFMT0wxQkhiSF9FMGFzbUZ0Z2plLVFfRjFzZVIxX01WUUR1RU93dnZ2dTVUSUhDMG5IWXVYZ21pNWVFUkh6MDVJRTFWT1VtU09wTFJtVzRTbzhnN2tacnExMjFVQ3pvNGg4SHhYbkhzZTNrSXBlSElJU0tEbmMzV09od0VsQnZuT0dLOV9IMWpYLVE0T2k2VVRVNWtpUDg?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 18:29:40 GMT",
+                  "source": "Diario Sur",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "Convocatoria del Málaga CF para Las Palmas: 24 futbolistas y sin Haitam - Málaga Hoy",
+                  "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPZlloYUZibHlkakF0QW83NmdEZEI3dWJFWXVoUzN6VmV1M1VyZHJsYndDLXlheEFSdW43ZDg3RzFIcFZKbjR0QXpOci1WUGp4UjRydUJMU0pDeEZHSGw3VmF2SFBuRWFGa3BSY2NFc2NYc2hIYzVOenlqanJrLW80U0VaWGc4Sl9iYTJXV0VB0gGTAUFVX3lxTE5lNmZlZzZNMGphNzE4NTFJRzBJR1h3QmtqZG5oeFkzUlRzOWJQU1pITnNYcVpCTXhUX0NUVWlMWktEYkI1WmJGTkZ6R2VaME52Ml8ydDJ3YUFJN2xOcTNpSXNHdDNMelJxT1JHRTFwVkRfTWI2Nm9rdndrbVZxVlZCcXVEV0xTc3VqQWhFRl9naG5vNA?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:17:56 GMT",
+                  "source": "Málaga Hoy",
+                  "_signal": 1.7
                 },
                 {
                   "title": "Vélez-Málaga abre una nueva convocatoria del proyecto INTEGRA+ para mejorar la formación y el acceso al empleo de personas desempleadas - AxarquiaPlus",
@@ -11762,13 +11896,13 @@
               ],
               "signals": {
                 "injury_count": 0,
-                "rotation_count": 0,
+                "rotation_count": 1,
                 "discipline_count": 0,
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 1,
-                "squad_count": 6,
-                "morale_count": 3
+                "squad_count": 10,
+                "morale_count": 4
               },
               "query_count": 5
             },
@@ -11780,6 +11914,13 @@
                   "published_at": "Thu, 04 Jun 2026 14:36:31 GMT",
                   "source": "Andalucía Información",
                   "_signal": 1.8
+                },
+                {
+                  "title": "Dani Sánchez volverá a una convocatoria casi 3 meses después - Radio Marca Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBnTWVoeUNfSGUtQWRfVzR1bmdQSTlyYXJHU0h0UDhEQXEtNXBkMjVGZmVRckdkckljNGxQUWNSc0hZWjJmcXBoMlFzQUhNY2ZDdFV6MXYtV2Z1ZGZSUTBaVlJ1NHNUOE5hNlNRYTNTbHdBNnlSRUVlRk45a09TREU?oc=5",
+                  "published_at": "Wed, 03 Jun 2026 11:06:13 GMT",
+                  "source": "Radio Marca Málaga",
+                  "_signal": 1.7
                 },
                 {
                   "title": "Convocatoria Málaga CF: Funes se lleva a todos los disponibles a Zaragoza - Radio Marca Málaga",
@@ -11796,7 +11937,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 1,
+                "squad_count": 2,
                 "morale_count": 1
               },
               "query_count": 3
@@ -11841,20 +11982,6 @@
                 "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNaTh6Vjd5RTFVYzV3azFBWFBpOWsxUU00V3ZRR3JWS1BIN2lXLUE3OW5TTnRYbks5Z1Y5RnVpVVpEdEZNX2doTzd3M0Q0cEl3QllTbG9WUV9tSWZIV1RBR2ozWkExcDhsX2hEaHFZS2UtQURZSlUtMXJCVk5RcFhRbDlsaDYyT3hnNEhhRTQ3dk9hZm85TTFoa0hCQjBYRXpSMU4yWEZ2LUhRdmxTcm1wZVBUTXpxNzI2eWVNSVVpRlhERF85NEw0R25sNi1DNGVMMVQ5UHBB0gHbAUFVX3lxTFB1N3dKN3psT2NjRUx6NVREUXNSZlR1Z1o2d2M4dElmZEJycVRpcjRVTWk1anRTSWN3blplTzFEYmpyZGlvUmF6RHFlRUhEbUVnWDNJMjFuMWdnNGJXaHpVb1RRbXptTlVsMjFZZFE3TWJYaVdKQzdjZWVhaFRoQ2YxajRfLVZneEZPRmk2TktCOHdoZFp3dnVYMERqUngtbDFuR3dRaDRxOHJuQ09Md0xMMFRydWVfUUlTaDlQYVV6U3cyUU5ITW5iTlhrRjYtbFlVcTNxalZ3eWlRYw?oc=5",
                 "published_at": "Mon, 01 Jun 2026 09:57:33 GMT",
                 "source": "heraldo.es",
-                "_signal": 1.7
-              },
-              {
-                "title": "Convocatoria Málaga CF: Funes se lleva a todos los disponibles a Zaragoza - Málaga Hoy",
-                "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxORTkyN3o3LVpqb3p0M3JqY0N0TnhqWTdwTnMwaGdKVEZPTmhaNXFGSDlCSG5fQ2JPYjFNZmRQem1vN2g5alVMcDEwTmdwWmc3M0ZPZTA0aG5FejM0V3NZR3M1NnlKM21xR3BlYjFNOE53eVBCeFhuZjUzdktZZzVhel9kUmQyTjRudDMzRzJaRzXSAZYBQVVfeXFMT09pMnB3VXNNeE05ekYydkcxTXZqZm5KWm9kMzBNUi1mOVNNUmV6aDZDcWZNZ2tPUm1vbEJtMlkweE1JX2lGcWd3djR4aWNXUUR0OF92OXF1TUlIejU3bHJkTjlkUVBuV2I0aFpsbGtJcUJOTzhWVnlwZVd6cGY4MmdTMEYzaEkxUEt3aGFfd2FIcHJMMW13?oc=5",
-                "published_at": "Sat, 30 May 2026 18:41:14 GMT",
-                "source": "Málaga Hoy",
-                "_signal": 1.7
-              },
-              {
-                "title": "Convocatoria Málaga CF: Funes se lleva a todos los disponibles a Zaragoza - Radio Marca Málaga",
-                "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPLWVkVldFckVEd0JHSFllNTFIYTdfamQtNDZZbXJWMnotMHlxM1JmOWNjbS1DTE9CLXA4aTgtdGhGRmpCQmpxYmFsNlZodWgxeWRDMVJMbERhcEtBUlYtZmhMd0s5amFVT21DX3V6aHlqTFc4cHk0VkhFY1FnSFhQVWFPMGlUaHVraHZYWjRMeTZsWmNKQ09qajBleEtoU1VXd3pQRFhiSDM?oc=5",
-                "published_at": "Sat, 30 May 2026 18:11:13 GMT",
-                "source": "Radio Marca Málaga",
                 "_signal": 1.7
               },
               {
@@ -11963,7 +12090,7 @@
             "season_context_phase": "final",
             "competitive_stakes_label": "local persigue salvacion a 7 pts; visitante defiende play-off con 1 pts de colchon",
             "home_rotation_risk_index": 0,
-            "away_rotation_risk_index": 24,
+            "away_rotation_risk_index": 50,
             "home_fatigue_index": 68.0,
             "away_fatigue_index": 83.7,
             "home_elo": 1403.82,
@@ -12031,7 +12158,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:06:11.606956+00:00"
+            "updated_at": "2026-06-06T20:06:06.315523+00:00"
           },
           "focus_digest": [
             "contexto mental",
@@ -12053,7 +12180,7 @@
               "contexto_competitivo": "local persigue salvacion a 7 pts; visitante defiende play-off con 1 pts de colchon",
               "objetivo_local": "persigue salvacion a 7 pts",
               "objetivo_visitante": "defiende play-off con 1 pts de colchon",
-              "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
+              "riesgo_rotacion_competitiva": "visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium)",
               "analisis_calendario_local": "Zaragoza persigue salvacion a 7 pts en final de temporada (must-win 17/100, no perder 37/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. Urgencia clasificatoria alta, necesitan 7 puntos para la salvación. Juegan con la presión del descenso.",
               "analisis_calendario_visitante": "Málaga defiende play-off con 1 pts de colchon en final de temporada (must-win 61/100, no perder 84/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 2 rivales del top-6.",
               "h2h_resumen": "4 encuentros históricos: gana Zaragoza en 1, empates 2, gana Málaga en 1 (ventana de 2 años)."
@@ -12183,9 +12310,9 @@
                 "next_high_importance_fixture": {}
               },
               "away_rotation_context": {
-                "risk": "low",
-                "score": 24,
-                "reason": "",
+                "risk": "medium",
+                "score": 50,
+                "reason": "la prensa reciente apunta a rotaciones/descanso",
                 "next_high_importance_fixture": {}
               }
             },
@@ -12261,6 +12388,7 @@
             "bookmaker=PMU (FR)",
             "id=aa584ba920cf41e5fbf08a8034181e33",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -13182,7 +13310,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:06:15.698368+00:00"
+            "updated_at": "2026-06-06T20:06:10.781176+00:00"
           },
           "focus_digest": [
             "calendario apretado",
@@ -13365,6 +13493,7 @@
             "bookmaker=PMU (FR)",
             "id=abaed47675a2fceaeb7174bec26cee4e",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -13888,7 +14017,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:06:38.985690+00:00"
+            "updated_at": "2026-06-06T20:06:13.358833+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -14682,6 +14811,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|mexico|australia|j65-12",
@@ -14807,10 +14937,10 @@
           "weather_context": {
             "timezone": "America/Tegucigalpa",
             "forecast_time": "2026-06-06T00:00",
-            "temperature_c": 25.1,
+            "temperature_c": 25.3,
             "precipitation_probability": 6,
             "precipitation_mm": 0.5,
-            "wind_speed_kmh": 2.7,
+            "wind_speed_kmh": 1.9,
             "wind_gusts_kmh": 8.6,
             "weather_code": 53
           },
@@ -15256,7 +15386,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:07:02.207631+00:00"
+            "updated_at": "2026-06-06T20:06:41.014555+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -15875,6 +16005,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|japon|islandia|j65-13",
@@ -15935,10 +16066,10 @@
           "weather_context": {
             "timezone": "America/Mexico_City",
             "forecast_time": "2026-06-06T00:00",
-            "temperature_c": 21.7,
+            "temperature_c": 22.1,
             "precipitation_probability": 98,
             "precipitation_mm": 0.2,
-            "wind_speed_kmh": 2.9,
+            "wind_speed_kmh": 4.9,
             "wind_gusts_kmh": 12.6,
             "weather_code": 51
           },
@@ -16384,7 +16515,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:07:13.166182+00:00"
+            "updated_at": "2026-06-06T20:06:44.484977+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -16776,6 +16907,7 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -17371,7 +17503,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:08:00.628279+00:00"
+            "updated_at": "2026-06-06T20:06:47.473106+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -17846,20 +17978,6 @@
                 "_signal": 4.5
               },
               {
-                "title": "Quién es Daniel Siebert, árbitro de la final de la Champions entre Arsenal y PSG y presente en la 'remuntada' del Barça en 2017 - MSN",
-                "link": "https://news.google.com/rss/articles/CBMingJBVV95cUxNTnh5YlZUdG50V3dMZUNjVzBLNmQybWp5VlV0WDJNX2M3Ul9ZeW8wOFBLS2Y4elE5YW95TlBzQUNPMTBVRjhSTkdLVWZXOHo3cm0wV0hOajFoSUhVVTg3dGN0bTJDTzBWVDg1TFNjNDFWOU4wZjg1Z2NUUUd2V0hHQ3ZNUEJaQWNQVi1BUy1KTndtd2RLOTN1cnpYUXBzTjJuVXRMa3QySy1DY19EUkZNUVQ2dDZYLUFhblRKeVZnalZaNXdTS0VoSlVrZ21jTnkyUXBTOGpPaXFFOGh4LUtMSFVtamlTcUtrSk80a0Nkb21HUDFtQ01qWF9HSE9rblBRUTNqOEFsVWZBNUlGSXVmSkMxcG8xZE5oX2J0LTd3?oc=5",
-                "published_at": "Sat, 30 May 2026 18:58:06 GMT",
-                "source": "MSN",
-                "_signal": 4.5
-              },
-              {
-                "title": "Alineaciones PSG vs Arsenal en la final de la Champions League: onces iniciales, banquillos de suplentes y convocatorias de los equipos de Luis Enrique y Mikel Arteta - DAZN",
-                "link": "https://news.google.com/rss/articles/CBMirgJBVV95cUxNY0JWR3NkX0hJQzNLd0RWMHNUQXhtNlNhaFY4a3dUcDcwRFhvb3N2OFItYWVTX2xtUU53blVGYjkwTWhTX2x6akRQZEFTdEQySWtYenJwcWpTUWtYUkVjSzRsa0pGLVFEUkVlTmZHUlIxSWxnN04zeVRMOWVmUE5DT19Ndmd0cmU0cmMyanR1WGhkUF96RFBEbnNMdzBsSmtwMXQ1ekxIa2Q1THdyaUc0ZW5vTG50ZUtLVVFEbFpoZklPSDdqdDNmaThudVp5c3JtT290bVY3SVhLRDBXRnNOUVY1eXBWTEJyekw2dTZWbGdOT25EbjRYQW1NbzJNQmNYT29NUlMtaUYwSlo4TmxSS3liVVpUSGYzcnJTeXE5X0RZQThhTk13bUlyVXdYUQ?oc=5",
-                "published_at": "Sat, 30 May 2026 19:18:53 GMT",
-                "source": "DAZN",
-                "_signal": 3.7
-              },
-              {
                 "title": "Arsenal vs PSG - Soy Referee",
                 "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBxZEVRN2xybXdXenhJaFhPMEctLVphdWtrTFFvLXJEYnBqemtSUlJ6cmY2b1N3WUg2RW1wQTIwbHhybVRCS1RWcFdfOU5uQ0xnaUNWdGg5U0ctUWl6QVFmZ2xLdDI?oc=5",
                 "published_at": "Sat, 30 May 2026 22:52:14 GMT",
@@ -17870,7 +17988,7 @@
             "signals": {
               "referee_count": 2,
               "injury_count": 0,
-              "rotation_count": 3,
+              "rotation_count": 1,
               "weather_count": 0
             }
           },
@@ -17904,7 +18022,7 @@
             "away_elo": 1635.56,
             "match_referee_attention": 2,
             "match_injury_attention": 0,
-            "match_rotation_attention": 3,
+            "match_rotation_attention": 1,
             "match_weather_attention": 0,
             "home_rotation_risk_index": 100,
             "away_rotation_risk_index": 100,
@@ -18186,6 +18304,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|psg|arsenal|j65-15",
@@ -18258,7 +18377,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-06-06T13:00:00Z",
       "kickoff_to": "2026-06-07T19:00:00Z",
-      "updated_at": "2026-06-06T18:08:05.230066+00:00",
+      "updated_at": "2026-06-06T20:07:15.166874+00:00",
       "matches": [
         {
           "match_key": "soccer_spain_segunda_division|cd castellon|almeria|2026-06-06T19:00:00Z",
@@ -18285,9 +18404,9 @@
             },
             "overround_percent": 9.22,
             "official_percent": {
-              "1": 48.91,
-              "X": 29.77,
-              "2": 21.32
+              "1": 50.86,
+              "X": 28.2,
+              "2": 20.94
             }
           },
           "travel_context": {
@@ -19360,9 +19479,9 @@
               "source": "Eduardo Losilla",
               "percentages": {
                 "quinielista": {
-                  "1": 48.91,
-                  "X": 29.77,
-                  "2": 21.32
+                  "1": 50.86,
+                  "X": 28.2,
+                  "2": 20.94
                 },
                 "lae": {
                   "1": 44.0,
@@ -19407,7 +19526,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:01:23.656481+00:00"
+            "updated_at": "2026-06-06T19:59:42.504571+00:00"
           },
           "focus_digest": [
             "contexto mental",
@@ -19419,8 +19538,8 @@
             "partido": "CD Castellón vs Almería",
             "mercado_y_probabilidades": {
               "cuotas_1X2": "1=52.92%, X=24.75%, 2=22.33%",
-              "tendencia_quinielista": "1=48.91%, X=29.77%, 2=21.32%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (52.9%) y el público quinielista lo refleja de forma similar (48.9%). Sin gran divergencia entre mercado y quiniela."
+              "tendencia_quinielista": "1=50.86%, X=28.20%, 2=20.94%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (52.9%) y el público quinielista lo refleja de forma similar (50.9%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "LDDWW (Dinámica positiva)",
@@ -19645,9 +19764,9 @@
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json"
           ],
           "official_quiniela_percentages": {
-            "1": 48.91,
-            "X": 29.77,
-            "2": 21.32
+            "1": 50.86,
+            "X": 28.2,
+            "2": 20.94
           }
         },
         {
@@ -19675,9 +19794,9 @@
             },
             "overround_percent": 9.42,
             "official_percent": {
-              "1": 42.82,
-              "X": 31.81,
-              "2": 25.37
+              "1": 43.97,
+              "X": 31.06,
+              "2": 24.97
             }
           },
           "travel_context": {
@@ -20048,15 +20167,15 @@
             },
             "competitive_stakes_label": "duelo directo por play-off",
             "home_rotation_context": {
-              "risk": "low",
-              "score": 16,
-              "reason": "",
+              "risk": "medium",
+              "score": 42,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
-              "risk": "low",
-              "score": 24,
-              "reason": "",
+              "risk": "medium",
+              "score": 50,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "home_upcoming": [
@@ -20224,8 +20343,8 @@
             "home_must_not_lose_index": 84,
             "away_must_not_lose_index": 84,
             "direct_rivalry_index": 98,
-            "home_rotation_risk_index": 16,
-            "away_rotation_risk_index": 24,
+            "home_rotation_risk_index": 42,
+            "away_rotation_risk_index": 50,
             "home_objective_swing_if_win": 81,
             "home_objective_swing_if_lose": 89,
             "away_objective_swing_if_win": 81,
@@ -20291,11 +20410,46 @@
                   "_signal": 4.8
                 },
                 {
+                  "title": "Esta es la convocatoria del Málaga CF para la ida de la semifinal del play off contra Las Palmas - La Opinión de Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOTENha3d5QW1CQlU5TjdDMWhZcXREZjZCYUlDdWZXWDFTc1lGODYtb29ScWVhWlBqTTM0MU5HZWttSzBUdEFKeExNOUtlNURCTWQwbkJPMTRMSHhnRmNwQ0oyUGRVek5KWWd4OXVCY2hVV0hSTExuYzlWZXpXaUJaVVgwaFQ3OXBkTUpLeHd5a2JLS1gzTXVwZ1QwWk5iN0R0eFFBcUo5TURSV1dLZWfSAa4BQVVfeXFMTkxDYWt3eUFtQkJVOU43QzFoWXF0RGY2QmFJQ3VmV1gxU3NZRjg2LW9vUnFlYVpQak0zNDFOR2VrbUswVHRBSnhMTTlLZTVEQk1kMG5CTzE0TEh4Z0ZjcENKMlBkVXpOSllneDl1QmNoVVdIUkxMbmM5VmV6V2lCWlVYMGhUNzlwZE1KS3h3eWtiS0tYM011cGdUMFpOYjdEdHhRQXFKOU1EUldXS2Vn?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:20:32 GMT",
+                  "source": "La Opinión de Málaga",
+                  "_signal": 3.7
+                },
+                {
+                  "title": "Convocatoria Málaga CF: Haitam se cae de la ida del playoff en Las Palmas - Radio Marca Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5FQ0ZSSVRBemlVTVJTamE2akZpelBYZl9QdVNGMy1nN0JqVmJGbUo3M0ZnWnhWdlhJVEpNRmpFSko5SHNfZW4yRVhTZktYbzc3ODFNV2xLWFMzY3NaeWlCZG1mMDZ0TzZvTzNZQjVIdWJ2S1BCc3g5bWJ0SXhkZw?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:21:15 GMT",
+                  "source": "Radio Marca Málaga",
+                  "_signal": 3.5
+                },
+                {
                   "title": "Funes le da la presión a Las Palmas - MARCA",
                   "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNbTZ3cGMyTmZJdUxWWk1QN0p2bEhkVzI1MFM1R3QwV2FjdEtPaGQwdFY2Q0RaOEVDX040YWdpbGFsY1ZZNEY4b1FCM0RteEdaamNRMG1kN2tyN1FYYTNUYmdGV1BOMHh3Z2dmYzBkcEVhQldNclZncFpSNzZJQzQzMU8xTHnSAYQBQVVfeXFMTW02d3BjMk5mSXVMVlpNUDdKdmxIZFcyNTBTNUd0MFdhY3RLT2hkMHRWNkNEWjhFQ19ONGFnaWxhbGNWWTRGOG9RQjNEbXhHWmpjUTBtZDdrcjdRWGEzVGJnRldQTjB4d2dnZmMwZHBFYUJXTXJWZ3BaUjc2SUM0MzFPMUx5?oc=5",
                   "published_at": "Fri, 05 Jun 2026 14:07:52 GMT",
                   "source": "MARCA",
                   "_signal": 1.8
+                },
+                {
+                  "title": "Esta es la convocatoria del Málaga para el partido frente a Las Palmas - Diario Sur",
+                  "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOY0ZEb3YtbVk5WU5UcWI3Rkd1TVRFU054QnNhTHlDZjE4b1U4dmJmS2JsZXIzU0VremhpOGxDRUJJWnhIYW1nRGg3bzg4cDFHVS1ZaGZyb3g3eEJxNTBnUHE1anN0azQ4SlBOdkE0RmlFVHZRMV85cFFkMlhXaHBHYzlKX3Jha1NjdXV2VVVRdko1NUtlX2fSAZsBQVVfeXFMT0wxQkhiSF9FMGFzbUZ0Z2plLVFfRjFzZVIxX01WUUR1RU93dnZ2dTVUSUhDMG5IWXVYZ21pNWVFUkh6MDVJRTFWT1VtU09wTFJtVzRTbzhnN2tacnExMjFVQ3pvNGg4SHhYbkhzZTNrSXBlSElJU0tEbmMzV09od0VsQnZuT0dLOV9IMWpYLVE0T2k2VVRVNWtpUDg?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 18:29:40 GMT",
+                  "source": "Diario Sur",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "Convocatoria del Málaga CF para Las Palmas: 24 futbolistas y sin Haitam - Málaga Hoy",
+                  "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPZlloYUZibHlkakF0QW83NmdEZEI3dWJFWXVoUzN6VmV1M1VyZHJsYndDLXlheEFSdW43ZDg3RzFIcFZKbjR0QXpOci1WUGp4UjRydUJMU0pDeEZHSGw3VmF2SFBuRWFGa3BSY2NFc2NYc2hIYzVOenlqanJrLW80U0VaWGc4Sl9iYTJXV0VB0gGTAUFVX3lxTE5lNmZlZzZNMGphNzE4NTFJRzBJR1h3QmtqZG5oeFkzUlRzOWJQU1pITnNYcVpCTXhUX0NUVWlMWktEYkI1WmJGTkZ6R2VaME52Ml8ydDJ3YUFJN2xOcTNpSXNHdDNMelJxT1JHRTFwVkRfTWI2Nm9rdndrbVZxVlZCcXVEV0xTc3VqQWhFRl9naG5vNA?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:17:56 GMT",
+                  "source": "Málaga Hoy",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "Rueda de prensa de Luis García previa al partido UD Las Palmas vs Málaga CF - UD Las Palmas",
+                  "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQb2xIQlhaaHBzSm82bzFNYjU4eUJvZ1lUdUNlR1daVklTN1JLbUNTZHNUUFZMeVRvZ0hXWnB1SlJnMEJzZXhzLU16RUhlOEl1SVFYRzZoMHJkTUNRV0k4cmZ0QVB6Y0ZFRTVDOTFfN3g5dGRmRWEySlpHdGs3clBIZUs4eEIySlB4a25YN21vLWl1dkxJNDJpMVRBVlZpbm50bXItVzc2YzcybHVUQUFsdzFXanZZMjgybllzaDFrMnBqWEo3eFE1TU1xT3JhRW52?oc=5",
+                  "published_at": "Fri, 05 Jun 2026 10:07:44 GMT",
+                  "source": "UD Las Palmas",
+                  "_signal": 1.7
                 },
                 {
                   "title": "Rueda de prensa de Luis García previa al Deportivo de La Coruña - UD Las Palmas - La Provincia",
@@ -20307,18 +20461,32 @@
               ],
               "signals": {
                 "injury_count": 1,
-                "rotation_count": 0,
+                "rotation_count": 1,
                 "discipline_count": 0,
                 "europe_count": 0,
                 "weather_count": 0,
-                "press_count": 1,
-                "squad_count": 0,
-                "morale_count": 2
+                "press_count": 2,
+                "squad_count": 4,
+                "morale_count": 3
               },
               "query_count": 5
             },
             "media_news": {
               "items": [
+                {
+                  "title": "Esta es la convocatoria del Málaga CF para la ida de la semifinal del play off contra Las Palmas - La Opinión de Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQWFl3b2pxTndBUVRDeDJXWm9jMXotMTQ3MFNGUi1Ed0VlOWpuUG4ydzRIVUVwbXpPZ21qNFQtWUpVQU44RTZvcTdVNzg3SjhjWXdOLVZ1bzNfbzhwaE1pSTJrUFZXU2VoZVAtN2ZEOElsN1hSazNUcnlWTXdPVFRaQ2dfMXJUZHlFREUwRC1uV2Y1R3VDMGpCeHBGVEZhanVveGNYMWQya1jSAa4BQVVfeXFMTkxDYWt3eUFtQkJVOU43QzFoWXF0RGY2QmFJQ3VmV1gxU3NZRjg2LW9vUnFlYVpQak0zNDFOR2VrbUswVHRBSnhMTTlLZTVEQk1kMG5CTzE0TEh4Z0ZjcENKMlBkVXpOSllneDl1QmNoVVdIUkxMbmM5VmV6V2lCWlVYMGhUNzlwZE1KS3h3eWtiS0tYM011cGdUMFpOYjdEdHhRQXFKOU1EUldXS2Vn?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:20:32 GMT",
+                  "source": "La Opinión de Málaga",
+                  "_signal": 3.7
+                },
+                {
+                  "title": "Convocatoria Málaga CF: Haitam se cae de la ida del playoff en Las Palmas - Radio Marca Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5FQ0ZSSVRBemlVTVJTamE2akZpelBYZl9QdVNGMy1nN0JqVmJGbUo3M0ZnWnhWdlhJVEpNRmpFSko5SHNfZW4yRVhTZktYbzc3ODFNV2xLWFMzY3NaeWlCZG1mMDZ0TzZvTzNZQjVIdWJ2S1BCc3g5bWJ0SXhkZw?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:21:15 GMT",
+                  "source": "Radio Marca Málaga",
+                  "_signal": 3.5
+                },
                 {
                   "title": "Rueda de prensa de Luis García previa al partido UD Las Palmas vs Málaga CF - UD Las Palmas",
                   "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQb2xIQlhaaHBzSm82bzFNYjU4eUJvZ1lUdUNlR1daVklTN1JLbUNTZHNUUFZMeVRvZ0hXWnB1SlJnMEJzZXhzLU16RUhlOEl1SVFYRzZoMHJkTUNRV0k4cmZ0QVB6Y0ZFRTVDOTFfN3g5dGRmRWEySlpHdGs3clBIZUs4eEIySlB4a25YN21vLWl1dkxJNDJpMVRBVlZpbm50bXItVzc2YzcybHVUQUFsdzFXanZZMjgybllzaDFrMnBqWEo3eFE1TU1xT3JhRW52?oc=5",
@@ -20336,13 +20504,13 @@
               ],
               "signals": {
                 "injury_count": 0,
-                "rotation_count": 0,
+                "rotation_count": 1,
                 "discipline_count": 0,
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 1,
-                "squad_count": 1,
-                "morale_count": 0
+                "squad_count": 3,
+                "morale_count": 1
               },
               "query_count": 3
             },
@@ -20404,6 +20572,20 @@
             "focus_news": {
               "items": [
                 {
+                  "title": "Esta es la convocatoria del Málaga CF para la ida de la semifinal del play off contra Las Palmas - La Opinión de Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOTENha3d5QW1CQlU5TjdDMWhZcXREZjZCYUlDdWZXWDFTc1lGODYtb29ScWVhWlBqTTM0MU5HZWttSzBUdEFKeExNOUtlNURCTWQwbkJPMTRMSHhnRmNwQ0oyUGRVek5KWWd4OXVCY2hVV0hSTExuYzlWZXpXaUJaVVgwaFQ3OXBkTUpLeHd5a2JLS1gzTXVwZ1QwWk5iN0R0eFFBcUo5TURSV1dLZWfSAa4BQVVfeXFMTkxDYWt3eUFtQkJVOU43QzFoWXF0RGY2QmFJQ3VmV1gxU3NZRjg2LW9vUnFlYVpQak0zNDFOR2VrbUswVHRBSnhMTTlLZTVEQk1kMG5CTzE0TEh4Z0ZjcENKMlBkVXpOSllneDl1QmNoVVdIUkxMbmM5VmV6V2lCWlVYMGhUNzlwZE1KS3h3eWtiS0tYM011cGdUMFpOYjdEdHhRQXFKOU1EUldXS2Vn?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:20:32 GMT",
+                  "source": "La Opinión de Málaga",
+                  "_signal": 3.7
+                },
+                {
+                  "title": "Convocatoria Málaga CF: Haitam se cae de la ida del playoff en Las Palmas - Radio Marca Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5FQ0ZSSVRBemlVTVJTamE2akZpelBYZl9QdVNGMy1nN0JqVmJGbUo3M0ZnWnhWdlhJVEpNRmpFSko5SHNfZW4yRVhTZktYbzc3ODFNV2xLWFMzY3NaeWlCZG1mMDZ0TzZvTzNZQjVIdWJ2S1BCc3g5bWJ0SXhkZw?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:21:15 GMT",
+                  "source": "Radio Marca Málaga",
+                  "_signal": 3.5
+                },
+                {
                   "title": "Málaga para Vivir eleva la presión y plantea una huelga general tras la manifestación por la vivienda del 27 de junio - Andalucía Información",
                   "link": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxQU3lmd1d0SEpkSE5OT3BJclhvYkM1YXdLeGxpbFFjaUlkZXJrdUljeHJaemxYT0c0bVoxcVFQaHE0ZXlSWk1IT3FYQWJjVG1xdWdGZDNiMTlUOFhESnMyYThQTzlxRjh2WTlBRS1INmdaU2w3R3hDXzRtOHRDTWc3WXNYVE8wZGNsY3Bub2ZNTHA4TFpjZTk4X3Nmclp0QVBhdm1JTjBBTjMwX3FlNFFITGNSRi1oNTktWUFXcTlpZzJTQmFTWmJvWkhhMDVIWk9mN3BPSFR6aDdaVU1JSWUtc1R5RFhXVkxkbnU5UjlmczBjZUQ1bFY3M1hTM2tOd9IBgwJBVV95cUxOLXFQT0hwOGsybWludmQ4Mm9kcmJOWXpRNU1LZUg5YVYtb29MaXRnWVhOc1dsVkVqa2ZaVEJMQXB6b0RGRFBrVENmbUdIRVpsRFE2cl81dzhuRE40OTRDaW5fcGNfa0JDdXp5b3lKaURrUzFFUGNHMm41OUVPYjAtZ0ZBQW9zcDBIeUNkNHpqNVE3Si0tdHBBb3V4dkRRSHJpeFpoQ0w3TWdMQ3IyVk1UVFp4Zno5TGRUVlRiSlcydENvaDhhT0lKVXJpY015RnBFc3g4T2V5MEExNGFXeDF4NnBFMDEzSndINGtFQndTOVA5OG9kTTgtSmFNcGVkYkgwd080?oc=5",
                   "published_at": "Thu, 04 Jun 2026 14:36:31 GMT",
@@ -20423,6 +20605,20 @@
                   "published_at": "Wed, 03 Jun 2026 14:39:59 GMT",
                   "source": "Cadena SER",
                   "_signal": 1.8
+                },
+                {
+                  "title": "Esta es la convocatoria del Málaga para el partido frente a Las Palmas - Diario Sur",
+                  "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOY0ZEb3YtbVk5WU5UcWI3Rkd1TVRFU054QnNhTHlDZjE4b1U4dmJmS2JsZXIzU0VremhpOGxDRUJJWnhIYW1nRGg3bzg4cDFHVS1ZaGZyb3g3eEJxNTBnUHE1anN0azQ4SlBOdkE0RmlFVHZRMV85cFFkMlhXaHBHYzlKX3Jha1NjdXV2VVVRdko1NUtlX2fSAZsBQVVfeXFMT0wxQkhiSF9FMGFzbUZ0Z2plLVFfRjFzZVIxX01WUUR1RU93dnZ2dTVUSUhDMG5IWXVYZ21pNWVFUkh6MDVJRTFWT1VtU09wTFJtVzRTbzhnN2tacnExMjFVQ3pvNGg4SHhYbkhzZTNrSXBlSElJU0tEbmMzV09od0VsQnZuT0dLOV9IMWpYLVE0T2k2VVRVNWtpUDg?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 18:29:40 GMT",
+                  "source": "Diario Sur",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "Convocatoria del Málaga CF para Las Palmas: 24 futbolistas y sin Haitam - Málaga Hoy",
+                  "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPZlloYUZibHlkakF0QW83NmdEZEI3dWJFWXVoUzN6VmV1M1VyZHJsYndDLXlheEFSdW43ZDg3RzFIcFZKbjR0QXpOci1WUGp4UjRydUJMU0pDeEZHSGw3VmF2SFBuRWFGa3BSY2NFc2NYc2hIYzVOenlqanJrLW80U0VaWGc4Sl9iYTJXV0VB0gGTAUFVX3lxTE5lNmZlZzZNMGphNzE4NTFJRzBJR1h3QmtqZG5oeFkzUlRzOWJQU1pITnNYcVpCTXhUX0NUVWlMWktEYkI1WmJGTkZ6R2VaME52Ml8ydDJ3YUFJN2xOcTNpSXNHdDNMelJxT1JHRTFwVkRfTWI2Nm9rdndrbVZxVlZCcXVEV0xTc3VqQWhFRl9naG5vNA?oc=5",
+                  "published_at": "Sat, 06 Jun 2026 16:17:56 GMT",
+                  "source": "Málaga Hoy",
+                  "_signal": 1.7
                 },
                 {
                   "title": "Vélez-Málaga abre una nueva convocatoria del proyecto INTEGRA+ para mejorar la formación y el acceso al empleo de personas desempleadas - AxarquiaPlus",
@@ -20476,13 +20672,13 @@
               ],
               "signals": {
                 "injury_count": 0,
-                "rotation_count": 0,
+                "rotation_count": 1,
                 "discipline_count": 0,
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 1,
-                "squad_count": 6,
-                "morale_count": 3
+                "squad_count": 10,
+                "morale_count": 4
               },
               "query_count": 5
             },
@@ -20494,6 +20690,13 @@
                   "published_at": "Thu, 04 Jun 2026 14:36:31 GMT",
                   "source": "Andalucía Información",
                   "_signal": 1.8
+                },
+                {
+                  "title": "Dani Sánchez volverá a una convocatoria casi 3 meses después - Radio Marca Málaga",
+                  "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBnTWVoeUNfSGUtQWRfVzR1bmdQSTlyYXJHU0h0UDhEQXEtNXBkMjVGZmVRckdkckljNGxQUWNSc0hZWjJmcXBoMlFzQUhNY2ZDdFV6MXYtV2Z1ZGZSUTBaVlJ1NHNUOE5hNlNRYTNTbHdBNnlSRUVlRk45a09TREU?oc=5",
+                  "published_at": "Wed, 03 Jun 2026 11:06:13 GMT",
+                  "source": "Radio Marca Málaga",
+                  "_signal": 1.7
                 },
                 {
                   "title": "Convocatoria Málaga CF: Funes se lleva a todos los disponibles a Zaragoza - Radio Marca Málaga",
@@ -20510,7 +20713,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 1,
+                "squad_count": 2,
                 "morale_count": 1
               },
               "query_count": 3
@@ -20690,8 +20893,8 @@
             "direct_rivalry_index": 98,
             "season_context_phase": "final",
             "competitive_stakes_label": "duelo directo por play-off",
-            "home_rotation_risk_index": 16,
-            "away_rotation_risk_index": 24,
+            "home_rotation_risk_index": 42,
+            "away_rotation_risk_index": 50,
             "home_fatigue_index": 9.0,
             "away_fatigue_index": 34.0,
             "home_elo": 1573.32,
@@ -20712,9 +20915,9 @@
               "source": "Eduardo Losilla",
               "percentages": {
                 "quinielista": {
-                  "1": 42.82,
-                  "X": 31.81,
-                  "2": 25.37
+                  "1": 43.97,
+                  "X": 31.06,
+                  "2": 24.97
                 },
                 "lae": {
                   "1": 44.0,
@@ -20759,7 +20962,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:01:24.614605+00:00"
+            "updated_at": "2026-06-06T19:59:54.352701+00:00"
           },
           "focus_digest": [
             "viaje largo",
@@ -20771,8 +20974,8 @@
             "partido": "Las Palmas vs Málaga",
             "mercado_y_probabilidades": {
               "cuotas_1X2": "1=45.24%, X=29.01%, 2=25.74%",
-              "tendencia_quinielista": "1=42.82%, X=31.81%, 2=25.37%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (45.2%) y el público quinielista lo refleja de forma similar (42.8%). Sin gran divergencia entre mercado y quiniela."
+              "tendencia_quinielista": "1=43.97%, X=31.06%, 2=24.97%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (45.2%) y el público quinielista lo refleja de forma similar (44.0%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "WLWDW (Buena dinámica reciente)",
@@ -20781,7 +20984,7 @@
               "contexto_competitivo": "duelo directo por play-off: equipos separados por 0 pts y 1 puestos.",
               "objetivo_local": "defiende play-off con 1 pts de colchon",
               "objetivo_visitante": "defiende play-off con 1 pts de colchon",
-              "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
+              "riesgo_rotacion_competitiva": "local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium)",
               "analisis_calendario_local": "Las Palmas defiende play-off con 1 pts de colchon en final de temporada (must-win 61/100, no perder 84/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 1 rivales del top-6.",
               "analisis_calendario_visitante": "Málaga defiende play-off con 1 pts de colchon en final de temporada (must-win 61/100, no perder 84/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 1 rivales del top-6.",
               "h2h_resumen": "2 encuentros históricos: gana Las Palmas en 0, empates 0, gana Málaga en 2 (ventana de 1 años)."
@@ -20934,15 +21137,15 @@
                 ]
               },
               "home_rotation_context": {
-                "risk": "low",
-                "score": 16,
-                "reason": "",
+                "risk": "medium",
+                "score": 42,
+                "reason": "la prensa reciente apunta a rotaciones/descanso",
                 "next_high_importance_fixture": {}
               },
               "away_rotation_context": {
-                "risk": "low",
-                "score": 24,
-                "reason": "",
+                "risk": "medium",
+                "score": 50,
+                "reason": "la prensa reciente apunta a rotaciones/descanso",
                 "next_high_importance_fixture": {}
               }
             },
@@ -20997,9 +21200,9 @@
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json"
           ],
           "official_quiniela_percentages": {
-            "1": 42.82,
-            "X": 31.81,
-            "2": 25.37
+            "1": 43.97,
+            "X": 31.06,
+            "2": 24.97
           }
         },
         {
@@ -21011,9 +21214,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 86.32,
-              "X": 10.21,
-              "2": 3.47
+              "1": 84.22,
+              "X": 11.98,
+              "2": 3.8
             },
             "official_percent": {
               "1": 0.0,
@@ -21502,7 +21705,7 @@
                 "count": 2
               }
             },
-            "updated_at": "2026-06-06T18:01:36.967669+00:00"
+            "updated_at": "2026-06-06T19:59:56.283281+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -21758,9 +21961,9 @@
           "focus_ai_briefing": {
             "partido": "BÉLGICA vs TÚNEZ",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=86.32%, X=10.21%, 2=3.47%",
-              "tendencia_quinielista": "1=86.32%, X=10.21%, 2=3.47%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (86.3%) y el público quinielista lo refleja de forma similar (86.3%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=84.22%, X=11.98%, 2=3.80%",
+              "tendencia_quinielista": "1=84.22%, X=11.98%, 2=3.80%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (84.2%) y el público quinielista lo refleja de forma similar (84.2%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "LLDWL (Mala racha reciente)",
@@ -21959,6 +22162,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|belgica|tunez|j66-3",
@@ -21980,9 +22184,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 86.32,
-            "X": 10.21,
-            "2": 3.47
+            "1": 84.22,
+            "X": 11.98,
+            "2": 3.8
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -22006,9 +22210,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 50.55,
-              "X": 30.03,
-              "2": 19.42
+              "1": 48.24,
+              "X": 29.75,
+              "2": 22.01
             },
             "official_percent": {
               "1": 0.0,
@@ -22492,7 +22696,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:01:48.845332+00:00"
+            "updated_at": "2026-06-06T19:59:58.544442+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -22669,9 +22873,9 @@
           "focus_ai_briefing": {
             "partido": "LITUANIA vs LETONIA",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=50.55%, X=30.03%, 2=19.42%",
-              "tendencia_quinielista": "1=50.55%, X=30.03%, 2=19.42%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (50.5%) y el público quinielista lo refleja de forma similar (50.5%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=48.24%, X=29.75%, 2=22.01%",
+              "tendencia_quinielista": "1=48.24%, X=29.75%, 2=22.01%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (48.2%) y el público quinielista lo refleja de forma similar (48.2%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "WLWLL (Mala racha reciente)",
@@ -22870,6 +23074,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|lituania|letonia|j66-4",
@@ -22891,9 +23096,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 50.55,
-            "X": 30.03,
-            "2": 19.42
+            "1": 48.24,
+            "X": 29.75,
+            "2": 22.01
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -22917,9 +23122,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 62.25,
-              "X": 20.26,
-              "2": 17.49
+              "1": 54.71,
+              "X": 22.59,
+              "2": 22.7
             },
             "official_percent": {
               "1": 0.0,
@@ -23403,7 +23608,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:02:01.772720+00:00"
+            "updated_at": "2026-06-06T20:00:04.295316+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -23582,9 +23787,9 @@
           "focus_ai_briefing": {
             "partido": "ESTONIA vs ISLAS FEROE",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=62.25%, X=20.26%, 2=17.49%",
-              "tendencia_quinielista": "1=62.25%, X=20.26%, 2=17.49%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (62.2%) y el público quinielista lo refleja de forma similar (62.2%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=54.71%, X=22.59%, 2=22.70%",
+              "tendencia_quinielista": "1=54.71%, X=22.59%, 2=22.70%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (54.7%) y el público quinielista lo refleja de forma similar (54.7%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "LLDWW (Trayectoria irregular)",
@@ -23783,6 +23988,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|estonia|islas feroe|j66-5",
@@ -23804,9 +24010,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 62.25,
-            "X": 20.26,
-            "2": 17.49
+            "1": 54.71,
+            "X": 22.59,
+            "2": 22.7
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -23830,9 +24036,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 91.09,
-              "X": 6.65,
-              "2": 2.26
+              "1": 90.96,
+              "X": 7.05,
+              "2": 1.99
             },
             "official_percent": {
               "1": 0.0,
@@ -24371,7 +24577,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:02:07.269318+00:00"
+            "updated_at": "2026-06-06T20:00:06.960663+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -24789,9 +24995,9 @@
           "focus_ai_briefing": {
             "partido": "PORTUGAL vs CHILE",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=91.09%, X=6.65%, 2=2.26%",
-              "tendencia_quinielista": "1=91.09%, X=6.65%, 2=2.26%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (91.1%) y el público quinielista lo refleja de forma similar (91.1%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=90.96%, X=7.05%, 2=1.99%",
+              "tendencia_quinielista": "1=90.96%, X=7.05%, 2=1.99%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (91.0%) y el público quinielista lo refleja de forma similar (91.0%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "WWWWW (Buena dinámica reciente)",
@@ -24990,6 +25196,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|portugal|chile|j66-6",
@@ -25011,9 +25218,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 91.09,
-            "X": 6.65,
-            "2": 2.26
+            "1": 90.96,
+            "X": 7.05,
+            "2": 1.99
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [
@@ -25090,9 +25297,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 42.44,
-              "X": 33.26,
-              "2": 24.3
+              "1": 40.44,
+              "X": 32.39,
+              "2": 27.17
             },
             "official_percent": {
               "1": 0.0,
@@ -25552,7 +25759,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:02:37.010311+00:00"
+            "updated_at": "2026-06-06T20:00:11.180530+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -25769,9 +25976,9 @@
           "focus_ai_briefing": {
             "partido": "RUMANÍA vs GALES",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=42.44%, X=33.26%, 2=24.30%",
-              "tendencia_quinielista": "1=42.44%, X=33.26%, 2=24.30%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (42.4%) y el público quinielista lo refleja de forma similar (42.4%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=40.44%, X=32.39%, 2=27.17%",
+              "tendencia_quinielista": "1=40.44%, X=32.39%, 2=27.17%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (40.4%) y el público quinielista lo refleja de forma similar (40.4%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "DWWDL (Dinámica positiva)",
@@ -25970,6 +26177,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|rumania|gales|j66-7",
@@ -25991,9 +26199,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 42.44,
-            "X": 33.26,
-            "2": 24.3
+            "1": 40.44,
+            "X": 32.39,
+            "2": 27.17
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -26017,9 +26225,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 94.13,
-              "X": 4.15,
-              "2": 1.72
+              "1": 94.84,
+              "X": 3.72,
+              "2": 1.44
             },
             "official_percent": {
               "1": 0.0,
@@ -26449,14 +26657,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|inglaterra|nueva zelanda|j66-8",
             "event_context": {
-              "sportsdb_event_id": "2436069",
+              "sportsdb_event_id": "",
               "sportsdb_home_team_id": "",
               "sportsdb_away_team_id": "137449",
-              "venue": "Raymond James Stadium",
-              "stadium_city": "Tampa, FL",
-              "league": "International Friendlies",
-              "round": "17",
-              "status": "NS"
+              "venue": "",
+              "stadium_city": "",
+              "league": "FIFA World Cup",
+              "round": "39",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -26479,7 +26687,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:02:40.008132+00:00"
+            "updated_at": "2026-06-06T20:00:39.354052+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -26903,9 +27111,9 @@
           "focus_ai_briefing": {
             "partido": "INGLATERRA vs NUEVA ZELANDA",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=94.13%, X=4.15%, 2=1.72%",
-              "tendencia_quinielista": "1=94.13%, X=4.15%, 2=1.72%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (94.1%) y el público quinielista lo refleja de forma similar (94.1%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=94.84%, X=3.72%, 2=1.44%",
+              "tendencia_quinielista": "1=94.84%, X=3.72%, 2=1.44%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (94.8%) y el público quinielista lo refleja de forma similar (94.8%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "LLDLD (Mala racha reciente)",
@@ -27104,6 +27312,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|inglaterra|nueva zelanda|j66-8",
@@ -27125,9 +27334,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 94.13,
-            "X": 4.15,
-            "2": 1.72
+            "1": 94.84,
+            "X": 3.72,
+            "2": 1.44
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -27151,9 +27360,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 62.82,
-              "X": 22.79,
-              "2": 14.39
+              "1": 62.71,
+              "X": 22.61,
+              "2": 14.68
             },
             "official_percent": {
               "1": 0.0,
@@ -27646,7 +27855,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:02:42.772409+00:00"
+            "updated_at": "2026-06-06T20:01:07.510299+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -27979,9 +28188,9 @@
           "focus_ai_briefing": {
             "partido": "SUIZA vs AUSTRALIA",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=62.82%, X=22.79%, 2=14.39%",
-              "tendencia_quinielista": "1=62.82%, X=22.79%, 2=14.39%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (62.8%) y el público quinielista lo refleja de forma similar (62.8%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=62.71%, X=22.61%, 2=14.68%",
+              "tendencia_quinielista": "1=62.71%, X=22.61%, 2=14.68%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (62.7%) y el público quinielista lo refleja de forma similar (62.7%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "LDDWW (Dinámica positiva)",
@@ -28180,6 +28389,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|suiza|australia|j66-9",
@@ -28201,9 +28411,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 62.82,
-            "X": 22.79,
-            "2": 14.39
+            "1": 62.71,
+            "X": 22.61,
+            "2": 14.68
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -28258,9 +28468,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 12.23,
-              "X": 20.12,
-              "2": 67.65
+              "1": 10.68,
+              "X": 18.84,
+              "2": 70.48
             },
             "official_percent": {
               "1": 0.0,
@@ -28757,7 +28967,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:02:46.747585+00:00"
+            "updated_at": "2026-06-06T20:01:10.554158+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -29097,9 +29307,9 @@
           "focus_ai_briefing": {
             "partido": "BOLIVIA vs ESCOCIA",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=12.23%, X=20.12%, 2=67.65%",
-              "tendencia_quinielista": "1=12.23%, X=20.12%, 2=67.65%",
-              "insight_mercado": "El visitante es favorito para las casas de apuestas (67.7%) y el público quinielista lo refleja de forma similar (67.7%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=10.68%, X=18.84%, 2=70.48%",
+              "tendencia_quinielista": "1=10.68%, X=18.84%, 2=70.48%",
+              "insight_mercado": "El visitante es favorito para las casas de apuestas (70.5%) y el público quinielista lo refleja de forma similar (70.5%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "LDLDD (Dinámica negativa)",
@@ -29298,6 +29508,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|bolivia|escocia|j66-10",
@@ -29319,9 +29530,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 12.23,
-            "X": 20.12,
-            "2": 67.65
+            "1": 10.68,
+            "X": 18.84,
+            "2": 70.48
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -29356,9 +29567,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 15.89,
-              "X": 23.29,
-              "2": 60.82
+              "1": 12.84,
+              "X": 21.33,
+              "2": 65.83
             },
             "official_percent": {
               "1": 0.0,
@@ -29849,14 +30060,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|liechtenstein|chipre|j66-11",
             "event_context": {
-              "sportsdb_event_id": "2470311",
+              "sportsdb_event_id": "",
               "sportsdb_home_team_id": "136467",
               "sportsdb_away_team_id": "",
               "venue": "Rheinpark Stadion",
               "stadium_city": "Vaduz, Liechtenstein",
-              "league": "International Friendlies",
-              "round": "17",
-              "status": "NS"
+              "league": "World Cup Qualifying UEFA",
+              "round": "39",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -29879,7 +30090,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:03:17.023022+00:00"
+            "updated_at": "2026-06-06T20:01:15.783685+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -30058,9 +30269,9 @@
           "focus_ai_briefing": {
             "partido": "LIECHTENSTEIN vs CHIPRE",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=15.89%, X=23.29%, 2=60.82%",
-              "tendencia_quinielista": "1=15.89%, X=23.29%, 2=60.82%",
-              "insight_mercado": "El visitante es favorito para las casas de apuestas (60.8%) y el público quinielista lo refleja de forma similar (60.8%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=12.84%, X=21.33%, 2=65.83%",
+              "tendencia_quinielista": "1=12.84%, X=21.33%, 2=65.83%",
+              "insight_mercado": "El visitante es favorito para las casas de apuestas (65.8%) y el público quinielista lo refleja de forma similar (65.8%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "LLDWL (Mala racha reciente)",
@@ -30259,6 +30470,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|liechtenstein|chipre|j66-11",
@@ -30280,9 +30492,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 15.89,
-            "X": 23.29,
-            "2": 60.82
+            "1": 12.84,
+            "X": 21.33,
+            "2": 65.83
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -30319,9 +30531,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 57.86,
-              "X": 27.41,
-              "2": 14.73
+              "1": 58.02,
+              "X": 26.92,
+              "2": 15.06
             },
             "official_percent": {
               "1": 0.0,
@@ -30751,14 +30963,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|dinamarca|ucrania|j66-12",
             "event_context": {
-              "sportsdb_event_id": "2469960",
+              "sportsdb_event_id": "",
               "sportsdb_home_team_id": "",
               "sportsdb_away_team_id": "133915",
-              "venue": "Parken",
+              "venue": "",
               "stadium_city": "",
-              "league": "International Friendlies",
-              "round": "17",
-              "status": "NS"
+              "league": "World Cup Qualifying UEFA",
+              "round": "39",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -30781,7 +30993,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:03:24.121309+00:00"
+            "updated_at": "2026-06-06T20:01:45.770332+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -31011,9 +31223,9 @@
           "focus_ai_briefing": {
             "partido": "DINAMARCA vs UCRANIA",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=57.86%, X=27.41%, 2=14.73%",
-              "tendencia_quinielista": "1=57.86%, X=27.41%, 2=14.73%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (57.9%) y el público quinielista lo refleja de forma similar (57.9%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=58.02%, X=26.92%, 2=15.06%",
+              "tendencia_quinielista": "1=58.02%, X=26.92%, 2=15.06%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (58.0%) y el público quinielista lo refleja de forma similar (58.0%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "DWWDL (Dinámica positiva)",
@@ -31212,6 +31424,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|dinamarca|ucrania|j66-12",
@@ -31233,9 +31446,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 57.86,
-            "X": 27.41,
-            "2": 14.73
+            "1": 58.02,
+            "X": 26.92,
+            "2": 15.06
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -31259,9 +31472,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 86.57,
-              "X": 10.48,
-              "2": 2.95
+              "1": 84.15,
+              "X": 12.4,
+              "2": 3.45
             },
             "official_percent": {
               "1": 0.0,
@@ -31758,7 +31971,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:03:31.263825+00:00"
+            "updated_at": "2026-06-06T20:02:18.745299+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -32017,9 +32230,9 @@
           "focus_ai_briefing": {
             "partido": "CROACIA vs ESLOVENIA",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=86.57%, X=10.48%, 2=2.95%",
-              "tendencia_quinielista": "1=86.57%, X=10.48%, 2=2.95%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (86.6%) y el público quinielista lo refleja de forma similar (86.6%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=84.15%, X=12.40%, 2=3.45%",
+              "tendencia_quinielista": "1=84.15%, X=12.40%, 2=3.45%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (84.2%) y el público quinielista lo refleja de forma similar (84.2%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "DWWDL (Dinámica positiva)",
@@ -32218,6 +32431,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|croacia|eslovenia|j66-13",
@@ -32239,9 +32453,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 86.57,
-            "X": 10.48,
-            "2": 2.95
+            "1": 84.15,
+            "X": 12.4,
+            "2": 3.45
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -32278,9 +32492,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 37.02,
-              "X": 28.08,
-              "2": 34.9
+              "1": 33.91,
+              "X": 27.2,
+              "2": 38.89
             },
             "official_percent": {
               "1": 0.0,
@@ -32734,14 +32948,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|marruecos|noruega|j66-14",
             "event_context": {
-              "sportsdb_event_id": "",
+              "sportsdb_event_id": "2466319",
               "sportsdb_home_team_id": "",
               "sportsdb_away_team_id": "136516",
-              "venue": "",
-              "stadium_city": "",
-              "league": "World Cup Qualifying UEFA",
-              "round": "39",
-              "status": ""
+              "venue": "Sports Illustrated Stadium",
+              "stadium_city": "Harrison, NJ",
+              "league": "International Friendlies",
+              "round": "17",
+              "status": "NS"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -32773,7 +32987,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:03:44.938363+00:00"
+            "updated_at": "2026-06-06T20:03:13.269930+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -33072,9 +33286,9 @@
           "focus_ai_briefing": {
             "partido": "MARRUECOS vs NORUEGA",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=37.02%, X=28.08%, 2=34.90%",
-              "tendencia_quinielista": "1=37.02%, X=28.08%, 2=34.90%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (37.0%) y el público quinielista lo refleja de forma similar (37.0%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=33.91%, X=27.20%, 2=38.89%",
+              "tendencia_quinielista": "1=33.91%, X=27.20%, 2=38.89%",
+              "insight_mercado": "El visitante es favorito para las casas de apuestas (38.9%) y el público quinielista lo refleja de forma similar (38.9%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "WWDWW (Buena dinámica reciente)",
@@ -33273,6 +33487,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|marruecos|noruega|j66-14",
@@ -33294,9 +33509,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 37.02,
-            "X": 28.08,
-            "2": 34.9
+            "1": 33.91,
+            "X": 27.2,
+            "2": 38.89
           },
           "_schedule_inputs": {
             "home_feed_upcoming": [],
@@ -33776,14 +33991,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|grecia|italia|j66-15",
             "event_context": {
-              "sportsdb_event_id": "2465434",
-              "sportsdb_home_team_id": "",
+              "sportsdb_event_id": "",
+              "sportsdb_home_team_id": "139708",
               "sportsdb_away_team_id": "133910",
-              "venue": "Pankritio Stadium",
-              "stadium_city": "Heraklion, Crete",
-              "league": "International Friendlies",
-              "round": "17",
-              "status": "NS"
+              "venue": "",
+              "stadium_city": "Grecia, Costa Rica",
+              "league": "_No League Soccer",
+              "round": "39",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -33806,7 +34021,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:04:30.690010+00:00"
+            "updated_at": "2026-06-06T20:03:40.275442+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -33873,7 +34088,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
+              "website": "https://municipalgrecia.com",
               "items": []
             }
           },
@@ -34216,6 +34431,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|grecia|italia|j66-15",
@@ -34264,7 +34480,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-06-12T22:00:00Z",
       "kickoff_to": "2026-06-16T19:00:00Z",
-      "updated_at": "2026-06-06T18:08:05.225986+00:00",
+      "updated_at": "2026-06-06T20:07:15.163973+00:00",
       "matches": [
         {
           "local": "EEUU",
@@ -34398,6 +34614,7 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -34578,6 +34795,7 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -34847,6 +35065,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|brasil|marruecos|j67-3",
@@ -35012,6 +35231,7 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -35238,6 +35458,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|australia|turquia|j67-5",
@@ -35388,6 +35609,7 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -35606,6 +35828,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|paises bajos|japon|j67-7",
@@ -35778,6 +36001,7 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -36328,7 +36552,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:00:36.713012+00:00"
+            "updated_at": "2026-06-06T19:58:38.176962+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -36710,6 +36934,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|suecia|tunez|j67-9",
@@ -36910,6 +37135,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|belgica|egipto|j67-10",
@@ -37021,9 +37247,8 @@
                 "opponent": "Spain",
                 "opponent_position": null,
                 "opponent_points": null,
-                "round": "2",
-                "source": "sportsdb-rounds+odds-feed",
-                "league": "soccer_fifa_world_cup"
+                "league": "soccer_fifa_world_cup",
+                "source": "odds-feed"
               },
               {
                 "date": "2026-06-27",
@@ -37032,9 +37257,8 @@
                 "opponent": "Cape Verde",
                 "opponent_position": null,
                 "opponent_points": null,
-                "round": "3",
-                "source": "sportsdb-rounds+odds-feed",
-                "league": "soccer_fifa_world_cup"
+                "league": "soccer_fifa_world_cup",
+                "source": "odds-feed"
               }
             ],
             "away_upcoming": [
@@ -37045,9 +37269,8 @@
                 "opponent": "Cape Verde",
                 "opponent_position": null,
                 "opponent_points": null,
-                "round": "2",
-                "source": "sportsdb-rounds+odds-feed",
-                "league": "soccer_fifa_world_cup"
+                "league": "soccer_fifa_world_cup",
+                "source": "odds-feed"
               },
               {
                 "date": "2026-06-27",
@@ -37056,9 +37279,8 @@
                 "opponent": "Spain",
                 "opponent_position": null,
                 "opponent_points": null,
-                "round": "3",
-                "source": "sportsdb-rounds+odds-feed",
-                "league": "soccer_fifa_world_cup"
+                "league": "soccer_fifa_world_cup",
+                "source": "odds-feed"
               }
             ],
             "home_future_difficulty": {
@@ -37548,14 +37770,14 @@
           "structured_context": {
             "match_key": "soccer_fifa_world_cup|saudi arabia|uruguay|2026-06-15T22:00:00Z",
             "event_context": {
-              "sportsdb_event_id": "2391738",
+              "sportsdb_event_id": "",
               "sportsdb_home_team_id": "136137",
               "sportsdb_away_team_id": "134504",
-              "venue": "Hard Rock Stadium",
-              "stadium_city": "Miami Gardens, FL",
+              "venue": "Prince Faisal bin Fahd Stadium",
+              "stadium_city": "Riyadh, Saudi Arabia",
               "league": "FIFA World Cup",
               "round": "1",
-              "status": "NS"
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -37611,7 +37833,7 @@
                 "count": 4
               }
             },
-            "updated_at": "2026-06-06T18:01:07.232312+00:00"
+            "updated_at": "2026-06-06T19:58:43.637683+00:00"
           },
           "focus_digest": [
             "viaje largo",
@@ -37722,50 +37944,8 @@
             "away_espn_upcoming": [],
             "home_sportsdb_next_upcoming": [],
             "away_sportsdb_next_upcoming": [],
-            "home_round_upcoming": [
-              {
-                "date": "2026-06-21",
-                "kickoff": "2026-06-21T16:00:00Z",
-                "venue": "away",
-                "opponent": "Spain",
-                "opponent_position": null,
-                "opponent_points": null,
-                "round": "2",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-06-27",
-                "kickoff": "2026-06-27T00:00:00Z",
-                "venue": "away",
-                "opponent": "Cape Verde",
-                "opponent_position": null,
-                "opponent_points": null,
-                "round": "3",
-                "source": "sportsdb-rounds"
-              }
-            ],
-            "away_round_upcoming": [
-              {
-                "date": "2026-06-21",
-                "kickoff": "2026-06-21T22:00:00Z",
-                "venue": "home",
-                "opponent": "Cape Verde",
-                "opponent_position": null,
-                "opponent_points": null,
-                "round": "2",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-06-27",
-                "kickoff": "2026-06-27T00:00:00Z",
-                "venue": "home",
-                "opponent": "Spain",
-                "opponent_position": null,
-                "opponent_points": null,
-                "round": "3",
-                "source": "sportsdb-rounds"
-              }
-            ]
+            "home_round_upcoming": [],
+            "away_round_upcoming": []
           },
           "notes": [
             "bookmaker=Marathon Bet",
@@ -37863,9 +38043,8 @@
                 "opponent": "Belgium",
                 "opponent_position": null,
                 "opponent_points": null,
-                "round": "2",
-                "source": "sportsdb-rounds+odds-feed",
-                "league": "soccer_fifa_world_cup"
+                "league": "soccer_fifa_world_cup",
+                "source": "odds-feed"
               },
               {
                 "date": "2026-06-27",
@@ -37874,9 +38053,8 @@
                 "opponent": "Egypt",
                 "opponent_position": null,
                 "opponent_points": null,
-                "round": "3",
-                "source": "sportsdb-rounds+odds-feed",
-                "league": "soccer_fifa_world_cup"
+                "league": "soccer_fifa_world_cup",
+                "source": "odds-feed"
               }
             ],
             "away_upcoming": [
@@ -37887,9 +38065,8 @@
                 "opponent": "Egypt",
                 "opponent_position": null,
                 "opponent_points": null,
-                "round": "2",
-                "source": "sportsdb-rounds+odds-feed",
-                "league": "soccer_fifa_world_cup"
+                "league": "soccer_fifa_world_cup",
+                "source": "odds-feed"
               },
               {
                 "date": "2026-06-27",
@@ -37898,9 +38075,8 @@
                 "opponent": "Belgium",
                 "opponent_position": null,
                 "opponent_points": null,
-                "round": "3",
-                "source": "sportsdb-rounds+odds-feed",
-                "league": "soccer_fifa_world_cup"
+                "league": "soccer_fifa_world_cup",
+                "source": "odds-feed"
               }
             ],
             "home_future_difficulty": {
@@ -38292,14 +38468,14 @@
           "structured_context": {
             "match_key": "soccer_fifa_world_cup|iran|new zealand|2026-06-16T01:00:00Z",
             "event_context": {
-              "sportsdb_event_id": "2391737",
+              "sportsdb_event_id": "",
               "sportsdb_home_team_id": "134511",
               "sportsdb_away_team_id": "137449",
-              "venue": "SoFi Stadium",
-              "stadium_city": "Inglewood, CA",
+              "venue": "Azadi Stadium",
+              "stadium_city": "Tehran, Iran",
               "league": "FIFA World Cup",
               "round": "1",
-              "status": "NS"
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -38322,7 +38498,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:01:10.990095+00:00"
+            "updated_at": "2026-06-06T19:59:33.919244+00:00"
           },
           "focus_digest": [
             "viaje largo",
@@ -38432,50 +38608,8 @@
             "away_espn_upcoming": [],
             "home_sportsdb_next_upcoming": [],
             "away_sportsdb_next_upcoming": [],
-            "home_round_upcoming": [
-              {
-                "date": "2026-06-21",
-                "kickoff": "2026-06-21T19:00:00Z",
-                "venue": "away",
-                "opponent": "Belgium",
-                "opponent_position": null,
-                "opponent_points": null,
-                "round": "2",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-06-27",
-                "kickoff": "2026-06-27T03:00:00Z",
-                "venue": "away",
-                "opponent": "Egypt",
-                "opponent_position": null,
-                "opponent_points": null,
-                "round": "3",
-                "source": "sportsdb-rounds"
-              }
-            ],
-            "away_round_upcoming": [
-              {
-                "date": "2026-06-22",
-                "kickoff": "2026-06-22T01:00:00Z",
-                "venue": "home",
-                "opponent": "Egypt",
-                "opponent_position": null,
-                "opponent_points": null,
-                "round": "2",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-06-27",
-                "kickoff": "2026-06-27T03:00:00Z",
-                "venue": "home",
-                "opponent": "Belgium",
-                "opponent_position": null,
-                "opponent_points": null,
-                "round": "3",
-                "source": "sportsdb-rounds"
-              }
-            ]
+            "home_round_upcoming": [],
+            "away_round_upcoming": []
           },
           "notes": [
             "bookmaker=Pinnacle",
@@ -38528,12 +38662,12 @@
           "weather_context": {
             "timezone": "Europe/Paris",
             "forecast_time": "2026-06-12T23:00",
-            "temperature_c": 16.8,
+            "temperature_c": 11.8,
             "precipitation_probability": 14,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 5.1,
+            "wind_speed_kmh": 4.7,
             "wind_gusts_kmh": 11.2,
-            "weather_code": 3
+            "weather_code": 2
           },
           "history_context": {
             "supported": false,
@@ -39060,7 +39194,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:01:14.455218+00:00"
+            "updated_at": "2026-06-06T19:59:41.099387+00:00"
           },
           "focus_digest": [
             "viaje largo",
@@ -39111,7 +39245,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
-              "clima_e_impacto": "Temperatura ideal (17ºC), sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura 12ºC, sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento internacional (3861 km). Impacto significativo en la preparación del visitante.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -39381,6 +39515,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|f1 hypermotion|f2 hypermotion|j67-14",
@@ -39604,6 +39739,7 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|espana|cabo verde|j67-15",
@@ -39640,7 +39776,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-07-22T18:30:00Z",
       "kickoff_to": "2026-07-22T18:30:00Z",
-      "updated_at": "2026-06-06T18:08:05.244765+00:00",
+      "updated_at": "2026-06-06T20:07:15.183272+00:00",
       "matches": [
         {
           "local": "Alavés",
@@ -40363,6 +40499,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|alaves|rayo|j64-1",
@@ -40588,7 +40725,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-06T18:08:05.225841+00:00"
+            "updated_at": "2026-06-06T20:07:15.163831+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -40857,6 +40994,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|betis|levante|j64-2",
@@ -41085,6 +41223,7 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -41810,6 +41949,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|espanyol|real sociedad|j64-4",
@@ -41987,6 +42127,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|getafe|ca osasuna|j64-5",
@@ -42142,6 +42283,7 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -42315,6 +42457,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|villarreal|atletico madrid|j64-7",
@@ -42462,6 +42605,7 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -42636,6 +42780,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|girona|elche cf|j64-9",
@@ -42671,7 +42816,7 @@
           "local": "MÁLAGA",
           "visitante": "RACING S.",
           "league": "",
-          "kickoff": "",
+          "kickoff": "2026-06-07T19:00:00Z",
           "bookmaker": "",
           "odds": {},
           "market_context": {
@@ -42807,6 +42952,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|malaga|racing s|j64-10",
@@ -42842,7 +42988,7 @@
           "local": "ANDORRA FC",
           "visitante": "CEUTA",
           "league": "",
-          "kickoff": "",
+          "kickoff": "2026-06-07T18:00:00Z",
           "bookmaker": "",
           "odds": {},
           "market_context": {
@@ -42964,6 +43110,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|andorra fc|ceuta|j64-11",
@@ -42999,7 +43146,7 @@
           "local": "HUESCA",
           "visitante": "Castellón",
           "league": "",
-          "kickoff": "",
+          "kickoff": "2026-06-06T19:00:00Z",
           "bookmaker": "",
           "odds": {},
           "market_context": {
@@ -43255,6 +43402,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|huesca|castellon|j64-12",
@@ -43504,6 +43652,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|eibar|cordoba|j64-13",
@@ -43539,7 +43688,7 @@
           "local": "SPORTING",
           "visitante": "ALMERÍA",
           "league": "",
-          "kickoff": "",
+          "kickoff": "2026-06-06T19:00:00Z",
           "bookmaker": "",
           "odds": {},
           "market_context": {
@@ -43718,6 +43867,7 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|sporting|almeria|j64-14",
@@ -43752,7 +43902,7 @@
         {
           "local": "Real Madrid",
           "visitante": "Athletic Bilbao",
-          "league": "",
+          "league": "soccer_spain_la_liga",
           "kickoff": "",
           "bookmaker": "",
           "odds": {},
@@ -43769,11 +43919,538 @@
             }
           },
           "weather_context": {},
-          "travel_context": {},
-          "schedule_context": {},
-          "history_context": {},
-          "competition_context": {},
-          "analytics_context": {},
+          "travel_context": {
+            "distance_km": 318.5,
+            "distance_bucket": "medium",
+            "home_country": "Spain",
+            "away_country": "España",
+            "international_trip": false
+          },
+          "schedule_context": {
+            "home": {
+              "days_since_last_match": null,
+              "matches_last_14_days": 0,
+              "fatigue": "unknown",
+              "fatigue_index": {
+                "score": 45.0,
+                "label": "medium"
+              }
+            },
+            "away": {
+              "days_since_last_match": null,
+              "matches_last_14_days": 0,
+              "fatigue": "unknown",
+              "fatigue_index": {
+                "score": 52.96,
+                "label": "medium"
+              }
+            }
+          },
+          "history_context": {
+            "supported": true,
+            "home": {
+              "resolved_name": "Real Madrid",
+              "table": {
+                "team": "Real Madrid",
+                "played": 38,
+                "points": 86,
+                "goals_for": 77,
+                "goals_against": 35,
+                "goal_diff": 42,
+                "position": 2
+              },
+              "recent_all": {
+                "matches": 5,
+                "form": "WLWWW",
+                "points": 12,
+                "points_per_game": 2.4,
+                "goals_for": 9,
+                "goals_against": 4,
+                "avg_goals_for": 1.8,
+                "avg_goals_against": 0.8,
+                "clean_sheets": 3
+              },
+              "recent_home": {
+                "matches": 5,
+                "form": "WDWWW",
+                "points": 13,
+                "points_per_game": 2.6,
+                "goals_for": 12,
+                "goals_against": 6,
+                "avg_goals_for": 2.4,
+                "avg_goals_against": 1.2,
+                "clean_sheets": 1
+              },
+              "recent_away": {
+                "matches": 5,
+                "form": "LDWLW",
+                "points": 7,
+                "points_per_game": 1.4,
+                "goals_for": 5,
+                "goals_against": 5,
+                "avg_goals_for": 1.0,
+                "avg_goals_against": 1.0,
+                "clean_sheets": 2
+              },
+              "rolling": {
+                "5": {
+                  "matches": 5,
+                  "avg_goals_for": 1.8,
+                  "avg_goals_against": 0.8,
+                  "avg_shots_for": 13.4,
+                  "avg_shots_against": 11.6,
+                  "avg_shots_on_target_for": 4.4,
+                  "avg_shots_on_target_against": 3.8
+                },
+                "10": {
+                  "matches": 10,
+                  "avg_goals_for": 1.7,
+                  "avg_goals_against": 1.1,
+                  "avg_shots_for": 15.7,
+                  "avg_shots_against": 12.5,
+                  "avg_shots_on_target_for": 6.3,
+                  "avg_shots_on_target_against": 3.9
+                },
+                "15": {
+                  "matches": 15,
+                  "avg_goals_for": 1.87,
+                  "avg_goals_against": 1.13,
+                  "avg_shots_for": 15.27,
+                  "avg_shots_against": 11.93,
+                  "avg_shots_on_target_for": 5.93,
+                  "avg_shots_on_target_against": 3.47
+                }
+              },
+              "streak": {
+                "sequence": "WLWWW",
+                "morale": "high"
+              },
+              "elo_rating": 1627.69
+            },
+            "away": {
+              "resolved_name": "Ath Bilbao",
+              "table": {
+                "team": "Ath Bilbao",
+                "played": 38,
+                "points": 45,
+                "goals_for": 43,
+                "goals_against": 58,
+                "goal_diff": -15,
+                "position": 12
+              },
+              "recent_all": {
+                "matches": 5,
+                "form": "WLLDL",
+                "points": 4,
+                "points_per_game": 0.8,
+                "goals_for": 7,
+                "goals_against": 10,
+                "avg_goals_for": 1.4,
+                "avg_goals_against": 2.0,
+                "clean_sheets": 0
+              },
+              "recent_home": {
+                "matches": 5,
+                "form": "WLWLD",
+                "points": 7,
+                "points_per_game": 1.4,
+                "goals_for": 5,
+                "goals_against": 5,
+                "avg_goals_for": 1.0,
+                "avg_goals_against": 1.0,
+                "clean_sheets": 1
+              },
+              "recent_away": {
+                "matches": 5,
+                "form": "LLWLL",
+                "points": 3,
+                "points_per_game": 0.6,
+                "goals_for": 8,
+                "goals_against": 13,
+                "avg_goals_for": 1.6,
+                "avg_goals_against": 2.6,
+                "clean_sheets": 0
+              },
+              "rolling": {
+                "5": {
+                  "matches": 5,
+                  "avg_goals_for": 1.4,
+                  "avg_goals_against": 2.0,
+                  "avg_shots_for": 13.8,
+                  "avg_shots_against": 8.4,
+                  "avg_shots_on_target_for": 4.6,
+                  "avg_shots_on_target_against": 4.4
+                },
+                "10": {
+                  "matches": 10,
+                  "avg_goals_for": 1.3,
+                  "avg_goals_against": 1.8,
+                  "avg_shots_for": 12.2,
+                  "avg_shots_against": 8.9,
+                  "avg_shots_on_target_for": 4.1,
+                  "avg_shots_on_target_against": 4.4
+                },
+                "15": {
+                  "matches": 15,
+                  "avg_goals_for": 1.2,
+                  "avg_goals_against": 1.67,
+                  "avg_shots_for": 12.73,
+                  "avg_shots_against": 8.93,
+                  "avg_shots_on_target_for": 4.47,
+                  "avg_shots_on_target_against": 4.13
+                }
+              },
+              "streak": {
+                "sequence": "WLLDL",
+                "morale": "neutral"
+              },
+              "elo_rating": 1450.32
+            },
+            "head_to_head": {
+              "meetings": 6,
+              "home_team_wins": 5,
+              "away_team_wins": 1,
+              "draws": 0,
+              "years_span": 3,
+              "recent_matches": [
+                {
+                  "date": "12/08/2023",
+                  "home": "Ath Bilbao",
+                  "away": "Real Madrid",
+                  "score": "0-2"
+                },
+                {
+                  "date": "31/03/2024",
+                  "home": "Real Madrid",
+                  "away": "Ath Bilbao",
+                  "score": "2-0"
+                },
+                {
+                  "date": "04/12/2024",
+                  "home": "Ath Bilbao",
+                  "away": "Real Madrid",
+                  "score": "2-1"
+                },
+                {
+                  "date": "20/04/2025",
+                  "home": "Real Madrid",
+                  "away": "Ath Bilbao",
+                  "score": "1-0"
+                },
+                {
+                  "date": "03/12/2025",
+                  "home": "Ath Bilbao",
+                  "away": "Real Madrid",
+                  "score": "0-3"
+                },
+                {
+                  "date": "23/05/2026",
+                  "home": "Real Madrid",
+                  "away": "Ath Bilbao",
+                  "score": "4-2"
+                }
+              ]
+            }
+          },
+          "competition_context": {
+            "season_code": "2526",
+            "home_relegation": {
+              "position": 2,
+              "points": 86,
+              "drop_zone_starts_at": 18,
+              "drop_zone_points": 42,
+              "safe_line_points": 42,
+              "gap_to_drop_zone": 44,
+              "gap_to_safe_line": -44,
+              "urgency": "low"
+            },
+            "away_relegation": {
+              "position": 12,
+              "points": 45,
+              "drop_zone_starts_at": 18,
+              "drop_zone_points": 42,
+              "safe_line_points": 42,
+              "gap_to_drop_zone": 3,
+              "gap_to_safe_line": -3,
+              "urgency": "medium"
+            },
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "home_objective": {
+              "objective_key": "title",
+              "objective_label": "titulo",
+              "status": "chasing",
+              "urgency": "low",
+              "summary": "persigue titulo a 8 pts",
+              "gap_points": 8,
+              "cushion_points": null,
+              "line_position": 1,
+              "line_points": 94,
+              "relevance_score": 48.0,
+              "must_win_index": 0,
+              "must_not_lose_index": 20,
+              "objective_swing_if_win": 26,
+              "objective_swing_if_lose": 18,
+              "swing_summary_if_win": "impacto material bajo",
+              "swing_summary_if_lose": "impacto material bajo",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "title",
+                  "objective_label": "titulo",
+                  "status": "chasing",
+                  "urgency": "low",
+                  "summary": "persigue titulo a 8 pts",
+                  "gap_points": 8,
+                  "cushion_points": null,
+                  "line_position": 1,
+                  "line_points": 94,
+                  "relevance_score": 48.0
+                },
+                {
+                  "objective_key": "champions",
+                  "objective_label": "Champions",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende Champions con 26 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 26,
+                  "line_position": 4,
+                  "line_points": 69,
+                  "relevance_score": 0.0
+                },
+                {
+                  "objective_key": "europa_league",
+                  "objective_label": "Europa League",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende Europa League con 32 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 32,
+                  "line_position": 5,
+                  "line_points": 60,
+                  "relevance_score": 0.0
+                },
+                {
+                  "objective_key": "conference",
+                  "objective_label": "Conference",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende Conference con 35 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 35,
+                  "line_position": 6,
+                  "line_points": 54,
+                  "relevance_score": 0.0
+                }
+              ]
+            },
+            "away_objective": {
+              "objective_key": "survival",
+              "objective_label": "salvacion",
+              "status": "defending",
+              "urgency": "high",
+              "summary": "defiende salvacion con 3 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 3,
+              "line_position": 17,
+              "line_points": 42,
+              "relevance_score": 95.0,
+              "must_win_index": 51,
+              "must_not_lose_index": 84,
+              "objective_swing_if_win": 57,
+              "objective_swing_if_lose": 65,
+              "swing_summary_if_win": "victoria abre colchon en salvacion",
+              "swing_summary_if_lose": "derrota puede meterle en descenso o dejarle al borde",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "high",
+                  "summary": "defiende salvacion con 3 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 3,
+                  "line_position": 17,
+                  "line_points": 42,
+                  "relevance_score": 95.0
+                },
+                {
+                  "objective_key": "conference",
+                  "objective_label": "Conference",
+                  "status": "chasing",
+                  "urgency": "low",
+                  "summary": "persigue Conference a 9 pts",
+                  "gap_points": 9,
+                  "cushion_points": null,
+                  "line_position": 6,
+                  "line_points": 54,
+                  "relevance_score": 20.0
+                }
+              ]
+            },
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
+            "competitive_stakes_label": "visitante defiende salvacion con 3 pts de colchon",
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "home_upcoming": [],
+            "away_upcoming": [],
+            "home_future_difficulty": {
+              "matches": 0,
+              "difficulty_index": 0.0,
+              "avg_opponent_position": null,
+              "top4_matches": 0,
+              "top6_matches": 0,
+              "top8_matches": 0,
+              "hard_opponents": [],
+              "label": "low"
+            },
+            "away_future_difficulty": {
+              "matches": 0,
+              "difficulty_index": 0.0,
+              "avg_opponent_position": null,
+              "top4_matches": 0,
+              "top6_matches": 0,
+              "top8_matches": 0,
+              "hard_opponents": [],
+              "label": "low"
+            }
+          },
+          "analytics_context": {
+            "home_pressure_index": {
+              "score": 23.92,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 44
+            },
+            "away_pressure_index": {
+              "score": 21.54,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 3
+            },
+            "home_fatigue_index": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away_fatigue_index": {
+              "score": 52.96,
+              "label": "medium"
+            },
+            "home_elo": 1627.69,
+            "away_elo": 1450.32,
+            "home_trend": {
+              "sequence": "WLWWW",
+              "morale": "high"
+            },
+            "away_trend": {
+              "sequence": "WLLDL",
+              "morale": "neutral"
+            },
+            "home_rolling": {
+              "5": {
+                "matches": 5,
+                "avg_goals_for": 1.8,
+                "avg_goals_against": 0.8,
+                "avg_shots_for": 13.4,
+                "avg_shots_against": 11.6,
+                "avg_shots_on_target_for": 4.4,
+                "avg_shots_on_target_against": 3.8
+              },
+              "10": {
+                "matches": 10,
+                "avg_goals_for": 1.7,
+                "avg_goals_against": 1.1,
+                "avg_shots_for": 15.7,
+                "avg_shots_against": 12.5,
+                "avg_shots_on_target_for": 6.3,
+                "avg_shots_on_target_against": 3.9
+              },
+              "15": {
+                "matches": 15,
+                "avg_goals_for": 1.87,
+                "avg_goals_against": 1.13,
+                "avg_shots_for": 15.27,
+                "avg_shots_against": 11.93,
+                "avg_shots_on_target_for": 5.93,
+                "avg_shots_on_target_against": 3.47
+              }
+            },
+            "away_rolling": {
+              "5": {
+                "matches": 5,
+                "avg_goals_for": 1.4,
+                "avg_goals_against": 2.0,
+                "avg_shots_for": 13.8,
+                "avg_shots_against": 8.4,
+                "avg_shots_on_target_for": 4.6,
+                "avg_shots_on_target_against": 4.4
+              },
+              "10": {
+                "matches": 10,
+                "avg_goals_for": 1.3,
+                "avg_goals_against": 1.8,
+                "avg_shots_for": 12.2,
+                "avg_shots_against": 8.9,
+                "avg_shots_on_target_for": 4.1,
+                "avg_shots_on_target_against": 4.4
+              },
+              "15": {
+                "matches": 15,
+                "avg_goals_for": 1.2,
+                "avg_goals_against": 1.67,
+                "avg_shots_for": 12.73,
+                "avg_shots_against": 8.93,
+                "avg_shots_on_target_for": 4.47,
+                "avg_shots_on_target_against": 4.13
+              }
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 51,
+            "home_must_not_lose_index": 20,
+            "away_must_not_lose_index": 84,
+            "direct_rivalry_index": 0,
+            "home_objective_swing_if_win": 26,
+            "home_objective_swing_if_lose": 18,
+            "away_objective_swing_if_win": 57,
+            "away_objective_swing_if_lose": 65
+          },
           "structured_context": {},
           "home_team_context": {
             "profile": {
@@ -43897,10 +44574,39 @@
             "items": [],
             "signals": {}
           },
-          "match_signals": {},
+          "match_signals": {
+            "weather_risk": "unknown",
+            "travel_burden_away": "medium",
+            "home_form_points_last_5": 12,
+            "away_form_points_last_5": 4,
+            "home_league_position": 2,
+            "away_league_position": 12,
+            "home_league_points": 86,
+            "away_league_points": 45,
+            "home_gap_to_drop": 44,
+            "away_gap_to_drop": 3,
+            "home_rest_days": null,
+            "away_rest_days": null,
+            "home_matches_last_14_days": 0,
+            "away_matches_last_14_days": 0,
+            "home_pressure_index": 23.92,
+            "away_pressure_index": 21.54,
+            "home_must_win_index": 0,
+            "away_must_win_index": 51,
+            "home_must_not_lose_index": 20,
+            "away_must_not_lose_index": 84,
+            "direct_rivalry_index": 0,
+            "season_context_phase": "final",
+            "competitive_stakes_label": "visitante defiende salvacion con 3 pts de colchon",
+            "home_fatigue_index": 45.0,
+            "away_fatigue_index": 52.96,
+            "home_elo": 1627.69,
+            "away_elo": 1450.32
+          },
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -43932,11 +44638,23 @@
             "1": null,
             "X": null,
             "2": null
+          },
+          "_schedule_inputs": {
+            "home_feed_upcoming": [],
+            "away_feed_upcoming": [],
+            "home_schedule_upcoming": [],
+            "away_schedule_upcoming": [],
+            "home_espn_upcoming": [],
+            "away_espn_upcoming": [],
+            "home_sportsdb_next_upcoming": [],
+            "away_sportsdb_next_upcoming": [],
+            "home_round_upcoming": [],
+            "away_round_upcoming": []
           }
         }
       ],
       "unmatched_slots": []
     }
   },
-  "updated_at": "2026-06-06T18:08:05.225978+00:00"
+  "updated_at": "2026-06-06T20:07:15.163966+00:00"
 }
