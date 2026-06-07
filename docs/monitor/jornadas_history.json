@@ -9,7 +9,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-05-30T01:00:00Z",
       "kickoff_to": "2026-05-31T19:00:00Z",
-      "updated_at": "2026-06-07T06:17:42.678234+00:00",
+      "updated_at": "2026-06-07T10:13:02.687786+00:00",
       "matches": [
         {
           "match_key": "soccer_spain_segunda_division|cd castellon|sd eibar|2026-05-31T16:30:00Z",
@@ -451,12 +451,25 @@
                 "opponent_position": 3,
                 "opponent_points": 74,
                 "league": "Spanish La Liga 2",
-                "round": "0",
+                "round": "170",
                 "stage": "",
                 "source": "sportsdb-next+espn-fixtures+espn-fixtures"
               }
             ],
-            "away_upcoming": [],
+            "away_upcoming": [
+              {
+                "date": "2026-07-18",
+                "kickoff": "2026-07-18T12:00:00Z",
+                "venue": "away",
+                "opponent": "Deportivo Alavés",
+                "opponent_position": 12,
+                "opponent_points": 59,
+                "league": "Club Friendlies",
+                "round": "0",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "home_future_difficulty": {
               "matches": 2,
               "difficulty_index": 100.0,
@@ -471,14 +484,14 @@
               "label": "critical"
             },
             "away_future_difficulty": {
-              "matches": 0,
-              "difficulty_index": 0.0,
-              "avg_opponent_position": null,
+              "matches": 1,
+              "difficulty_index": 72.5,
+              "avg_opponent_position": 12.0,
               "top4_matches": 0,
               "top6_matches": 0,
               "top8_matches": 0,
               "hard_opponents": [],
-              "label": "low"
+              "label": "critical"
             }
           },
           "schedule_context": {
@@ -510,9 +523,9 @@
               "gap_to_drop_zone": 32
             },
             "away_pressure_index": {
-              "score": 17.68,
-              "label": "low",
-              "future_difficulty": 0.0,
+              "score": 35.08,
+              "label": "medium",
+              "future_difficulty": 72.5,
               "hard_window_matches": 0,
               "gap_to_drop_zone": 27
             },
@@ -983,7 +996,7 @@
             "home_matches_last_14_days": 2,
             "away_matches_last_14_days": 2,
             "home_pressure_index": 52.76,
-            "away_pressure_index": 17.68,
+            "away_pressure_index": 35.08,
             "home_must_win_index": 66,
             "away_must_win_index": 35,
             "home_must_not_lose_index": 96,
@@ -1046,7 +1059,36 @@
               "avar_referee": "Óliver De La Fuente",
               "source": "rfef",
               "candidate_articles": [],
-              "season_analysis": {}
+              "season_analysis": {
+                "sample_matches": 3,
+                "season": "2025-2026",
+                "overall": {
+                  "home_win_pct": 66.67,
+                  "draw_pct": 0.0,
+                  "away_win_pct": 33.33,
+                  "baseline_home_win_pct": 44.81,
+                  "baseline_away_win_pct": 30.3,
+                  "home_bias_delta": 21.86,
+                  "away_bias_delta": 3.03,
+                  "avg_home_yellows": 1.67,
+                  "avg_away_yellows": 2.67,
+                  "avg_home_reds": 0.0,
+                  "avg_away_reds": 0.0,
+                  "bias_label": "home-lean"
+                },
+                "home_team": {
+                  "matches": 1,
+                  "wins": 1,
+                  "draws": 0,
+                  "losses": 0,
+                  "points_per_match": 3.0,
+                  "avg_yellows_for": 4.0,
+                  "avg_yellows_against": 2.0,
+                  "avg_reds_for": 0.0,
+                  "avg_reds_against": 0.0
+                },
+                "away_team": {}
+              }
             },
             "injury_context": {
               "home_team": {
@@ -1060,7 +1102,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:12:44.210396+00:00"
+            "updated_at": "2026-06-07T10:07:12.748790+00:00"
           },
           "focus_digest": [
             "contexto mental",
@@ -1084,7 +1126,7 @@
               "objetivo_visitante": "persigue play-off a 5 pts",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
               "analisis_calendario_local": "CD Castellón defiende play-off con 0 pts de colchon en final de temporada (must-win 66/100, no perder 96/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 2 rivales del top-6.",
-              "analisis_calendario_visitante": "SD Eibar persigue play-off a 5 pts en final de temporada (must-win 35/100, no perder 41/100). Calendario próximo equilibrado, sin presión de conservar fuerzas.",
+              "analisis_calendario_visitante": "SD Eibar persigue play-off a 5 pts en final de temporada (must-win 35/100, no perder 41/100). Calendario próximo sin rivales especialmente exigentes.",
               "h2h_resumen": "4 encuentros históricos: gana CD Castellón en 2, empates 1, gana SD Eibar en 1 (ventana de 2 años)."
             },
             "contexto_competitivo_avanzado": {
@@ -1251,7 +1293,7 @@
               "fatiga_y_descanso": "El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
               "clima_e_impacto": "Temperatura ideal (21ºC), sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Viaje notable para el visitante (409 km). Leve impacto físico.",
-              "arbitro": "Carlos Muñiz. Sin histórico arbitral fiable",
+              "arbitro": "Carlos Muñiz. muestra 3 partidos, local 66.67% vs base 44.81%, visitante 33.33% vs base 30.3%, sesgo home-lean",
               "lesiones": {
                 "local": "Sin bajas confirmadas.",
                 "visitante": "Sin bajas confirmadas."
@@ -1296,12 +1338,25 @@
                 "opponent_position": 3,
                 "opponent_points": 74,
                 "league": "Spanish La Liga 2",
+                "round": "170",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
+            "away_sportsdb_next_upcoming": [
+              {
+                "date": "2026-07-18",
+                "kickoff": "2026-07-18T12:00:00Z",
+                "venue": "away",
+                "opponent": "Deportivo Alavés",
+                "opponent_position": 12,
+                "opponent_points": 59,
+                "league": "Club Friendlies",
                 "round": "0",
                 "stage": "",
                 "source": "sportsdb-next"
               }
             ],
-            "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [],
             "away_round_upcoming": []
           },
@@ -1309,6 +1364,8 @@
             "bookmaker=LeoVegas (SE)",
             "id=1515f82cb56fe27b7d52364adf5e0c10",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -2131,8 +2188,27 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
-              "items": []
+              "website": "https://www.cordobacf.com",
+              "items": [
+                {
+                  "title": "Rueda de prensa de Carlos Albarrán tras el Córdoba CF - SD Huesca",
+                  "link": "https://www.cordobacf.com/videos/rueda-de-prensa-de-carlos-albarran-tras-el-cordoba-cf-sd-huesca-k8g6x7o21x8",
+                  "source": "Web oficial",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "Rueda de prensa de Iván Ania previa al Córdoba CF - SD Huesca",
+                  "link": "https://www.cordobacf.com/videos/rueda-de-prensa-de-ivan-ania-previa-al-cordoba-cf-sd-huesca-dtmuo1ovf0e",
+                  "source": "Web oficial",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "Rueda de prensa de Iván Ania tras el Córdoba CF - SD Huesca",
+                  "link": "https://www.cordobacf.com/videos/rueda-de-prensa-de-ivan-ania-tras-el-cordoba-cf-sd-huesca-terg3t4lfxq",
+                  "source": "Web oficial",
+                  "_signal": 1.7
+                }
+              ]
             }
           },
           "away_team_context": {
@@ -2307,7 +2383,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
+              "website": "https://www.sdhuesca.es",
               "items": []
             }
           },
@@ -2451,11 +2527,11 @@
             "match_key": "soccer_spain_segunda_division|cordoba|sd huesca|2026-05-31T19:00:00Z",
             "event_context": {
               "sportsdb_event_id": "",
-              "sportsdb_home_team_id": "",
-              "sportsdb_away_team_id": "",
-              "venue": "",
-              "stadium_city": "",
-              "league": "",
+              "sportsdb_home_team_id": "134627",
+              "sportsdb_away_team_id": "135454",
+              "venue": "Estadio Nuevo Arcángel",
+              "stadium_city": "Córdoba, Andalusia, Spain",
+              "league": "Spanish La Liga 2",
               "round": "43",
               "status": ""
             },
@@ -2506,7 +2582,7 @@
                 "count": 1
               }
             },
-            "updated_at": "2026-06-07T06:12:55.820172+00:00"
+            "updated_at": "2026-06-07T10:07:27.014821+00:00"
           },
           "focus_digest": [
             "bajas local 2",
@@ -2679,6 +2755,8 @@
             "bookmaker=LeoVegas (SE)",
             "id=ad5705b0b0ac75e1d73d7c5158050b7f",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -3170,7 +3248,7 @@
                 "opponent_points": 73,
                 "league": "soccer_spain_segunda_division",
                 "source": "odds-feed+sportsdb-next+espn-fixtures+espn-fixtures",
-                "round": "0"
+                "round": "170"
               },
               {
                 "date": "2026-06-10",
@@ -3395,7 +3473,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
+              "website": "https://www.canaldeportivo.com/equipo/rcdeportivo.html",
               "items": []
             }
           },
@@ -3510,7 +3588,7 @@
                 {
                   "title": "Rueda de prensa de Luis García previa al Deportivo de La Coruña - UD Las Palmas - La Provincia",
                   "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNTkhKUG9sMC1OOTU2VW9MYjFxQi16MTVicmFMRFpiQUdfTHRHNnFpVnloUjVPSmZjWTFrZ2FESjNieDAwUVpqejNVNEE1LWlfZHJwYTVuNmlfb0FvYndFNXBpRlRlOVBzRFc0TURuWHJuam9jSG56THUxbEZpajJJRFljYWZTTmJVNjVQbHJzTjF2TkpRYmZyWTZFV054ZjlnMWw1dXhBRjd3VmJtUFR5a1c3SHfSAboBQVVfeXFMTURmdjRvYWgxVjBuS3VWLU5HaWItQmhxMjZLc0tkOUpuMWNnVElBcVBSN0JwQWdMQXVuOVZZbHJXbEFWM0VSeHc5cTdGUmlWdWp6WnRtR1oxYjgwS0d1VTF2WlgxTzhReXNkNjlTMVYwN09MZ0dQYTFZaUw5WXdWVnFSQlJoQmExRkpLcTQxdVhxV1dCX1kyY1JPYk9VTEgzOWNLeFBLd0RZdm1xcEdUY1FEWDJuTnZ1el9R?oc=5",
-                  "published_at": "Fri, 29 May 2026 11:53:09 GMT",
+                  "published_at": "Fri, 29 May 2026 07:00:00 GMT",
                   "source": "La Provincia",
                   "_signal": 1.7
                 }
@@ -3706,14 +3784,14 @@
           "structured_context": {
             "match_key": "soccer_spain_segunda_division|deportivo la coruna|las palmas|2026-05-31T16:30:00Z",
             "event_context": {
-              "sportsdb_event_id": "2280457",
-              "sportsdb_home_team_id": "",
+              "sportsdb_event_id": "",
+              "sportsdb_home_team_id": "133816",
               "sportsdb_away_team_id": "134259",
               "venue": "Estadio Abanca-Riazor",
-              "stadium_city": "",
+              "stadium_city": "A Coruña",
               "league": "Spanish La Liga 2",
-              "round": "42",
-              "status": "FT"
+              "round": "43",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -3736,7 +3814,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:13:03.470506+00:00"
+            "updated_at": "2026-06-07T10:07:56.662366+00:00"
           },
           "focus_digest": [
             "viaje largo",
@@ -3978,7 +4056,7 @@
                 "opponent_position": 4,
                 "opponent_points": 73,
                 "league": "Spanish La Liga 2",
-                "round": "0",
+                "round": "170",
                 "stage": "",
                 "source": "sportsdb-next"
               }
@@ -3990,6 +4068,8 @@
             "bookmaker=Unibet (NL)",
             "id=291b968f6c03689fc9d571b0db8f68c6",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -4918,7 +4998,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:13:14.199144+00:00"
+            "updated_at": "2026-06-07T10:07:58.331968+00:00"
           },
           "focus_digest": [
             "calendario apretado",
@@ -5089,6 +5169,8 @@
             "bookmaker=PMU (FR)",
             "id=e6d4c1e7f23196517c94edf2e105259a",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -6176,7 +6258,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:13:52.530489+00:00"
+            "updated_at": "2026-06-07T10:08:02.434779+00:00"
           },
           "focus_digest": [
             "contexto mental",
@@ -6373,6 +6455,8 @@
             "bookmaker=PMU (FR)",
             "id=6e7dbb756b26aca56c81577545755e71",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -6848,7 +6932,7 @@
                 "opponent_position": 6,
                 "opponent_points": 72,
                 "league": "Spanish La Liga 2",
-                "round": "0",
+                "round": "170",
                 "stage": "",
                 "source": "sportsdb-next+espn-fixtures+espn-fixtures"
               }
@@ -7384,7 +7468,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:14:36.885792+00:00"
+            "updated_at": "2026-06-07T10:08:56.216064+00:00"
           },
           "focus_digest": [
             "contexto mental",
@@ -7591,7 +7675,7 @@
                 "opponent_position": 6,
                 "opponent_points": 72,
                 "league": "Spanish La Liga 2",
-                "round": "0",
+                "round": "170",
                 "stage": "",
                 "source": "sportsdb-next"
               }
@@ -7604,6 +7688,8 @@
             "bookmaker=LeoVegas (SE)",
             "id=906247c494cc4d838337689527fbb550",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -8568,7 +8654,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:15:16.277923+00:00"
+            "updated_at": "2026-06-07T10:09:00.012385+00:00"
           },
           "focus_digest": [
             "convocatoria",
@@ -8834,6 +8920,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "official_quiniela_percentages": {
@@ -8863,13 +8951,13 @@
           },
           "weather_context": {
             "timezone": "America/Menominee",
-            "forecast_time": "2026-06-06T00:00",
-            "temperature_c": 16.7,
-            "precipitation_probability": 8,
+            "forecast_time": "2026-06-07T00:00",
+            "temperature_c": 15.0,
+            "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 1.3,
-            "wind_gusts_kmh": 9.4,
-            "weather_code": 3
+            "wind_speed_kmh": 4.7,
+            "wind_gusts_kmh": 16.2,
+            "weather_code": 0
           },
           "travel_context": {
             "distance_km": 6611.7,
@@ -9337,7 +9425,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:15:28.750149+00:00"
+            "updated_at": "2026-06-07T10:09:45.943442+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -9759,7 +9847,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Carga física: local low, visitante medium. Tiempo de descanso similar (6 vs 6 días).",
-              "clima_e_impacto": "Temperatura ideal (17ºC), sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (15ºC), sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento internacional (6612 km). Impacto significativo en la preparación del visitante.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -9769,6 +9857,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -10372,17 +10462,32 @@
               "reason": "",
               "next_high_importance_fixture": {}
             },
-            "home_upcoming": [],
+            "home_upcoming": [
+              {
+                "date": "2026-07-29",
+                "kickoff": "2026-07-29T12:00:00Z",
+                "venue": "home",
+                "opponent": "Eibar",
+                "opponent_position": 8,
+                "opponent_points": 67,
+                "league": "Club Friendlies",
+                "round": "0",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "away_upcoming": [],
             "home_future_difficulty": {
-              "matches": 0,
-              "difficulty_index": 0.0,
-              "avg_opponent_position": null,
+              "matches": 1,
+              "difficulty_index": 100.0,
+              "avg_opponent_position": 8.0,
               "top4_matches": 0,
               "top6_matches": 0,
-              "top8_matches": 0,
-              "hard_opponents": [],
-              "label": "low"
+              "top8_matches": 1,
+              "hard_opponents": [
+                "Eibar"
+              ],
+              "label": "critical"
             },
             "away_future_difficulty": {
               "matches": 0,
@@ -10417,10 +10522,10 @@
           },
           "analytics_context": {
             "home_pressure_index": {
-              "score": 11.82,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 40.32,
+              "label": "medium",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": 7
             },
             "away_pressure_index": {
@@ -10590,7 +10695,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
+              "website": "https://www.realsociedad.eus/en/team/sanse",
               "items": []
             }
           },
@@ -10659,7 +10764,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
+              "website": "https://www.cydleonesa.com",
               "items": []
             }
           },
@@ -10747,7 +10852,7 @@
             "away_rest_days": 0,
             "home_matches_last_14_days": 2,
             "away_matches_last_14_days": 2,
-            "home_pressure_index": 11.82,
+            "home_pressure_index": 40.32,
             "away_pressure_index": 37.24,
             "home_must_win_index": 31,
             "away_must_win_index": 30,
@@ -10796,11 +10901,11 @@
             "match_key": "soccer_spain_segunda_division|real sociedad b|cultural leonesa|2026-05-30T14:15:00Z",
             "event_context": {
               "sportsdb_event_id": "",
-              "sportsdb_home_team_id": "",
-              "sportsdb_away_team_id": "",
-              "venue": "",
-              "stadium_city": "",
-              "league": "",
+              "sportsdb_home_team_id": "138160",
+              "sportsdb_away_team_id": "135888",
+              "venue": "Campo José Luis Orbegozo",
+              "stadium_city": "Zubieta, San Sebastián",
+              "league": "Spanish La Liga 2",
               "round": "43",
               "status": ""
             },
@@ -10825,10 +10930,11 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:15:40.512099+00:00"
+            "updated_at": "2026-06-07T10:10:40.297705+00:00"
           },
           "focus_digest": [
             "calendario apretado",
+            "ventana dura",
             "objetivo competitivo"
           ],
           "focus_ai_briefing": {
@@ -10846,7 +10952,7 @@
               "objetivo_local": "defiende salvacion con 7 pts de colchon",
               "objetivo_visitante": "persigue salvacion a 6 pts",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
-              "analisis_calendario_local": "Real Sociedad B defiende salvacion con 7 pts de colchon en final de temporada (must-win 31/100, no perder 22/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Nivel de urgencia bajo (+7 puntos sobre el descenso), juegan sin presión extrema.",
+              "analisis_calendario_local": "Real Sociedad B defiende salvacion con 7 pts de colchon en final de temporada (must-win 31/100, no perder 22/100). Victoria abre colchon en salvacion. Calendario próximo sin rivales especialmente exigentes. Nivel de urgencia bajo (+7 puntos sobre el descenso), juegan sin presión extrema.",
               "analisis_calendario_visitante": "Cultural Leonesa persigue salvacion a 6 pts en final de temporada (must-win 30/100, no perder 44/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. Urgencia clasificatoria alta, necesitan 6 puntos para la salvación. Juegan con la presión del descenso.",
               "h2h_resumen": "2 encuentros históricos: gana Real Sociedad B en 0, empates 2, gana Cultural Leonesa en 0 (ventana de 0 años)."
             },
@@ -10980,7 +11086,20 @@
             "away_schedule_upcoming": [],
             "home_espn_upcoming": [],
             "away_espn_upcoming": [],
-            "home_sportsdb_next_upcoming": [],
+            "home_sportsdb_next_upcoming": [
+              {
+                "date": "2026-07-29",
+                "kickoff": "2026-07-29T12:00:00Z",
+                "venue": "home",
+                "opponent": "Eibar",
+                "opponent_position": 8,
+                "opponent_points": 67,
+                "league": "Club Friendlies",
+                "round": "0",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [],
             "away_round_upcoming": []
@@ -10989,6 +11108,8 @@
             "bookmaker=PMU (FR)",
             "id=38695e21baf982910f4560f1422c4121",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -11477,7 +11598,7 @@
                 "opponent_points": 73,
                 "league": "soccer_spain_segunda_division",
                 "source": "odds-feed+sportsdb-next+espn-fixtures+espn-fixtures",
-                "round": "0"
+                "round": "170"
               },
               {
                 "date": "2026-06-10",
@@ -11824,13 +11945,6 @@
                   "_signal": 1.7
                 },
                 {
-                  "title": "Vélez-Málaga abre una nueva convocatoria del proyecto INTEGRA+ para mejorar la formación y el acceso al empleo de personas desempleadas - AxarquiaPlus",
-                  "link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxPLVZvanp5bVFZVW9tNHZsUmUxUlVKYlVPMzRNTjFkWHJoTV8xQkhJQkhJSWRlQjdpcm01VmRNekV3TmNkbGtoYzY2cnJDS01PT0ZMbngtS2NZajJoekV2Wm9HQy10bmJ5ZzVURkFXdVJiWVg1UHJrNlNjVkRrOUpmTmZyUEhNaVRibWdFWThZZkF0X0RncVdQdU1tNUw4XzNyU3dBbm9wMnJEWEN2Y3F2Q1dRQkQ4eXZ2NnhNVmlkc1VyS0VhaXNKakJTSkwydlNwTXJhOVJEakFnd1Y3ai1oSGtiN1pycUtjMVluT0htWm1faGVyckE?oc=5",
-                  "published_at": "Tue, 02 Jun 2026 10:46:32 GMT",
-                  "source": "AxarquiaPlus",
-                  "_signal": 1.7
-                },
-                {
                   "title": "Comienza la Selectividad 2026: guía para la convocatoria de junio en Málaga - Málaga Hoy",
                   "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPOEhNXzJ4TVlLYTYtUXFZRmFZNG14M2JzRGFwUkc0VFRyaTg3OW1Na1U4ZEFnS1RQd1IySGNEOTJlUTZUbUxjYUVVZDNpYy1WaGgxbjJPWHRZQ3hKMGhaV0hZY1lKelp5VDVyRzV1d0lRZDBaWUxjRXFNYng5cjB5NTFtZGVFRjJPcDdzTjktaXRWZTVUZnRDVlJXMk1rYUx4ekdlM1M5em4tTjDSAbABQVVfeXFMUDF1Y3hoaGR5U1ZfanUzTno2aHliejlsbGxEMUpfb3psZnE3RDEzTzl4eENNRmV5TEVnY0xJUkxDU0l3NmlYS2RrZDJxRkFYbzB6TXkwREV2MTlXVHlOR05nXzl0d0hQLVBZRXF0aVJBOGdFVFg4QTRMdjFLRW42b2tlU2FqNHpWaFZVWjlqNWdnVTQwSGpGUDVNN3RQZVBSZWFPa2xBTE9jeURqZjdhMlY?oc=5",
                   "published_at": "Tue, 02 Jun 2026 04:55:11 GMT",
@@ -11880,7 +11994,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 1,
-                "squad_count": 10,
+                "squad_count": 9,
                 "morale_count": 4
               },
               "query_count": 5
@@ -11893,13 +12007,6 @@
                   "published_at": "Thu, 04 Jun 2026 14:36:31 GMT",
                   "source": "Andalucía Información",
                   "_signal": 1.8
-                },
-                {
-                  "title": "Dani Sánchez volverá a una convocatoria casi 3 meses después - Radio Marca Málaga",
-                  "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBnTWVoeUNfSGUtQWRfVzR1bmdQSTlyYXJHU0h0UDhEQXEtNXBkMjVGZmVRckdkckljNGxQUWNSc0hZWjJmcXBoMlFzQUhNY2ZDdFV6MXYtV2Z1ZGZSUTBaVlJ1NHNUOE5hNlNRYTNTbHdBNnlSRUVlRk45a09TREU?oc=5",
-                  "published_at": "Wed, 03 Jun 2026 11:06:13 GMT",
-                  "source": "Radio Marca Málaga",
-                  "_signal": 1.7
                 },
                 {
                   "title": "Convocatoria Málaga CF: Funes se lleva a todos los disponibles a Zaragoza - Radio Marca Málaga",
@@ -11916,7 +12023,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 2,
+                "squad_count": 1,
                 "morale_count": 1
               },
               "query_count": 3
@@ -12099,7 +12206,7 @@
               "venue": "Estadio de Gran Canaria",
               "stadium_city": "Villanueva de Gállego, Zaragoza",
               "league": "Spanish La Liga 2",
-              "round": "0",
+              "round": "170",
               "status": "NS"
             },
             "referee_context": {
@@ -12123,7 +12230,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:15:49.653400+00:00"
+            "updated_at": "2026-06-07T10:11:33.166903+00:00"
           },
           "focus_digest": [
             "clima duro",
@@ -12341,7 +12448,7 @@
                 "opponent_position": 5,
                 "opponent_points": 73,
                 "league": "Spanish La Liga 2",
-                "round": "0",
+                "round": "170",
                 "stage": "",
                 "source": "sportsdb-next"
               }
@@ -12353,6 +12460,8 @@
             "bookmaker=PMU (FR)",
             "id=aa584ba920cf41e5fbf08a8034181e33",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -13061,7 +13170,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
+              "website": "https://www.burgoscf.es",
               "items": []
             }
           },
@@ -13251,11 +13360,11 @@
             "match_key": "soccer_spain_segunda_division|burgos cf|andorra cf|2026-05-31T16:30:00Z",
             "event_context": {
               "sportsdb_event_id": "",
-              "sportsdb_home_team_id": "",
-              "sportsdb_away_team_id": "",
-              "venue": "",
-              "stadium_city": "",
-              "league": "",
+              "sportsdb_home_team_id": "138161",
+              "sportsdb_away_team_id": "150482",
+              "venue": "Estadio Municipal de El Plantío",
+              "stadium_city": "Burgos, Spain",
+              "league": "Spanish La Liga 2",
               "round": "43",
               "status": ""
             },
@@ -13280,7 +13389,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:15:58.984294+00:00"
+            "updated_at": "2026-06-07T10:11:37.052736+00:00"
           },
           "focus_digest": [
             "calendario apretado",
@@ -13463,6 +13572,8 @@
             "bookmaker=PMU (FR)",
             "id=abaed47675a2fceaeb7174bec26cee4e",
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -13973,7 +14084,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:16:34.955051+00:00"
+            "updated_at": "2026-06-07T10:12:03.430529+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -14759,6 +14870,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|mexico|australia|j65-12",
@@ -14938,12 +15051,12 @@
           },
           "weather_context": {
             "timezone": "America/Tegucigalpa",
-            "forecast_time": "2026-06-06T00:00",
-            "temperature_c": 25.3,
-            "precipitation_probability": 6,
-            "precipitation_mm": 0.5,
-            "wind_speed_kmh": 1.9,
-            "wind_gusts_kmh": 8.6,
+            "forecast_time": "2026-06-07T00:00",
+            "temperature_c": 24.8,
+            "precipitation_probability": 31,
+            "precipitation_mm": 0.6,
+            "wind_speed_kmh": 3.9,
+            "wind_gusts_kmh": 9.0,
             "weather_code": 53
           },
           "travel_context": {
@@ -15388,7 +15501,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:17:13.747795+00:00"
+            "updated_at": "2026-06-07T10:12:24.242275+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -15799,7 +15912,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Carga física: local low, visitante medium. Tiempo de descanso similar (6 vs 6 días).",
-              "clima_e_impacto": "Temperatura 25ºC, sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (25ºC), posibilidad de lluvia moderada, sin viento significativo.",
               "viaje": "Desplazamiento internacional (16948 km). Impacto significativo en la preparación del visitante.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -15809,6 +15922,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -16072,13 +16187,13 @@
           },
           "weather_context": {
             "timezone": "America/Mexico_City",
-            "forecast_time": "2026-06-06T00:00",
-            "temperature_c": 22.1,
-            "precipitation_probability": 98,
-            "precipitation_mm": 0.2,
-            "wind_speed_kmh": 4.9,
-            "wind_gusts_kmh": 12.6,
-            "weather_code": 51
+            "forecast_time": "2026-06-07T00:00",
+            "temperature_c": 21.9,
+            "precipitation_probability": 96,
+            "precipitation_mm": 0.5,
+            "wind_speed_kmh": 7.0,
+            "wind_gusts_kmh": 26.3,
+            "weather_code": 53
           },
           "travel_context": {
             "distance_km": 9657.2,
@@ -16522,7 +16637,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:17:26.475943+00:00"
+            "updated_at": "2026-06-07T10:12:35.795116+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -17118,6 +17233,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|alemania|finlandia|j65-14",
@@ -17179,7 +17296,7 @@
             "timezone": "Europe/Amsterdam",
             "forecast_time": "2026-06-07T00:00",
             "temperature_c": 14.6,
-            "precipitation_probability": 45,
+            "precipitation_probability": 49,
             "precipitation_mm": 0.0,
             "wind_speed_kmh": 14.8,
             "wind_gusts_kmh": 31.3,
@@ -17500,7 +17617,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:17:42.664963+00:00"
+            "updated_at": "2026-06-07T10:13:02.670994+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -18314,6 +18431,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|psg|arsenal|j65-15",
@@ -18386,7 +18505,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-06-06T13:00:00Z",
       "kickoff_to": "2026-06-07T19:00:00Z",
-      "updated_at": "2026-06-07T06:17:42.669420+00:00",
+      "updated_at": "2026-06-07T10:13:02.675977+00:00",
       "matches": [
         {
           "match_key": "soccer_spain_segunda_division|cd castellon|almeria|2026-06-06T19:00:00Z",
@@ -18818,7 +18937,7 @@
                 "opponent_position": 3,
                 "opponent_points": 74,
                 "league": "Spanish La Liga 2",
-                "round": "0",
+                "round": "170",
                 "stage": "",
                 "source": "sportsdb-next+espn-fixtures+espn-fixtures"
               }
@@ -18832,7 +18951,7 @@
                 "opponent_position": 6,
                 "opponent_points": 72,
                 "league": "Spanish La Liga 2",
-                "round": "0",
+                "round": "170",
                 "stage": "",
                 "source": "sportsdb-next+espn-fixtures+espn-fixtures"
               }
@@ -19354,17 +19473,10 @@
               },
               {
                 "title": "CD Castellón 1-1 UD Almería: resumen, resultado y goles de las semifinales del 'play-off' de ascenso a Primera División - Cadena SER",
-                "link": "https://news.google.com/rss/articles/CBMijgJBVV95cUxPQU4tWWpkNTBkZk9adVNoVXhMVTBRMzF2bXhwOXAyeU1xeHNfZnJRN1Z6bExsZkxKWWJDZDVxbUpWeHYySU9rODRmTEgtUEhfalVSb0x1WFMySmxRMm1XVHNNd0NISDFYODRDdGVHUW5kQUxDNXZfa2dueWpzbmViX0FLeEoxQ2RCVkk0blJLN0RYa0JOdllLRE14S184NjRFTVdoYVVJN2Q4U09kWGNRNzZ6cmthMzF2QXg1cE5Pel94N0FOeVdBR21wQVB0aGp1SjlkMGR6STJsMFpUSjhxeWxxbjhwRTVfLW0yUktPZk5mS0pTQkdIR0NFcGprdlJuNXpJQWhUU1NNOWM2MXfSAaICQVVfeXFMTy1tVUNvZkotaldBUmRoOUZEVFBqMlgyc3FhNmR2QlM2MEdpNUZHMVo0b2dCSFpKSjQ3aGhYc2lZU0ptdjBKRjFONWlZS1doaWFURGphQjdxZzRxak1kVm0zblhuX0RhMDZCSTRoaHYzZXk5UlQ3cWpVM0o1aWk3N05vbGl1S2pIM0JyUjc5a2lxVjdkUWh0SGYzVnhKd2MxSU13ZDFJTFBIMVJsdW5kMVpNWjdhT3ctcUJTc0M5T19IcHV6REQ0SVZuX216WlIzMGNDYlhQcVFtanJ3cE82YnlDby1KLURLQUZoX1pQdFBpRVNOZjBkZ3B1OWJPaG1PMkhFdmFpeXJ0Z0pVbmFNbTZBdWdtSjZoMTlTVm0tSEp1dnc?oc=5",
+                "link": "https://news.google.com/rss/articles/CBMijgJBVV95cUxPQU4tWWpkNTBkZk9adVNoVXhMVTBRMzF2bXhwOXAyeU1xeHNfZnJRN1Z6bExsZkxKWWJDZDVxbUpWeHYySU9rODRmTEgtUEhfalVSb0x1WFMySmxRMm1XVHNNd0NISDFYODRDdGVHUW5kQUxDNXZfa2dueWpzbmViX0FLeEoxQ2RCVkk0blJLN0RYa0JOdllLRE14S184NjRFTVdoYVVJN2Q4U09kWGNRNzZ6cmthMzF2QXg1cE5Pel94N0FOeVdBR21wQVB0aGp1SjlkMGR6STJsMFpUSjhxeWxxbjhwRTVfLW0yUktPZk5mS0pTQkdIR0NFcGprdlJuNXpJQWhUU1NNOWM2MXc?oc=5",
                 "published_at": "Sat, 06 Jun 2026 22:57:10 GMT",
                 "source": "Cadena SER",
                 "_signal": 3.8
-              },
-              {
-                "title": "Almería-Castellón y Málaga-Las Palmas, los playoffs de ascenso a Primera División: un equipo acompañará a Racing y Dépor - Cadena SER",
-                "link": "https://news.google.com/rss/articles/CBMiggJBVV95cUxPYXM0cHlqRjFSZ2RxYnBFS3lJTkF4MVNhNERsVmJ5eUtCY2ZOLWFTcjJWbnFzSGswUEJxeXoxSzJJX3Y1bXZEVzVpejc3emttOHdqLThOV2RwR2lEOGxRV2pWTGYzQnl6WHhxR0Z3WjUyc2liUjBqbjFXT1ZUTm5ETWRvZURQbW1reWYtOC1PVGdra0tYVTlzc2ZlX0txOGNIemxKZXVQdE0wWHgyZTM5ejJUbmZ0SGw1MlluVUR3UlJfeXBpLWJMWUZVLUpTdTJpSGQ4MG1paDNCdUxvcHNiVl9pdTJ1NFJGTXoxbld4akRDSWFEM2dEUDBNQ2dCNUtxRFHSAZYCQVVfeXFMT21Qdk9HQkpvQ0tEV2t2ejhRMU1DaDVwNTNSbllGOWQ4ZFpTTjFVeDgwM1RvXzVvdnJLQmxYRkZXYjh4aDNJQ01RVXVPWkRxWWRBbmcxR1ZRNHNJdHNicW91eDMwUU51LXNubFFXUHpiZVNjc195RlZmMW1QMldPRERTeXY2ZDJQMThGRmM3bmhZeDBQbzhLaDQwLWhJNGpmd1VvOGRBUTM5Mndhc3oweGFpeWFXSmpRM1BsVlhIY0tWVnlTa1E2M24yYXBMTmhHdDJpemwzWUtEcHh1Z05UQzJMcXdzeFhkQnZDT1JOS0NhUlpSV2wxV2NsNl94QmNaU3VJVkpKZ3VHRjJvQnNCUmIyc09ReUE?oc=5",
-                "published_at": "Sun, 31 May 2026 20:24:03 GMT",
-                "source": "Cadena SER",
-                "_signal": 1.8
               },
               {
                 "title": "Así quedan los 'playoffs' de ascenso a Primera: Castellón-Almería y Las Palmas-Málaga - MARCA",
@@ -19507,9 +19619,9 @@
                   "2": 20.94
                 },
                 "lae": {
-                  "1": 44.0,
-                  "X": 31.0,
-                  "2": 25.0
+                  "1": 46.0,
+                  "X": 30.0,
+                  "2": 24.0
                 }
               }
             }
@@ -19525,7 +19637,7 @@
               "venue": "UD Almería Stadium",
               "stadium_city": "Castellón, Spain",
               "league": "Spanish La Liga 2",
-              "round": "0",
+              "round": "170",
               "status": "NS"
             },
             "referee_context": {
@@ -19549,7 +19661,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:05:24.419230+00:00"
+            "updated_at": "2026-06-07T10:02:36.799235+00:00"
           },
           "focus_digest": [
             "contexto mental",
@@ -19785,7 +19897,7 @@
                 "opponent_position": 3,
                 "opponent_points": 74,
                 "league": "Spanish La Liga 2",
-                "round": "0",
+                "round": "170",
                 "stage": "",
                 "source": "sportsdb-next"
               }
@@ -19799,7 +19911,7 @@
                 "opponent_position": 6,
                 "opponent_points": 72,
                 "league": "Spanish La Liga 2",
-                "round": "0",
+                "round": "170",
                 "stage": "",
                 "source": "sportsdb-next"
               }
@@ -19858,11 +19970,11 @@
           "weather_context": {
             "timezone": "Atlantic/Canary",
             "forecast_time": "2026-06-07T19:00",
-            "temperature_c": 21.0,
+            "temperature_c": 20.7,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 18.0,
-            "wind_gusts_kmh": 38.9,
+            "wind_speed_kmh": 17.8,
+            "wind_gusts_kmh": 40.0,
             "weather_code": 2
           },
           "history_context": {
@@ -20503,7 +20615,7 @@
                 {
                   "title": "Rueda de prensa de Luis García previa al Deportivo de La Coruña - UD Las Palmas - La Provincia",
                   "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNTkhKUG9sMC1OOTU2VW9MYjFxQi16MTVicmFMRFpiQUdfTHRHNnFpVnloUjVPSmZjWTFrZ2FESjNieDAwUVpqejNVNEE1LWlfZHJwYTVuNmlfb0FvYndFNXBpRlRlOVBzRFc0TURuWHJuam9jSG56THUxbEZpajJJRFljYWZTTmJVNjVQbHJzTjF2TkpRYmZyWTZFV054ZjlnMWw1dXhBRjd3VmJtUFR5a1c3SHfSAboBQVVfeXFMTURmdjRvYWgxVjBuS3VWLU5HaWItQmhxMjZLc0tkOUpuMWNnVElBcVBSN0JwQWdMQXVuOVZZbHJXbEFWM0VSeHc5cTdGUmlWdWp6WnRtR1oxYjgwS0d1VTF2WlgxTzhReXNkNjlTMVYwN09MZ0dQYTFZaUw5WXdWVnFSQlJoQmExRkpLcTQxdVhxV1dCX1kyY1JPYk9VTEgzOWNLeFBLd0RZdm1xcEdUY1FEWDJuTnZ1el9R?oc=5",
-                  "published_at": "Fri, 29 May 2026 11:53:09 GMT",
+                  "published_at": "Fri, 29 May 2026 07:00:00 GMT",
                   "source": "La Provincia",
                   "_signal": 1.7
                 }
@@ -20677,13 +20789,6 @@
                   "_signal": 1.7
                 },
                 {
-                  "title": "Vélez-Málaga abre una nueva convocatoria del proyecto INTEGRA+ para mejorar la formación y el acceso al empleo de personas desempleadas - AxarquiaPlus",
-                  "link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxPLVZvanp5bVFZVW9tNHZsUmUxUlVKYlVPMzRNTjFkWHJoTV8xQkhJQkhJSWRlQjdpcm01VmRNekV3TmNkbGtoYzY2cnJDS01PT0ZMbngtS2NZajJoekV2Wm9HQy10bmJ5ZzVURkFXdVJiWVg1UHJrNlNjVkRrOUpmTmZyUEhNaVRibWdFWThZZkF0X0RncVdQdU1tNUw4XzNyU3dBbm9wMnJEWEN2Y3F2Q1dRQkQ4eXZ2NnhNVmlkc1VyS0VhaXNKakJTSkwydlNwTXJhOVJEakFnd1Y3ai1oSGtiN1pycUtjMVluT0htWm1faGVyckE?oc=5",
-                  "published_at": "Tue, 02 Jun 2026 10:46:32 GMT",
-                  "source": "AxarquiaPlus",
-                  "_signal": 1.7
-                },
-                {
                   "title": "Comienza la Selectividad 2026: guía para la convocatoria de junio en Málaga - Málaga Hoy",
                   "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPOEhNXzJ4TVlLYTYtUXFZRmFZNG14M2JzRGFwUkc0VFRyaTg3OW1Na1U4ZEFnS1RQd1IySGNEOTJlUTZUbUxjYUVVZDNpYy1WaGgxbjJPWHRZQ3hKMGhaV0hZY1lKelp5VDVyRzV1d0lRZDBaWUxjRXFNYng5cjB5NTFtZGVFRjJPcDdzTjktaXRWZTVUZnRDVlJXMk1rYUx4ekdlM1M5em4tTjDSAbABQVVfeXFMUDF1Y3hoaGR5U1ZfanUzTno2aHliejlsbGxEMUpfb3psZnE3RDEzTzl4eENNRmV5TEVnY0xJUkxDU0l3NmlYS2RrZDJxRkFYbzB6TXkwREV2MTlXVHlOR05nXzl0d0hQLVBZRXF0aVJBOGdFVFg4QTRMdjFLRW42b2tlU2FqNHpWaFZVWjlqNWdnVTQwSGpGUDVNN3RQZVBSZWFPa2xBTE9jeURqZjdhMlY?oc=5",
                   "published_at": "Tue, 02 Jun 2026 04:55:11 GMT",
@@ -20733,7 +20838,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 1,
-                "squad_count": 10,
+                "squad_count": 9,
                 "morale_count": 4
               },
               "query_count": 5
@@ -20746,13 +20851,6 @@
                   "published_at": "Thu, 04 Jun 2026 14:36:31 GMT",
                   "source": "Andalucía Información",
                   "_signal": 1.8
-                },
-                {
-                  "title": "Dani Sánchez volverá a una convocatoria casi 3 meses después - Radio Marca Málaga",
-                  "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBnTWVoeUNfSGUtQWRfVzR1bmdQSTlyYXJHU0h0UDhEQXEtNXBkMjVGZmVRckdkckljNGxQUWNSc0hZWjJmcXBoMlFzQUhNY2ZDdFV6MXYtV2Z1ZGZSUTBaVlJ1NHNUOE5hNlNRYTNTbHdBNnlSRUVlRk45a09TREU?oc=5",
-                  "published_at": "Wed, 03 Jun 2026 11:06:13 GMT",
-                  "source": "Radio Marca Málaga",
-                  "_signal": 1.7
                 },
                 {
                   "title": "Convocatoria Málaga CF: Funes se lleva a todos los disponibles a Zaragoza - Radio Marca Málaga",
@@ -20769,7 +20867,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 2,
+                "squad_count": 1,
                 "morale_count": 1
               },
               "query_count": 3
@@ -20801,6 +20899,13 @@
                 "published_at": "Sat, 06 Jun 2026 16:20:32 GMT",
                 "source": "La Opinión de Málaga",
                 "_signal": 3.7
+              },
+              {
+                "title": "Alineación posible de Las Palmas contra el Malága en los playoff de LaLiga Hypermotion - Diario AS",
+                "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNeFQ5Y1ZhZXUwRFRaZnF2LUtkZXl4a2pHSWUtdVpZVDBXSWp5U3NEa0MtVHE1M0F1Z1k5R1A3Z2puaVc5aVpLeFVTdldUOU82VGVLQktYc3FxeERvSU55QlUtYm1ENGdSRDRDUmc4NUhLQlE5M21URGh4S3lqWGt1eWxIV0hhcWY5SFhteXVMc0VHZ1VPZ2FTYmgwamdlSXA3b0NMWE1kX1RFVXRSNVM1NVJqNmJVVHRKSG9vYnE4dm9uMmJ1SVHSAdoBQVVfeXFMT3ZzVW9NS2xsbk1vWEp6eVlocVZiNFQ3Z2VCamlaRVZ3UzktX0FSUzZBaDBKTjM3eDlGMS1Zd19MUnB4SjJtSG1YZUpWZUNHV2g5Qmt2YmdFUjgzWF9iejFTRGp0b1BYN2taN0EwRVBINUFiU043V3o1bkN6Mm1VclVnWTdtN1ZmWk15djRnM2NPRlJRcVVLNmtLRlJYM3kzX1lZRnRrX0RSRDRtQzRBLTBEallMYmNzTWRTQmRPTWJoRGFsbmtRc2RmbU8tUUg5NjRIMXU1LTYtLXc?oc=5",
+                "published_at": "Sat, 06 Jun 2026 21:36:36 GMT",
+                "source": "Diario AS",
+                "_signal": 3.5
               },
               {
                 "title": "Convocatoria Málaga CF: Haitam se cae de la ida del playoff en Las Palmas - Radio Marca Málaga",
@@ -20846,7 +20951,7 @@
               },
               {
                 "title": "Conozca a los ganadores del sorteo de tres entradas dobles para el partido UD Las Palmas - Málaga CF del playoff de ascenso - Canarias7",
-                "link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQZnhlRzNWc0t4YVBFcUdZYlpsX0dFRWk1WWtwMHIzS1VzSlBLTlBFTV95VDJyWEtHMGh0d0JTbkRlMUFRalFCakxHT1NTbnRVUE5GbmJKT2k4U2xsd0NYNjNlNGlDb2hocWdzRjYwd05FYkpMa0JxYWtmamxaN0NCajVvbUhMRW96VzMzcUp4TW9PZzN5NHpDNDJlY2hmZ1dQY2Zqbk1HYk03dkU1cFBXTGVqMnl1ZWlWa2xuNzlnTlQyMndKR2I00gHHAUFVX3lxTFBmeGVHM1ZzS3hhUEVxR1liWmxfR0VFaTVZa3AwcjNLVXNKUEtOUEVNX3lUMnJYS0cwaHR3QlNuRGUxQVFqUUJqTEdPU1NudFVQTkZuYkpPaThTbGx3Q1g2M2U0aUNvaGhxZ3NGNjB3TkViSkxrQnFha2ZqbFo3Q0JqNW9tSExFb3pXMzNxSnhNb09nM3k0ekM0MmVjaGZnV1BjZmpuTUdiTTd2RTVwUFdMZWoyeXVlaVZrbG43OWdOVDIyd0pHYjQ?oc=5",
+                "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOV2JjZkhGTUZ4MzBNYldYUGNwdUtFdTZuM3B6RklKTlp6RzdjanZ1Q3RQVGowM1ozMDRBcE1GYW1pM21XTG03VTd1V01vUEpzN2JsRkVGeDFUNW1RbkgzcFpQdGtteHVjcVJKNmp3QmxFOWNUNW1UaDc5eXlVVjF2b3JsUVJYZlNXRjktbWFvZk9EUEFkam5hai1EbEdFd2RPZ2s1MUpKekZYNzZPSXJPaTZrOGpKUGNOSGF6UjljV05Cd9IBxwFBVV95cUxQZnhlRzNWc0t4YVBFcUdZYlpsX0dFRWk1WWtwMHIzS1VzSlBLTlBFTV95VDJyWEtHMGh0d0JTbkRlMUFRalFCakxHT1NTbnRVUE5GbmJKT2k4U2xsd0NYNjNlNGlDb2hocWdzRjYwd05FYkpMa0JxYWtmamxaN0NCajVvbUhMRW96VzMzcUp4TW9PZzN5NHpDNDJlY2hmZ1dQY2Zqbk1HYk03dkU1cFBXTGVqMnl1ZWlWa2xuNzlnTlQyMndKR2I0?oc=5",
                 "published_at": "Fri, 05 Jun 2026 11:02:48 GMT",
                 "source": "Canarias7",
                 "_signal": 1.8
@@ -20856,13 +20961,6 @@
                 "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOVjlpRElhby1PVktudUtndFVHMFJLYlI3aUQ3N3pHUHFaOW1GdDA2UW0yTW4zUFZYTUV4UXVwbkVuS3NNMUxOMlZGd2lNSldWM0VwbVI0UXBqbEhjcHllOHpqY01nNUtqcU11R09aMjFaejlheXlKOGlhY25EYW5GSzl5SjJ1S1EzbkVsVXRkY0NtRmJZM1VOLUNNRm5iZzBqbE11a0ZCVXRILXdHQ25xQXhTUzRyTl9SbHIyRE5UTEHSAcYBQVVfeXFMTjcyclJCQUE0b0d6YUUyMER4R2IxekJPNXkybzBRQkRHR200ODFrSDdoV2g2ZmlpLTdFOXhodTQxMW1QWG94UjRXZVZwelFKNFZlcU1Ga1hSSE9wUTktTzY1ZngwRFpRbnVCN25FQ25SVWdBSTBwaGhvNHNnd1NndUtJZFNsVmgzMHZUeThBOUo2cHBna0pIekFhbmZ0WnpLZXR5d29IODBQcUtaNEg5aXMwU29zUnpObGxIa0lFMks3TWFWSk5B?oc=5",
                 "published_at": "Tue, 02 Jun 2026 13:27:30 GMT",
                 "source": "Canarias7",
-                "_signal": 1.8
-              },
-              {
-                "title": "Almería-Castellón y Málaga-Las Palmas, los playoffs de ascenso a Primera División: un equipo acompañará a Racing y Dépor - Cadena SER",
-                "link": "https://news.google.com/rss/articles/CBMiggJBVV95cUxPYXM0cHlqRjFSZ2RxYnBFS3lJTkF4MVNhNERsVmJ5eUtCY2ZOLWFTcjJWbnFzSGswUEJxeXoxSzJJX3Y1bXZEVzVpejc3emttOHdqLThOV2RwR2lEOGxRV2pWTGYzQnl6WHhxR0Z3WjUyc2liUjBqbjFXT1ZUTm5ETWRvZURQbW1reWYtOC1PVGdra0tYVTlzc2ZlX0txOGNIemxKZXVQdE0wWHgyZTM5ejJUbmZ0SGw1MlluVUR3UlJfeXBpLWJMWUZVLUpTdTJpSGQ4MG1paDNCdUxvcHNiVl9pdTJ1NFJGTXoxbld4akRDSWFEM2dEUDBNQ2dCNUtxRFHSAZYCQVVfeXFMT21Qdk9HQkpvQ0tEV2t2ejhRMU1DaDVwNTNSbllGOWQ4ZFpTTjFVeDgwM1RvXzVvdnJLQmxYRkZXYjh4aDNJQ01RVXVPWkRxWWRBbmcxR1ZRNHNJdHNicW91eDMwUU51LXNubFFXUHpiZVNjc195RlZmMW1QMldPRERTeXY2ZDJQMThGRmM3bmhZeDBQbzhLaDQwLWhJNGpmd1VvOGRBUTM5Mndhc3oweGFpeWFXSmpRM1BsVlhIY0tWVnlTa1E2M24yYXBMTmhHdDJpemwzWUtEcHh1Z05UQzJMcXdzeFhkQnZDT1JOS0NhUlpSV2wxV2NsNl94QmNaU3VJVkpKZ3VHRjJvQnNCUmIyc09ReUE?oc=5",
-                "published_at": "Sun, 31 May 2026 20:24:03 GMT",
-                "source": "Cadena SER",
                 "_signal": 1.8
               }
             ],
@@ -20975,7 +21073,7 @@
               "venue": "Estadio de Gran Canaria",
               "stadium_city": "Las Palmas, Gran Canaria",
               "league": "Spanish La Liga 2",
-              "round": "0",
+              "round": "170",
               "status": "NS"
             },
             "referee_context": {
@@ -20999,7 +21097,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:05:25.325371+00:00"
+            "updated_at": "2026-06-07T10:03:32.576445+00:00"
           },
           "focus_digest": [
             "viaje largo",
@@ -21265,7 +21363,7 @@
             "timezone": "Europe/Brussels",
             "forecast_time": "2026-06-07T00:00",
             "temperature_c": 14.1,
-            "precipitation_probability": 0,
+            "precipitation_probability": 1,
             "precipitation_mm": 0.0,
             "wind_speed_kmh": 22.3,
             "wind_gusts_kmh": 44.3,
@@ -21742,7 +21840,7 @@
                 "count": 2
               }
             },
-            "updated_at": "2026-06-07T06:05:33.654544+00:00"
+            "updated_at": "2026-06-07T10:03:35.306626+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -22101,6 +22199,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -22759,7 +22859,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:05:43.952539+00:00"
+            "updated_at": "2026-06-07T10:03:38.138504+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -23018,6 +23118,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -23517,75 +23619,17 @@
               "reason": "",
               "next_high_importance_fixture": {}
             },
-            "home_upcoming": [
-              {
-                "date": "2026-09-26",
-                "kickoff": "2026-09-26T16:00:00Z",
-                "venue": "away",
-                "opponent": "Iceland",
-                "opponent_position": 7,
-                "opponent_points": 54,
-                "league": "UEFA Nations League",
-                "round": "1",
-                "stage": "",
-                "source": "sportsdb-next"
-              },
-              {
-                "date": "2026-09-29",
-                "kickoff": "2026-09-29T18:45:00Z",
-                "venue": "away",
-                "opponent": "Bulgaria",
-                "opponent_position": 11,
-                "opponent_points": 52,
-                "round": "2",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-10-03",
-                "kickoff": "2026-10-03T16:00:00Z",
-                "venue": "home",
-                "opponent": "Luxembourg",
-                "opponent_position": 6,
-                "opponent_points": 57,
-                "round": "3",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-10-06",
-                "kickoff": "2026-10-06T18:45:00Z",
-                "venue": "home",
-                "opponent": "Iceland",
-                "opponent_position": 7,
-                "opponent_points": 54,
-                "round": "4",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-11-13",
-                "kickoff": "2026-11-13T19:45:00Z",
-                "venue": "away",
-                "opponent": "Luxembourg",
-                "opponent_position": 6,
-                "opponent_points": 57,
-                "round": "5",
-                "source": "sportsdb-rounds"
-              }
-            ],
+            "home_upcoming": [],
             "away_upcoming": [],
             "home_future_difficulty": {
-              "matches": 5,
-              "difficulty_index": 84.69,
-              "avg_opponent_position": 7.4,
+              "matches": 0,
+              "difficulty_index": 0.0,
+              "avg_opponent_position": null,
               "top4_matches": 0,
-              "top6_matches": 2,
-              "top8_matches": 4,
-              "hard_opponents": [
-                "Iceland",
-                "Luxembourg",
-                "Iceland",
-                "Luxembourg"
-              ],
-              "label": "critical"
+              "top6_matches": 0,
+              "top8_matches": 0,
+              "hard_opponents": [],
+              "label": "low"
             },
             "away_future_difficulty": {
               "matches": 0,
@@ -23600,10 +23644,10 @@
           },
           "analytics_context": {
             "home_pressure_index": {
-              "score": 60.29,
-              "label": "high",
-              "future_difficulty": 84.69,
-              "hard_window_matches": 4,
+              "score": 21.96,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 26
             },
             "away_pressure_index": {
@@ -23704,14 +23748,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|estonia|islas feroe|j66-5",
             "event_context": {
-              "sportsdb_event_id": "2442754",
-              "sportsdb_home_team_id": "136453",
+              "sportsdb_event_id": "",
+              "sportsdb_home_team_id": "",
               "sportsdb_away_team_id": "",
-              "venue": "Laugardalsvöllur",
-              "stadium_city": "Tallinn, Estonia",
-              "league": "UEFA Nations League",
-              "round": "1",
-              "status": "NS"
+              "venue": "",
+              "stadium_city": "",
+              "league": "",
+              "round": "39",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -23734,7 +23778,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:06:20.543592+00:00"
+            "updated_at": "2026-06-07T10:03:40.635753+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -23793,7 +23837,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "https://jalgpall.ee/koondis/1/uudised",
+              "website": "",
               "items": []
             }
           },
@@ -23882,7 +23926,7 @@
             "away_rest_days": 13,
             "home_matches_last_14_days": 1,
             "away_matches_last_14_days": 1,
-            "home_pressure_index": 60.29,
+            "home_pressure_index": 21.96,
             "away_pressure_index": 21.28,
             "home_must_win_index": 0,
             "away_must_win_index": 0,
@@ -23907,7 +23951,6 @@
           },
           "focus_digest": [
             "viaje largo",
-            "ventana dura",
             "duelo directo"
           ],
           "focus_ai_briefing": {
@@ -23925,7 +23968,7 @@
               "objetivo_local": "",
               "objetivo_visitante": "",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
-              "analisis_calendario_local": "Calendario futuro con 2 rivales del top-6.",
+              "analisis_calendario_local": "Calendario próximo equilibrado, sin presión de conservar fuerzas.",
               "analisis_calendario_visitante": "Calendario próximo equilibrado, sin presión de conservar fuerzas.",
               "h2h_resumen": "6 encuentros históricos: gana ESTONIA en 1, empates 2, gana ISLAS FEROE en 3 (ventana de 3 años)."
             },
@@ -24120,6 +24163,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|estonia|islas feroe|j66-5",
@@ -24152,73 +24197,9 @@
             "away_schedule_upcoming": [],
             "home_espn_upcoming": [],
             "away_espn_upcoming": [],
-            "home_sportsdb_next_upcoming": [
-              {
-                "date": "2026-09-26",
-                "kickoff": "2026-09-26T16:00:00Z",
-                "venue": "away",
-                "opponent": "Iceland",
-                "opponent_position": 7,
-                "opponent_points": 54,
-                "league": "UEFA Nations League",
-                "round": "1",
-                "stage": "",
-                "source": "sportsdb-next"
-              }
-            ],
+            "home_sportsdb_next_upcoming": [],
             "away_sportsdb_next_upcoming": [],
-            "home_round_upcoming": [
-              {
-                "date": "2026-09-29",
-                "kickoff": "2026-09-29T18:45:00Z",
-                "venue": "away",
-                "opponent": "Bulgaria",
-                "opponent_position": 11,
-                "opponent_points": 52,
-                "round": "2",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-10-03",
-                "kickoff": "2026-10-03T16:00:00Z",
-                "venue": "home",
-                "opponent": "Luxembourg",
-                "opponent_position": 6,
-                "opponent_points": 57,
-                "round": "3",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-10-06",
-                "kickoff": "2026-10-06T18:45:00Z",
-                "venue": "home",
-                "opponent": "Iceland",
-                "opponent_position": 7,
-                "opponent_points": 54,
-                "round": "4",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-11-13",
-                "kickoff": "2026-11-13T19:45:00Z",
-                "venue": "away",
-                "opponent": "Luxembourg",
-                "opponent_position": 6,
-                "opponent_points": 57,
-                "round": "5",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-11-16",
-                "kickoff": "2026-11-16T17:00:00Z",
-                "venue": "home",
-                "opponent": "Bulgaria",
-                "opponent_position": 11,
-                "opponent_points": 52,
-                "round": "6",
-                "source": "sportsdb-rounds"
-              }
-            ],
+            "home_round_upcoming": [],
             "away_round_upcoming": []
           }
         },
@@ -24602,20 +24583,7 @@
                 "source": "odds-feed"
               }
             ],
-            "away_upcoming": [
-              {
-                "date": "2026-06-09",
-                "kickoff": "2026-06-09T15:00:00Z",
-                "venue": "away",
-                "opponent": "DR Congo",
-                "opponent_position": 13,
-                "opponent_points": 49,
-                "league": "International Friendlies",
-                "round": "18",
-                "stage": "",
-                "source": "sportsdb-next"
-              }
-            ],
+            "away_upcoming": [],
             "home_future_difficulty": {
               "matches": 4,
               "difficulty_index": 77.92,
@@ -24630,14 +24598,14 @@
               "label": "critical"
             },
             "away_future_difficulty": {
-              "matches": 1,
-              "difficulty_index": 65.25,
-              "avg_opponent_position": 13.0,
+              "matches": 0,
+              "difficulty_index": 0.0,
+              "avg_opponent_position": null,
               "top4_matches": 0,
               "top6_matches": 0,
               "top8_matches": 0,
               "hard_opponents": [],
-              "label": "high"
+              "label": "low"
             }
           },
           "analytics_context": {
@@ -24649,9 +24617,9 @@
               "gap_to_drop_zone": 46
             },
             "away_pressure_index": {
-              "score": 32.32,
+              "score": 16.66,
               "label": "low",
-              "future_difficulty": 65.25,
+              "future_difficulty": 0.0,
               "hard_window_matches": 0,
               "gap_to_drop_zone": 13
             },
@@ -24746,14 +24714,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|portugal|chile|j66-6",
             "event_context": {
-              "sportsdb_event_id": "2470316",
+              "sportsdb_event_id": "",
               "sportsdb_home_team_id": "133908",
               "sportsdb_away_team_id": "134499",
-              "venue": "Estadio Municipal de La Línea de la Concepción",
-              "stadium_city": "Concepcion",
-              "league": "International Friendlies",
-              "round": "18",
-              "status": "CANC"
+              "venue": "Estádio Nacional do Jamor",
+              "stadium_city": "Oeiras, Portugal",
+              "league": "FIFA World Cup",
+              "round": "39",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "Soy Referee",
@@ -24798,7 +24766,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:07:06.280310+00:00"
+            "updated_at": "2026-06-07T10:04:08.581816+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -25255,7 +25223,7 @@
             "home_matches_last_14_days": 1,
             "away_matches_last_14_days": 1,
             "home_pressure_index": 52.66,
-            "away_pressure_index": 32.32,
+            "away_pressure_index": 16.66,
             "home_must_win_index": 0,
             "away_must_win_index": 0,
             "home_must_not_lose_index": 0,
@@ -25299,7 +25267,7 @@
               "objetivo_visitante": "",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
               "analisis_calendario_local": "Calendario próximo sin rivales especialmente exigentes.",
-              "analisis_calendario_visitante": "Calendario próximo sin rivales especialmente exigentes.",
+              "analisis_calendario_visitante": "Calendario próximo equilibrado, sin presión de conservar fuerzas.",
               "h2h_resumen": "6 encuentros históricos: gana PORTUGAL en 3, empates 3, gana CHILE en 0 (ventana de 3 años)."
             },
             "contexto_competitivo_avanzado": {
@@ -25368,6 +25336,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -25570,20 +25540,7 @@
                 "source": "sportsdb-next"
               }
             ],
-            "away_sportsdb_next_upcoming": [
-              {
-                "date": "2026-06-09",
-                "kickoff": "2026-06-09T15:00:00Z",
-                "venue": "away",
-                "opponent": "DR Congo",
-                "opponent_position": 13,
-                "opponent_points": 49,
-                "league": "International Friendlies",
-                "round": "18",
-                "stage": "",
-                "source": "sportsdb-next"
-              }
-            ],
+            "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [],
             "away_round_upcoming": []
           }
@@ -25609,12 +25566,12 @@
           },
           "weather_context": {
             "timezone": "America/Montevideo",
-            "forecast_time": "2026-06-06T18:00",
-            "temperature_c": 14.2,
+            "forecast_time": "2026-06-07T00:00",
+            "temperature_c": 13.0,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 7.7,
-            "wind_gusts_kmh": 16.2,
+            "wind_speed_kmh": 9.8,
+            "wind_gusts_kmh": 20.5,
             "weather_code": 3
           },
           "travel_context": {
@@ -26029,14 +25986,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|rumania|gales|j66-7",
             "event_context": {
-              "sportsdb_event_id": "2442740",
+              "sportsdb_event_id": "",
               "sportsdb_home_team_id": "",
               "sportsdb_away_team_id": "135982",
-              "venue": "Estádio Nacional do Jamor",
+              "venue": "",
               "stadium_city": "",
-              "league": "UEFA Nations League",
-              "round": "1",
-              "status": "NS"
+              "league": "World Cup Qualifying UEFA",
+              "round": "39",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -26059,7 +26016,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:07:19.603158+00:00"
+            "updated_at": "2026-06-07T10:04:25.312222+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -26363,7 +26320,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
-              "clima_e_impacto": "Temperatura 14ºC, sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura 13ºC, sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento internacional (12103 km). Impacto significativo en la preparación del visitante.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -26373,6 +26330,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -26558,11 +26517,11 @@
           "weather_context": {
             "timezone": "Europe/London",
             "forecast_time": "2026-06-07T00:00",
-            "temperature_c": 13.7,
-            "precipitation_probability": 0,
+            "temperature_c": 13.8,
+            "precipitation_probability": 4,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 16.6,
-            "wind_gusts_kmh": 31.0,
+            "wind_speed_kmh": 15.8,
+            "wind_gusts_kmh": 29.2,
             "weather_code": 3
           },
           "travel_context": {
@@ -27022,7 +26981,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:07:54.125626+00:00"
+            "updated_at": "2026-06-07T10:04:53.233696+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -27429,7 +27388,7 @@
             }
           },
           "match_signals": {
-            "weather_risk": "medium",
+            "weather_risk": "low",
             "travel_burden_away": "very_long",
             "home_form_points_last_5": 2,
             "away_form_points_last_5": 8,
@@ -27557,6 +27516,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -28227,7 +28188,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:08:32.330711+00:00"
+            "updated_at": "2026-06-07T10:04:56.435790+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -28767,6 +28728,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|suiza|australia|j66-9",
@@ -28891,13 +28854,13 @@
           },
           "weather_context": {
             "timezone": "America/La_Paz",
-            "forecast_time": "2026-06-06T20:00",
-            "temperature_c": 22.6,
-            "precipitation_probability": 0,
+            "forecast_time": "2026-06-07T00:00",
+            "temperature_c": 21.7,
+            "precipitation_probability": 12,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 4.7,
-            "wind_gusts_kmh": 9.0,
-            "weather_code": 0
+            "wind_speed_kmh": 2.7,
+            "wind_gusts_kmh": 5.4,
+            "weather_code": 1
           },
           "travel_context": {
             "distance_km": 2818.1,
@@ -29206,17 +29169,32 @@
               "reason": "",
               "next_high_importance_fixture": {}
             },
-            "home_upcoming": [],
+            "home_upcoming": [
+              {
+                "date": "2026-06-10",
+                "kickoff": "2026-06-10T20:00:00Z",
+                "venue": "home",
+                "opponent": "Algeria",
+                "opponent_position": 5,
+                "opponent_points": 60,
+                "league": "International Friendlies",
+                "round": "18",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "away_upcoming": [],
             "home_future_difficulty": {
-              "matches": 0,
-              "difficulty_index": 0.0,
-              "avg_opponent_position": null,
+              "matches": 1,
+              "difficulty_index": 100.0,
+              "avg_opponent_position": 5.0,
               "top4_matches": 0,
-              "top6_matches": 0,
-              "top8_matches": 0,
-              "hard_opponents": [],
-              "label": "low"
+              "top6_matches": 1,
+              "top8_matches": 1,
+              "hard_opponents": [
+                "Algeria"
+              ],
+              "label": "critical"
             },
             "away_future_difficulty": {
               "matches": 0,
@@ -29233,8 +29211,8 @@
             "home_pressure_index": {
               "score": 100.0,
               "label": "critical",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": -19
             },
             "away_pressure_index": {
@@ -29365,7 +29343,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:09:10.095428+00:00"
+            "updated_at": "2026-06-07T10:05:00.817419+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -29374,7 +29352,7 @@
               "wikipedia_title": "Bolivia",
               "summary": "Bolivia, officially the Plurinational State of Bolivia, is a landlocked country located in central South America. Its geography primarily consists of an Andean region to the west and tropical lowlands to the east and north. The country has a diverse environment, including the vast Amazonian plain, the Gran Chaco, temperate valleys, the high-altitude Altiplano plateau, snow-capped peaks, and mountains, encompassing a wide range of climates and biomes across its regions and cities. It includes part of the Pantanal, the largest tropical wetland in the world, along its eastern border. Bolivia is bordered by Brazil to the north and east, Paraguay to the southeast, Argentina to the south, Chile to the southwest, and Peru to the west. The seat of government is La Paz, which contains the executive, legislative, and electoral branches of government, while the constitutional capital is Sucre, the seat of the judiciary. While most population and urban centers lie in the Andean region, the largest city and principal industrial center is Santa Cruz de la Sierra, located in the eastern tropical lowlands.\nThe sovereign state of Bolivia is a constitutionally unitary state divided into nine departments. Bolivia's geographic Andean-lowland divide is matched by economic and cultural differences such as those associated with the camba and colla demonyms. One-third of the country is within the Andean mountain range. With an area of 1,098,581 square kilometers (424,164 sq mi), Bolivia is the fifth-largest country in South America after Brazil, Argentina, Peru, and Colombia, and, alongside Paraguay, is one of two landlocked countries in the Americas. It is the largest landlocked country in the Southern Hemisphere, and has inland ports accessing the Atlantic Ocean through two river systems: Acre-Purus-Amazon and Paraguay-Paraná. Bolivia had a population of 11.4 million as of the latest census in 2024. It is multiethnic, including Amerindians, Mestizos, and the descendants of Europeans and Africans. Spanish is the official and predominant language, although 36 indigenous languages also have official status, of which the most commonly spoken are Guaraní, Aymara, and Quechua.\nCenturies prior to Spanish colonization, much of what would become Bolivia formed part of the Tiwanaku polity, which collapsed around 1000 AD. The Colla–Inca War of the 1440s marked the beginning of Inca rule in western Bolivia. The eastern and northern lowlands of Bolivia were inhabited by independent non-Andean Amazonian and Guaraní tribes. Spanish conquistadores, arriving from Cusco, Peru and Asunción, Paraguay, forcibly took control of the region in the 16th century.\nDuring the subsequent Spanish colonial period, Bolivia was administered by the Real Audiencia of Charcas. Spain built its empire in large part upon the silver that was extracted from Cerro Rico in Potosí. Following an unsuccessful rebellion in Sucre on May 25, 1809, sixteen years of fighting would follow before the establishment of the Republic, named for Simón Bolívar. Over the course of the 19th and early 20th centuries, Bolivia lost control of several peripheral territories to neighboring countries, such as the Acre territory after Brazil's 1899–1903 takeover, and the country's Pacific coastal region which Chile seized in 1879.\nBolivia was ruled by an oligarchy composed of land-owning and mining interests until the Bolivian National Revolution of 1952 established universal suffrage, nationalized lucrative tin mining and made a limited land reform. 20th century Bolivia experienced a succession of military and civilian governments with the last non-elected military ruler leaving office in 1982.\nModern Bolivia is a member of the Non-Aligned Movement (NAM), Organization of American States (OAS), Amazon Cooperation Treaty Organization (ACTO), Bank of the South, ALBA, the Union of South American Nations (USAN), and Southern Common Market (Mercosur). Bolivia remains a developing country, and the second-poorest in South America, though it has slashed poverty rates. Its main economic resources include agriculture, forestry, fishing, mining, and goods such as textiles and clothing, refined metals, and refined petroleum. Bolivia is very geologically rich, with mines producing tin, silver, lithium, and copper. The country is also known for its production of coca plants and refined cocaine. In 2021, estimated coca cultivation and cocaine production was reported to be 39,700 hectares and 317 metric tons, respectively.",
               "wikipedia_url": "https://en.wikipedia.org/wiki/Bolivia",
-              "location_hint": "Bolivia",
+              "location_hint": "BOLIVIA",
               "city": "Bolivia",
               "country": "Bolivia",
               "country_code": "BO",
@@ -29706,6 +29684,7 @@
           "focus_digest": [
             "viaje largo",
             "convocatoria",
+            "ventana dura",
             "objetivo competitivo"
           ],
           "focus_ai_briefing": {
@@ -29723,7 +29702,7 @@
               "objetivo_local": "",
               "objetivo_visitante": "",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
-              "analisis_calendario_local": "Calendario próximo equilibrado, sin presión de conservar fuerzas.",
+              "analisis_calendario_local": "Calendario futuro con 1 rivales del top-6.",
               "analisis_calendario_visitante": "Calendario próximo equilibrado, sin presión de conservar fuerzas.",
               "h2h_resumen": "6 encuentros históricos: gana BOLIVIA en 2, empates 1, gana ESCOCIA en 3 (ventana de 3 años)."
             },
@@ -29783,7 +29762,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
-              "clima_e_impacto": "Temperatura ideal (23ºC), sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (22ºC), sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento internacional (2818 km). Impacto significativo en la preparación del visitante.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -29793,6 +29772,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -29950,7 +29931,20 @@
             "away_schedule_upcoming": [],
             "home_espn_upcoming": [],
             "away_espn_upcoming": [],
-            "home_sportsdb_next_upcoming": [],
+            "home_sportsdb_next_upcoming": [
+              {
+                "date": "2026-06-10",
+                "kickoff": "2026-06-10T20:00:00Z",
+                "venue": "home",
+                "opponent": "Algeria",
+                "opponent_position": 5,
+                "opponent_points": 60,
+                "league": "International Friendlies",
+                "round": "18",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [],
             "away_round_upcoming": []
@@ -30316,17 +30310,30 @@
               "reason": "",
               "next_high_importance_fixture": {}
             },
-            "home_upcoming": [],
+            "home_upcoming": [
+              {
+                "date": "2026-06-07",
+                "kickoff": "2026-06-07T13:00:00Z",
+                "venue": "home",
+                "opponent": "Cyprus",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "International Friendlies",
+                "round": "17",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "away_upcoming": [],
             "home_future_difficulty": {
-              "matches": 0,
-              "difficulty_index": 0.0,
+              "matches": 1,
+              "difficulty_index": 58.0,
               "avg_opponent_position": null,
               "top4_matches": 0,
               "top6_matches": 0,
               "top8_matches": 0,
               "hard_opponents": [],
-              "label": "low"
+              "label": "high"
             },
             "away_future_difficulty": {
               "matches": 0,
@@ -30341,9 +30348,9 @@
           },
           "analytics_context": {
             "home_pressure_index": {
-              "score": 16.66,
+              "score": 30.58,
               "label": "low",
-              "future_difficulty": 0.0,
+              "future_difficulty": 58.0,
               "hard_window_matches": 0,
               "gap_to_drop_zone": 13
             },
@@ -30445,14 +30452,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|liechtenstein|chipre|j66-11",
             "event_context": {
-              "sportsdb_event_id": "",
-              "sportsdb_home_team_id": "",
+              "sportsdb_event_id": "2470311",
+              "sportsdb_home_team_id": "136467",
               "sportsdb_away_team_id": "",
-              "venue": "",
-              "stadium_city": "",
-              "league": "",
-              "round": "39",
-              "status": ""
+              "venue": "Rheinpark Stadion",
+              "stadium_city": "Vaduz, Liechtenstein",
+              "league": "International Friendlies",
+              "round": "17",
+              "status": "NS"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -30475,7 +30482,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:09:21.744804+00:00"
+            "updated_at": "2026-06-07T10:05:06.131333+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -30534,7 +30541,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
+              "website": "https://lfv.li",
               "items": []
             }
           },
@@ -30623,7 +30630,7 @@
             "away_rest_days": 13,
             "home_matches_last_14_days": 1,
             "away_matches_last_14_days": 1,
-            "home_pressure_index": 16.66,
+            "home_pressure_index": 30.58,
             "away_pressure_index": 16.66,
             "home_must_win_index": 0,
             "away_must_win_index": 0,
@@ -30648,6 +30655,7 @@
           },
           "focus_digest": [
             "viaje largo",
+            "ventana dura",
             "duelo directo"
           ],
           "focus_ai_briefing": {
@@ -30665,7 +30673,7 @@
               "objetivo_local": "",
               "objetivo_visitante": "",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
-              "analisis_calendario_local": "Calendario próximo equilibrado, sin presión de conservar fuerzas.",
+              "analisis_calendario_local": "Calendario próximo sin rivales especialmente exigentes.",
               "analisis_calendario_visitante": "Calendario próximo equilibrado, sin presión de conservar fuerzas.",
               "h2h_resumen": "10 encuentros históricos: gana LIECHTENSTEIN en 2, empates 1, gana CHIPRE en 7 (ventana de 0 años)."
             },
@@ -30860,6 +30868,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|liechtenstein|chipre|j66-11",
@@ -30892,7 +30902,20 @@
             "away_schedule_upcoming": [],
             "home_espn_upcoming": [],
             "away_espn_upcoming": [],
-            "home_sportsdb_next_upcoming": [],
+            "home_sportsdb_next_upcoming": [
+              {
+                "date": "2026-06-07",
+                "kickoff": "2026-06-07T13:00:00Z",
+                "venue": "home",
+                "opponent": "Cyprus",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "International Friendlies",
+                "round": "17",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [],
             "away_round_upcoming": []
@@ -30919,13 +30942,13 @@
           },
           "weather_context": {
             "timezone": "America/Santiago",
-            "forecast_time": "2026-06-06T16:00",
-            "temperature_c": 14.1,
-            "precipitation_probability": 0,
+            "forecast_time": "2026-06-07T00:00",
+            "temperature_c": 8.8,
+            "precipitation_probability": 3,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 4.5,
-            "wind_gusts_kmh": 14.4,
-            "weather_code": 2
+            "wind_speed_kmh": 1.8,
+            "wind_gusts_kmh": 4.0,
+            "weather_code": 0
           },
           "travel_context": {
             "distance_km": 13558.2,
@@ -31369,7 +31392,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:09:34.826854+00:00"
+            "updated_at": "2026-06-07T10:05:09.381390+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -31671,7 +31694,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
-              "clima_e_impacto": "Temperatura 14ºC, sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura 9ºC, sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento internacional (13558 km). Impacto significativo en la preparación del visitante.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -31681,6 +31704,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -32339,7 +32364,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:09:46.894869+00:00"
+            "updated_at": "2026-06-07T10:05:18.014175+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -32791,6 +32816,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|croacia|eslovenia|j66-13",
@@ -32850,12 +32877,12 @@
           },
           "weather_context": {
             "timezone": "America/Puerto_Rico",
-            "forecast_time": "2026-06-06T19:00",
-            "temperature_c": 28.2,
-            "precipitation_probability": 7,
+            "forecast_time": "2026-06-07T00:00",
+            "temperature_c": 27.2,
+            "precipitation_probability": 3,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 18.8,
-            "wind_gusts_kmh": 28.4,
+            "wind_speed_kmh": 10.7,
+            "wind_gusts_kmh": 15.8,
             "weather_code": 3
           },
           "travel_context": {
@@ -33294,14 +33321,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|marruecos|noruega|j66-14",
             "event_context": {
-              "sportsdb_event_id": "2466319",
+              "sportsdb_event_id": "",
               "sportsdb_home_team_id": "",
               "sportsdb_away_team_id": "136516",
-              "venue": "Sports Illustrated Stadium",
-              "stadium_city": "Harrison, NJ",
-              "league": "International Friendlies",
-              "round": "17",
-              "status": "NS"
+              "venue": "",
+              "stadium_city": "",
+              "league": "World Cup Qualifying UEFA",
+              "round": "39",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -33333,7 +33360,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:10:52.081237+00:00"
+            "updated_at": "2026-06-07T10:06:03.035088+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -33690,7 +33717,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
-              "clima_e_impacto": "Temperatura 28ºC, sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura 27ºC, sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento internacional (1758 km). Impacto significativo en la preparación del visitante.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -33700,6 +33727,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -33884,12 +33913,12 @@
           },
           "weather_context": {
             "timezone": "America/Sao_Paulo",
-            "forecast_time": "2026-06-06T19:00",
-            "temperature_c": 17.1,
-            "precipitation_probability": 1,
+            "forecast_time": "2026-06-07T00:00",
+            "temperature_c": 15.6,
+            "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 8.5,
-            "wind_gusts_kmh": 17.3,
+            "wind_speed_kmh": 8.3,
+            "wind_gusts_kmh": 16.6,
             "weather_code": 2
           },
           "travel_context": {
@@ -34328,14 +34357,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|grecia|italia|j66-15",
             "event_context": {
-              "sportsdb_event_id": "2465434",
+              "sportsdb_event_id": "",
               "sportsdb_home_team_id": "139708",
-              "sportsdb_away_team_id": "133910",
-              "venue": "Pankritio Stadium",
-              "stadium_city": "Heraklion, Crete",
-              "league": "International Friendlies",
-              "round": "17",
-              "status": "NS"
+              "sportsdb_away_team_id": "",
+              "venue": "",
+              "stadium_city": "Grecia, Costa Rica",
+              "league": "_No League Soccer",
+              "round": "39",
+              "status": ""
             },
             "referee_context": {
               "assigned_referee": "",
@@ -34358,7 +34387,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:12:00.704980+00:00"
+            "updated_at": "2026-06-07T10:06:43.960336+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -34501,7 +34530,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "https://www.figc.it",
+              "website": "",
               "items": []
             }
           },
@@ -34639,7 +34668,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
-              "clima_e_impacto": "Temperatura ideal (17ºC), sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (16ºC), sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento internacional (6804 km). Impacto significativo en la preparación del visitante.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -34649,6 +34678,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -34822,7 +34853,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-06-12T22:00:00Z",
       "kickoff_to": "2026-06-16T19:00:00Z",
-      "updated_at": "2026-06-07T06:17:42.666421+00:00",
+      "updated_at": "2026-06-07T10:13:02.672637+00:00",
       "matches": [
         {
           "local": "EEUU",
@@ -34833,9 +34864,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 54.67,
-              "X": 32.0,
-              "2": 13.33
+              "1": 58.0,
+              "X": 23.33,
+              "2": 18.67
             },
             "official_percent": {
               "1": 0.0,
@@ -35000,6 +35031,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|eeuu|paraguay|j67-1",
@@ -35021,9 +35054,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 54.67,
-            "X": 32.0,
-            "2": 13.33
+            "1": 58.0,
+            "X": 23.33,
+            "2": 18.67
           }
         },
         {
@@ -35035,9 +35068,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 34.67,
-              "X": 4.0,
-              "2": 61.33
+              "1": 18.0,
+              "X": 4.67,
+              "2": 77.33
             },
             "official_percent": {
               "1": 0.0,
@@ -35186,6 +35219,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|qatar|suiza|j67-2",
@@ -35207,9 +35242,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 34.67,
-            "X": 4.0,
-            "2": 61.33
+            "1": 18.0,
+            "X": 4.67,
+            "2": 77.33
           }
         },
         {
@@ -35221,9 +35256,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 64.0,
-              "X": 21.33,
-              "2": 14.67
+              "1": 62.67,
+              "X": 14.67,
+              "2": 22.66
             },
             "official_percent": {
               "1": 0.0,
@@ -35423,6 +35458,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|brasil|marruecos|j67-3",
@@ -35444,9 +35481,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 64.0,
-            "X": 21.33,
-            "2": 14.67
+            "1": 62.67,
+            "X": 14.67,
+            "2": 22.66
           }
         },
         {
@@ -35458,9 +35495,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 2.67,
-              "X": 6.67,
-              "2": 90.66
+              "1": 4.67,
+              "X": 4.0,
+              "2": 91.33
             },
             "official_percent": {
               "1": 0.0,
@@ -35632,6 +35669,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|haiti|escocia|j67-4",
@@ -35653,9 +35692,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 2.67,
-            "X": 6.67,
-            "2": 90.66
+            "1": 4.67,
+            "X": 4.0,
+            "2": 91.33
           }
         },
         {
@@ -35667,9 +35706,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 5.33,
-              "X": 20.0,
-              "2": 74.67
+              "1": 13.33,
+              "X": 25.33,
+              "2": 61.34
             },
             "official_percent": {
               "1": 0.0,
@@ -35826,6 +35865,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|australia|turquia|j67-5",
@@ -35847,9 +35888,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 5.33,
-            "X": 20.0,
-            "2": 74.67
+            "1": 13.33,
+            "X": 25.33,
+            "2": 61.34
           }
         },
         {
@@ -36020,6 +36061,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|alemania|curazao|j67-6",
@@ -36055,9 +36098,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 93.33,
-              "X": 0.0,
-              "2": 6.67
+              "1": 78.0,
+              "X": 4.67,
+              "2": 17.33
             },
             "official_percent": {
               "1": 0.0,
@@ -36206,6 +36249,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|paises bajos|japon|j67-7",
@@ -36227,9 +36272,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 93.33,
-            "X": 0.0,
-            "2": 6.67
+            "1": 78.0,
+            "X": 4.67,
+            "2": 17.33
           }
         },
         {
@@ -36241,9 +36286,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 41.33,
-              "X": 24.0,
-              "2": 34.67
+              "1": 34.0,
+              "X": 23.33,
+              "2": 42.67
             },
             "official_percent": {
               "1": 0.0,
@@ -36422,6 +36467,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|costa marfil|ecuador|j67-8",
@@ -36443,9 +36490,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 41.33,
-            "X": 24.0,
-            "2": 34.67
+            "1": 34.0,
+            "X": 23.33,
+            "2": 42.67
           }
         },
         {
@@ -36457,8 +36504,8 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 98.67,
-              "X": 1.33,
+              "1": 94.0,
+              "X": 6.0,
               "2": 0.0
             },
             "official_percent": {
@@ -36469,13 +36516,13 @@
           },
           "weather_context": {
             "timezone": "America/Ciudad_Juarez",
-            "forecast_time": "2026-06-12T23:00",
-            "temperature_c": 32.7,
-            "precipitation_probability": 13,
-            "precipitation_mm": 0.0,
-            "wind_speed_kmh": 19.2,
-            "wind_gusts_kmh": 32.8,
-            "weather_code": 1
+            "forecast_time": "2026-06-13T02:00",
+            "temperature_c": 23.4,
+            "precipitation_probability": 16,
+            "precipitation_mm": 0.1,
+            "wind_speed_kmh": 27.0,
+            "wind_gusts_kmh": 47.9,
+            "weather_code": 51
           },
           "travel_context": {
             "distance_km": 4057.2,
@@ -36934,7 +36981,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:03:50.495349+00:00"
+            "updated_at": "2026-06-07T10:01:24.584071+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -37157,7 +37204,7 @@
             }
           },
           "match_signals": {
-            "weather_risk": "medium",
+            "weather_risk": "high",
             "travel_burden_away": "very_long",
             "home_form_points_last_5": 8,
             "away_form_points_last_5": 2,
@@ -37195,17 +37242,17 @@
             "structured_referee_known": true
           },
           "focus_digest": [
+            "clima duro",
             "viaje largo",
             "convocatoria",
-            "arbitro identificado",
-            "objetivo competitivo"
+            "arbitro identificado"
           ],
           "focus_ai_briefing": {
             "partido": "SUECIA vs TÚNEZ",
             "mercado_y_probabilidades": {
-              "cuotas_1X2": "1=98.67%, X=1.33%, 2=0.00%",
-              "tendencia_quinielista": "1=98.67%, X=1.33%, 2=0.00%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (98.7%) y el público quinielista lo refleja de forma similar (98.7%). Sin gran divergencia entre mercado y quiniela."
+              "cuotas_1X2": "1=94.00%, X=6.00%, 2=0.00%",
+              "tendencia_quinielista": "1=94.00%, X=6.00%, 2=0.00%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (94.0%) y el público quinielista lo refleja de forma similar (94.0%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "LDDWW (Dinámica positiva)",
@@ -37275,7 +37322,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (20 vs 20 días).",
-              "clima_e_impacto": "Calor intenso (33ºC), favorece a equipos con mayor fondo físico, sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (23ºC), sin riesgo de lluvia, viento moderado (27 km/h).",
               "viaje": "Desplazamiento internacional (4057 km). Impacto significativo en la preparación del visitante.",
               "arbitro": "El Barrial. Sin histórico arbitral fiable",
               "lesiones": {
@@ -37285,6 +37332,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -37350,8 +37399,8 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 98.67,
-            "X": 1.33,
+            "1": 94.0,
+            "X": 6.0,
             "2": 0.0
           },
           "_schedule_inputs": {
@@ -37376,9 +37425,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 76.0,
-              "X": 5.33,
-              "2": 18.67
+              "1": 78.67,
+              "X": 10.0,
+              "2": 11.33
             },
             "official_percent": {
               "1": 0.0,
@@ -37535,6 +37584,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|belgica|egipto|j67-10",
@@ -37556,9 +37607,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 76.0,
-            "X": 5.33,
-            "2": 18.67
+            "1": 78.67,
+            "X": 10.0,
+            "2": 11.33
           }
         },
         {
@@ -37586,9 +37637,9 @@
             },
             "overround_percent": 3.17,
             "official_percent": {
-              "1": 18.67,
-              "X": 14.67,
-              "2": 66.66
+              "1": 20.67,
+              "X": 15.33,
+              "2": 64.0
             }
           },
           "travel_context": {
@@ -37601,11 +37652,11 @@
           "weather_context": {
             "timezone": "Asia/Riyadh",
             "forecast_time": "2026-06-13T23:00",
-            "temperature_c": 33.0,
+            "temperature_c": 33.2,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 5.8,
-            "wind_gusts_kmh": 20.9,
+            "wind_speed_kmh": 3.5,
+            "wind_gusts_kmh": 25.9,
             "weather_code": 0
           },
           "history_context": {
@@ -37962,13 +38013,6 @@
                   "_signal": 3.0
                 },
                 {
-                  "title": "Los 26 elegidos por Bielsa: la convocatoria de Uruguay para el Mundial - Diez.hn",
-                  "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQUzNPLXZOTmdkSzFQaE9aYWEtMTlVWUNTTm4xc1ZvcDJRMFY5VTNoRHR1dEQxd3MtRGlCWUNUYmxNYm1GMjZMY0F1aU1aZmdSTkRGVDYzTmNzcWVTeENyMFZBWXdoYkMxQmxlbHJhOU5zaFk5Y015WElQX01PcWpwSkFPT0pGSkRMSFhBbks3QmlLclpyN0ZfZ3ZmVTE0T28zQkdXd1hvLWtrc0lTaFNDZQ?oc=5",
-                  "published_at": "Fri, 05 Jun 2026 07:00:00 GMT",
-                  "source": "Diez.hn",
-                  "_signal": 1.7
-                },
-                {
                   "title": "Sin la presencia de Luis Suárez: Uruguay definió su convocatoria oficial para el Mundial 2026 - HCH",
                   "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBXV2lQS2Q0RTdMZVlNLXBNdTV0M2l3MmpBdzlrWTNnbTdzbzZRWC10UUxnUmk5TFZhUFo0bURpX3FVbVVfZ0FuUlp5R0x4UTlEMUZEZlVGZVk4ZzViZTVUWjJocXlOY3FlUG9mbA?oc=5",
                   "published_at": "Tue, 02 Jun 2026 11:45:57 GMT",
@@ -37980,6 +38024,13 @@
                   "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOelA1THRwS29YT2NZSGREbV9KZmZlNy1IM3FONEo2WFRCdzBPWlJCbjctalc2c2dxZ2dKa2g4VEpPNUdKQ1k5MDY0SjdrYkIxSVp1Mmo1b19uX2pQdGF6WmVHMk9lMGhXdGxPSHZUNzFuYjQ0VDhheGlEZURvamcwVTFkNmtoWVFRRDY0T3dvX1JkS2xKa0ZDVFBwTkU1QUhnTXNSOE1QQmFxN29JRnpSbm5IVFBUUdIBygFBVV95cUxOci1kRnJ5Q0UyREx4b25SSzk0UmZNbDIwZUQxQ0h1bC1WMHN1YXhFalhwYWVyM2ZuR1V3WlJubHFvZU9RX1FxVlhMZElaMGxXd2xYTHFGZjkwbDVoUF9TQnN2Y0JPTmpueklRZ0NiaGhXMlVMOGZ5OV9xaWF0a0FpVU15VWV6TTZtanE4NnhiMmNMOGQ2eGtvNTdmNFp4N0hKRVlyZy11ajN6YkM5VkltMklQdjVrVGw4RzNVLTJjU2Y2TGw2WHJYdjlB?oc=5",
                   "published_at": "Tue, 02 Jun 2026 10:23:10 GMT",
                   "source": "Diario AS",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "‘Suárez no me debe disculpas’, dice Marcelo Bielsa, DT de Uruguay, sobre no convocatoria del ‘Pistolero’ para el Mundial 2026 - El Universo",
+                  "link": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxPRjB4Vzdjd2t5cDNDVW9scW9jQlZMQWhhZHc0ZXE5SUhSVE9FZ0xITU45SzRDemJGSktaQmtwNjFmUHNZSVVQdURxdDEwRlg0NS1PUFFzMjVkeVRseGQ0WFJLall0TF9wTGx4c0JJMmJZUXFkLTJEalBOVXVGSnlDYzMzRTBiUzIxdVA2eEpOazJUNkxvTTIwazFCaHlWa1czSDV3TWRLRVluSEZLdURyUEtHUTlIV3RnUXRmQzRXc1phQ0pXYkF0dTVFLThncDZMczZPWlpzWUY5Yl9wOGFNOWMycFQwLXZwYTNZenQ4ay1Od29OTlFyTE5NMNIBjwJBVV95cUxPQnREQXR0d1NUdjlYQ1FBQU1zRE1KMHllTm5ZeG5kZU5aVFZ6RDNtTWstcE9uN3c0ZXVxVkoxSEc1Wkhpa1ozR0swMEwtZFVFekdaUlhRNmtBdGt5bS1TSlFtTHFPQ19VRXpBZ0N2TjRjMG9hMWhPcWFlTDQzYm5zT2ZHQjl2dElZaDBrdGxRSDNzT1hCUTBoOW52U3BjQVFRSzR2a3lfSEsyWTdaR3U4MWxDTG9hNVZNcUlCdC1vRnpGdGcySl9HeUR3VGdSelpmdmxrajhqZzFMejBsVFJvVFp5alV5dVJEQzl4Mkd2NFRIbk1qOVB0Z1IxVVlUMU16QmE0bVFQZ2JwanNENUNJ?oc=5",
+                  "published_at": "Mon, 01 Jun 2026 22:04:00 GMT",
+                  "source": "El Universo",
                   "_signal": 1.7
                 }
               ],
@@ -38161,9 +38212,9 @@
               "source": "Eduardo Losilla",
               "percentages": {
                 "quinielista": {
-                  "1": 18.67,
-                  "X": 14.67,
-                  "2": 66.66
+                  "1": 20.67,
+                  "X": 15.33,
+                  "2": 64.0
                 },
                 "lae": {
                   "1": 0.0,
@@ -38241,7 +38292,7 @@
                 "count": 4
               }
             },
-            "updated_at": "2026-06-07T06:04:18.816576+00:00"
+            "updated_at": "2026-06-07T10:01:38.544072+00:00"
           },
           "focus_digest": [
             "viaje largo",
@@ -38253,8 +38304,8 @@
             "partido": "Saudi Arabia vs Uruguay",
             "mercado_y_probabilidades": {
               "cuotas_1X2": "1=12.92%, X=22.03%, 2=65.05%",
-              "tendencia_quinielista": "1=18.67%, X=14.67%, 2=66.66%",
-              "insight_mercado": "El visitante es favorito para las casas de apuestas (65.0%) y el público quinielista lo refleja de forma similar (66.7%). Sin gran divergencia entre mercado y quiniela."
+              "tendencia_quinielista": "1=20.67%, X=15.33%, 2=64.00%",
+              "insight_mercado": "El visitante es favorito para las casas de apuestas (65.0%) y el público quinielista lo refleja de forma similar (64.0%). Sin gran divergencia entre mercado y quiniela."
             },
             "contexto_deportivo": {
               "racha_local": "- (sin datos de forma reciente)",
@@ -38403,9 +38454,9 @@
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json"
           ],
           "official_quiniela_percentages": {
-            "1": 18.67,
-            "X": 14.67,
-            "2": 66.66
+            "1": 20.67,
+            "X": 15.33,
+            "2": 64.0
           }
         },
         {
@@ -38433,9 +38484,9 @@
             },
             "overround_percent": 3.37,
             "official_percent": {
-              "1": 77.33,
-              "X": 12.0,
-              "2": 10.67
+              "1": 64.67,
+              "X": 10.0,
+              "2": 25.33
             }
           },
           "travel_context": {
@@ -38451,8 +38502,8 @@
             "temperature_c": 27.7,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 16.3,
-            "wind_gusts_kmh": 31.7,
+            "wind_speed_kmh": 11.8,
+            "wind_gusts_kmh": 22.0,
             "weather_code": 0
           },
           "history_context": {
@@ -38668,13 +38719,6 @@
                   "published_at": "Tue, 02 Jun 2026 04:00:00 GMT",
                   "source": "Goal.com",
                   "_signal": 1.7
-                },
-                {
-                  "title": "Irán reveló su lista para el Mundial 2026: histórico goleador quedó fuera de la convocatoria y desató la polémica - Infobae",
-                  "link": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxPUkpMNGQ4a0UwZVRKMXdqdTFnZ3dmUnBtaEFEOTMtZWlXYmpEWXp2c21XVmxFQ2pSN1pUVWVPLUFremYyRXdjUExmN2NLeEpQTS1Xbi1GaGloenhwUmZ1YldHM2tKOGRMamdiSWptU0xYVEVSd3pIeG1YZ2RGVVpndnhGN0JocmFEb0J4NUE5QTVjeE9XUUhUbm5DSWNpYTdoUXN5aTVNVGZoQjVYdXZIaFU4ZVhvYWFpU0lGbDJJREpad19QSmlONHVLVHFkU2xIVERkRHNrUzY5Wm1nREpTUWRVdmdUWmNpWFBKOU43NkprN09J0gGPAkFVX3lxTE1JalpZb2lpc2NpekpPUUowUDl5YWw4QTFOWHNucXY4blVZWEdQSVJ5Q1hzem5UaHozcjR5MjZmbW0zd2I5cnZGbkhsT0ZIM1A1LV8xb1QtZkFVN00zTGZsN2l0c1NtUTVXNHlQd2VGYTYxYV9zaC03ZGVFWmZUV0JxSVJmODlLUEx6SHRHbGFKYzZmc2R1ck15cXdGWTAxTVN5dnBUbDFaMERLYUI5a2RFTzdDdDJqSTBEZUpudzBvWHNrQmxnbmVpc2VHV1NUNUFaWS15cHJDeGg2N0RCZ3NkcW9MX3lQWU8tQU9seVF1NXhneU5leWgxVzBtMnhjQk9uZ3lTUTIwdTZ1YnRYblE?oc=5",
-                  "published_at": "Mon, 01 Jun 2026 19:38:00 GMT",
-                  "source": "Infobae",
-                  "_signal": 1.7
                 }
               ],
               "signals": {
@@ -38684,7 +38728,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 4,
+                "squad_count": 3,
                 "morale_count": 0
               },
               "query_count": 5
@@ -38873,7 +38917,7 @@
             ]
           },
           "match_signals": {
-            "weather_risk": "medium",
+            "weather_risk": "low",
             "travel_burden_away": "very_long",
             "injury_attention_home": 0,
             "injury_attention_away": 0,
@@ -38924,9 +38968,9 @@
               "source": "Eduardo Losilla",
               "percentages": {
                 "quinielista": {
-                  "1": 77.33,
-                  "X": 12.0,
-                  "2": 10.67
+                  "1": 64.67,
+                  "X": 10.0,
+                  "2": 25.33
                 },
                 "lae": {
                   "1": 0.0,
@@ -38971,7 +39015,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:04:46.979657+00:00"
+            "updated_at": "2026-06-07T10:02:16.702371+00:00"
           },
           "focus_digest": [
             "viaje largo",
@@ -38982,8 +39026,8 @@
             "partido": "Iran vs New Zealand",
             "mercado_y_probabilidades": {
               "cuotas_1X2": "1=50.38%, X=27.88%, 2=21.74%",
-              "tendencia_quinielista": "1=77.33%, X=12.00%, 2=10.67%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (50.4%), pero el público de la quiniela lo sobrevalora aún más (77.3%). Hay valor matemático en buscar la sorpresa o el empate."
+              "tendencia_quinielista": "1=64.67%, X=10.00%, 2=25.33%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (50.4%), pero el público de la quiniela lo sobrevalora aún más (64.7%). Hay valor matemático en buscar la sorpresa o el empate."
             },
             "contexto_deportivo": {
               "racha_local": "- (sin datos de forma reciente)",
@@ -39132,9 +39176,9 @@
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json"
           ],
           "official_quiniela_percentages": {
-            "1": 77.33,
-            "X": 12.0,
-            "2": 10.67
+            "1": 64.67,
+            "X": 10.0,
+            "2": 25.33
           }
         },
         {
@@ -39162,9 +39206,9 @@
             },
             "overround_percent": 3.2,
             "official_percent": {
-              "1": 76.0,
-              "X": 6.67,
-              "2": 17.33
+              "1": 76.67,
+              "X": 8.67,
+              "2": 14.66
             }
           },
           "travel_context": {
@@ -39177,12 +39221,12 @@
           "weather_context": {
             "timezone": "Europe/Paris",
             "forecast_time": "2026-06-13T23:00",
-            "temperature_c": 14.0,
-            "precipitation_probability": 4,
+            "temperature_c": 13.6,
+            "precipitation_probability": 3,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 6.9,
+            "wind_speed_kmh": 6.5,
             "wind_gusts_kmh": 15.1,
-            "weather_code": 3
+            "weather_code": 0
           },
           "history_context": {
             "supported": false,
@@ -39667,9 +39711,9 @@
               "source": "Eduardo Losilla",
               "percentages": {
                 "quinielista": {
-                  "1": 76.0,
-                  "X": 6.67,
-                  "2": 17.33
+                  "1": 76.67,
+                  "X": 8.67,
+                  "2": 14.66
                 },
                 "lae": {
                   "1": 0.0,
@@ -39714,7 +39758,7 @@
                 "count": 0
               }
             },
-            "updated_at": "2026-06-07T06:04:50.063916+00:00"
+            "updated_at": "2026-06-07T10:02:31.325097+00:00"
           },
           "focus_digest": [
             "viaje largo",
@@ -39726,8 +39770,8 @@
             "partido": "France vs Senegal",
             "mercado_y_probabilidades": {
               "cuotas_1X2": "1=65.47%, X=21.78%, 2=12.75%",
-              "tendencia_quinielista": "1=76.00%, X=6.67%, 2=17.33%",
-              "insight_mercado": "El local es favorito para las casas de apuestas (65.5%), pero el público de la quiniela lo sobrevalora aún más (76.0%). Hay valor matemático en buscar la sorpresa o el empate."
+              "tendencia_quinielista": "1=76.67%, X=8.67%, 2=14.66%",
+              "insight_mercado": "El local es favorito para las casas de apuestas (65.5%), pero el público de la quiniela lo sobrevalora aún más (76.7%). Hay valor matemático en buscar la sorpresa o el empate."
             },
             "contexto_deportivo": {
               "racha_local": "- (sin datos de forma reciente)",
@@ -39876,9 +39920,9 @@
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json"
           ],
           "official_quiniela_percentages": {
-            "1": 76.0,
-            "X": 6.67,
-            "2": 17.33
+            "1": 76.67,
+            "X": 8.67,
+            "2": 14.66
           }
         },
         {
@@ -39890,9 +39934,9 @@
           "odds": {},
           "market_context": {
             "normalized_percent": {
-              "1": 58.67,
-              "X": 30.67,
-              "2": 10.66
+              "1": 52.67,
+              "X": 34.67,
+              "2": 12.66
             },
             "official_percent": {
               "1": 0.0,
@@ -40041,6 +40085,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|f1 hypermotion|f2 hypermotion|j67-14",
@@ -40062,9 +40108,9 @@
             }
           ],
           "official_quiniela_percentages": {
-            "1": 58.67,
-            "X": 30.67,
-            "2": 10.66
+            "1": 52.67,
+            "X": 34.67,
+            "2": 12.66
           }
         },
         {
@@ -40270,6 +40316,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|espana|cabo verde|j67-15",
@@ -40306,7 +40354,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "",
       "kickoff_to": "",
-      "updated_at": "2026-06-07T06:17:42.665412+00:00",
+      "updated_at": "2026-06-07T10:13:02.671475+00:00",
       "matches": [
         {
           "local": "A DETERMINAR",
@@ -40424,6 +40472,8 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -40570,6 +40620,8 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|a determinar|a determinar|j68-2",
@@ -40712,6 +40764,8 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -40858,6 +40912,8 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|a determinar|a determinar|j68-4",
@@ -41000,6 +41056,8 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -41146,6 +41204,8 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|a determinar|a determinar|j68-6",
@@ -41288,6 +41348,8 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -41434,6 +41496,8 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|a determinar|a determinar|j68-8",
@@ -41576,6 +41640,8 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -41722,6 +41788,8 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|a determinar|a determinar|j68-10",
@@ -41864,6 +41932,8 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -42010,6 +42080,8 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|a determinar|a determinar|j68-12",
@@ -42152,6 +42224,8 @@
           "focus_digest": [],
           "focus_ai_briefing": {},
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history"
@@ -42298,6 +42372,8 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|a determinar|a determinar|j68-14",
@@ -42442,6 +42518,8 @@
           "notes": [
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|a determinar|a determinar|j68-15",
@@ -42472,5 +42550,5 @@
       "unmatched_slots": []
     }
   },
-  "updated_at": "2026-06-07T06:17:42.665406+00:00"
+  "updated_at": "2026-06-07T10:13:02.671468+00:00"
 }
