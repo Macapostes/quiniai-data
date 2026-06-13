@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-13T01:13:40.507944+00:00",
-  "snapshot_generated_at": "2026-06-13T01:13:39.452929+00:00",
+  "generated_at": "2026-06-13T05:23:59.207448+00:00",
+  "snapshot_generated_at": "2026-06-13T05:23:58.135316+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -24,7 +24,7 @@
     "teams": 135,
     "matches": 117,
     "referees": 5,
-    "last_pruned_at": "2026-06-13T01:13:39.452800+00:00"
+    "last_pruned_at": "2026-06-13T05:23:58.135188+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,24 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-06-12T03:30:27.628771+00:00",
-      "finished_at": "2026-06-12T04:06:12.642150+00:00",
-      "ok": true,
-      "duration_seconds": 2145.01,
-      "monitored_matches": 73,
-      "tracked_matches": 60,
-      "current_jornada": 67
-    },
-    {
-      "started_at": "2026-06-12T05:30:28.100605+00:00",
-      "finished_at": "2026-06-12T06:09:23.839832+00:00",
-      "ok": true,
-      "duration_seconds": 2335.74,
-      "monitored_matches": 73,
-      "tracked_matches": 60,
-      "current_jornada": 67
-    },
     {
       "started_at": "2026-06-12T07:30:29.230576+00:00",
       "finished_at": "2026-06-12T08:05:47.462259+00:00",
@@ -136,6 +118,22 @@
       "finished_at": "2026-06-13T01:13:40.506843+00:00",
       "ok": true,
       "duration_seconds": 1816.1,
+      "monitored_matches": 71,
+      "tracked_matches": 60,
+      "current_jornada": 67
+    },
+    {
+      "started_at": "2026-06-13T02:43:25.784327+00:00",
+      "finished_at": "2026-06-13T03:00:44.524058+00:00",
+      "ok": false,
+      "duration_seconds": 1038.74,
+      "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+      "started_at": "2026-06-13T04:43:26.137432+00:00",
+      "finished_at": "2026-06-13T05:23:59.206316+00:00",
+      "ok": true,
+      "duration_seconds": 2433.07,
       "monitored_matches": 71,
       "tracked_matches": 60,
       "current_jornada": 67
@@ -1339,8 +1337,8 @@
             "away_must_not_lose_index": 72,
             "direct_rivalry_index": 95,
             "home_rotation_context": {
-              "risk": "high",
-              "score": 76,
+              "risk": "medium",
+              "score": 58,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -1355,7 +1353,7 @@
           "weather": {
             "temperature_c": 26.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 7.4
+            "wind_speed_kmh": 7.7
           },
           "referee": {
             "name": "no confirmado",
@@ -1363,7 +1361,7 @@
           },
           "future_home": "fuera vs Almería (3º)",
           "future_away": "casa vs Málaga (4º)",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (41.7%) y el público quinielista lo refleja de forma similar (44.2%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 1 pts y 1 puestos. | local: la prensa reciente apunta a rotaciones/descanso (riesgo high) | Málaga defiende play-off con 1 pts de colchon en final de temporada (must-win 61/100, no perder 84/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 14 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (41.7%) y el público quinielista lo refleja de forma similar (44.2%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 1 pts y 1 puestos. | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Málaga defiende play-off con 1 pts de colchon en final de temporada (must-win 61/100, no perder 84/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 14 días).",
           "analysis_ready": true
         },
         {
@@ -2791,7 +2789,7 @@
           },
           "travel_km": 408.1,
           "weather": {
-            "temperature_c": 21.1,
+            "temperature_c": 21.6,
             "precipitation_probability": 0,
             "wind_speed_kmh": 2.6
           },
@@ -3328,10 +3326,10 @@
           },
           "pressure": {
             "home": {
-              "score": 21.96,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 60.29,
+              "label": "high",
+              "future_difficulty": 84.69,
+              "hard_window_matches": 4,
               "gap_to_drop_zone": 26
             },
             "away": {
@@ -3421,9 +3419,9 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "fuera vs Iceland (7º)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (54.7%) y el público quinielista lo refleja de forma similar (54.7%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 5 pts y 1 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (54.7%) y el público quinielista lo refleja de forma similar (54.7%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 5 pts y 1 puestos. | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -3549,7 +3547,7 @@
             "name": "Soy Referee",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Uzbekistan (8º) | fuera vs Colombia (10º)",
+          "future_home": "casa vs DR Congo (13º)",
           "future_away": "sin calendario detectado",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (91.0%) y el público quinielista lo refleja de forma similar (91.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
@@ -4096,9 +4094,9 @@
           },
           "pressure": {
             "home": {
-              "score": 45.02,
+              "score": 47.38,
               "label": "medium",
-              "future_difficulty": 80.68,
+              "future_difficulty": 90.5,
               "hard_window_matches": 2,
               "gap_to_drop_zone": 13
             },
@@ -4189,7 +4187,7 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Lithuania (11º)",
+          "future_home": "fuera vs Azerbaijan (7º) | casa vs Azerbaijan (7º) | fuera vs Lithuania (11º)",
           "future_away": "sin calendario detectado",
           "briefing_excerpt": "El visitante es favorito para las casas de apuestas (65.8%) y el público quinielista lo refleja de forma similar (65.8%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 0 pts y 0 puestos. | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
@@ -4359,10 +4357,10 @@
               "gap_to_drop_zone": 39
             },
             "away": {
-              "score": 61.22,
-              "label": "high",
-              "future_difficulty": 76.07,
-              "hard_window_matches": 4,
+              "score": 54.49,
+              "label": "medium",
+              "future_difficulty": 66.78,
+              "hard_window_matches": 3,
               "gap_to_drop_zone": 46
             }
           },
@@ -4446,7 +4444,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "casa vs Scotland (7º)",
+          "future_away": "casa vs North Macedonia (16º) | fuera vs Switzerland (7º) | fuera vs Scotland (7º) | casa vs Switzerland (7º) | fuera vs North Macedonia (16º)",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (84.2%) y el público quinielista lo refleja de forma similar (84.2%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
