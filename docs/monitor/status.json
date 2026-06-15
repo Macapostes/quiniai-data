@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T01:05:24.146795+00:00",
-  "snapshot_generated_at": "2026-06-15T01:05:23.162015+00:00",
+  "generated_at": "2026-06-15T05:08:25.069656+00:00",
+  "snapshot_generated_at": "2026-06-15T05:08:23.952619+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -10,7 +10,7 @@
     "tracked_quiniela_matches": 60,
     "quiniela_jornadas": 4,
     "quiniela_current_jornada": 68,
-    "quiniela_latest_available_jornada": 69,
+    "quiniela_latest_available_jornada": 68,
     "weather_matches": 66,
     "travel_matches": 66,
     "history_matches": 2,
@@ -21,10 +21,10 @@
     "structured_referees": 4
   },
   "structured_db_summary": {
-    "teams": 89,
+    "teams": 107,
     "matches": 90,
     "referees": 4,
-    "last_pruned_at": "2026-06-15T01:05:23.161866+00:00"
+    "last_pruned_at": "2026-06-15T05:08:23.952495+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,22 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-06-14T02:43:35.382411+00:00",
-      "finished_at": "2026-06-14T03:00:33.465952+00:00",
-      "ok": false,
-      "duration_seconds": 1018.08,
-      "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
-    },
-    {
-      "started_at": "2026-06-14T04:43:36.041026+00:00",
-      "finished_at": "2026-06-14T05:13:53.561944+00:00",
-      "ok": true,
-      "duration_seconds": 1817.52,
-      "monitored_matches": 69,
-      "tracked_matches": 60,
-      "current_jornada": 68
-    },
     {
       "started_at": "2026-06-14T06:43:36.922326+00:00",
       "finished_at": "2026-06-14T07:00:44.313748+00:00",
@@ -134,6 +118,22 @@
       "finished_at": "2026-06-15T01:05:24.145889+00:00",
       "ok": true,
       "duration_seconds": 1296.62,
+      "monitored_matches": 66,
+      "tracked_matches": 60,
+      "current_jornada": 68
+    },
+    {
+      "started_at": "2026-06-15T02:43:48.312553+00:00",
+      "finished_at": "2026-06-15T03:00:32.667149+00:00",
+      "ok": false,
+      "duration_seconds": 1004.35,
+      "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+      "started_at": "2026-06-15T04:43:47.702274+00:00",
+      "finished_at": "2026-06-15T05:08:25.068819+00:00",
+      "ok": true,
+      "duration_seconds": 1477.37,
       "monitored_matches": 66,
       "tracked_matches": 60,
       "current_jornada": 68
@@ -354,8 +354,8 @@
           },
           "travel_km": 5689.2,
           "weather": {
-            "temperature_c": 15.0,
-            "precipitation_probability": 27,
+            "temperature_c": 15.8,
+            "precipitation_probability": 48,
             "wind_speed_kmh": 7.6
           },
           "referee": {
@@ -637,9 +637,9 @@
           },
           "travel_km": 1837.0,
           "weather": {
-            "temperature_c": 23.0,
-            "precipitation_probability": 47,
-            "wind_speed_kmh": 4.1
+            "temperature_c": 22.5,
+            "precipitation_probability": 60,
+            "wind_speed_kmh": 4.5
           },
           "referee": {
             "name": "no confirmado",
@@ -790,9 +790,9 @@
           },
           "travel_km": 4485.3,
           "weather": {
-            "temperature_c": 20.0,
-            "precipitation_probability": 36,
-            "wind_speed_kmh": 7.2
+            "temperature_c": 26.9,
+            "precipitation_probability": 14,
+            "wind_speed_kmh": 4.6
           },
           "referee": {
             "name": "no confirmado",
@@ -878,9 +878,9 @@
           },
           "travel_km": 6763.1,
           "weather": {
-            "temperature_c": 9.7,
-            "precipitation_probability": 5,
-            "wind_speed_kmh": 5.3
+            "temperature_c": 8.5,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 4.0
           },
           "referee": {
             "name": "no confirmado",
@@ -1031,9 +1031,9 @@
           },
           "travel_km": 11868.6,
           "weather": {
-            "temperature_c": 6.8,
-            "precipitation_probability": 20,
-            "wind_speed_kmh": 6.7
+            "temperature_c": 8.0,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 0.3
           },
           "referee": {
             "name": "no confirmado",
@@ -1422,9 +1422,9 @@
           },
           "travel_km": 4820.6,
           "weather": {
-            "temperature_c": 29.3,
-            "precipitation_probability": 11,
-            "wind_speed_kmh": 5.4
+            "temperature_c": 38.5,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 12.0
           },
           "referee": {
             "name": "no confirmado",
@@ -1434,992 +1434,6 @@
           "future_away": "fuera vs Cape Verde (-)",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (87.0%). | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
-        }
-      ]
-    },
-    {
-      "jornada": 69,
-      "label": "Jornada 69",
-      "is_current": false,
-      "source": "Eduardo Losilla Quinielista",
-      "kickoff_from": "",
-      "kickoff_to": "",
-      "history_only": false,
-      "matches": [
-        {
-          "slot": "1.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "2.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "3.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "4.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "5.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "6.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "7.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "8.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "9.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "10.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "11.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "12.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "13.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "14.",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "official_percent": {
-            "1": 0.0,
-            "X": 0.0,
-            "2": 0.0
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
-        },
-        {
-          "slot": "Pleno al 15",
-          "local": "A DETERMINAR",
-          "visitante": "A DETERMINAR",
-          "league": "",
-          "kickoff": "",
-          "bookmaker": "",
-          "odds": {},
-          "normalized_percent": {
-            "1": null,
-            "X": null,
-            "2": null
-          },
-          "official_percent": {
-            "1": null,
-            "X": null,
-            "2": null
-          },
-          "home_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "away_table": {
-            "position": null,
-            "points": null,
-            "form": ""
-          },
-          "pressure": {
-            "home": {},
-            "away": {}
-          },
-          "fatigue": {
-            "home": {},
-            "away": {}
-          },
-          "competitive_context": {
-            "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
-            "home_objective": {},
-            "away_objective": {},
-            "home_must_win_index": 0,
-            "away_must_win_index": 0,
-            "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 0,
-            "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
-          },
-          "travel_km": null,
-          "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
-          },
-          "referee": {
-            "name": "no confirmado",
-            "bias_summary": "sin historico arbitral fiable"
-          },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
         }
       ]
     },
@@ -3220,9 +2234,9 @@
           },
           "travel_km": 12547.6,
           "weather": {
-            "temperature_c": 34.3,
+            "temperature_c": 34.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 20.3
+            "wind_speed_kmh": 23.4
           },
           "referee": {
             "name": "no confirmado",
@@ -3308,9 +2322,9 @@
           },
           "travel_km": 14682.6,
           "weather": {
-            "temperature_c": 25.7,
+            "temperature_c": 25.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 3.4
+            "wind_speed_kmh": 2.5
           },
           "referee": {
             "name": "no confirmado",
@@ -3396,9 +2410,9 @@
           },
           "travel_km": 3860.8,
           "weather": {
-            "temperature_c": 27.9,
+            "temperature_c": 27.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 14.3
+            "wind_speed_kmh": 10.0
           },
           "referee": {
             "name": "Alireza Faghani to",
@@ -3711,6 +2725,2157 @@
           "future_away": "sin calendario detectado",
           "briefing_excerpt": "",
           "analysis_ready": false
+        }
+      ]
+    },
+    {
+      "jornada": 66,
+      "label": "Jornada 66",
+      "is_current": false,
+      "source": "Eduardo Losilla Quinielista",
+      "kickoff_from": "2026-06-06T13:00:00Z",
+      "kickoff_to": "2026-06-07T19:00:00Z",
+      "history_only": false,
+      "matches": [
+        {
+          "slot": "1.",
+          "local": "CD Castellón",
+          "visitante": "Almería",
+          "league": "soccer_spain_segunda_division",
+          "kickoff": "2026-06-06T19:00:00Z",
+          "bookmaker": "LeoVegas (SE)",
+          "odds": {
+            "1": 1.73,
+            "X": 3.7,
+            "2": 4.1
+          },
+          "normalized_percent": {
+            "1": 50.86,
+            "X": 28.2,
+            "2": 20.94
+          },
+          "official_percent": {
+            "1": 50.86,
+            "X": 28.2,
+            "2": 20.94
+          },
+          "home_table": {
+            "position": 6,
+            "points": 72,
+            "form": "LDDWW"
+          },
+          "away_table": {
+            "position": 3,
+            "points": 74,
+            "form": "WDLLW"
+          },
+          "pressure": {
+            "home": {
+              "score": 48.26,
+              "label": "medium",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
+              "gap_to_drop_zone": 32
+            },
+            "away": {
+              "score": 55.88,
+              "label": "high",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 2,
+              "gap_to_drop_zone": 34
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 20.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 30.2,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 42,
+              "total_rounds": 42,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "duelo directo por play-off",
+            "direct_rivalry": {
+              "is_direct_rivalry": true,
+              "direct_rivalry_index": 88,
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "points_delta": 2,
+              "position_delta": 3,
+              "label": "duelo directo por play-off"
+            },
+            "home_objective": {
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "status": "defending",
+              "urgency": "critical",
+              "summary": "defiende play-off con 0 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 0,
+              "line_position": 6,
+              "line_points": 72,
+              "relevance_score": 100.0,
+              "must_win_index": 66,
+              "must_not_lose_index": 96,
+              "objective_swing_if_win": 93,
+              "objective_swing_if_lose": 100,
+              "swing_summary_if_win": "victoria abre colchon en play-off",
+              "swing_summary_if_lose": "derrota deja en riesgo play-off",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 42,
+                "total_rounds": 42,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "playoff",
+                  "objective_label": "play-off",
+                  "status": "defending",
+                  "urgency": "critical",
+                  "summary": "defiende play-off con 0 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 0,
+                  "line_position": 6,
+                  "line_points": 72,
+                  "relevance_score": 100.0
+                },
+                {
+                  "objective_key": "direct_promotion",
+                  "objective_label": "ascenso directo",
+                  "status": "chasing",
+                  "urgency": "medium",
+                  "summary": "persigue ascenso directo a 5 pts",
+                  "gap_points": 5,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 77,
+                  "relevance_score": 76.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 32 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 32,
+                  "line_position": 18,
+                  "line_points": 43,
+                  "relevance_score": 0.0
+                }
+              ]
+            },
+            "away_objective": {
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "status": "defending",
+              "urgency": "high",
+              "summary": "defiende play-off con 2 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 2,
+              "line_position": 6,
+              "line_points": 72,
+              "relevance_score": 100.0,
+              "must_win_index": 56,
+              "must_not_lose_index": 72,
+              "objective_swing_if_win": 69,
+              "objective_swing_if_lose": 77,
+              "swing_summary_if_win": "victoria abre colchon en play-off",
+              "swing_summary_if_lose": "derrota deja en riesgo play-off",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 42,
+                "total_rounds": 42,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "playoff",
+                  "objective_label": "play-off",
+                  "status": "defending",
+                  "urgency": "high",
+                  "summary": "defiende play-off con 2 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 2,
+                  "line_position": 6,
+                  "line_points": 72,
+                  "relevance_score": 100.0
+                },
+                {
+                  "objective_key": "direct_promotion",
+                  "objective_label": "ascenso directo",
+                  "status": "chasing",
+                  "urgency": "high",
+                  "summary": "persigue ascenso directo a 3 pts",
+                  "gap_points": 3,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 77,
+                  "relevance_score": 98.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 34 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 34,
+                  "line_position": 18,
+                  "line_points": 43,
+                  "relevance_score": 0.0
+                }
+              ]
+            },
+            "home_must_win_index": 66,
+            "away_must_win_index": 56,
+            "home_must_not_lose_index": 96,
+            "away_must_not_lose_index": 72,
+            "direct_rivalry_index": 88,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 8,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 8,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 408.1,
+          "weather": {
+            "temperature_c": 22.8,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 0.8
+          },
+          "referee": {
+            "name": "who ruled out Camara",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "fuera vs Almería (3º)",
+          "future_away": "casa vs Málaga (4º)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (50.9%) y el público quinielista lo refleja de forma similar (50.9%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 2 pts y 3 puestos. | CD Castellón defiende play-off con 0 pts de colchon en final de temporada (must-win 66/100, no perder 96/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "2.",
+          "local": "Las Palmas",
+          "visitante": "Málaga",
+          "league": "soccer_spain_segunda_division",
+          "kickoff": "2026-06-07T19:00:00Z",
+          "bookmaker": "LeoVegas (SE)",
+          "odds": {
+            "1": 2.02,
+            "X": 3.15,
+            "2": 3.6
+          },
+          "normalized_percent": {
+            "1": 43.97,
+            "X": 31.06,
+            "2": 24.97
+          },
+          "official_percent": {
+            "1": 43.97,
+            "X": 31.06,
+            "2": 24.97
+          },
+          "home_table": {
+            "position": 5,
+            "points": 73,
+            "form": "WLWDW"
+          },
+          "away_table": {
+            "position": 4,
+            "points": 73,
+            "form": "WWWDW"
+          },
+          "pressure": {
+            "home": {
+              "score": 20.8,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 33
+            },
+            "away": {
+              "score": 54.84,
+              "label": "medium",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 2,
+              "gap_to_drop_zone": 33
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 42,
+              "total_rounds": 42,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "duelo directo por play-off",
+            "direct_rivalry": {
+              "is_direct_rivalry": true,
+              "direct_rivalry_index": 98,
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "points_delta": 0,
+              "position_delta": 1,
+              "label": "duelo directo por play-off"
+            },
+            "home_objective": {
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "status": "defending",
+              "urgency": "critical",
+              "summary": "defiende play-off con 1 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 1,
+              "line_position": 6,
+              "line_points": 72,
+              "relevance_score": 100.0,
+              "must_win_index": 61,
+              "must_not_lose_index": 84,
+              "objective_swing_if_win": 81,
+              "objective_swing_if_lose": 89,
+              "swing_summary_if_win": "victoria abre colchon en play-off",
+              "swing_summary_if_lose": "derrota deja en riesgo play-off",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 42,
+                "total_rounds": 42,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "playoff",
+                  "objective_label": "play-off",
+                  "status": "defending",
+                  "urgency": "critical",
+                  "summary": "defiende play-off con 1 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 1,
+                  "line_position": 6,
+                  "line_points": 72,
+                  "relevance_score": 100.0
+                },
+                {
+                  "objective_key": "direct_promotion",
+                  "objective_label": "ascenso directo",
+                  "status": "chasing",
+                  "urgency": "medium",
+                  "summary": "persigue ascenso directo a 4 pts",
+                  "gap_points": 4,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 77,
+                  "relevance_score": 84.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 33 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 33,
+                  "line_position": 18,
+                  "line_points": 43,
+                  "relevance_score": 0.0
+                }
+              ]
+            },
+            "away_objective": {
+              "objective_key": "playoff",
+              "objective_label": "play-off",
+              "status": "defending",
+              "urgency": "critical",
+              "summary": "defiende play-off con 1 pts de colchon",
+              "gap_points": null,
+              "cushion_points": 1,
+              "line_position": 6,
+              "line_points": 72,
+              "relevance_score": 100.0,
+              "must_win_index": 61,
+              "must_not_lose_index": 84,
+              "objective_swing_if_win": 81,
+              "objective_swing_if_lose": 89,
+              "swing_summary_if_win": "victoria abre colchon en play-off",
+              "swing_summary_if_lose": "derrota deja en riesgo play-off",
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 42,
+                "total_rounds": 42,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "playoff",
+                  "objective_label": "play-off",
+                  "status": "defending",
+                  "urgency": "critical",
+                  "summary": "defiende play-off con 1 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 1,
+                  "line_position": 6,
+                  "line_points": 72,
+                  "relevance_score": 100.0
+                },
+                {
+                  "objective_key": "direct_promotion",
+                  "objective_label": "ascenso directo",
+                  "status": "chasing",
+                  "urgency": "medium",
+                  "summary": "persigue ascenso directo a 4 pts",
+                  "gap_points": 4,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 77,
+                  "relevance_score": 84.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 33 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 33,
+                  "line_position": 18,
+                  "line_points": 43,
+                  "relevance_score": 0.0
+                }
+              ]
+            },
+            "home_must_win_index": 61,
+            "away_must_win_index": 61,
+            "home_must_not_lose_index": 84,
+            "away_must_not_lose_index": 84,
+            "direct_rivalry_index": 98,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 26,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 34,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 1406.0,
+          "weather": {
+            "temperature_c": 19.0,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 15.2
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "fuera vs Almería (3º)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (44.0%) y el público quinielista lo refleja de forma similar (44.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 0 pts y 1 puestos. | Las Palmas defiende play-off con 1 pts de colchon en final de temporada (must-win 61/100, no perder 84/100). Victoria abre colchon en play-off. Derrota deja en riesgo play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "3.",
+          "local": "BÉLGICA",
+          "visitante": "TÚNEZ",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T13:00:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 84.22,
+            "X": 11.98,
+            "2": 3.8
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 10,
+            "points": 52,
+            "form": "LLDWL"
+          },
+          "away_table": {
+            "position": 19,
+            "points": 22,
+            "form": "LLDLD"
+          },
+          "pressure": {
+            "home": {
+              "score": 16.66,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 13
+            },
+            "away": {
+              "score": 97.52,
+              "label": "critical",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": -17
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 30,
+              "position_delta": 9,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 8455.5,
+          "weather": {
+            "temperature_c": 14.6,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 9.0
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (84.2%) y el público quinielista lo refleja de forma similar (84.2%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "4.",
+          "local": "LITUANIA",
+          "visitante": "LETONIA",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T13:00:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 48.24,
+            "X": 29.75,
+            "2": 22.01
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 8,
+            "points": 53,
+            "form": "WLWLL"
+          },
+          "away_table": {
+            "position": 13,
+            "points": 49,
+            "form": "LDDLL"
+          },
+          "pressure": {
+            "home": {
+              "score": 18.66,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 14
+            },
+            "away": {
+              "score": 13.75,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 10
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 14.77,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "duelo directo por None",
+            "direct_rivalry": {
+              "is_direct_rivalry": true,
+              "direct_rivalry_index": 78,
+              "objective_key": null,
+              "objective_label": null,
+              "points_delta": 4,
+              "position_delta": 5,
+              "label": "duelo directo por None"
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 78,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 230.9,
+          "weather": {
+            "temperature_c": 11.0,
+            "precipitation_probability": 49,
+            "wind_speed_kmh": 9.4
+          },
+          "referee": {
+            "name": "Soy Referee",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (48.2%) y el público quinielista lo refleja de forma similar (48.2%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 4 pts y 5 puestos. | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "5.",
+          "local": "ESTONIA",
+          "visitante": "ISLAS FEROE",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T15:00:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 54.71,
+            "X": 22.59,
+            "2": 22.7
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 4,
+            "points": 65,
+            "form": "LLDWW"
+          },
+          "away_table": {
+            "position": 5,
+            "points": 60,
+            "form": "WLDLD"
+          },
+          "pressure": {
+            "home": {
+              "score": 60.29,
+              "label": "high",
+              "future_difficulty": 84.69,
+              "hard_window_matches": 4,
+              "gap_to_drop_zone": 26
+            },
+            "away": {
+              "score": 21.28,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 21
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "duelo directo por None",
+            "direct_rivalry": {
+              "is_direct_rivalry": true,
+              "direct_rivalry_index": 83,
+              "objective_key": null,
+              "objective_label": null,
+              "points_delta": 5,
+              "position_delta": 1,
+              "label": "duelo directo por None"
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 83,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 10583.3,
+          "weather": {
+            "temperature_c": 12.1,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 4.3
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "fuera vs Iceland (7º)",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (54.7%) y el público quinielista lo refleja de forma similar (54.7%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 5 pts y 1 puestos. | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "6.",
+          "local": "PORTUGAL",
+          "visitante": "CHILE",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T17:45:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 90.96,
+            "X": 7.05,
+            "2": 1.99
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 1,
+            "points": 85,
+            "form": "WWWWW"
+          },
+          "away_table": {
+            "position": 10,
+            "points": 52,
+            "form": "LLDWL"
+          },
+          "pressure": {
+            "home": {
+              "score": 47.64,
+              "label": "medium",
+              "future_difficulty": 75.77,
+              "hard_window_matches": 1,
+              "gap_to_drop_zone": 46
+            },
+            "away": {
+              "score": 16.66,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 13
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 33,
+              "position_delta": 9,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 10386.3,
+          "weather": {
+            "temperature_c": 19.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 7.6
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "casa vs DR Congo (13º)",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (91.0%) y el público quinielista lo refleja de forma similar (91.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "7.",
+          "local": "RUMANÍA",
+          "visitante": "GALES",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T17:45:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 40.44,
+            "X": 32.39,
+            "2": 27.17
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 2,
+            "points": 78,
+            "form": "DWWDL"
+          },
+          "away_table": {
+            "position": 14,
+            "points": 47,
+            "form": "DWDWL"
+          },
+          "pressure": {
+            "home": {
+              "score": 23.92,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 39
+            },
+            "away": {
+              "score": 12.86,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 8
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 31,
+              "position_delta": 12,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 12102.6,
+          "weather": {
+            "temperature_c": 8.9,
+            "precipitation_probability": 100,
+            "wind_speed_kmh": 19.0
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (40.4%) y el público quinielista lo refleja de forma similar (40.4%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "8.",
+          "local": "INGLATERRA",
+          "visitante": "NUEVA ZELANDA",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T20:00:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 94.84,
+            "X": 3.72,
+            "2": 1.44
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 19,
+            "points": 22,
+            "form": "LLDLD"
+          },
+          "away_table": {
+            "position": 7,
+            "points": 54,
+            "form": "LDDWW"
+          },
+          "pressure": {
+            "home": {
+              "score": 97.52,
+              "label": "critical",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": -17
+            },
+            "away": {
+              "score": 19.63,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 15
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 32,
+              "position_delta": 12,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 8537.1,
+          "weather": {
+            "temperature_c": 12.9,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 12.2
+          },
+          "referee": {
+            "name": "César Ramos",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (94.8%) y el público quinielista lo refleja de forma similar (94.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "9.",
+          "local": "SUIZA",
+          "visitante": "AUSTRALIA",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T19:00:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 62.71,
+            "X": 22.61,
+            "2": 14.68
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 7,
+            "points": 54,
+            "form": "LDDWW"
+          },
+          "away_table": {
+            "position": 1,
+            "points": 85,
+            "form": "WWWWW"
+          },
+          "pressure": {
+            "home": {
+              "score": 19.63,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 15
+            },
+            "away": {
+              "score": 53.46,
+              "label": "medium",
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
+              "gap_to_drop_zone": 46
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 31,
+              "position_delta": 6,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 14758.5,
+          "weather": {
+            "temperature_c": 6.4,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 12.3
+          },
+          "referee": {
+            "name": "Soy Referee",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "fuera vs USA (11º)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (62.7%) y el público quinielista lo refleja de forma similar (62.7%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "10.",
+          "local": "BOLIVIA",
+          "visitante": "ESCOCIA",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T20:00:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 10.68,
+            "X": 18.84,
+            "2": 70.48
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 20,
+            "points": 20,
+            "form": "LDLDD"
+          },
+          "away_table": {
+            "position": 4,
+            "points": 65,
+            "form": "LLDWW"
+          },
+          "pressure": {
+            "home": {
+              "score": 100.0,
+              "label": "critical",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": -19
+            },
+            "away": {
+              "score": 21.96,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 26
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 45,
+              "position_delta": 16,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 2818.1,
+          "weather": {
+            "temperature_c": 19.2,
+            "precipitation_probability": 7,
+            "wind_speed_kmh": 10.4
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (70.5%) y el público quinielista lo refleja de forma similar (70.5%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "11.",
+          "local": "LIECHTENSTEIN",
+          "visitante": "CHIPRE",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T13:00:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 12.84,
+            "X": 21.33,
+            "2": 65.83
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 10,
+            "points": 52,
+            "form": "LLDWL"
+          },
+          "away_table": {
+            "position": 10,
+            "points": 52,
+            "form": "LLDWL"
+          },
+          "pressure": {
+            "home": {
+              "score": 45.02,
+              "label": "medium",
+              "future_difficulty": 80.68,
+              "hard_window_matches": 2,
+              "gap_to_drop_zone": 13
+            },
+            "away": {
+              "score": 16.66,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 13
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "duelo directo por None",
+            "direct_rivalry": {
+              "is_direct_rivalry": true,
+              "direct_rivalry_index": 100,
+              "objective_key": null,
+              "objective_label": null,
+              "points_delta": 0,
+              "position_delta": 0,
+              "label": "duelo directo por None"
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 100,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 7147.4,
+          "weather": {
+            "temperature_c": 16.8,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 8.9
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "casa vs Lithuania (11º)",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (65.8%) y el público quinielista lo refleja de forma similar (65.8%). Sin gran divergencia entre mercado y quiniela. | duelo directo por None: equipos separados por 0 pts y 0 puestos. | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "12.",
+          "local": "DINAMARCA",
+          "visitante": "UCRANIA",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T16:30:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 58.02,
+            "X": 26.92,
+            "2": 15.06
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 2,
+            "points": 78,
+            "form": "DWWDL"
+          },
+          "away_table": {
+            "position": 7,
+            "points": 54,
+            "form": "LDDWW"
+          },
+          "pressure": {
+            "home": {
+              "score": 23.92,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 39
+            },
+            "away": {
+              "score": 19.63,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 15
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 24,
+              "position_delta": 5,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 13558.2,
+          "weather": {
+            "temperature_c": 12.0,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 1.7
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (58.0%) y el público quinielista lo refleja de forma similar (58.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "13.",
+          "local": "CROACIA",
+          "visitante": "ESLOVENIA",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T18:45:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 84.15,
+            "X": 12.4,
+            "2": 3.45
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 2,
+            "points": 78,
+            "form": "DWWDL"
+          },
+          "away_table": {
+            "position": 1,
+            "points": 85,
+            "form": "WWWWW"
+          },
+          "pressure": {
+            "home": {
+              "score": 23.92,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 39
+            },
+            "away": {
+              "score": 54.49,
+              "label": "medium",
+              "future_difficulty": 66.78,
+              "hard_window_matches": 3,
+              "gap_to_drop_zone": 46
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 11.66,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 7,
+              "position_delta": 1,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 106.3,
+          "weather": {
+            "temperature_c": 17.7,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 12.3
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "casa vs North Macedonia (16º) | fuera vs Switzerland (7º) | fuera vs Scotland (7º) | casa vs Switzerland (7º) | fuera vs North Macedonia (16º)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (84.2%) y el público quinielista lo refleja de forma similar (84.2%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "14.",
+          "local": "MARRUECOS",
+          "visitante": "NORUEGA",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T19:00:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": 33.91,
+            "X": 27.2,
+            "2": 38.89
+          },
+          "official_percent": {
+            "1": 0.0,
+            "X": 0.0,
+            "2": 0.0
+          },
+          "home_table": {
+            "position": 3,
+            "points": 71,
+            "form": "WWDWW"
+          },
+          "away_table": {
+            "position": 16,
+            "points": 44,
+            "form": "WWDLD"
+          },
+          "pressure": {
+            "home": {
+              "score": 22.88,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 32
+            },
+            "away": {
+              "score": 10.99,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 5
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 27,
+              "position_delta": 13,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 1758.1,
+          "weather": {
+            "temperature_c": 26.8,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 18.7
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (38.9%) y el público quinielista lo refleja de forma similar (38.9%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
+        },
+        {
+          "slot": "Pleno al 15",
+          "local": "GRECIA",
+          "visitante": "ITALIA",
+          "league": "soccer_epl",
+          "kickoff": "2026-06-06T19:00:00Z",
+          "bookmaker": "",
+          "odds": {},
+          "normalized_percent": {
+            "1": null,
+            "X": null,
+            "2": null
+          },
+          "official_percent": {
+            "1": null,
+            "X": null,
+            "2": null
+          },
+          "home_table": {
+            "position": 1,
+            "points": 85,
+            "form": "WWWWW"
+          },
+          "away_table": {
+            "position": 15,
+            "points": 45,
+            "form": "LDLDL"
+          },
+          "pressure": {
+            "home": {
+              "score": 24.96,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 46
+            },
+            "away": {
+              "score": 11.96,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": 6
+            }
+          },
+          "fatigue": {
+            "home": {
+              "score": 9.0,
+              "label": "low"
+            },
+            "away": {
+              "score": 34.0,
+              "label": "low"
+            }
+          },
+          "competitive_context": {
+            "season_context_phase": {
+              "key": "final",
+              "label": "final de temporada",
+              "played": 38,
+              "total_rounds": 38,
+              "progress": 1.0,
+              "source": "played_matches"
+            },
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0,
+              "objective_key": "",
+              "objective_label": "",
+              "points_delta": 40,
+              "position_delta": 14,
+              "label": ""
+            },
+            "home_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "away_objective": {
+              "season_context_phase": {
+                "key": "final",
+                "label": "final de temporada",
+                "played": 38,
+                "total_rounds": 38,
+                "progress": 1.0,
+                "source": "played_matches"
+              },
+              "objective_candidates": []
+            },
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
+          },
+          "travel_km": 6803.9,
+          "weather": {
+            "temperature_c": 12.0,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 5.2
+          },
+          "referee": {
+            "name": "no confirmado",
+            "bias_summary": "sin historico arbitral fiable"
+          },
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
+          "briefing_excerpt": "Sin suficientes datos de mercado para generar insight. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "analysis_ready": true
         }
       ]
     }
