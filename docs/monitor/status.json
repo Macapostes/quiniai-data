@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T01:15:25.673030+00:00",
-  "snapshot_generated_at": "2026-06-16T01:15:24.501383+00:00",
+  "generated_at": "2026-06-16T05:09:09.904252+00:00",
+  "snapshot_generated_at": "2026-06-16T05:09:08.944799+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -16,15 +16,15 @@
     "history_matches": 1,
     "sources_total": 6,
     "sources_ok": 6,
-    "fresh_headlines": 8,
+    "fresh_headlines": 6,
     "structured_focus_matches": 58,
-    "structured_referees": 5
+    "structured_referees": 6
   },
   "structured_db_summary": {
     "teams": 120,
     "matches": 111,
-    "referees": 5,
-    "last_pruned_at": "2026-06-16T01:15:24.501194+00:00"
+    "referees": 6,
+    "last_pruned_at": "2026-06-16T05:09:08.944683+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,22 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-06-15T02:43:48.312553+00:00",
-      "finished_at": "2026-06-15T03:00:32.667149+00:00",
-      "ok": false,
-      "duration_seconds": 1004.35,
-      "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
-    },
-    {
-      "started_at": "2026-06-15T04:43:47.702274+00:00",
-      "finished_at": "2026-06-15T05:08:25.068819+00:00",
-      "ok": true,
-      "duration_seconds": 1477.37,
-      "monitored_matches": 66,
-      "tracked_matches": 60,
-      "current_jornada": 68
-    },
     {
       "started_at": "2026-06-15T06:43:48.547348+00:00",
       "finished_at": "2026-06-15T07:13:07.453256+00:00",
@@ -134,6 +118,22 @@
       "finished_at": "2026-06-16T01:15:25.671760+00:00",
       "ok": true,
       "duration_seconds": 1888.31,
+      "monitored_matches": 61,
+      "tracked_matches": 58,
+      "current_jornada": 68
+    },
+    {
+      "started_at": "2026-06-16T02:43:58.589109+00:00",
+      "finished_at": "2026-06-16T03:01:08.991437+00:00",
+      "ok": false,
+      "duration_seconds": 1030.4,
+      "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+      "started_at": "2026-06-16T04:43:59.462568+00:00",
+      "finished_at": "2026-06-16T05:09:09.903445+00:00",
+      "ok": true,
+      "duration_seconds": 1510.44,
       "monitored_matches": 61,
       "tracked_matches": 58,
       "current_jornada": 68
@@ -354,9 +354,9 @@
           },
           "travel_km": 5689.2,
           "weather": {
-            "temperature_c": 15.4,
-            "precipitation_probability": 48,
-            "wind_speed_kmh": 4.4
+            "temperature_c": 14.7,
+            "precipitation_probability": 49,
+            "wind_speed_kmh": 4.9
           },
           "referee": {
             "name": "no confirmado",
@@ -637,9 +637,9 @@
           },
           "travel_km": 1837.0,
           "weather": {
-            "temperature_c": 22.6,
-            "precipitation_probability": 35,
-            "wind_speed_kmh": 5.5
+            "temperature_c": 22.4,
+            "precipitation_probability": 33,
+            "wind_speed_kmh": 3.9
           },
           "referee": {
             "name": "no confirmado",
@@ -790,9 +790,9 @@
           },
           "travel_km": 4485.3,
           "weather": {
-            "temperature_c": 32.9,
-            "precipitation_probability": 6,
-            "wind_speed_kmh": 2.0
+            "temperature_c": 31.8,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 3.6
           },
           "referee": {
             "name": "no confirmado",
@@ -1031,9 +1031,9 @@
           },
           "travel_km": 11868.6,
           "weather": {
-            "temperature_c": 6.0,
-            "precipitation_probability": 9,
-            "wind_speed_kmh": 10.0
+            "temperature_c": 7.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 5.5
           },
           "referee": {
             "name": "no confirmado",
@@ -1422,9 +1422,9 @@
           },
           "travel_km": 4820.6,
           "weather": {
-            "temperature_c": 41.1,
+            "temperature_c": 40.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 13.9
+            "wind_speed_kmh": 13.5
           },
           "referee": {
             "name": "no confirmado",
@@ -1586,12 +1586,12 @@
           },
           "travel_km": 12751.5,
           "weather": {
-            "temperature_c": 24.4,
+            "temperature_c": 23.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 14.3
+            "wind_speed_kmh": 20.9
           },
           "referee": {
-            "name": "no confirmado",
+            "name": "Adham Makhadmeh",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
@@ -1674,9 +1674,9 @@
           },
           "travel_km": 5911.3,
           "weather": {
-            "temperature_c": 25.2,
+            "temperature_c": 30.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 11.8
+            "wind_speed_kmh": 9.5
           },
           "referee": {
             "name": "no confirmado",
@@ -1915,9 +1915,9 @@
           },
           "travel_km": 10834.1,
           "weather": {
-            "temperature_c": 23.1,
-            "precipitation_probability": 73,
-            "wind_speed_kmh": 1.1
+            "temperature_c": 22.4,
+            "precipitation_probability": 83,
+            "wind_speed_kmh": 8.4
           },
           "referee": {
             "name": "no confirmado",
@@ -2068,9 +2068,9 @@
           },
           "travel_km": 3673.0,
           "weather": {
-            "temperature_c": 16.2,
-            "precipitation_probability": 14,
-            "wind_speed_kmh": 4.6
+            "temperature_c": 13.5,
+            "precipitation_probability": 20,
+            "wind_speed_kmh": 4.7
           },
           "referee": {
             "name": "no confirmado",
@@ -3468,9 +3468,9 @@
           },
           "travel_km": 11868.6,
           "weather": {
-            "temperature_c": 6.0,
-            "precipitation_probability": 9,
-            "wind_speed_kmh": 10.0
+            "temperature_c": 7.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 5.5
           },
           "referee": {
             "name": "no confirmado",
@@ -3556,12 +3556,12 @@
           },
           "travel_km": 12751.5,
           "weather": {
-            "temperature_c": 24.4,
+            "temperature_c": 23.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 14.3
+            "wind_speed_kmh": 20.9
           },
           "referee": {
-            "name": "no confirmado",
+            "name": "Adham Makhadmeh",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
