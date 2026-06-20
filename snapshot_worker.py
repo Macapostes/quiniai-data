@@ -4174,7 +4174,11 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
                         if day_str in day_map:
                             target_day = day_map[day_str]
                             base_day = base_dt.weekday()
-                            diff = (target_day - base_day + 3) % 7 - 3
+                            diff = target_day - base_day
+                            if diff > 1:
+                                diff -= 7
+                            elif diff < -5:
+                                diff += 7
                             match_date_str = (base_dt + timedelta(days=diff)).strftime("%d/%m/%Y")
                         else:
                             match_date_str = jornada_date
