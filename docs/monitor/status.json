@@ -1,30 +1,30 @@
 {
-  "generated_at": "2026-06-27T11:31:17.627357+00:00",
-  "snapshot_generated_at": "2026-06-27T11:31:16.129685+00:00",
+  "generated_at": "2026-06-27T13:33:16.193652+00:00",
+  "snapshot_generated_at": "2026-06-27T13:33:15.272867+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
   "coverage": {
-    "monitored_matches": 38,
+    "monitored_matches": 37,
     "focus_matches": 15,
     "tracked_quiniela_matches": 59,
     "quiniela_jornadas": 4,
     "quiniela_current_jornada": 71,
     "quiniela_latest_available_jornada": 72,
-    "weather_matches": 38,
-    "travel_matches": 38,
+    "weather_matches": 37,
+    "travel_matches": 37,
     "history_matches": 22,
     "sources_total": 9,
     "sources_ok": 9,
     "fresh_headlines": 17,
     "structured_focus_matches": 59,
-    "structured_referees": 7
+    "structured_referees": 8
   },
   "structured_db_summary": {
     "teams": 124,
-    "matches": 124,
-    "referees": 7,
-    "last_pruned_at": "2026-06-27T11:31:16.129518+00:00"
+    "matches": 126,
+    "referees": 8,
+    "last_pruned_at": "2026-06-27T13:33:15.272725+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,15 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-06-26T13:12:29.814029+00:00",
-      "finished_at": "2026-06-26T13:38:00.452045+00:00",
-      "ok": true,
-      "duration_seconds": 1530.64,
-      "monitored_matches": 38,
-      "tracked_matches": 59,
-      "current_jornada": 70
-    },
     {
       "started_at": "2026-06-26T15:12:30.910858+00:00",
       "finished_at": "2026-06-26T15:39:15.718879+00:00",
@@ -137,6 +128,15 @@
       "ok": true,
       "duration_seconds": 1119.04,
       "monitored_matches": 38,
+      "tracked_matches": 59,
+      "current_jornada": 71
+    },
+    {
+      "started_at": "2026-06-27T13:12:39.468036+00:00",
+      "finished_at": "2026-06-27T13:33:16.192475+00:00",
+      "ok": true,
+      "duration_seconds": 1236.72,
+      "monitored_matches": 37,
       "tracked_matches": 59,
       "current_jornada": 71
     }
@@ -283,16 +283,20 @@
         },
         {
           "slot": "3.",
-          "local": "AUSTRALIA",
-          "visitante": "EGIPTO",
-          "league": "",
+          "local": "Australia",
+          "visitante": "Egypt",
+          "league": "soccer_fifa_world_cup",
           "kickoff": "2026-07-03T18:00:00Z",
-          "bookmaker": "",
-          "odds": {},
+          "bookmaker": "Unibet (NL)",
+          "odds": {
+            "1": 3.45,
+            "X": 2.88,
+            "2": 2.55
+          },
           "normalized_percent": {
-            "1": 17.01,
-            "X": 32.99,
-            "2": 50.0
+            "1": 28.16,
+            "X": 33.74,
+            "2": 38.1
           },
           "official_percent": {
             "1": 17.01,
@@ -314,13 +318,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 70.0,
+              "label": "high"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -328,36 +341,50 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 12602.2,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 16.1,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 17.7
           },
           "referee": {
-            "name": "no confirmado",
+            "name": "and VAR in Croatia",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (38.1%), pero el público de la quiniela lo sobrevalora aún más (50.0%). Hay valor matemático en buscar la sorpresa o el empate. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "analysis_ready": true
         },
         {
           "slot": "4.",
-          "local": "ARGENTINA",
-          "visitante": "CABO VERDE",
-          "league": "",
-          "kickoff": "2026-06-27T00:00:00Z",
-          "bookmaker": "",
-          "odds": {},
+          "local": "Argentina",
+          "visitante": "Cape Verde",
+          "league": "soccer_fifa_world_cup",
+          "kickoff": "2026-07-03T22:00:00Z",
+          "bookmaker": "Unibet (SE)",
+          "odds": {
+            "1": 1.16,
+            "X": 8.0,
+            "2": 20.0
+          },
           "normalized_percent": {
-            "1": 81.6,
-            "X": 8.68,
-            "2": 9.72
+            "1": 83.13,
+            "X": 12.05,
+            "2": 4.82
           },
           "official_percent": {
             "1": 81.6,
@@ -379,13 +406,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 70.0,
+              "label": "high"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -393,23 +429,33 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 18,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 7317.0,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 2.7,
+            "precipitation_probability": 13,
+            "wind_speed_kmh": 10.0
           },
           "referee": {
-            "name": "no confirmado",
+            "name": "and VAR in Spain",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (83.1%) y el público quinielista lo refleja de forma similar (81.6%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "analysis_ready": true
         },
         {
           "slot": "5.",
@@ -2484,9 +2530,9 @@
             "2": 13.5
           },
           "normalized_percent": {
-            "1": 78.4,
-            "X": 14.4,
-            "2": 7.2
+            "1": 86.91,
+            "X": 9.99,
+            "2": 3.1
           },
           "official_percent": {
             "1": 86.91,
@@ -2556,7 +2602,7 @@
           },
           "future_home": "casa vs Mozambique (-)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (78.4%), pero el público de la quiniela lo sobrevalora aún más (86.9%). Hay valor matemático en buscar la sorpresa o el empate. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (86.9%) y el público quinielista lo refleja de forma similar (86.9%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -2572,9 +2618,9 @@
             "2": 2.75
           },
           "normalized_percent": {
-            "1": 35.82,
-            "X": 29.66,
-            "2": 34.52
+            "1": 45.31,
+            "X": 28.91,
+            "2": 25.78
           },
           "official_percent": {
             "1": 45.31,
@@ -2634,17 +2680,17 @@
           },
           "travel_km": 6582.4,
           "weather": {
-            "temperature_c": 26.0,
+            "temperature_c": 26.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 14.3
+            "wind_speed_kmh": 16.6
           },
           "referee": {
-            "name": "and VAR in Spain",
+            "name": "Ismail Elfath to",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "fuera vs Argentina (-)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (35.8%), pero el público de la quiniela lo sobrevalora aún más (45.3%). Hay valor matemático en buscar la sorpresa o el empate. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (45.3%) y el público quinielista lo refleja de forma similar (45.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -2660,9 +2706,9 @@
             "2": 3.82
           },
           "normalized_percent": {
-            "1": 39.29,
-            "X": 36.12,
-            "2": 24.58
+            "1": 50.97,
+            "X": 32.64,
+            "2": 16.39
           },
           "official_percent": {
             "1": 50.97,
@@ -2730,9 +2776,9 @@
             "name": "Who will be the",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "fuera vs Australia (-)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (39.3%), pero el público de la quiniela lo sobrevalora aún más (51.0%). Hay valor matemático en buscar la sorpresa o el empate. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (51.0%) y el público quinielista lo refleja de forma similar (51.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -2873,14 +2919,14 @@
           "kickoff": "2026-06-27T21:00:00Z",
           "bookmaker": "Tipico",
           "odds": {
-            "1": 1.72,
-            "X": 3.3,
-            "2": 5.8
+            "1": 1.85,
+            "X": 3.1,
+            "2": 5.2
           },
           "normalized_percent": {
-            "1": 55.01,
-            "X": 28.67,
-            "2": 16.31
+            "1": 51.22,
+            "X": 30.56,
+            "2": 18.22
           },
           "official_percent": {
             "1": 56.75,
@@ -2950,7 +2996,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El local es favorito para las casas de apuestas (55.0%) y el público quinielista lo refleja de forma similar (56.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (51.2%) y el público quinielista lo refleja de forma similar (56.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -2961,14 +3007,14 @@
           "kickoff": "2026-06-27T23:30:00Z",
           "bookmaker": "LeoVegas (SE)",
           "odds": {
-            "1": 4.2,
-            "X": 3.55,
-            "2": 1.88
+            "1": 3.5,
+            "X": 3.85,
+            "2": 1.97
           },
           "normalized_percent": {
-            "1": 22.64,
-            "X": 26.78,
-            "2": 50.58
+            "1": 27.13,
+            "X": 24.67,
+            "2": 48.2
           },
           "official_percent": {
             "1": 21.09,
@@ -3028,9 +3074,9 @@
           },
           "travel_km": 7603.4,
           "weather": {
-            "temperature_c": 24.0,
-            "precipitation_probability": 47,
-            "wind_speed_kmh": 5.2
+            "temperature_c": 22.9,
+            "precipitation_probability": 45,
+            "wind_speed_kmh": 7.6
           },
           "referee": {
             "name": "no confirmado",
@@ -3038,7 +3084,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (50.6%) y el público quinielista lo refleja de forma similar (49.7%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (48.2%) y el público quinielista lo refleja de forma similar (49.7%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -3049,14 +3095,14 @@
           "kickoff": "2026-06-28T02:00:00Z",
           "bookmaker": "Winamax (FR)",
           "odds": {
-            "1": 3.95,
-            "X": 2.15,
-            "2": 2.85
+            "1": 4.2,
+            "X": 2.1,
+            "2": 2.9
           },
           "normalized_percent": {
-            "1": 23.68,
-            "X": 43.5,
-            "2": 32.82
+            "1": 22.48,
+            "X": 44.96,
+            "2": 32.56
           },
           "official_percent": {
             "1": 22.57,
@@ -3126,7 +3172,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=23.7%, X=43.5%, 2=32.8%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=22.5%, X=45.0%, 2=32.6%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -3137,14 +3183,14 @@
           "kickoff": "2026-06-28T02:00:00Z",
           "bookmaker": "Tipico",
           "odds": {
-            "1": 15.0,
-            "X": 8.0,
-            "2": 1.16
+            "1": 17.0,
+            "X": 9.0,
+            "2": 1.13
           },
           "normalized_percent": {
-            "1": 6.33,
-            "X": 11.86,
-            "2": 81.81
+            "1": 5.58,
+            "X": 10.53,
+            "2": 83.89
           },
           "official_percent": {
             "1": 0.95,
@@ -3213,8 +3259,8 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (81.8%), pero el público quinielista lo infravalora (60.3%). El favorito podría estar infravalorado en la quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "future_away": "casa vs Cape Verde (-)",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (83.9%), pero el público quinielista lo infravalora (60.3%). El favorito podría estar infravalorado en la quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -3230,9 +3276,9 @@
             "2": 1.57
           },
           "normalized_percent": {
-            "1": 14.6,
-            "X": 24.97,
-            "2": 60.43
+            "1": null,
+            "X": null,
+            "2": null
           },
           "official_percent": {
             "1": null,
@@ -3302,7 +3348,7 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (60.4%). | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Sin suficientes datos de mercado para generar insight. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         }
       ]
