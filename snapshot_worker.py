@@ -3487,6 +3487,115 @@ def _github_monitor_upsert(repo_path: str, content: str) -> bool:
         return False
 
 
+def _github_monitor_upsert_many(files: list[tuple[str, str]]) -> bool:
+    headers = _monitor_github_headers()
+    if not headers or not MONITOR_REPO:
+        return False
+    state_files = (MONITOR_PUBLISH_STATE or {}).setdefault("files", {})
+    changed_files: list[tuple[str, str, str]] = []
+    for repo_path, content in files:
+        local_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        state_entry = state_files.get(repo_path) or {}
+        if (
+            state_entry.get("local_hash") == local_hash
+            and state_entry.get("repo") == MONITOR_REPO
+            and state_entry.get("branch") == MONITOR_BRANCH
+        ):
+            continue
+        changed_files.append((repo_path, content, local_hash))
+    if not changed_files:
+        return False
+
+    ref_path = f"heads/{MONITOR_BRANCH}"
+    ref_url = f"https://api.github.com/repos/{MONITOR_REPO}/git/ref/{urllib.parse.quote(ref_path, safe='/')}"
+    api_root = f"https://api.github.com/repos/{MONITOR_REPO}/git"
+    last_error = ""
+    for attempt in range(2):
+        try:
+            ref_response = requests.get(ref_url, headers=headers, timeout=25)
+            ref_response.raise_for_status()
+            base_sha = ((ref_response.json() or {}).get("object") or {}).get("sha")
+            if not base_sha:
+                raise RuntimeError("missing base ref sha")
+
+            commit_response = requests.get(f"{api_root}/commits/{base_sha}", headers=headers, timeout=25)
+            commit_response.raise_for_status()
+            base_tree_sha = ((commit_response.json() or {}).get("tree") or {}).get("sha")
+            if not base_tree_sha:
+                raise RuntimeError("missing base tree sha")
+
+            tree_response = requests.post(
+                f"{api_root}/trees",
+                headers=headers,
+                json={
+                    "base_tree": base_tree_sha,
+                    "tree": [
+                        {
+                            "path": repo_path,
+                            "mode": "100644",
+                            "type": "blob",
+                            "content": content,
+                        }
+                        for repo_path, content, _ in changed_files
+                    ],
+                },
+                timeout=30,
+            )
+            tree_response.raise_for_status()
+            tree_payload = tree_response.json() or {}
+            tree_sha = tree_payload.get("sha")
+            if not tree_sha:
+                raise RuntimeError("missing new tree sha")
+
+            new_commit_response = requests.post(
+                f"{api_root}/commits",
+                headers=headers,
+                json={
+                    "message": "Update public monitor snapshot",
+                    "tree": tree_sha,
+                    "parents": [base_sha],
+                },
+                timeout=30,
+            )
+            new_commit_response.raise_for_status()
+            new_commit_sha = (new_commit_response.json() or {}).get("sha")
+            if not new_commit_sha:
+                raise RuntimeError("missing new commit sha")
+
+            update_response = requests.patch(
+                ref_url,
+                headers=headers,
+                json={"sha": new_commit_sha, "force": False},
+                timeout=30,
+            )
+            if update_response.status_code in {409, 422} and attempt == 0:
+                last_error = update_response.text[:500]
+                continue
+            update_response.raise_for_status()
+
+            tree_entries = {
+                str(entry.get("path", "")): str(entry.get("sha", ""))
+                for entry in (tree_payload.get("tree") or [])
+                if isinstance(entry, dict)
+            }
+            for repo_path, _, local_hash in changed_files:
+                state_files[repo_path] = {
+                    "local_hash": local_hash,
+                    "repo": MONITOR_REPO,
+                    "branch": MONITOR_BRANCH,
+                    "sha": tree_entries.get(repo_path, ""),
+                    "published_at": _now_iso(),
+                }
+            _save_cache(MONITOR_PUBLISH_STATE_PATH, MONITOR_PUBLISH_STATE)
+            return True
+        except Exception as exc:
+            last_error = str(exc)
+            if attempt == 0:
+                continue
+    LOGGER.warning("monitor_publish_batch_failed files=%s error=%s", [path for path, _, _ in changed_files], last_error)
+    return False
+
+
 def publish_monitor_site() -> None:
     if not MONITOR_PUBLISH_ENABLED:
         return
@@ -3508,14 +3617,15 @@ def publish_monitor_site() -> None:
     ]
     if MONITOR_PUBLISH_INDEX:
         files_to_publish.insert(0, ("docs/monitor/index.html", MONITOR_INDEX_PATH))
-    updated_any = False
+    publish_payloads = []
     for repo_path, local_path in files_to_publish:
         try:
             content = local_path.read_text(encoding="utf-8")
         except Exception as exc:
             LOGGER.warning("monitor_publish_read_failed path=%s error=%s", local_path, exc)
             continue
-        updated_any = _github_monitor_upsert(repo_path, content) or updated_any
+        publish_payloads.append((repo_path, content))
+    updated_any = _github_monitor_upsert_many(publish_payloads)
     MONITOR_PUBLISH_STATE.setdefault("meta", {})["last_publish_attempt_at"] = _now_iso()
     _save_cache(MONITOR_PUBLISH_STATE_PATH, MONITOR_PUBLISH_STATE)
     if updated_any:
