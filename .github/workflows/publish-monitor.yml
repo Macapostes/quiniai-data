@@ -1,4 +1,4 @@
-name: publish-monitor
+﻿name: publish-monitor
 
 on:
   push:
@@ -19,7 +19,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
