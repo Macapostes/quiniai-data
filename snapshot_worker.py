@@ -3632,12 +3632,10 @@ def publish_monitor_site() -> None:
         LOGGER.info("monitor_publish_ok repo=%s branch=%s", MONITOR_REPO, MONITOR_BRANCH)
         return
 
-    # Sin token (`QUINIAI_GITHUB_TOKEN`) ni credenciales API disponibles:
-    # intentamos publicar via git, pero en modo no interactivo para no abrir
-    # ventanas mudas de Git Credential Manager en el escritorio.
+    # Si la API no publica (token ausente, credencial caducada, 404/409, etc.),
+    # intenta via git en modo no interactivo para no abrir ventanas mudas.
     try:
-        if not _monitor_github_headers():
-            _git_publish_monitor([repo_path for repo_path, _ in files_to_publish])
+        _git_publish_monitor([repo_path for repo_path, _ in files_to_publish])
     except Exception as exc:
         LOGGER.warning("monitor_publish_git_fallback_failed error=%s", exc)
 
