@@ -115,7 +115,7 @@ MONITOR_PUBLISH_ENABLED = (
     os.getenv("QUINIAI_MONITOR_PUBLISH", "1").strip().lower() not in {"0", "false", "no"}
 )
 MONITOR_PUBLISH_INDEX = (
-    os.getenv("QUINIAI_MONITOR_PUBLISH_INDEX", "0").strip().lower() in {"1", "true", "yes"}
+    os.getenv("QUINIAI_MONITOR_PUBLISH_INDEX", "1").strip().lower() in {"1", "true", "yes"}
 )
 MONITOR_GITHUB_TOKEN = os.getenv("QUINIAI_GITHUB_TOKEN", "").strip()
 GIT_NONINTERACTIVE_ENV = os.environ.copy()
@@ -3261,9 +3261,26 @@ def _build_monitor_web_html() -> str:
           ${match.briefing_excerpt ? `<div class="brief">${escapeHtml(match.briefing_excerpt)}</div>` : `<div class="brief">Esta jornada ya esta publicada pero este partido todavia no tiene briefing enriquecido en el monitor publico.</div>`}
         </div>`;
     };
+    const STATUS_URLS = [
+      "https://raw.githubusercontent.com/Macapostes/quiniai-data/main/docs/monitor/status.json",
+      "status.json",
+    ];
+    async function loadStatus() {
+      let lastError = null;
+      for (const url of STATUS_URLS) {
+        try {
+          const sep = url.includes("?") ? "&" : "?";
+          const response = await fetch(`${url}${sep}t=${Date.now()}`, {cache:"no-store"});
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      throw lastError || new Error("No se pudo cargar status.json");
+    }
     async function render() {
-      const response = await fetch(`status.json?t=${Date.now()}`, {cache:"no-store"});
-      const status = await response.json();
+      const status = await loadStatus();
       const coverage = status.coverage || {};
       const integrity = status.quiniela_integrity || {};
       document.getElementById("alive").textContent = status.ok ? "Worker sano" : "Worker con error";
