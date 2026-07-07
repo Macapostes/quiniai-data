@@ -3657,6 +3657,36 @@ def publish_monitor_site() -> None:
         LOGGER.warning("monitor_publish_git_fallback_failed error=%s", exc)
 
 
+def _git_run(git_exe: str, repo_root: Path, args: list[str], timeout: int = 30) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        [git_exe, "-C", str(repo_root), *args],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        env=GIT_NONINTERACTIVE_ENV,
+        timeout=timeout,
+    )
+
+
+def _git_sync_monitor_branch(git_exe: str, repo_root: Path) -> bool:
+    fetch = _git_run(git_exe, repo_root, ["fetch", "origin", MONITOR_BRANCH], timeout=45)
+    if fetch.returncode != 0:
+        LOGGER.warning("monitor_git_publish_fetch_failed stderr=%s", (fetch.stderr or "").strip())
+        return False
+
+    upstream = f"origin/{MONITOR_BRANCH}"
+    rebase = _git_run(git_exe, repo_root, ["rebase", upstream], timeout=60)
+    if rebase.returncode != 0:
+        _git_run(git_exe, repo_root, ["rebase", "--abort"], timeout=20)
+        LOGGER.warning("monitor_git_publish_rebase_failed stderr=%s", (rebase.stderr or "").strip())
+        return False
+    return True
+
+
+def _git_push_monitor(git_exe: str, repo_root: Path) -> subprocess.CompletedProcess:
+    return _git_run(git_exe, repo_root, ["push", "origin", f"HEAD:{MONITOR_BRANCH}"], timeout=60)
+
+
 def _git_publish_monitor(repo_paths: list[str]) -> bool:
     repo_root = Path(__file__).resolve().parent
     git_candidates = [
@@ -3721,14 +3751,12 @@ def _git_publish_monitor(repo_paths: list[str]) -> bool:
         env=GIT_NONINTERACTIVE_ENV,
         timeout=20,
     )
-    pushed = subprocess.run(
-        [git_exe, "-C", str(repo_root), "push", "origin", f"HEAD:{MONITOR_BRANCH}"],
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        env=GIT_NONINTERACTIVE_ENV,
-        timeout=60,
-    )
+    _git_sync_monitor_branch(git_exe, repo_root)
+    pushed = _git_push_monitor(git_exe, repo_root)
+    if pushed.returncode != 0 and "fetch first" in (pushed.stderr or "").lower():
+        LOGGER.info("monitor_git_publish_retry_after_rejected_push")
+        if _git_sync_monitor_branch(git_exe, repo_root):
+            pushed = _git_push_monitor(git_exe, repo_root)
     if pushed.returncode != 0:
         LOGGER.warning("monitor_git_publish_push_failed stderr=%s", (pushed.stderr or "").strip())
         return False
