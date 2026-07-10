@@ -9563,6 +9563,52 @@ def _select_focus_match_indexes(matches: list[dict]) -> set[int]:
     return set(ordered[: max(0, FOCUS_MATCH_COUNT)])
 
 
+def _backend_visible_matches(
+    odds_matches: list[dict],
+    tracked_quiniela_matches: list[dict],
+) -> list[dict]:
+    """Return the match list used by the backend prompt/context endpoints.
+
+    The backend historically reads the top-level ``matches`` array. If we only
+    put odds API matches there, official quiniela slots from dynamic leagues
+    such as Finland/Norway stay hidden even when the worker enriched them under
+    ``quiniela_*``. Put official quiniela matches first and then keep the wider
+    odds universe as secondary context.
+    """
+    visible: list[dict] = []
+    seen: set[str] = set()
+
+    def add(match: dict) -> None:
+        if not isinstance(match, dict):
+            return
+        key = str(match.get("match_key") or "").strip()
+        if not key:
+            slots = match.get("quiniela_slots") or []
+            slot_key = ""
+            if slots:
+                first_slot = slots[0] or {}
+                slot_key = f"j{first_slot.get('jornada')}p{first_slot.get('position')}"
+            key = "|".join(
+                [
+                    str(match.get("league") or "").strip().lower(),
+                    str(match.get("local") or "").strip().lower(),
+                    str(match.get("visitante") or "").strip().lower(),
+                    str(match.get("kickoff") or "").strip(),
+                    slot_key,
+                ]
+            )
+        if key in seen:
+            return
+        seen.add(key)
+        visible.append(match)
+
+    for item in tracked_quiniela_matches or []:
+        add(item)
+    for item in odds_matches or []:
+        add(item)
+    return visible
+
+
 def build_snapshot(raw_matches: list) -> dict:
     # Normaliza claves de liga (p.ej. Segunda -> LaLiga2 en algunas fuentes)
     normalized_raw = []
@@ -10121,8 +10167,12 @@ def build_snapshot(raw_matches: list) -> dict:
     STRUCTURED_DB.setdefault("meta", {})["last_snapshot_generated_at"] = _now_iso()
     STRUCTURED_DB.setdefault("meta", {})["active_focus_matches"] = len(active_match_keys)
 
+    backend_matches = _backend_visible_matches(matches, tracked_matches)
+
     coverage = {
         "monitored_matches": len(matches),
+        "odds_matches": len(matches),
+        "backend_visible_matches": len(backend_matches),
         "focus_matches": len(quiniela_focus_matches),
         "tracked_quiniela_matches": len(tracked_matches),
         "quiniela_jornadas": len(quiniela_jornadas),
@@ -10193,7 +10243,8 @@ def build_snapshot(raw_matches: list) -> dict:
         "quiniela_jornadas": quiniela_jornadas,
         "quiniela_focus_matches": quiniela_focus_matches,
         "quiniela_tracked_matches": tracked_matches,
-        "matches": matches,
+        "odds_matches": matches,
+        "matches": backend_matches,
         "audit_news_quality": {
             "news_language": NEWS_LANGUAGE,
             "news_country": NEWS_COUNTRY,
