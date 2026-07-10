@@ -139,6 +139,7 @@ STRUCTURED_DB_PATH = CACHE_DIR / "structured_context_db.json"
 EXTERNAL_FEEDS_CACHE_PATH = CACHE_DIR / "external_feeds_cache.json"
 OFFICIAL_SITE_CACHE_PATH = CACHE_DIR / "official_site_cache.json"
 RFEF_CACHE_PATH = CACHE_DIR / "rfef_cache.json"
+GEOCODING_CACHE_PATH = CACHE_DIR / "geocoding_cache.json"
 RUN_HISTORY_PATH = CACHE_DIR / "run_history.json"
 LAST_SYNC_PATH   = CACHE_DIR / "last_sync.json"
 QUINIELA_HISTORY_PATH = CACHE_DIR / "quiniela_jornadas_history.json"
@@ -339,6 +340,10 @@ TEAM_NAME_ALIASES = {
     "turquía": "Turkey",
     "ucrania": "Ukraine",
     "uruguay": "Uruguay",
+    "bodoglimt": "Bodo Glimt",
+    "bodo glimt": "Bodo Glimt",
+    "bodo/glimt": "Bodo Glimt",
+    "hamkan": "Hamarkameratene",
     "athletic de bilbao": "Athletic Bilbao",
     "athletic club": "Athletic Bilbao",
     "athletic bilbao": "Athletic Bilbao",
@@ -884,6 +889,7 @@ THESPORTSDB_CACHE = _load_cache(THESPORTSDB_CACHE_PATH)
 EXTERNAL_FEEDS_CACHE = _load_cache(EXTERNAL_FEEDS_CACHE_PATH)
 OFFICIAL_SITE_CACHE = _load_cache(OFFICIAL_SITE_CACHE_PATH)
 RFEF_CACHE = _load_cache(RFEF_CACHE_PATH)
+GEOCODING_CACHE = _load_cache(GEOCODING_CACHE_PATH)
 STRUCTURED_DB = _load_cache(STRUCTURED_DB_PATH) or {
     "teams": {},
     "matches": {},
@@ -949,6 +955,7 @@ def _prune_persistent_caches() -> None:
     _prune_ttl_cache(EXTERNAL_FEEDS_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=GENERIC_CACHE_MAX_AGE_SECONDS)
     _prune_ttl_cache(OFFICIAL_SITE_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=GENERIC_CACHE_MAX_AGE_SECONDS)
     _prune_ttl_cache(RFEF_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=GENERIC_CACHE_MAX_AGE_SECONDS)
+    _prune_ttl_cache(GEOCODING_CACHE, max_entries=GENERIC_CACHE_MAX_ENTRIES, max_age_seconds=GENERIC_CACHE_MAX_AGE_SECONDS)
     _prune_history_cache()
 
 
@@ -964,6 +971,7 @@ def _flush_caches() -> None:
         _save_cache(EXTERNAL_FEEDS_CACHE_PATH, EXTERNAL_FEEDS_CACHE)
         _save_cache(OFFICIAL_SITE_CACHE_PATH, OFFICIAL_SITE_CACHE)
         _save_cache(RFEF_CACHE_PATH, RFEF_CACHE)
+        _save_cache(GEOCODING_CACHE_PATH, GEOCODING_CACHE)
         _save_cache(STRUCTURED_DB_PATH, STRUCTURED_DB)
         _save_cache(RUN_HISTORY_PATH, RUN_HISTORY)
         _save_cache(QUINIELA_HISTORY_PATH, QUINIELA_HISTORY)
@@ -4150,6 +4158,10 @@ def _fetch_wikipedia_page_data(title: str) -> dict:
 def _geocode_location(name: str, country_hint: str | None = None) -> dict:
     if not name:
         return {}
+    cache_key = f"geocode:{_normalize_team_name(name)}:{country_hint or ''}"
+    cached = _cache_get(GEOCODING_CACHE, cache_key, GENERIC_CACHE_MAX_AGE_SECONDS)
+    if cached is not None:
+        return dict(cached or {})
     params = {"name": name, "count": 1, "language": "en", "format": "json"}
     if country_hint:
         params["countryCode"] = country_hint
@@ -4160,7 +4172,7 @@ def _geocode_location(name: str, country_hint: str | None = None) -> dict:
     results = (data or {}).get("results") or []
     if results:
         result = results[0]
-        return {
+        payload = {
             "latitude": result.get("latitude"),
             "longitude": result.get("longitude"),
             "city": result.get("name", ""),
@@ -4168,6 +4180,8 @@ def _geocode_location(name: str, country_hint: str | None = None) -> dict:
             "country_code": result.get("country_code", ""),
             "timezone": result.get("timezone", ""),
         }
+        _cache_set(GEOCODING_CACHE, cache_key, payload)
+        return payload
     try:
         fallback_results = _request_json(
             NOMINATIM_SEARCH_URL,
@@ -4183,10 +4197,11 @@ def _geocode_location(name: str, country_hint: str | None = None) -> dict:
     except Exception:
         fallback_results = []
     if not fallback_results:
+        _cache_set(GEOCODING_CACHE, cache_key, {})
         return {}
     result = fallback_results[0]
     address = result.get("address") or {}
-    return {
+    payload = {
         "latitude": _safe_float(result.get("lat")),
         "longitude": _safe_float(result.get("lon")),
         "city": address.get("city")
@@ -4198,6 +4213,38 @@ def _geocode_location(name: str, country_hint: str | None = None) -> dict:
         "country_code": str(address.get("country_code", "")).upper(),
         "timezone": "",
     }
+    _cache_set(GEOCODING_CACHE, cache_key, payload)
+    return payload
+
+
+def _geocode_location_fast(name: str, country_hint: str | None = None) -> dict:
+    if not name:
+        return {}
+    cache_key = f"geocode:{_normalize_team_name(name)}:{country_hint or ''}"
+    cached = _cache_get(GEOCODING_CACHE, cache_key, GENERIC_CACHE_MAX_AGE_SECONDS)
+    if cached is not None:
+        return dict(cached or {})
+    params = {"name": name, "count": 1, "language": "en", "format": "json"}
+    if country_hint:
+        params["countryCode"] = country_hint
+    try:
+        data = _request_json(OPEN_METEO_GEOCODING_URL, params=params, timeout=6)
+    except Exception:
+        data = {}
+    results = (data or {}).get("results") or []
+    if not results:
+        return {}
+    result = results[0]
+    payload = {
+        "latitude": result.get("latitude"),
+        "longitude": result.get("longitude"),
+        "city": result.get("name", ""),
+        "country": result.get("country", ""),
+        "country_code": result.get("country_code", ""),
+        "timezone": result.get("timezone", ""),
+    }
+    _cache_set(GEOCODING_CACHE, cache_key, payload)
+    return payload
 
 
 def _geocode_team_profile_candidates(
@@ -4284,10 +4331,27 @@ def _sportsdb_location_profile(team_name: str, team_api: dict, sportsdb_event: d
     hints = _sportsdb_location_hints(team_api, sportsdb_event)
     if not hints:
         return {}
-    profile = _repair_profile_location(team_name, {"team": team_name}, None, *hints)
-    if profile.get("latitude") is None or profile.get("longitude") is None:
-        return {}
-    return profile
+    for hint in hints[:3]:
+        geocoded = _geocode_location_fast(hint)
+        if geocoded.get("latitude") is None or geocoded.get("longitude") is None:
+            continue
+        profile = {
+            "team": team_name,
+            "country_hint": geocoded.get("country_code", ""),
+            "wikipedia_title": "",
+            "summary": "",
+            "wikipedia_url": "",
+            "location_hint": hint,
+            "city": geocoded.get("city", ""),
+            "country": geocoded.get("country", ""),
+            "country_code": geocoded.get("country_code", ""),
+            "timezone": geocoded.get("timezone", ""),
+            "latitude": geocoded.get("latitude"),
+            "longitude": geocoded.get("longitude"),
+            "cache_version": TEAM_PROFILE_CACHE_VERSION,
+        }
+        return _apply_location_override_fields(profile, team_name)
+    return {}
 
 
 def fetch_team_profile(team_name: str, country_hint: str | None = None) -> dict:
@@ -5276,10 +5340,11 @@ def fetch_the_sportsdb_team(team_name: str) -> dict:
     cached = _cache_get(THESPORTSDB_CACHE, f"team:{team_name}", 7 * 24 * 3600)
     if cached:
         return cached
+    canonical_team_name = _canonical_team_name(team_name)
     try:
         data = _request_json(
             THESPORTSDB_SEARCH_TEAM_URL,
-            params={"t": team_name},
+            params={"t": canonical_team_name},
             timeout=20,
         )
     except Exception:
@@ -5480,6 +5545,7 @@ def _sportsdb_league_name(*payloads: dict) -> str:
 
 def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
     league_name = _sportsdb_league_name(*payloads)
+    league_key = _dynamic_league_key_from_sportsdb(*payloads)
     league_id = next(
         (
             str((payload or {}).get("idLeague", "")).strip()
@@ -5488,8 +5554,9 @@ def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
         ),
         "",
     )
-    if not match.get("league"):
-        match["league"] = _dynamic_league_key_from_sportsdb(*payloads)
+    current_league = str(match.get("league", "")).strip()
+    if league_key and (not current_league or current_league.startswith("sportsdb_")):
+        match["league"] = league_key
     if league_name:
         match["league_name"] = league_name
     if league_id:
@@ -5497,6 +5564,31 @@ def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
     if match.get("league") and str(match.get("league", "")).startswith("sportsdb_"):
         match["dynamic_league"] = True
         match["league_source"] = "TheSportsDB"
+
+
+def _event_team_api_if_better(team_name: str, current_api: dict, event_team_name: str, event_league_id: str) -> dict:
+    event_team_name = str(event_team_name or "").strip()
+    event_league_id = str(event_league_id or "").strip()
+    if not event_team_name:
+        return current_api or {}
+    try:
+        event_api = fetch_the_sportsdb_team(event_team_name)
+    except Exception:
+        event_api = {}
+    if not event_api:
+        return current_api or {}
+    current_league_id = str((current_api or {}).get("idLeague", "")).strip()
+    event_api_league_id = str(event_api.get("idLeague", "")).strip()
+    current_team = str((current_api or {}).get("strTeam", "")).strip()
+    current_score = _team_similarity_score(team_name, current_team) if current_team else 0.0
+    event_score = _team_similarity_score(team_name, event_team_name)
+    if event_league_id and event_api_league_id == event_league_id and (
+        not current_league_id or current_league_id != event_league_id or event_score >= current_score
+    ):
+        return event_api
+    if not (current_api or {}).get("idTeam") and event_score >= 0.65:
+        return event_api
+    return current_api or {}
 
 
 def _sportsdb_event_kickoff(event: dict) -> str:
@@ -7755,6 +7847,19 @@ def _enrich_quiniela_match(match: dict) -> None:
         "strSeason": _season_tag_for(_parse_iso_datetime(match.get("kickoff", ""))),
         "intRound": str(inferred_round),
     }
+    event_league_id = str(sportsdb_event.get("idLeague", "")).strip()
+    home_team_api = _event_team_api_if_better(
+        match["local"],
+        home_team_api,
+        sportsdb_event.get("strHomeTeam", ""),
+        event_league_id,
+    )
+    away_team_api = _event_team_api_if_better(
+        match["visitante"],
+        away_team_api,
+        sportsdb_event.get("strAwayTeam", ""),
+        event_league_id,
+    )
     _apply_dynamic_league_metadata(match, sportsdb_event, home_team_api, away_team_api)
 
     home_profile = _repair_profile_location(
@@ -8963,6 +9068,9 @@ def _bootstrap_quiniela_placeholder(
     inferred_league = match.get("league", "") or _dynamic_league_key_from_sportsdb(home_team_api, away_team_api)
     kickoff = str(match.get("kickoff", "")).strip()
     sportsdb_event = _resolve_sportsdb_event(home_team, away_team, kickoff, home_team_api, away_team_api) or {}
+    event_league_id = str(sportsdb_event.get("idLeague", "")).strip()
+    home_team_api = _event_team_api_if_better(home_team, home_team_api, sportsdb_event.get("strHomeTeam", ""), event_league_id)
+    away_team_api = _event_team_api_if_better(away_team, away_team_api, sportsdb_event.get("strAwayTeam", ""), event_league_id)
     if not kickoff:
         kickoff = _sportsdb_event_kickoff(sportsdb_event)
         if kickoff:

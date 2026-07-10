@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-10T14:04:33.635340+00:00",
-  "snapshot_generated_at": "2026-07-10T14:04:32.766824+00:00",
+  "generated_at": "2026-07-10T14:40:00.133264+00:00",
+  "snapshot_generated_at": "2026-07-10T14:39:59.085746+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -24,7 +24,7 @@
     "teams": 112,
     "matches": 97,
     "referees": 7,
-    "last_pruned_at": "2026-07-10T14:04:32.766664+00:00"
+    "last_pruned_at": "2026-07-10T14:39:59.085554+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,15 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-07-09T16:44:19.740592+00:00",
-      "finished_at": "2026-07-09T16:58:09.327769+00:00",
-      "ok": true,
-      "duration_seconds": 829.59,
-      "monitored_matches": 42,
-      "tracked_matches": 60,
-      "current_jornada": 72
-    },
     {
       "started_at": "2026-07-09T18:44:20.600446+00:00",
       "finished_at": "2026-07-09T18:58:45.103133+00:00",
@@ -139,6 +130,15 @@
       "monitored_matches": 41,
       "tracked_matches": 60,
       "current_jornada": 72
+    },
+    {
+      "started_at": "2026-07-10T14:17:48.754449+00:00",
+      "finished_at": "2026-07-10T14:40:00.132417+00:00",
+      "ok": true,
+      "duration_seconds": 1331.38,
+      "monitored_matches": 41,
+      "tracked_matches": 60,
+      "current_jornada": 72
     }
   ],
   "public_jornadas": [
@@ -155,7 +155,9 @@
           "slot": "1.",
           "local": "Spain",
           "visitante": "Belgium",
-          "league": "soccer_fifa_world_cup",
+          "league": "FIFA World Cup",
+          "league_key": "soccer_fifa_world_cup",
+          "league_source": "",
           "kickoff": "2026-07-10T19:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
@@ -243,7 +245,9 @@
           "slot": "2.",
           "local": "Norway",
           "visitante": "England",
-          "league": "soccer_fifa_world_cup",
+          "league": "FIFA World Cup",
+          "league_key": "soccer_fifa_world_cup",
+          "league_source": "",
           "kickoff": "2026-07-11T21:00:00Z",
           "bookmaker": "Winamax (FR)",
           "odds": {
@@ -331,7 +335,9 @@
           "slot": "3.",
           "local": "Argentina",
           "visitante": "Switzerland",
-          "league": "soccer_fifa_world_cup",
+          "league": "FIFA World Cup",
+          "league_key": "soccer_fifa_world_cup",
+          "league_source": "",
           "kickoff": "2026-07-12T01:00:00Z",
           "bookmaker": "Unibet (NL)",
           "odds": {
@@ -419,7 +425,9 @@
           "slot": "4.",
           "local": "VPS",
           "visitante": "SJK",
-          "league": "",
+          "league": "Finnish Veikkausliiga",
+          "league_key": "sportsdb_4636",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T16:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -448,13 +456,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 46.75,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -462,29 +479,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 69.9,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 25.6,
+            "precipitation_probability": 6,
+            "wind_speed_kmh": 12.6
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs HJK Helsinki (-) | fuera vs KuPS (-) | casa vs Inter Turku (-) | fuera vs Jaro (-) | casa vs TPS (-)",
+          "future_away": "casa vs KuPS (-) | fuera vs Jaro (-) | casa vs HJK Helsinki (-) | casa vs Gnistan (-) | fuera vs IFK Mariehamn (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (60.4%) y el público quinielista lo refleja de forma similar (60.4%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "5.",
           "local": "FC LAHTI",
           "visitante": "HJK HELSINKI",
-          "league": "",
+          "league": "Finnish Veikkausliiga",
+          "league_key": "sportsdb_4636",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T12:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -513,13 +542,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 47.47,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -527,29 +565,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 98.7,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 23.7,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 16.2
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs IFK Mariehamn (-) | fuera vs Ilves (-) | casa vs Jaro (-) | fuera vs Inter Turku (-) | casa vs KuPS (-)",
+          "future_away": "casa vs VPS (-) | casa vs TPS (-) | fuera vs SJK Seinajoki (-) | fuera vs AC Oulu (-) | casa vs Jaro (-)",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (49.7%) y el público quinielista lo refleja de forma similar (49.7%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "6.",
           "local": "TPS",
           "visitante": "AC OULU",
-          "league": "",
+          "league": "Finnish Veikkausliiga",
+          "league_key": "sportsdb_4636",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T14:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -578,13 +628,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 58.34,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -592,29 +651,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 533.4,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 24.6,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 17.3
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Ilves (-) | fuera vs HJK Helsinki (-) | casa vs IFK Mariehamn (-) | fuera vs KuPS (-) | fuera vs VPS (-)",
+          "future_away": "casa vs Gnistan (-) | fuera vs IFK Mariehamn (-) | casa vs Ilves (-) | casa vs HJK Helsinki (-) | casa vs Inter Turku (-)",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (41.1%) y el público quinielista lo refleja de forma similar (41.1%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "7.",
           "local": "IF GNISTAN",
           "visitante": "IFK MARIEHAMN",
-          "league": "",
+          "league": "Finnish Veikkausliiga",
+          "league_key": "sportsdb_4636",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T14:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -643,13 +714,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 51.91,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -657,29 +737,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 276.6,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 26.6,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 20.2
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs AC Oulu (-) | fuera vs Inter Turku (-) | casa vs KuPS (-) | fuera vs SJK Seinajoki (-) | casa vs Ilves (-)",
+          "future_away": "casa vs Lahti (-) | casa vs AC Oulu (-) | fuera vs TPS (-) | fuera vs Ilves (-) | casa vs SJK Seinajoki (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (90.3%) y el público quinielista lo refleja de forma similar (90.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "8.",
           "local": "FREDRIKSTAD",
           "visitante": "LILLESTROM",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T12:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -708,13 +800,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 47.06,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -722,29 +823,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 82.3,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 26.0,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 10.1
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Bodø/Glimt (-) | fuera vs Rosenborg (-) | casa vs Sandefjord (-) | fuera vs Start (-) | casa vs Kristiansund (-)",
+          "future_away": "casa vs KFUM-Kameratene Oslo (-) | fuera vs Bodø/Glimt (-) | casa vs Rosenborg (-) | fuera vs KFUM-Kameratene Oslo (-) | casa vs Fredrikstad (-)",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (40.4%) y el público quinielista lo refleja de forma similar (40.4%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "9.",
           "local": "AALESUNDS",
           "visitante": "MOLDE",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_5208",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T14:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -773,13 +886,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 46.48,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -787,29 +909,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 59.4,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 15.7,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 14.0
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Vålerenga (-) | casa vs Viking (-) | casa vs Tromsø (-) | fuera vs Hamarkameratene (-) | casa vs Vålerenga (-)",
+          "future_away": "casa vs Brann (-) | fuera vs KFUM-Kameratene Oslo (-) | casa vs Sarpsborg 08 (-) | fuera vs Kristiansund (-) | casa vs Tromsø (-)",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (55.0%) y el público quinielista lo refleja de forma similar (55.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "10.",
           "local": "TROMSO",
           "visitante": "VALERENGA",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T16:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -838,13 +972,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 70.0,
+              "label": "high"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -852,29 +995,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 1148.0,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 14.8,
+            "precipitation_probability": 12,
+            "wind_speed_kmh": 13.0
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Hamarkameratene (-) | fuera vs Aalesund (-) | fuera vs Molde (-) | casa vs Sarpsborg 08 (-) | fuera vs Rosenborg (-)",
+          "future_away": "casa vs Aalesund (-) | fuera vs Brann (-) | casa vs Hamarkameratene (-) | casa vs Bodø/Glimt (-) | fuera vs Aalesund (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (71.0%) y el público quinielista lo refleja de forma similar (71.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "analysis_ready": true
         },
         {
           "slot": "11.",
           "local": "KFUM OSLO",
           "visitante": "BODOGLIMT",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T12:30:00Z",
           "bookmaker": "",
           "odds": {},
@@ -903,13 +1058,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 45.0,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -917,29 +1081,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
           "travel_km": null,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 26.5,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 9.0
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "casa vs Bodø/Glimt (-)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (82.1%) y el público quinielista lo refleja de forma similar (82.1%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "12.",
           "local": "ROSENBORG",
           "visitante": "KRISTIANSUND",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T15:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -968,13 +1144,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 48.45,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -982,29 +1167,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 138.0,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 17.5,
+            "precipitation_probability": 27,
+            "wind_speed_kmh": 12.2
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Kristiansund (-)",
+          "future_away": "fuera vs Rosenborg (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (73.0%) y el público quinielista lo refleja de forma similar (73.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "13.",
           "local": "SANDEFJORD",
           "visitante": "HAMKAN",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T15:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1033,13 +1230,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 70.0,
+              "label": "high"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1047,29 +1253,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 8584.7,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 27.6,
+            "precipitation_probability": 19,
+            "wind_speed_kmh": 13.7
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "casa vs Hamarkameratene (-)",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (51.3%) y el público quinielista lo refleja de forma similar (51.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "analysis_ready": true
         },
         {
           "slot": "14.",
           "local": "BRANN",
           "visitante": "IK START",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T15:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1098,13 +1316,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 52.3,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1112,29 +1339,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 292.2,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 20.4,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 17.6
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Start (-)",
+          "future_away": "fuera vs Brann (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (90.4%) y el público quinielista lo refleja de forma similar (90.4%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "Pleno al 15",
           "local": "SARPSBORG",
           "visitante": "VIKING",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-11T17:15:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1163,13 +1402,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 52.72,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1177,23 +1425,33 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 308.7,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 27.5,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 15.5
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Viking (-)",
+          "future_away": "fuera vs Sarpsborg 08 (-)",
+          "briefing_excerpt": "Sin suficientes datos de mercado para generar insight. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         }
       ]
     },
@@ -1210,7 +1468,9 @@
           "slot": "1.",
           "local": "BODOGLIMT",
           "visitante": "FREDRIKSTAD",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1239,13 +1499,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 45.0,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1253,8 +1522,18 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
           "travel_km": null,
           "weather": {
@@ -1267,15 +1546,17 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_away": "fuera vs Rosenborg (-) | casa vs Sandefjord (-) | fuera vs Start (-) | casa vs Kristiansund (-) | fuera vs Lillestrøm (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "2.",
           "local": "HAMKAN",
           "visitante": "TROMSO",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1304,13 +1585,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 70.0,
+              "label": "high"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1318,29 +1608,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 7789.0,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 23.3,
+            "precipitation_probability": 40,
+            "wind_speed_kmh": 7.3
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_away": "fuera vs Hamarkameratene (-) | fuera vs Aalesund (-) | fuera vs Molde (-) | casa vs Sarpsborg 08 (-) | fuera vs Kristiansund (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "analysis_ready": true
         },
         {
           "slot": "3.",
           "local": "LILLESTROM",
           "visitante": "KFUM OSLO",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1369,13 +1671,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 45.42,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1383,29 +1694,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 16.7,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 20.5,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 11.4
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs KFUM-Kameratene Oslo (-) | fuera vs Bodø/Glimt (-) | casa vs Rosenborg (-) | fuera vs KFUM-Kameratene Oslo (-) | casa vs Fredrikstad (-)",
+          "future_away": "fuera vs Lillestrøm (-) | casa vs Molde (-) | casa vs Kristiansund (-) | fuera vs Sandefjord (-) | casa vs Lillestrøm (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "4.",
           "local": "KRISTIANSUND",
           "visitante": "SARPSBORG",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1434,13 +1757,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 56.56,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1448,29 +1780,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 462.3,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 11.8,
+            "precipitation_probability": 8,
+            "wind_speed_kmh": 1.9
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Sarpsborg 08 (-) | casa vs Start (-) | fuera vs KFUM-Kameratene Oslo (-) | casa vs Molde (-) | fuera vs Fredrikstad (-)",
+          "future_away": "fuera vs Kristiansund (-) | casa vs Hamarkameratene (-) | fuera vs Molde (-) | fuera vs Viking (-) | casa vs Sandefjord (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "5.",
           "local": "START",
           "visitante": "ROSENBORG",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1499,13 +1843,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 60.04,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1513,29 +1866,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 601.7,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 17.7,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 8.9
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Rosenborg (-) | fuera vs Kristiansund (-) | casa vs Viking (-) | casa vs Fredrikstad (-) | casa vs KFUM-Kameratene Oslo (-)",
+          "future_away": "fuera vs Start (-) | casa vs Fredrikstad (-) | fuera vs Brann (-) | fuera vs Lillestrøm (-) | casa vs Viking (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "6.",
           "local": "MOLDE",
           "visitante": "BRANN",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1564,13 +1929,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 51.95,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1578,29 +1952,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 278.2,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 13.4,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 3.0
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Brann (-) | fuera vs KFUM-Kameratene Oslo (-) | casa vs Sarpsborg 08 (-) | fuera vs Kristiansund (-) | casa vs Tromsø (-)",
+          "future_away": "fuera vs Molde (-) | casa vs Vålerenga (-) | casa vs Rosenborg (-) | casa vs Hamarkameratene (-) | fuera vs Sandefjord (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "7.",
           "local": "VIKING",
           "visitante": "SANDEFJORD",
-          "league": "",
+          "league": "Norwegian Eliteserien",
+          "league_key": "sportsdb_4358",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1629,13 +2015,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 51.42,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1643,29 +2038,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 257.0,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 14.3,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 4.3
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Sandefjord (-) | fuera vs Aalesund (-) | fuera vs Start (-) | casa vs Sarpsborg 08 (-) | fuera vs Rosenborg (-)",
+          "future_away": "fuera vs Viking (-) | casa vs Bodø/Glimt (-) | fuera vs Fredrikstad (-) | casa vs KFUM-Kameratene Oslo (-) | fuera vs Sarpsborg 08 (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "8.",
           "local": "MJALLBY",
           "visitante": "VASTERAS",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1694,13 +2101,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 55.38,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1708,29 +2124,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 415.0,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 17.2,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 4.9
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Kalmar (-) | casa vs Elfsborg (-) | casa vs Sirius (-) | fuera vs Djurgården (-) | fuera vs AIK (-)",
+          "future_away": "casa vs Örgryte (-) | fuera vs Djurgården (-) | casa vs Djurgården (-) | fuera vs Elfsborg (-) | casa vs Kalmar (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "9.",
           "local": "AIK",
           "visitante": "GAIS",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1759,13 +2187,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 70.0,
+              "label": "high"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1773,29 +2210,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 7114.2,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 30.6,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 9.5
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs GAIS (-) | fuera vs Häcken (-) | casa vs Örgryte (-) | fuera vs Örgryte (-) | fuera vs Djurgården (-)",
+          "future_away": "fuera vs AIK (-) | casa vs Halmstad (-) | fuera vs Halmstad (-) | casa vs Malmö (-) | fuera vs Hammarby (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "analysis_ready": true
         },
         {
           "slot": "10.",
           "local": "GOTEBORG",
           "visitante": "BROMMAPOJKARNA",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1824,13 +2273,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 54.94,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1838,29 +2296,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 397.4,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 22.1,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 7.6
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Sirius (-) | casa vs Degerfors (-) | casa vs Kalmar (-) | fuera vs Degerfors (-) | casa vs Elfsborg (-)",
+          "future_away": "casa vs Hammarby (-) | casa vs Malmö (-) | fuera vs Sirius (-) | casa vs Örgryte (-) | casa vs Degerfors (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "11.",
           "local": "ELFSBORG",
           "visitante": "SIRIUS",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1889,13 +2359,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 54.0,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1903,29 +2382,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 360.1,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 22.3,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 11.4
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Sirius (-) | fuera vs Malmö (-) | fuera vs Mjällby (-) | casa vs Västerås (-) | fuera vs IFK Göteborg (-)",
+          "future_away": "fuera vs Elfsborg (-) | casa vs IFK Göteborg (-) | fuera vs Halmstad (-) | casa vs Brommapojkarna (-) | fuera vs Mjällby (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "12.",
           "local": "HAMMARBY",
           "visitante": "DEGERFORS",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -1954,13 +2445,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 50.17,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -1968,29 +2468,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 206.8,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 20.2,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 9.1
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Degerfors (-) | fuera vs Brommapojkarna (-) | casa vs Häcken (-) | fuera vs Kalmar (-) | casa vs GAIS (-)",
+          "future_away": "fuera vs Hammarby (-) | casa vs Djurgården (-) | fuera vs IFK Göteborg (-) | fuera vs Malmö (-) | casa vs IFK Göteborg (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "13.",
           "local": "HALMSTADS",
           "visitante": "HACKEN",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -2019,13 +2531,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 48.17,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2033,29 +2554,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 126.7,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 20.8,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 1.4
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Häcken (-) | fuera vs GAIS (-) | casa vs Sirius (-) | casa vs GAIS (-) | fuera vs Häcken (-)",
+          "future_away": "fuera vs Halmstad (-) | casa vs AIK (-) | casa vs Kalmar (-) | fuera vs Hammarby (-) | casa vs Halmstad (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "14.",
           "local": "KALMAR",
           "visitante": "MALMO",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -2084,13 +2617,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 50.98,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2098,29 +2640,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 239.0,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 16.9,
+            "precipitation_probability": 9,
+            "wind_speed_kmh": 5.4
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Malmö (-) | casa vs Mjällby (-) | fuera vs Häcken (-) | fuera vs IFK Göteborg (-) | casa vs Hammarby (-)",
+          "future_away": "fuera vs Kalmar (-) | casa vs Elfsborg (-) | fuera vs Brommapojkarna (-) | casa vs Degerfors (-) | fuera vs GAIS (-)",
+          "briefing_excerpt": "El mercado apunta a un partido muy equilibrado (1=0.0%, X=0.0%, 2=0.0%). El empate tiene valor quinielístico. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "Pleno al 15",
           "local": "GANADOR SF1",
           "visitante": "GANADOR SF2",
-          "league": "",
+          "league": "Liga no resuelta",
+          "league_key": "league_unresolved",
+          "league_source": "quiniela-placeholder",
           "kickoff": "2026-07-17T22:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -2149,13 +2703,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 45.0,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2163,8 +2726,18 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
           "travel_km": null,
           "weather": {
@@ -2178,8 +2751,8 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "briefing_excerpt": "Sin suficientes datos de mercado para generar insight. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         }
       ]
     },
@@ -2196,7 +2769,9 @@
           "slot": "1.",
           "local": "Portugal",
           "visitante": "Croatia",
-          "league": "soccer_fifa_world_cup",
+          "league": "FIFA World Cup",
+          "league_key": "soccer_fifa_world_cup",
+          "league_source": "",
           "kickoff": "2026-07-02T23:00:00Z",
           "bookmaker": "Winamax (DE)",
           "odds": {
@@ -2284,7 +2859,9 @@
           "slot": "2.",
           "local": "SUIZA",
           "visitante": "ARGELIA",
-          "league": "",
+          "league": "Liga no resuelta",
+          "league_key": "league_unresolved",
+          "league_source": "quiniela-placeholder",
           "kickoff": "",
           "bookmaker": "",
           "odds": {},
@@ -2313,13 +2890,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 70.0,
+              "label": "high"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2327,10 +2913,20 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 9421.8,
           "weather": {
             "temperature_c": null,
             "precipitation_probability": null,
@@ -2349,7 +2945,9 @@
           "slot": "3.",
           "local": "Australia",
           "visitante": "Egypt",
-          "league": "soccer_fifa_world_cup",
+          "league": "African Cup of Nations Qualifying",
+          "league_key": "soccer_fifa_world_cup",
+          "league_source": "",
           "kickoff": "2026-07-03T18:00:00Z",
           "bookmaker": "Unibet (NL)",
           "odds": {
@@ -2437,7 +3035,9 @@
           "slot": "4.",
           "local": "Argentina",
           "visitante": "Cape Verde",
-          "league": "soccer_fifa_world_cup",
+          "league": "African Cup of Nations Qualifying",
+          "league_key": "soccer_fifa_world_cup",
+          "league_source": "",
           "kickoff": "2026-07-03T22:00:00Z",
           "bookmaker": "Unibet (SE)",
           "odds": {
@@ -2517,7 +3117,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "casa vs Switzerland (-)",
-          "future_away": "casa vs Rwanda (-) | casa vs Liberia (-) | fuera vs Liberia (-) | casa vs Mali (-) | fuera vs Rwanda (-)",
+          "future_away": "fuera vs Mali (-)",
           "briefing_excerpt": "El local es favorito para las casas de apuestas (95.9%) y el público quinielista lo refleja de forma similar (95.9%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
@@ -2525,7 +3125,9 @@
           "slot": "5.",
           "local": "Colombia",
           "visitante": "Ghana",
-          "league": "soccer_fifa_world_cup",
+          "league": "African Cup of Nations Qualifying",
+          "league_key": "soccer_fifa_world_cup",
+          "league_source": "",
           "kickoff": "2026-07-04T01:30:00Z",
           "bookmaker": "LeoVegas (SE)",
           "odds": {
@@ -2613,7 +3215,9 @@
           "slot": "6.",
           "local": "FC LAHTI",
           "visitante": "IF GNISTAN",
-          "league": "",
+          "league": "Finnish Veikkausliiga",
+          "league_key": "sportsdb_4636",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-06-27T16:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -2642,13 +3246,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 47.47,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2656,29 +3269,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 98.7,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 15.0,
+            "precipitation_probability": 22,
+            "wind_speed_kmh": 4.7
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs HJK Helsinki (-)",
+          "future_away": "casa vs IFK Mariehamn (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (40.4%) y el público quinielista lo refleja de forma similar (40.4%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "7.",
           "local": "SJK",
           "visitante": "TPS",
-          "league": "",
+          "league": "Finnish Veikkausliiga",
+          "league_key": "sportsdb_4834",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-06-27T16:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -2707,13 +3332,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 51.55,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2721,29 +3355,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 262.2,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 16.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 7.2
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs KuPS (-) | fuera vs Jaro (-) | casa vs HJK Helsinki (-) | casa vs Gnistan (-) | fuera vs IFK Mariehamn (-)",
+          "future_away": "casa vs AC Oulu (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (62.5%) y el público quinielista lo refleja de forma similar (62.5%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "8.",
           "local": "FF JARO",
           "visitante": "ILVES",
-          "league": "",
+          "league": "UEFA Conference League",
+          "league_key": "sportsdb_4636",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-06-27T11:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -2772,13 +3418,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 45.0,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2786,14 +3441,24 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 0.0,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 17.0,
+            "precipitation_probability": 94,
+            "wind_speed_kmh": 9.0
           },
           "referee": {
             "name": "no confirmado",
@@ -2801,14 +3466,16 @@
           },
           "future_home": "sin calendario detectado",
           "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (53.8%) y el público quinielista lo refleja de forma similar (53.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "9.",
           "local": "VPS",
           "visitante": "IFK MARIEHAMN",
-          "league": "",
+          "league": "Finnish Veikkausliiga",
+          "league_key": "sportsdb_4636",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-06-27T14:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -2837,13 +3504,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 53.61,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2851,29 +3527,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 344.4,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 16.8,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 11.2
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs SJK Seinajoki (-)",
+          "future_away": "fuera vs Gnistan (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (89.8%) y el público quinielista lo refleja de forma similar (89.8%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "10.",
           "local": "SIRIUS",
           "visitante": "MJALLBY",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-03T17:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -2902,13 +3590,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 56.52,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2916,29 +3613,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 461.0,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 15.1,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 7.9
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Brommapojkarna (-)",
+          "future_away": "casa vs AIK (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (66.3%) y el público quinielista lo refleja de forma similar (66.3%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "11.",
           "local": "HALMSTADS",
           "visitante": "VASTERAS",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-04T13:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -2967,13 +3676,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 54.81,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -2981,29 +3699,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 392.4,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 17.1,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 6.1
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Djurgården (-)",
+          "future_away": "casa vs Degerfors (-)",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (43.4%) y el público quinielista lo refleja de forma similar (43.4%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "12.",
           "local": "DEGERFORS",
           "visitante": "MALMO",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-06-26T12:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -3032,13 +3762,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 55.32,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -3046,29 +3785,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 412.8,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 14.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 2.5
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Västerås (-)",
+          "future_away": "casa vs IFK Göteborg (-)",
+          "briefing_excerpt": "El visitante es favorito para las casas de apuestas (47.5%) y el público quinielista lo refleja de forma similar (47.5%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "13.",
           "local": "GOTEBORG",
           "visitante": "AIK",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-06-28T12:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -3097,13 +3848,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 70.0,
+              "label": "high"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -3111,29 +3871,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 7114.2,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 19.3,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 6.8
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "casa vs Brommapojkarna (-) | fuera vs Sirius (-) | casa vs Degerfors (-) | casa vs Kalmar (-) | fuera vs Degerfors (-)",
+          "future_away": "fuera vs Mjällby (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (44.1%) y el público quinielista lo refleja de forma similar (44.1%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "analysis_ready": true
         },
         {
           "slot": "14.",
           "local": "KALMAR",
           "visitante": "ORGRYTE",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-05T12:00:00Z",
           "bookmaker": "",
           "odds": {},
@@ -3162,13 +3934,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 52.23,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -3176,29 +3957,41 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 289.2,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 16.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 6.8
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs Hammarby (-)",
+          "future_away": "casa vs Häcken (-)",
+          "briefing_excerpt": "El local es favorito para las casas de apuestas (81.6%) y el público quinielista lo refleja de forma similar (81.6%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "Pleno al 15",
           "local": "ELFSBORG",
           "visitante": "HAMMARBY",
-          "league": "",
+          "league": "Swedish Allsvenskan",
+          "league_key": "sportsdb_4347",
+          "league_source": "TheSportsDB",
           "kickoff": "2026-07-05T14:30:00Z",
           "bookmaker": "",
           "odds": {},
@@ -3227,13 +4020,22 @@
             "away": {}
           },
           "fatigue": {
-            "home": {},
-            "away": {}
+            "home": {
+              "score": 45.0,
+              "label": "medium"
+            },
+            "away": {
+              "score": 53.68,
+              "label": "medium"
+            }
           },
           "competitive_context": {
             "season_context_phase": {},
-            "competitive_stakes_label": "",
-            "direct_rivalry": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "direct_rivalry": {
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
+            },
             "home_objective": {},
             "away_objective": {},
             "home_must_win_index": 0,
@@ -3241,23 +4043,33 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "home_rotation_context": {},
-            "away_rotation_context": {}
+            "home_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            },
+            "away_rotation_context": {
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
+            }
           },
-          "travel_km": null,
+          "travel_km": 347.2,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 18.0,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 4.3
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "future_home": "fuera vs GAIS (-)",
+          "future_away": "casa vs Kalmar (-)",
+          "briefing_excerpt": "Sin suficientes datos de mercado para generar insight. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         }
       ]
     }
