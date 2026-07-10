@@ -2160,6 +2160,10 @@ def _briefing_excerpt_from_dict(briefing: dict) -> str:
     if not briefing or not isinstance(briefing, dict):
         return ""
     parts = []
+    confidence = briefing.get("calidad_datos") or {}
+    confidence_summary = str(confidence.get("resumen", "")).strip()
+    if confidence_summary:
+        parts.append(confidence_summary)
     insight = (briefing.get("mercado_y_probabilidades") or {}).get("insight_mercado", "")
     if insight:
         parts.append(insight)
@@ -2303,6 +2307,7 @@ def _monitor_match_payload(match: dict) -> dict:
     referee_bias = _referee_analysis_summary(referee.get("season_analysis") or {})
     if not referee_bias:
         referee_bias = "sin historico arbitral fiable"
+    briefing = match.get("focus_ai_briefing") or {}
     return {
         "slot": _monitor_slot_label(match),
         "local": match.get("local", ""),
@@ -2365,8 +2370,9 @@ def _monitor_match_payload(match: dict) -> dict:
         },
         "future_home": _monitor_future_summary(match, "home"),
         "future_away": _monitor_future_summary(match, "away"),
-        "briefing_excerpt": _briefing_excerpt_from_dict(match.get("focus_ai_briefing") or {}),
-        "analysis_ready": bool(match.get("focus_ai_briefing")),
+        "data_confidence": briefing.get("calidad_datos") or _match_data_confidence(match),
+        "briefing_excerpt": _briefing_excerpt_from_dict(briefing),
+        "analysis_ready": bool(briefing),
     }
 
 
@@ -8404,6 +8410,133 @@ def _insight_travel(travel: dict) -> str:
     return f"Viaje largo para el visitante ({km:.0f} km). Desgaste adicional a considerar."
 
 
+def _has_nonempty_percentages(values: dict) -> bool:
+    if not isinstance(values, dict):
+        return False
+    return any(_safe_float(values.get(key)) is not None for key in ("1", "X", "2"))
+
+
+def _news_signal_count(team_context: dict) -> int:
+    total = 0
+    for bucket in ("focus_news", "media_news"):
+        section = team_context.get(bucket) or {}
+        total += len(section.get("items") or [])
+        signals = section.get("signals") or {}
+        total += sum(_safe_int(value, 0) or 0 for value in signals.values())
+    total += len(team_context.get("news") or [])
+    official = team_context.get("official_site") or {}
+    total += len(official.get("items") or [])
+    return total
+
+
+def _match_data_confidence(match: dict) -> dict:
+    market_context = match.get("market_context") or {}
+    market = market_context.get("normalized_percent") or {}
+    market_source = str(market_context.get("source") or "").strip()
+    has_real_odds = bool(match.get("odds")) or market_source == "odds"
+    has_reference = _has_nonempty_percentages(market)
+    has_official = _has_nonempty_percentages(match.get("official_quiniela_percentages") or {})
+    history = match.get("history_context") or {}
+    competition = match.get("competition_context") or {}
+    weather = match.get("weather_context") or {}
+    travel = match.get("travel_context") or {}
+    home_context = match.get("home_team_context") or {}
+    away_context = match.get("away_team_context") or {}
+    structured = match.get("structured_context") or {}
+    referee = (structured.get("referee_context") or {}).get("assigned_referee")
+    injury_context = structured.get("injury_context") or {}
+    injuries = (
+        len(((injury_context.get("home_team") or {}).get("items")) or [])
+        + len(((injury_context.get("away_team") or {}).get("items")) or [])
+    )
+
+    score = 0
+    strengths: list[str] = []
+    missing: list[str] = []
+
+    if has_real_odds:
+        score += 40
+        strengths.append("cuotas reales")
+    elif has_reference:
+        score += 15
+        strengths.append("referencia 1X2 sin cuotas reales")
+        missing.append("cuotas reales")
+    else:
+        missing.append("cuotas/referencia 1X2")
+
+    if has_official:
+        score += 15
+        strengths.append("porcentajes de quiniela")
+    else:
+        missing.append("porcentajes de quiniela")
+
+    if str(match.get("league", "")).strip() and str(match.get("league", "")).strip() != "league_unresolved":
+        score += 5
+        strengths.append("liga identificada")
+    else:
+        missing.append("liga identificada")
+
+    if _safe_float(weather.get("temperature_c")) is not None:
+        score += 8
+        strengths.append("clima")
+    else:
+        missing.append("clima")
+
+    if _safe_float(travel.get("distance_km")) is not None:
+        score += 8
+        strengths.append("viaje")
+    else:
+        missing.append("viaje")
+
+    home_upcoming = competition.get("home_upcoming") or []
+    away_upcoming = competition.get("away_upcoming") or []
+    if home_upcoming or away_upcoming:
+        score += 10
+        strengths.append("calendario próximo")
+    else:
+        missing.append("calendario próximo")
+
+    home_recent = ((history.get("home") or {}).get("recent_all") or {}).get("form")
+    away_recent = ((history.get("away") or {}).get("recent_all") or {}).get("form")
+    if home_recent and away_recent:
+        score += 8
+        strengths.append("forma reciente")
+    else:
+        missing.append("forma reciente")
+
+    if (history.get("head_to_head") or {}).get("meetings"):
+        score += 7
+        strengths.append("H2H")
+    else:
+        missing.append("H2H")
+
+    news_total = _news_signal_count(home_context) + _news_signal_count(away_context)
+    if news_total or referee or injuries:
+        score += 7
+        strengths.append("señales cualitativas")
+    else:
+        missing.append("noticias/bajas/árbitro")
+
+    score = max(0, min(100, score))
+    if score >= 70:
+        label = "alta"
+        summary = "Confianza alta: análisis apoyado en datos fuertes."
+    elif score >= 45:
+        label = "media"
+        summary = "Confianza media: análisis útil, pero con datos incompletos."
+    else:
+        label = "baja"
+        summary = "Confianza baja: análisis orientativo; faltan datos clave."
+
+    return {
+        "nivel": label,
+        "score": score,
+        "resumen": summary,
+        "fortalezas": strengths[:6],
+        "faltan": missing[:6],
+    }
+
+
 def _focus_match_ai_briefing(match: dict) -> dict:
     market_context = match.get("market_context") or {}
     market = market_context.get("normalized_percent", {})
@@ -8519,9 +8652,11 @@ def _focus_match_ai_briefing(match: dict) -> dict:
         if rotation.get("risk") in {"high", "medium"} and rotation.get("reason"):
             rotation_parts.append(f"{side}: {rotation.get('reason')} (riesgo {rotation.get('risk')})")
     rotation_summary = " | ".join(rotation_parts) or "Sin senal fuerte de rotacion por calendario externo."
+    data_confidence = _match_data_confidence(match)
 
     return {
         "partido": f"{home} vs {away}",
+        "calidad_datos": data_confidence,
         "mercado_y_probabilidades": {
             "fuente_probabilidades": probability_source_label,
             "cuotas_1X2": cuotas_str if market_source == "odds" else f"referencia 1X2: {cuotas_str}",
