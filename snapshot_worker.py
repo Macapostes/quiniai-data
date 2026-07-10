@@ -8667,6 +8667,10 @@ def _match_richness_score(match: dict) -> int:
     return score
 
 
+def _needs_dynamic_league_revalidation(match: dict) -> bool:
+    return str(match.get("league", "")).strip().startswith("sportsdb_")
+
+
 def _apply_quiniela_slot(match: dict, jornada: int, slot: dict) -> None:
     slot_entry = {
         "jornada": jornada,
@@ -9838,6 +9842,8 @@ def build_snapshot(raw_matches: list) -> dict:
             for match in jornada.get("matches", []):
                 competition_context = match.get("competition_context") or {}
                 needs_bootstrap = (
+                    _needs_dynamic_league_revalidation(match)
+                    or
                     not match.get("league")
                     or not match.get("kickoff")
                     or not competition_context.get("home_upcoming")
@@ -9851,6 +9857,8 @@ def build_snapshot(raw_matches: list) -> dict:
                 home_upcoming = competition_context.get("home_upcoming") or []
                 away_upcoming = competition_context.get("away_upcoming") or []
                 should_refresh = (
+                    _needs_dynamic_league_revalidation(match)
+                    or
                     not match.get("focus_ai_briefing")
                     or (
                         match.get("league")
@@ -9890,6 +9898,8 @@ def build_snapshot(raw_matches: list) -> dict:
             for match in jornada.get("matches", []):
                 competition_context = match.get("competition_context") or {}
                 if (
+                    _needs_dynamic_league_revalidation(match)
+                    or
                     not match.get("league")
                     or not match.get("kickoff")
                     or not competition_context.get("home_upcoming")
