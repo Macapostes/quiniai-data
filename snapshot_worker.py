@@ -219,6 +219,10 @@ LEAGUE_COUNTRY_HINTS = {
     "soccer_spain_segunda_division": "ES",
     "soccer_epl": "GB",
     "soccer_efl_champ": "GB",
+    "soccer_fifa_world_cup": "",
+    "soccer_uefa_european_championship": "",
+    "soccer_conmebol_copa_america": "",
+    "soccer_international_friendlies": "",
 }
 
 LEAGUE_KEY_ALIASES = {
@@ -291,6 +295,50 @@ LEAGUE_RFEF_PDF_PREFIX = {
 }
 
 TEAM_NAME_ALIASES = {
+    # Selecciones nacionales: la quiniela oficial suele publicarlas en español,
+    # mientras que las fuentes de calendario/cuotas llegan en inglés.
+    "alemania": "Germany",
+    "argentina": "Argentina",
+    "australia": "Australia",
+    "austria": "Austria",
+    "belgica": "Belgium",
+    "bélgica": "Belgium",
+    "brasil": "Brazil",
+    "canada": "Canada",
+    "croacia": "Croatia",
+    "dinamarca": "Denmark",
+    "escocia": "Scotland",
+    "eslovaquia": "Slovakia",
+    "eslovenia": "Slovenia",
+    "espana": "Spain",
+    "españa": "Spain",
+    "estados unidos": "United States",
+    "eeuu": "United States",
+    "francia": "France",
+    "gales": "Wales",
+    "holanda": "Netherlands",
+    "inglaterra": "England",
+    "irlanda": "Republic of Ireland",
+    "irlanda del norte": "Northern Ireland",
+    "italia": "Italy",
+    "japon": "Japan",
+    "japón": "Japan",
+    "mexico": "Mexico",
+    "méxico": "Mexico",
+    "noruega": "Norway",
+    "paises bajos": "Netherlands",
+    "países bajos": "Netherlands",
+    "polonia": "Poland",
+    "portugal": "Portugal",
+    "republica checa": "Czech Republic",
+    "república checa": "Czech Republic",
+    "rumania": "Romania",
+    "suecia": "Sweden",
+    "suiza": "Switzerland",
+    "turquia": "Turkey",
+    "turquía": "Turkey",
+    "ucrania": "Ukraine",
+    "uruguay": "Uruguay",
     "athletic de bilbao": "Athletic Bilbao",
     "athletic club": "Athletic Bilbao",
     "athletic bilbao": "Athletic Bilbao",
@@ -332,6 +380,17 @@ TEAM_NAME_ALIASES = {
     "castellon": "Castellón",
     "rayo v": "Rayo Vallecano",
     "athletic de bilbao": "Athletic Bilbao",
+}
+
+NATIONAL_TEAM_COUNTRY_HINTS = {
+    "argentina": "AR",
+    "belgium": "BE",
+    "england": "GB",
+    "japan": "JP",
+    "norway": "NO",
+    "spain": "ES",
+    "sweden": "SE",
+    "switzerland": "CH",
 }
 
 LEAGUE_EXTERNAL_FEEDS = {
@@ -504,6 +563,14 @@ TEAM_LOCAL_MEDIA_HINTS = {
 }
 
 TEAM_LOCATION_OVERRIDES = {
+    "argentina": {"query": "Argentina national football team", "city": "Buenos Aires", "country": "Argentina", "country_code": "AR", "timezone": "America/Argentina/Buenos_Aires", "latitude": -34.6037, "longitude": -58.3816},
+    "belgium": {"query": "Belgium national football team", "city": "Brussels", "country": "Belgium", "country_code": "BE", "timezone": "Europe/Brussels", "latitude": 50.8503, "longitude": 4.3517},
+    "england": {"query": "England national football team", "city": "London", "country": "United Kingdom", "country_code": "GB", "timezone": "Europe/London", "latitude": 51.5072, "longitude": -0.1276},
+    "japan": {"query": "Japan national football team", "city": "Tokyo", "country": "Japan", "country_code": "JP", "timezone": "Asia/Tokyo", "latitude": 35.6762, "longitude": 139.6503},
+    "norway": {"query": "Norway national football team", "city": "Oslo", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo", "latitude": 59.9139, "longitude": 10.7522},
+    "spain": {"query": "Spain national football team", "city": "Madrid", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 40.4168, "longitude": -3.7038},
+    "sweden": {"query": "Sweden national football team", "city": "Stockholm", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm", "latitude": 59.3293, "longitude": 18.0686},
+    "switzerland": {"query": "Switzerland national football team", "city": "Bern", "country": "Switzerland", "country_code": "CH", "timezone": "Europe/Zurich", "latitude": 46.948, "longitude": 7.4474},
     "mallorca": {"query": "Palma de Mallorca, Spain", "city": "Palma", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 39.5696, "longitude": 2.6502},
     "valencia": {"query": "Valencia, Spain", "city": "Valencia", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 39.4699, "longitude": -0.3763},
     "girona": {"query": "Girona, Spain", "city": "Girona", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 41.9794, "longitude": 2.8214},
@@ -3932,7 +3999,11 @@ def _looks_like_known_team_entity(candidate: str) -> bool:
 def _guess_country_hint(team_name: str, fallback: str | None = None) -> str | None:
     if fallback:
         return fallback
-    lower_name = team_name.lower()
+    canonical = _canonical_team_name(team_name)
+    normalized = _normalize_team_name(canonical)
+    if normalized in NATIONAL_TEAM_COUNTRY_HINTS:
+        return NATIONAL_TEAM_COUNTRY_HINTS[normalized]
+    lower_name = canonical.lower()
     if any(
         token in lower_name
         for token in [" madrid", " bilbao", " barcelona", " sevilla", " osasuna", " gijon", " malaga"]
@@ -3945,9 +4016,11 @@ def _guess_country_hint(team_name: str, fallback: str | None = None) -> str | No
 
 def _team_location_override(team_name: str) -> dict:
     normalized = _normalize_ascii(str(team_name or "").strip()).lower()
-    if not normalized:
-        return {}
-    return TEAM_LOCATION_OVERRIDES.get(normalized, {})
+    canonical_normalized = _normalize_team_name(_canonical_team_name(team_name))
+    for key in [canonical_normalized, normalized]:
+        if key and key in TEAM_LOCATION_OVERRIDES:
+            return TEAM_LOCATION_OVERRIDES.get(key, {})
+    return {}
 
 
 def _apply_location_override_fields(profile: dict, team_name: str) -> dict:
@@ -3989,13 +4062,23 @@ def _clean_location_hint(location_hint: str) -> str:
 
 def _search_wikipedia_title(team_name: str, country_hint: str | None = None) -> str:
     country_label = COUNTRY_LABELS.get(country_hint or "", "")
-    queries = [
-        f"{team_name} {country_label} football club".strip(),
-        f"{team_name} football club",
-        f"{team_name} {country_label} soccer club".strip(),
-        f"{team_name} soccer club",
-        team_name,
-    ]
+    canonical_team = _canonical_team_name(team_name)
+    if _normalize_team_name(canonical_team) in NATIONAL_TEAM_COUNTRY_HINTS:
+        queries = [
+            f"{canonical_team} national football team",
+            f"{canonical_team} national soccer team",
+            canonical_team,
+            team_name,
+        ]
+    else:
+        queries = [
+            f"{team_name} {country_label} football club".strip(),
+            f"{team_name} football club",
+            f"{team_name} {country_label} soccer club".strip(),
+            f"{team_name} soccer club",
+            canonical_team,
+            team_name,
+        ]
     for query in queries:
         try:
             data = _request_json(
@@ -4161,13 +4244,22 @@ def _repair_profile_location(
 
 def fetch_team_profile(team_name: str, country_hint: str | None = None) -> dict:
     cached = _cache_get(TEAM_PROFILE_CACHE, team_name)
+    canonical_team = _canonical_team_name(team_name)
+    is_national_team = _normalize_team_name(canonical_team) in NATIONAL_TEAM_COUNTRY_HINTS
+    cached_title = _normalize_team_name(str((cached or {}).get("wikipedia_title", "")))
+    cached_is_national_profile = (
+        not is_national_team
+        or "national football team" in cached_title
+        or "national soccer team" in cached_title
+    )
     if (
         cached
         and cached.get("cache_version") == TEAM_PROFILE_CACHE_VERSION
         and cached.get("latitude") is not None
         and cached.get("longitude") is not None
+        and cached_is_national_profile
     ):
-        return cached
+        return _apply_location_override_fields(cached, team_name)
 
     resolved_country_hint = _guess_country_hint(team_name, country_hint)
     wiki_title = _search_wikipedia_title(team_name, resolved_country_hint)
