@@ -7448,6 +7448,7 @@ def _odds_probabilities(odds: dict) -> dict:
         "implied_percent": {key: round(value * 100, 2) for key, value in implied.items()},
         "normalized_percent": normalized,
         "overround_percent": round(max(0.0, (total - 1.0) * 100), 2),
+        "source": "odds",
     }
 
 
@@ -8191,7 +8192,13 @@ def _describe_form(form: str) -> str:
     return "Trayectoria irregular"
 
 
-def _insight_mercado(market: dict, quiniela_pct: dict, home: str, away: str) -> str:
+def _insight_mercado(
+    market: dict,
+    quiniela_pct: dict,
+    home: str,
+    away: str,
+    market_source: str = "",
+) -> str:
     m1 = _safe_float(market.get("1"))
     mX = _safe_float(market.get("X"))
     m2 = _safe_float(market.get("2"))
@@ -8199,14 +8206,26 @@ def _insight_mercado(market: dict, quiniela_pct: dict, home: str, away: str) -> 
     q2 = _safe_float(quiniela_pct.get("2"))
     if m1 is None or m2 is None:
         return "Sin suficientes datos de mercado para generar insight."
+    has_real_odds = market_source == "odds"
     if m1 > m2 and m1 > (mX or 0):
         fav_label, fav_market, fav_quiniela = "local", m1, q1
     elif m2 > m1 and m2 > (mX or 0):
         fav_label, fav_market, fav_quiniela = "visitante", m2, q2
     else:
+        if not has_real_odds:
+            return (
+                f"No hay cuotas reales fiables. La referencia disponible apunta a partido equilibrado "
+                f"(1={m1:.1f}%, X={mX:.1f}%, 2={m2:.1f}%), por lo que el empate pesa en la cobertura."
+            )
         return (
             f"El mercado apunta a un partido muy equilibrado "
             f"(1={m1:.1f}%, X={mX:.1f}%, 2={m2:.1f}%). El empate tiene valor quinielístico."
+        )
+    if not has_real_odds:
+        return (
+            f"No hay cuotas reales fiables. La referencia disponible favorece al {fav_label} "
+            f"({fav_market:.1f}%), pero esta lectura debe tratarse como apoyo de cobertura, "
+            "no como señal fuerte de mercado."
         )
     if fav_quiniela is None:
         return f"El {fav_label} es favorito para las casas de apuestas ({fav_market:.1f}%)."
@@ -8386,7 +8405,11 @@ def _insight_travel(travel: dict) -> str:
 
 
 def _focus_match_ai_briefing(match: dict) -> dict:
-    market = (match.get("market_context") or {}).get("normalized_percent", {})
+    market_context = match.get("market_context") or {}
+    market = market_context.get("normalized_percent", {})
+    market_source = str(market_context.get("source") or "").strip()
+    if not market_source:
+        market_source = "odds" if match.get("odds") else ("reference" if market else "")
     weather = match.get("weather_context") or {}
     travel = match.get("travel_context") or {}
     history = match.get("history_context") or {}
@@ -8447,6 +8470,11 @@ def _focus_match_ai_briefing(match: dict) -> dict:
         f"X={_fmt_pct(market.get('X'))}, "
         f"2={_fmt_pct(market.get('2'))}"
     )
+    probability_source_label = (
+        "cuotas reales de bookmaker"
+        if market_source == "odds"
+        else "referencia disponible sin cuotas reales verificadas"
+    )
     quiniela_str = (
         f"1={_fmt_pct(quiniela_pct.get('1'))}, "
         f"X={_fmt_pct(quiniela_pct.get('X'))}, "
@@ -8495,9 +8523,10 @@ def _focus_match_ai_briefing(match: dict) -> dict:
     return {
         "partido": f"{home} vs {away}",
         "mercado_y_probabilidades": {
-            "cuotas_1X2": cuotas_str,
+            "fuente_probabilidades": probability_source_label,
+            "cuotas_1X2": cuotas_str if market_source == "odds" else f"referencia 1X2: {cuotas_str}",
             "tendencia_quinielista": quiniela_str,
-            "insight_mercado": _insight_mercado(market, quiniela_pct, home, away),
+            "insight_mercado": _insight_mercado(market, quiniela_pct, home, away, market_source),
         },
         "contexto_deportivo": {
             "racha_local": f"{home_form} ({_describe_form(home_form)})",
