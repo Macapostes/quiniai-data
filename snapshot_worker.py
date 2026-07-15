@@ -3370,7 +3370,7 @@ def _build_monitor_web_html() -> str:
           <div class="line"><strong>Mercado base:</strong> 1=${fmtPct(market["1"])} · X=${fmtPct(market["X"])} · 2=${fmtPct(market["2"])} | <strong>LAE/Loterias:</strong> 1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}</div>
           <div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>
           <div class="line"><strong>Objetivo:</strong> ${escapeHtml(homeObjective.summary || "-")} [MW ${competitive.home_must_win_index ?? 0}, NP ${competitive.home_must_not_lose_index ?? 0}] | ${escapeHtml(awayObjective.summary || "-")} [MW ${competitive.away_must_win_index ?? 0}, NP ${competitive.away_must_not_lose_index ?? 0}]</div>
-          <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} | rivalidad ${competitive.direct_rivalry_index ?? 0}/100</div>
+          <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} | duelo directo ${competitive.direct_rivalry_index ?? 0}/100</div>
           ${rotationLine ? `<div class="line"><strong>Rotacion probable:</strong> ${escapeHtml(rotationLine)}</div>` : ""}
           <div class="line"><strong>Presion/Fatiga:</strong> local ${fmtNum(homePressure.score,2)} (${escapeHtml(homePressure.label || "-")}) y visitante ${fmtNum(awayPressure.score,2)} (${escapeHtml(awayPressure.label || "-")}) | fatiga ${fmtNum(homeFatigue.score,2)} / ${fmtNum(awayFatigue.score,2)}</div>
           <div class="line"><strong>Arbitro:</strong> ${escapeHtml(referee.name || "no confirmado")} | <strong>Viaje visitante:</strong> ${fmtNum(match.travel_km,1)} km | <strong>Clima:</strong> ${fmtNum(weather.temperature_c,1)} C, lluvia ${weather.precipitation_probability ?? "-"}%, viento ${fmtNum(weather.wind_speed_kmh,1)} km/h</div>
@@ -7253,6 +7253,36 @@ def _objective_candidate(
     }
 
 
+def _competitive_lines_for_league(league_key: str, table_snapshot: dict) -> list[dict]:
+    configured = LEAGUE_COMPETITIVE_LINES.get(league_key)
+    if configured:
+        return list(configured)
+    ordered_rows = _ordered_table_rows(table_snapshot)
+    teams = len(ordered_rows)
+    if teams < 8:
+        return []
+
+    continental_line = 3 if teams <= 16 else 6
+    if teams <= 12:
+        continental_line = 2
+    survival_line = max(1, teams - 2)
+    return [
+        {"key": "title", "label": "titulo", "line_position": 1, "direction": "top"},
+        {
+            "key": "upper_zone",
+            "label": "zona alta",
+            "line_position": continental_line,
+            "direction": "top",
+        },
+        {
+            "key": "survival",
+            "label": "salvacion",
+            "line_position": survival_line,
+            "direction": "survival",
+        },
+    ]
+
+
 def _material_swing(team_row: dict, objective: dict, points_delta: int) -> str:
     if not team_row or not objective:
         return ""
@@ -7318,9 +7348,10 @@ def _team_objective_context(
     ordered_rows = _ordered_table_rows(table_snapshot)
     phase = _season_context_phase(kickoff_dt, table_snapshot, team_row)
     phase_key = phase.get("key", "")
+    competitive_lines = _competitive_lines_for_league(league_key, table_snapshot)
     candidates = [
         candidate
-        for line in LEAGUE_COMPETITIVE_LINES.get(league_key, [])
+        for line in competitive_lines
         for candidate in [_objective_candidate(line, team_row, ordered_rows, phase_key)]
         if candidate
     ]
