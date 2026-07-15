@@ -3367,7 +3367,7 @@ def _build_monitor_web_html() -> str:
               ${chip(`2 ${fmtNum(odds["2"],2)}`)}
             </div>
           </div>
-          <div class="line"><strong>Mercado base:</strong> 1=${fmtPct(market["1"])} · X=${fmtPct(market["X"])} · 2=${fmtPct(market["2"])} | <strong>Quinielista:</strong> 1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}</div>
+          <div class="line"><strong>Mercado base:</strong> 1=${fmtPct(market["1"])} · X=${fmtPct(market["X"])} · 2=${fmtPct(market["2"])} | <strong>LAE/Loterias:</strong> 1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}</div>
           <div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>
           <div class="line"><strong>Objetivo:</strong> ${escapeHtml(homeObjective.summary || "-")} [MW ${competitive.home_must_win_index ?? 0}, NP ${competitive.home_must_not_lose_index ?? 0}] | ${escapeHtml(awayObjective.summary || "-")} [MW ${competitive.away_must_win_index ?? 0}, NP ${competitive.away_must_not_lose_index ?? 0}]</div>
           <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} | rivalidad ${competitive.direct_rivalry_index ?? 0}/100</div>
@@ -4746,7 +4746,7 @@ def fetch_quiniela_jornada_page(jornada: int, temporada: int | None = None) -> d
     if not season_value:
         return {
             "ok": False,
-            "source": "Eduardo Losilla Quinielista",
+            "source": "Eduardo Losilla LAE",
             "url": EDUARDO_QUINIELA_PORCENTAJES_URL,
             "jornada": jornada,
             "season": None,
@@ -4762,11 +4762,11 @@ def fetch_quiniela_jornada_page(jornada: int, temporada: int | None = None) -> d
 
     quinielista_payload = _fetch_eduardo_percentages_source(jornada, season_value, "quinielista")
     lae_payload = _fetch_eduardo_percentages_source(jornada, season_value, "lae")
-    base_payload = quinielista_payload if quinielista_payload.get("ok") else lae_payload
+    base_payload = lae_payload if lae_payload.get("ok") else quinielista_payload
     if not base_payload.get("ok"):
         payload = {
             "ok": False,
-            "source": "Eduardo Losilla Quinielista",
+            "source": "Eduardo Losilla LAE",
             "url": EDUARDO_QUINIELA_PORCENTAJES_URL,
             "jornada": jornada,
             "season": season_value,
@@ -4802,11 +4802,11 @@ def fetch_quiniela_jornada_page(jornada: int, temporada: int | None = None) -> d
     ordered_slots = [slots_by_position[position] for position in sorted(slots_by_position)]
     payload = {
         "ok": bool(ordered_slots),
-        "source": "Eduardo Losilla Quinielista",
+        "source": "Eduardo Losilla LAE",
         "url": EDUARDO_QUINIELA_PORCENTAJES_URL,
         "jornada": jornada,
         "season": season_value,
-        "active": bool(quinielista_payload.get("active")),
+        "active": bool(lae_payload.get("active") or quinielista_payload.get("active")),
         "matches": [slot for slot in ordered_slots if slot.get("position", 0) < 15],
         "pleno15": next((slot for slot in ordered_slots if slot.get("position") == 15), {}),
     }
@@ -7698,19 +7698,15 @@ def _quiniela_slot_labels(match: dict) -> list[str]:
 
 def _official_quiniela_percentages_line(match: dict) -> str:
     percentages = match.get("official_quiniela_percentages") or {}
-    if not percentages:
+    if not _has_nonempty_percentages(percentages):
         for slot in match.get("quiniela_slots") or []:
-            percentages = (
-                (slot.get("percentages") or {}).get("quinielista")
-                or (slot.get("percentages") or {}).get("lae")
-                or {}
-            )
-            if percentages:
+            percentages = (slot.get("percentages") or {}).get("lae") or {}
+            if _has_nonempty_percentages(percentages):
                 break
-    if not percentages:
-        return "Sin porcentaje oficial Quinielista disponible"
+    if not _has_nonempty_percentages(percentages):
+        return "Sin porcentaje oficial LAE disponible"
     return (
-        f"Quinielista 1={percentages.get('1', '-')}, "
+        f"LAE/Loterias 1={percentages.get('1', '-')}, "
         f"X={percentages.get('X', '-')}, 2={percentages.get('2', '-')}"
     )
 
@@ -8380,12 +8376,12 @@ def _insight_mercado(
     if gap < -8:
         return (
             f"El {fav_label} es favorito para las casas de apuestas ({fav_market:.1f}%), "
-            f"pero el público quinielista lo infravalora ({fav_quiniela:.1f}%). "
+            f"pero el publico de Loterias lo infravalora ({fav_quiniela:.1f}%). "
             "El favorito podría estar infravalorado en la quiniela."
         )
     return (
         f"El {fav_label} es favorito para las casas de apuestas ({fav_market:.1f}%) "
-        f"y el público quinielista lo refleja de forma similar ({fav_quiniela:.1f}%). "
+        f"y el publico de Loterias lo refleja de forma similar ({fav_quiniela:.1f}%). "
         "Sin gran divergencia entre mercado y quiniela."
     )
 
@@ -8548,7 +8544,12 @@ def _insight_travel(travel: dict) -> str:
 def _has_nonempty_percentages(values: dict) -> bool:
     if not isinstance(values, dict):
         return False
-    return any(_safe_float(values.get(key)) is not None for key in ("1", "X", "2"))
+    parsed = []
+    for key in ("1", "X", "2"):
+        value = _safe_float(values.get(key))
+        if value is not None:
+            parsed.append(value)
+    return any(value > 0 for value in parsed)
 
 
 def _news_signal_count(team_context: dict) -> int:
@@ -8715,14 +8716,10 @@ def _focus_match_ai_briefing(match: dict) -> dict:
     away_fatigue = analytics.get("away_fatigue_index") or {}
 
     quiniela_pct: dict = match.get("official_quiniela_percentages") or {}
-    if not quiniela_pct:
+    if not _has_nonempty_percentages(quiniela_pct):
         for slot in match.get("quiniela_slots") or []:
-            quiniela_pct = (
-                (slot.get("percentages") or {}).get("quinielista")
-                or (slot.get("percentages") or {}).get("lae")
-                or {}
-            )
-            if quiniela_pct:
+            quiniela_pct = (slot.get("percentages") or {}).get("lae") or {}
+            if _has_nonempty_percentages(quiniela_pct):
                 break
 
     def _fmt_pct(val: object) -> str:
@@ -8747,7 +8744,7 @@ def _focus_match_ai_briefing(match: dict) -> dict:
         f"1={_fmt_pct(quiniela_pct.get('1'))}, "
         f"X={_fmt_pct(quiniela_pct.get('X'))}, "
         f"2={_fmt_pct(quiniela_pct.get('2'))}"
-    ) if quiniela_pct else "Sin datos oficiales disponibles"
+    ) if _has_nonempty_percentages(quiniela_pct) else "Sin datos oficiales LAE disponibles"
 
     referee_name = referee_context.get("assigned_referee", "") or "No confirmado"
     referee_bias = _referee_analysis_summary(referee_analysis) if referee_analysis else "Sin histórico arbitral fiable"
@@ -8795,6 +8792,7 @@ def _focus_match_ai_briefing(match: dict) -> dict:
         "mercado_y_probabilidades": {
             "fuente_probabilidades": probability_source_label,
             "cuotas_1X2": cuotas_str if market_source == "odds" else f"referencia 1X2: {cuotas_str}",
+            "porcentaje_loterias_lae": quiniela_str,
             "tendencia_quinielista": quiniela_str,
             "insight_mercado": _insight_mercado(market, quiniela_pct, home, away, market_source),
         },
@@ -8944,7 +8942,18 @@ def _find_match_by_teams(matches: list[dict], home_team: str, away_team: str) ->
 
 def _preferred_quiniela_percentages(slot: dict) -> dict:
     percentages = slot.get("percentages") or {}
-    return (percentages.get("quinielista") or percentages.get("lae") or {}).copy()
+    lae_percentages = percentages.get("lae") or {}
+    return lae_percentages.copy() if _has_nonempty_percentages(lae_percentages) else {}
+
+
+def _reference_quinielista_percentages(slot: dict) -> dict:
+    percentages = slot.get("percentages") or {}
+    quinielista_percentages = percentages.get("quinielista") or {}
+    return (
+        quinielista_percentages.copy()
+        if _has_nonempty_percentages(quinielista_percentages)
+        else {}
+    )
 
 
 def _match_richness_score(match: dict) -> int:
@@ -8988,9 +8997,15 @@ def _apply_quiniela_slot(match: dict, jornada: int, slot: dict) -> None:
     preferred = _preferred_quiniela_percentages(slot)
     if preferred:
         match["official_quiniela_percentages"] = preferred
-        match.setdefault("market_context", {}).setdefault(
-            "official_percent", preferred.copy()
-        )
+        match["official_quiniela_source"] = "LAE/Loterias"
+        market_context = match.setdefault("market_context", {})
+        market_context["official_percent"] = preferred.copy()
+        if not match.get("odds") and str(market_context.get("source") or "") != "odds":
+            market_context["normalized_percent"] = preferred.copy()
+            market_context["source"] = "lae_official"
+    quinielista_reference = _reference_quinielista_percentages(slot)
+    if quinielista_reference:
+        match["quinielista_reference_percentages"] = quinielista_reference
 
 
 def _find_cached_quiniela_match(
@@ -9550,14 +9565,19 @@ def _bootstrap_quiniela_placeholder(
     home_pressure_index = _pressure_index(home_history.get("table", {}), home_relegation, home_future_difficulty)
     away_pressure_index = _pressure_index(away_history.get("table", {}), away_relegation, away_future_difficulty)
 
-    match.setdefault("market_context", {}).setdefault(
-        "official_percent",
-        (match.get("official_quiniela_percentages") or {}).copy(),
-    )
-    if not (match.get("market_context") or {}).get("normalized_percent"):
+    official_percent = (match.get("official_quiniela_percentages") or {}).copy()
+    market_context = match.setdefault("market_context", {})
+    if _has_nonempty_percentages(official_percent):
+        market_context["official_percent"] = official_percent
+    if (
+        _has_nonempty_percentages(official_percent)
+        and not match.get("odds")
+        and str(market_context.get("source") or "") != "odds"
+    ):
         match.setdefault("market_context", {})["normalized_percent"] = (
             match.get("official_quiniela_percentages") or {}
         ).copy()
+        market_context["source"] = "lae_official"
     match["travel_context"] = {
         "distance_km": travel_distance_km,
         "distance_bucket": _distance_bucket(travel_distance_km),
