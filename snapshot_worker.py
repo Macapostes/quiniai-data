@@ -10467,7 +10467,10 @@ def upload_snapshot(snapshot: dict) -> None:
         timeout=60,
     )
     response.raise_for_status()
-    print(response.json())
+    try:
+        print(response.json())
+    except OSError as exc:
+        _log_cycle_event("warning", "stdout_unavailable_after_upload", error=str(exc))
 
 
 def run_once(print_summary: bool = False) -> dict:
