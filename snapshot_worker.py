@@ -220,6 +220,10 @@ LEAGUE_COUNTRY_HINTS = {
     "soccer_spain_segunda_division": "ES",
     "soccer_epl": "GB",
     "soccer_efl_champ": "GB",
+    "soccer_norway_eliteserien": "NO",
+    "soccer_sweden_allsvenskan": "SE",
+    "soccer_sweden_superettan": "SE",
+    "soccer_finland_veikkausliiga": "FI",
     "soccer_fifa_world_cup": "",
     "soccer_uefa_european_championship": "",
     "soccer_conmebol_copa_america": "",
@@ -248,6 +252,13 @@ LEAGUE_FOOTBALL_DATA_CODES = {
     "soccer_efl_champ": "E1",
 }
 
+LEAGUE_THESPORTSDB_IDS = {
+    "soccer_norway_eliteserien": "4358",
+    "soccer_sweden_allsvenskan": "4347",
+    "sportsdb_4358": "4358",
+    "sportsdb_4347": "4347",
+}
+
 LEAGUE_PRIORITY = {
     "soccer_spain_la_liga": 0,
     "soccer_spain_segunda_division": 1,
@@ -256,11 +267,15 @@ LEAGUE_PRIORITY = {
     "soccer_uefa_europa_conference_league": 4,
     "soccer_epl": 5,
     "soccer_efl_champ": 6,
+    "soccer_norway_eliteserien": 7,
+    "soccer_sweden_allsvenskan": 8,
+    "soccer_sweden_superettan": 9,
+    "soccer_finland_veikkausliiga": 10,
     # Competiciones internacionales (a veces salen en quiniela)
-    "soccer_fifa_world_cup": 7,
-    "soccer_uefa_european_championship": 8,
-    "soccer_conmebol_copa_america": 9,
-    "soccer_international_friendlies": 10,
+    "soccer_fifa_world_cup": 11,
+    "soccer_uefa_european_championship": 12,
+    "soccer_conmebol_copa_america": 13,
+    "soccer_international_friendlies": 14,
 }
 
 LEAGUE_RELEGATION_START = {
@@ -268,6 +283,10 @@ LEAGUE_RELEGATION_START = {
     "soccer_epl": 18,
     "soccer_efl_champ": 22,
     "soccer_spain_segunda_division": 19,
+    "soccer_norway_eliteserien": 15,
+    "sportsdb_4358": 15,
+    "soccer_sweden_allsvenskan": 15,
+    "sportsdb_4347": 15,
 }
 
 LEAGUE_COMPETITIVE_LINES = {
@@ -1269,12 +1288,16 @@ def _season_tag_for(date_value: datetime | None = None) -> str:
 def _request_json(url: str, params: dict | None = None, timeout: int = 30) -> dict | list:
     response = requests.get(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
     response.raise_for_status()
-    return response.json()
+    if not response.encoding or response.encoding.lower() in {"iso-8859-1", "latin-1"}:
+        response.encoding = "utf-8"
+    return json.loads(response.text)
 
 
 def _request_text(url: str, params: dict | None = None, timeout: int = 30) -> str:
     response = requests.get(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
     response.raise_for_status()
+    if not response.encoding:
+        response.encoding = "utf-8"
     return response.text
 
 
@@ -5488,7 +5511,7 @@ def fetch_the_sportsdb_round_events(league_id: str, season: str, round_value: ob
             timeout=25,
         )
     except Exception:
-        data = {}
+        return []
     events = (data or {}).get("events") or []
     _cache_set(THESPORTSDB_CACHE, cache_key, events)
     return events
@@ -5500,6 +5523,8 @@ def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
         "4396": "soccer_spain_segunda_division",
         "4328": "soccer_epl",
         "4329": "soccer_efl_champ",
+        "4358": "soccer_norway_eliteserien",
+        "4347": "soccer_sweden_allsvenskan",
     }
     league_name_aliases = {
         "spanish laliga": "soccer_spain_la_liga",
@@ -5513,6 +5538,10 @@ def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
         "english league championship": "soccer_efl_champ",
         "efl championship": "soccer_efl_champ",
         "championship": "soccer_efl_champ",
+        "norwegian eliteserien": "soccer_norway_eliteserien",
+        "eliteserien": "soccer_norway_eliteserien",
+        "swedish allsvenskan": "soccer_sweden_allsvenskan",
+        "allsvenskan": "soccer_sweden_allsvenskan",
     }
     for payload in payloads:
         league_id = str((payload or {}).get("idLeague", "")).strip()
@@ -6197,34 +6226,140 @@ def _football_data_url(league_code: str, season_code: str) -> str:
     return f"{FOOTBALL_DATA_BASE_URL}/{season_code}/{league_code}.csv"
 
 
-def fetch_league_history(league_key: str) -> list[dict]:
-    league_code = LEAGUE_FOOTBALL_DATA_CODES.get(league_key)
-    if not league_code:
-        return []
-    combined_rows = []
-    for season_code in _recent_season_codes():
-        cache_key = f"{league_key}:{season_code}"
+def _sportsdb_league_id_for_key(league_key: str) -> str:
+    key = str(league_key or "").strip()
+    if key in LEAGUE_THESPORTSDB_IDS:
+        return LEAGUE_THESPORTSDB_IDS[key]
+    if key.startswith("sportsdb_"):
+        suffix = key.split("_", 1)[1].strip()
+        if suffix.isdigit():
+            return suffix
+    return ""
+
+
+def _sportsdb_recent_seasons(limit: int | None = None) -> list[str]:
+    current_year = datetime.now(timezone.utc).year
+    total = max(1, limit or HISTORY_SEASONS_BACK)
+    return [str(current_year - offset) for offset in range(total)]
+
+
+def _sportsdb_season_code(season: str) -> str:
+    match = re.search(r"\d{4}", str(season or ""))
+    if not match:
+        return _season_code_for(datetime.now(timezone.utc))
+    year = int(match.group(0))
+    return f"{year % 100:02d}{(year + 1) % 100:02d}"
+
+
+def _clean_sportsdb_text(value: object) -> str:
+    text = str(value or "").strip()
+    # TheSportsDB sometimes arrives with a wrong single-byte decoding in cache.
+    return text.replace("ų", "ø").replace("Ų", "Ø")
+
+
+def _sportsdb_event_to_history_row(event: dict, season: str) -> dict:
+    home_team = _clean_sportsdb_text(event.get("strHomeTeam", ""))
+    away_team = _clean_sportsdb_text(event.get("strAwayTeam", ""))
+    date_text = str(event.get("dateEvent") or event.get("dateEventLocal") or "").strip()
+    home_score_raw = event.get("intHomeScore")
+    away_score_raw = event.get("intAwayScore")
+    result = ""
+    home_score = ""
+    away_score = ""
+    if home_score_raw not in {None, ""} and away_score_raw not in {None, ""}:
+        try:
+            home_score = int(home_score_raw)
+            away_score = int(away_score_raw)
+            result = "H" if home_score > away_score else ("A" if away_score > home_score else "D")
+        except Exception:
+            home_score = away_score = ""
+            result = ""
+    return {
+        "Date": date_text,
+        "HomeTeam": home_team,
+        "AwayTeam": away_team,
+        "FTHG": home_score,
+        "FTAG": away_score,
+        "FTR": result,
+        "SeasonCode": _sportsdb_season_code(season),
+        "Source": "TheSportsDB",
+        "Round": str(event.get("intRound", "") or ""),
+    }
+
+
+def _fetch_sportsdb_league_history(league_key: str, league_id: str) -> list[dict]:
+    combined_rows: list[dict] = []
+    for season in _sportsdb_recent_seasons():
+        cache_key = f"sportsdb_history:v3:{league_key}:{league_id}:{season}"
         cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
         if cached:
             combined_rows.extend(cached)
             continue
-        try:
-            csv_text = _request_text(_football_data_url(league_code, season_code), timeout=30)
-            if "<html" in csv_text.lower():
-                parsed_rows = []
-            else:
-                parsed_rows = list(csv.DictReader(io.StringIO(csv_text)))
-        except Exception:
-            parsed_rows = []
-        _cache_set(HISTORY_CACHE, cache_key, parsed_rows)
-        combined_rows.extend(parsed_rows)
+        rows: list[dict] = []
+        empty_rounds = 0
+        for round_value in range(1, 61):
+            events = fetch_the_sportsdb_round_events(league_id, season, round_value)
+            if not events:
+                empty_rounds += 1
+                if empty_rounds >= 4 and rows:
+                    break
+                continue
+            empty_rounds = 0
+            for event in events:
+                row = _sportsdb_event_to_history_row(event, season)
+                if row.get("HomeTeam") and row.get("AwayTeam") and row.get("Date"):
+                    rows.append(row)
+        _cache_set(HISTORY_CACHE, cache_key, rows)
+        combined_rows.extend(rows)
     return combined_rows
+
+
+def fetch_league_history(league_key: str) -> list[dict]:
+    league_code = LEAGUE_FOOTBALL_DATA_CODES.get(league_key)
+    if league_code:
+        combined_rows = []
+        for season_code in _recent_season_codes():
+            cache_key = f"{league_key}:{season_code}"
+            cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
+            if cached:
+                combined_rows.extend(cached)
+                continue
+            try:
+                csv_text = _request_text(_football_data_url(league_code, season_code), timeout=30)
+                if "<html" in csv_text.lower():
+                    parsed_rows = []
+                else:
+                    parsed_rows = list(csv.DictReader(io.StringIO(csv_text)))
+            except Exception:
+                parsed_rows = []
+            _cache_set(HISTORY_CACHE, cache_key, parsed_rows)
+            combined_rows.extend(parsed_rows)
+        return combined_rows
+    sportsdb_league_id = _sportsdb_league_id_for_key(league_key)
+    if sportsdb_league_id:
+        return _fetch_sportsdb_league_history(league_key, sportsdb_league_id)
+    return []
+
+
+def _row_matches_season(row: dict, season_code: str) -> bool:
+    row_season = str(row.get("SeasonCode", "")).strip()
+    if row_season:
+        return row_season == season_code
+    parsed_date = _parse_match_date(str(row.get("Date", "")).strip())
+    return bool(parsed_date and _season_code_for(parsed_date) == season_code)
+
+
+def _row_parsed_date(row: dict) -> datetime | None:
+    parsed = _parse_match_date(str(row.get("Date", "")).strip())
+    if parsed:
+        return parsed
+    return _parse_iso_datetime(str(row.get("_parsed_date", "")).strip())
 
 
 def _completed_rows_before_kickoff(rows: list[dict], kickoff_dt: datetime | None) -> list[dict]:
     completed = []
     for row in rows:
-        parsed_date = _parse_match_date(str(row.get("Date", "")).strip())
+        parsed_date = _row_parsed_date(row)
         if not parsed_date:
             continue
         if kickoff_dt and parsed_date >= kickoff_dt:
@@ -6241,10 +6376,10 @@ def _completed_rows_before_kickoff(rows: list[dict], kickoff_dt: datetime | None
 def _season_rows(rows: list[dict], season_code: str) -> list[dict]:
     seasonal = []
     for row in rows:
-        parsed_date = _parse_match_date(str(row.get("Date", "")).strip())
+        parsed_date = _row_parsed_date(row)
         if not parsed_date:
             continue
-        if _season_code_for(parsed_date) != season_code:
+        if not _row_matches_season(row, season_code):
             continue
         enriched = dict(row)
         enriched["_parsed_date"] = parsed_date.isoformat()
