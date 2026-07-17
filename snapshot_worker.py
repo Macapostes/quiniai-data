@@ -252,6 +252,11 @@ LEAGUE_FOOTBALL_DATA_CODES = {
     "soccer_efl_champ": "E1",
 }
 
+LEAGUE_FOOTBALL_DATA_NEW_CODES = {
+    "soccer_norway_eliteserien": "NOR",
+    "soccer_sweden_allsvenskan": "SWE",
+}
+
 LEAGUE_THESPORTSDB_IDS = {
     "soccer_norway_eliteserien": "4358",
     "soccer_sweden_allsvenskan": "4347",
@@ -6226,6 +6231,51 @@ def _football_data_url(league_code: str, season_code: str) -> str:
     return f"{FOOTBALL_DATA_BASE_URL}/{season_code}/{league_code}.csv"
 
 
+def _football_data_new_url(league_code: str) -> str:
+    return f"https://www.football-data.co.uk/new/{league_code}.csv"
+
+
+def _parse_football_data_new_rows(csv_text: str) -> list[dict]:
+    rows: list[dict] = []
+    if not csv_text or "<html" in csv_text.lower():
+        return rows
+    try:
+        reader = csv.DictReader(io.StringIO(csv_text.lstrip("\ufeff")))
+    except Exception:
+        return rows
+    for item in reader:
+        date_text = str(item.get("Date") or "").strip()
+        home = str(item.get("Home") or "").strip()
+        away = str(item.get("Away") or "").strip()
+        if not date_text or not home or not away:
+            continue
+        season = str(item.get("Season") or "").strip()
+        season_code = _sportsdb_season_code(season) if season else ""
+        rows.append(
+            {
+                "Date": date_text,
+                "Time": str(item.get("Time") or "").strip(),
+                "HomeTeam": home,
+                "AwayTeam": away,
+                "FTHG": str(item.get("HG") or "").strip(),
+                "FTAG": str(item.get("AG") or "").strip(),
+                "FTR": str(item.get("Res") or "").strip(),
+                "SeasonCode": season_code,
+                "Source": "football-data-new",
+                "PSCH": str(item.get("PSCH") or "").strip(),
+                "PSCD": str(item.get("PSCD") or "").strip(),
+                "PSCA": str(item.get("PSCA") or "").strip(),
+                "MaxCH": str(item.get("MaxCH") or "").strip(),
+                "MaxCD": str(item.get("MaxCD") or "").strip(),
+                "MaxCA": str(item.get("MaxCA") or "").strip(),
+                "AvgCH": str(item.get("AvgCH") or "").strip(),
+                "AvgCD": str(item.get("AvgCD") or "").strip(),
+                "AvgCA": str(item.get("AvgCA") or "").strip(),
+            }
+        )
+    return rows
+
+
 def _sportsdb_league_id_for_key(league_key: str) -> str:
     key = str(league_key or "").strip()
     if key in LEAGUE_THESPORTSDB_IDS:
@@ -6335,6 +6385,20 @@ def fetch_league_history(league_key: str) -> list[dict]:
             _cache_set(HISTORY_CACHE, cache_key, parsed_rows)
             combined_rows.extend(parsed_rows)
         return combined_rows
+    new_league_code = LEAGUE_FOOTBALL_DATA_NEW_CODES.get(league_key)
+    if new_league_code:
+        cache_key = f"football-data-new:{league_key}:{new_league_code}"
+        cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
+        if cached:
+            return cached
+        try:
+            csv_text = _request_text(_football_data_new_url(new_league_code), timeout=30)
+            parsed_rows = _parse_football_data_new_rows(csv_text)
+        except Exception:
+            parsed_rows = []
+        _cache_set(HISTORY_CACHE, cache_key, parsed_rows)
+        if parsed_rows:
+            return parsed_rows
     sportsdb_league_id = _sportsdb_league_id_for_key(league_key)
     if sportsdb_league_id:
         return _fetch_sportsdb_league_history(league_key, sportsdb_league_id)
