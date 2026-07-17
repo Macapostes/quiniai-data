@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-16T22:52:24.408422+00:00",
-  "snapshot_generated_at": "2026-07-16T22:52:22.698115+00:00",
+  "generated_at": "2026-07-17T00:57:54.505558+00:00",
+  "snapshot_generated_at": "2026-07-17T00:57:52.966794+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -24,7 +24,7 @@
     "teams": 117,
     "matches": 108,
     "referees": 2,
-    "last_pruned_at": "2026-07-16T22:52:22.697851+00:00"
+    "last_pruned_at": "2026-07-17T00:57:52.966550+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,15 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-07-16T00:38:39.245868+00:00",
-      "finished_at": "2026-07-16T00:44:34.149493+00:00",
-      "ok": true,
-      "duration_seconds": 354.9,
-      "monitored_matches": 74,
-      "tracked_matches": 60,
-      "current_jornada": 73
-    },
     {
       "started_at": "2026-07-16T02:38:39.853469+00:00",
       "finished_at": "2026-07-16T02:47:34.865425+00:00",
@@ -139,6 +130,15 @@
       "monitored_matches": 76,
       "tracked_matches": 60,
       "current_jornada": 73
+    },
+    {
+      "started_at": "2026-07-17T00:38:51.659583+00:00",
+      "finished_at": "2026-07-17T00:57:54.504820+00:00",
+      "ok": true,
+      "duration_seconds": 1142.85,
+      "monitored_matches": 76,
+      "tracked_matches": 60,
+      "current_jornada": 73
     }
   ],
   "public_jornadas": [
@@ -155,7 +155,7 @@
           "slot": "1.",
           "local": "Bodø/Glimt",
           "visitante": "Fredrikstad FK",
-          "league": "Norwegian Eliteserien",
+          "league": "soccer_norway_eliteserien",
           "league_key": "soccer_norway_eliteserien",
           "league_source": "",
           "kickoff": "2026-07-17T17:15:00Z",
@@ -361,9 +361,9 @@
           },
           "travel_km": 912.2,
           "weather": {
-            "temperature_c": 11.3,
+            "temperature_c": 11.5,
             "precipitation_probability": 63,
-            "wind_speed_kmh": 29.9
+            "wind_speed_kmh": 31.0
           },
           "referee": {
             "name": "no confirmado",
@@ -1480,7 +1480,7 @@
           "slot": "7.",
           "local": "Viking FK",
           "visitante": "Sandefjord",
-          "league": "soccer_norway_eliteserien",
+          "league": "Norwegian Eliteserien",
           "league_key": "soccer_norway_eliteserien",
           "league_source": "",
           "kickoff": "2026-07-18T16:00:00Z",
@@ -1694,7 +1694,7 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Lillestrøm (4º) | fuera vs Aalesund (14º) | fuera vs Start (16º) | casa vs Sarpsborg 08 (7º) | fuera vs Rosenborg (12º)",
+          "future_home": "fuera vs Aalesund (14º) | fuera vs Start (16º) | casa vs Sarpsborg 08 (7º) | fuera vs Rosenborg (12º) | casa vs Aalesund (14º)",
           "future_away": "casa vs Bodø/Glimt (3º) | fuera vs Fredrikstad (11º) | casa vs KFUM-Kameratene Oslo (13º) | fuera vs Sarpsborg 08 (7º) | casa vs Brann (9º)",
           "data_confidence": {
             "nivel": "alta",
@@ -1717,7 +1717,7 @@
           "slot": "8.",
           "local": "Mjällby AIF",
           "visitante": "Västerås SK",
-          "league": "Swedish Allsvenskan",
+          "league": "soccer_sweden_allsvenskan",
           "league_key": "soccer_sweden_allsvenskan",
           "league_source": "",
           "kickoff": "2026-07-17T17:00:00Z",
@@ -1738,187 +1738,42 @@
             "2": 23.0
           },
           "home_table": {
-            "position": 7,
-            "points": 1,
-            "form": "D"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "away_table": {
-            "position": 3,
-            "points": 3,
-            "form": "W"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "pressure": {
-            "home": {
-              "score": 42.15,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            },
-            "away": {
-              "score": 46.16,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            }
+            "home": {},
+            "away": {}
           },
           "fatigue": {
             "home": {
-              "score": 0.0,
-              "label": "low"
+              "score": 45.0,
+              "label": "medium"
             },
             "away": {
-              "score": 19.38,
-              "label": "low"
+              "score": 55.38,
+              "label": "medium"
             }
           },
           "competitive_context": {
-            "season_context_phase": {
-              "key": "early",
-              "label": "tramo temprano",
-              "played": 1,
-              "total_rounds": 30,
-              "progress": 0.033,
-              "source": "played_matches"
-            },
-            "competitive_stakes_label": "local defiende salvacion con 1 pts de colchon; visitante persigue titulo a 0 pts",
+            "season_context_phase": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
             "direct_rivalry": {
               "is_direct_rivalry": false,
               "direct_rivalry_index": 0
             },
-            "home_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "high",
-              "summary": "defiende salvacion con 1 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 1,
-              "line_position": 14,
-              "line_points": 0,
-              "relevance_score": 97.0,
-              "must_win_index": 43,
-              "must_not_lose_index": 76,
-              "objective_swing_if_win": 63,
-              "objective_swing_if_lose": 71,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
-              "swing_summary_if_lose": "derrota puede meterle en descenso o dejarle al borde",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende salvacion con 1 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 1,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 97.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue zona alta a 2 pts",
-                  "gap_points": 2,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 88.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 2 pts",
-                  "gap_points": 2,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 53.0
-                }
-              ]
-            },
-            "away_objective": {
-              "objective_key": "title",
-              "objective_label": "titulo",
-              "status": "chasing",
-              "urgency": "high",
-              "summary": "persigue titulo a 0 pts",
-              "gap_points": 0,
-              "cushion_points": null,
-              "line_position": 1,
-              "line_points": 3,
-              "relevance_score": 100.0,
-              "must_win_index": 82,
-              "must_not_lose_index": 58,
-              "objective_swing_if_win": 83,
-              "objective_swing_if_lose": 75,
-              "swing_summary_if_win": "victoria supera linea de titulo",
-              "swing_summary_if_lose": "derrota aleja titulo",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "high",
-                  "summary": "persigue titulo a 0 pts",
-                  "gap_points": 0,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende zona alta con 0 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 0,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "medium",
-                  "summary": "defiende salvacion con 3 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 3,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 77.0
-                }
-              ]
-            },
-            "home_must_win_index": 43,
-            "away_must_win_index": 82,
-            "home_must_not_lose_index": 76,
-            "away_must_not_lose_index": 58,
+            "home_objective": {},
+            "away_objective": {},
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
@@ -1947,7 +1802,7 @@
           "future_away": "sin calendario detectado",
           "data_confidence": {
             "nivel": "alta",
-            "score": 91,
+            "score": 83,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -1955,14 +1810,15 @@
               "liga identificada",
               "clima",
               "viaje",
-              "forma reciente"
+              "señales cualitativas"
             ],
             "faltan": [
               "calendario próximo",
+              "forma reciente",
               "H2H"
             ]
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (55.1%) y el publico de Loterias lo refleja de forma similar (51.0%). Sin gran divergencia entre mercado y quiniela. | local defiende salvacion con 1 pts de colchon; visitante persigue titulo a 0 pts | Mjällby AIF defiende salvacion con 1 pts de colchon en tramo temprano (must-win 43/100, no perder 76/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario próximo equilibrado, sin presión de conservar fuerzas. Situación clasificatoria muy delicada, partido de alto voltaje emocional. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (55.1%) y el publico de Loterias lo refleja de forma similar (51.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -1990,157 +1846,74 @@
             "2": 25.0
           },
           "home_table": {
-            "position": 4,
-            "points": 3,
-            "form": "W"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "away_table": {
-            "position": 10,
-            "points": 1,
-            "form": "D"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "pressure": {
-            "home": {
-              "score": 45.12,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            },
-            "away": {
-              "score": 39.03,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            }
+            "home": {},
+            "away": {}
           },
           "fatigue": {
             "home": {
-              "score": 9.0,
-              "label": "low"
+              "score": 45.0,
+              "label": "medium"
             },
             "away": {
-              "score": 34.0,
-              "label": "low"
+              "score": 70.0,
+              "label": "high"
             }
           },
           "competitive_context": {
             "season_context_phase": {
-              "key": "early",
-              "label": "tramo temprano",
-              "played": 1,
+              "key": "middle",
+              "label": "tramo medio",
+              "played": 12,
               "total_rounds": 30,
-              "progress": 0.033,
+              "progress": 0.4,
               "source": "played_matches"
             },
-            "competitive_stakes_label": "local persigue titulo a 0 pts; visitante defiende salvacion con 1 pts de colchon",
+            "competitive_stakes_label": "duelo directo por zona alta",
             "direct_rivalry": {
-              "is_direct_rivalry": false,
-              "direct_rivalry_index": 0
+              "is_direct_rivalry": true,
+              "direct_rivalry_index": 89,
+              "objective_key": "upper_zone",
+              "objective_label": "zona alta",
+              "points_delta": 1,
+              "position_delta": 4,
+              "label": "duelo directo por zona alta"
             },
             "home_objective": {
-              "objective_key": "title",
-              "objective_label": "titulo",
+              "objective_key": "upper_zone",
+              "objective_label": "zona alta",
               "status": "chasing",
-              "urgency": "high",
-              "summary": "persigue titulo a 0 pts",
-              "gap_points": 0,
+              "urgency": "medium",
+              "summary": "persigue zona alta a 2 pts",
+              "gap_points": 2,
               "cushion_points": null,
-              "line_position": 1,
-              "line_points": 3,
-              "relevance_score": 100.0,
-              "must_win_index": 82,
-              "must_not_lose_index": 58,
-              "objective_swing_if_win": 83,
-              "objective_swing_if_lose": 75,
-              "swing_summary_if_win": "victoria supera linea de titulo",
-              "swing_summary_if_lose": "derrota aleja titulo",
+              "line_position": 3,
+              "line_points": 20,
+              "relevance_score": 88.0,
+              "must_win_index": 56,
+              "must_not_lose_index": 44,
+              "objective_swing_if_win": 59,
+              "objective_swing_if_lose": 51,
+              "swing_summary_if_win": "victoria supera linea de zona alta",
+              "swing_summary_if_lose": "derrota aleja zona alta",
               "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
+                "key": "middle",
+                "label": "tramo medio",
+                "played": 12,
                 "total_rounds": 30,
-                "progress": 0.033,
+                "progress": 0.4,
                 "source": "played_matches"
               },
               "objective_candidates": [
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "high",
-                  "summary": "persigue titulo a 0 pts",
-                  "gap_points": 0,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "high",
-                  "summary": "persigue zona alta a 0 pts",
-                  "gap_points": 0,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "medium",
-                  "summary": "defiende salvacion con 3 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 3,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 77.0
-                }
-              ]
-            },
-            "away_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "high",
-              "summary": "defiende salvacion con 1 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 1,
-              "line_position": 14,
-              "line_points": 0,
-              "relevance_score": 97.0,
-              "must_win_index": 43,
-              "must_not_lose_index": 76,
-              "objective_swing_if_win": 63,
-              "objective_swing_if_lose": 71,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
-              "swing_summary_if_lose": "derrota puede meterle en descenso o dejarle al borde",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende salvacion con 1 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 1,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 97.0
-                },
                 {
                   "objective_key": "upper_zone",
                   "objective_label": "zona alta",
@@ -2150,28 +1923,80 @@
                   "gap_points": 2,
                   "cushion_points": null,
                   "line_position": 3,
-                  "line_points": 3,
+                  "line_points": 20,
                   "relevance_score": 88.0
                 },
                 {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 2 pts",
-                  "gap_points": 2,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 53.0
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 9 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 9,
+                  "line_position": 14,
+                  "line_points": 10,
+                  "relevance_score": 9.0
                 }
               ]
             },
-            "home_must_win_index": 82,
-            "away_must_win_index": 43,
-            "home_must_not_lose_index": 58,
-            "away_must_not_lose_index": 76,
-            "direct_rivalry_index": 0,
+            "away_objective": {
+              "objective_key": "upper_zone",
+              "objective_label": "zona alta",
+              "status": "chasing",
+              "urgency": "high",
+              "summary": "persigue zona alta a 1 pts",
+              "gap_points": 1,
+              "cushion_points": null,
+              "line_position": 3,
+              "line_points": 20,
+              "relevance_score": 100.0,
+              "must_win_index": 69,
+              "must_not_lose_index": 51,
+              "objective_swing_if_win": 71,
+              "objective_swing_if_lose": 63,
+              "swing_summary_if_win": "victoria supera linea de zona alta",
+              "swing_summary_if_lose": "derrota aleja zona alta",
+              "season_context_phase": {
+                "key": "middle",
+                "label": "tramo medio",
+                "played": 13,
+                "total_rounds": 30,
+                "progress": 0.433,
+                "source": "played_matches"
+              },
+              "objective_candidates": [
+                {
+                  "objective_key": "upper_zone",
+                  "objective_label": "zona alta",
+                  "status": "chasing",
+                  "urgency": "high",
+                  "summary": "persigue zona alta a 1 pts",
+                  "gap_points": 1,
+                  "cushion_points": null,
+                  "line_position": 3,
+                  "line_points": 20,
+                  "relevance_score": 100.0
+                },
+                {
+                  "objective_key": "survival",
+                  "objective_label": "salvacion",
+                  "status": "defending",
+                  "urgency": "low",
+                  "summary": "defiende salvacion con 10 pts de colchon",
+                  "gap_points": null,
+                  "cushion_points": 10,
+                  "line_position": 14,
+                  "line_points": 10,
+                  "relevance_score": 2.0
+                }
+              ]
+            },
+            "home_must_win_index": 56,
+            "away_must_win_index": 69,
+            "home_must_not_lose_index": 44,
+            "away_must_not_lose_index": 51,
+            "direct_rivalry_index": 89,
             "home_rotation_context": {
               "risk": "low",
               "score": 0,
@@ -2187,19 +2012,19 @@
           },
           "travel_km": 7114.2,
           "weather": {
-            "temperature_c": 35.6,
-            "precipitation_probability": 5,
-            "wind_speed_kmh": 13.5
+            "temperature_c": 35.8,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 14.3
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
+          "future_home": "fuera vs Häcken (3º) | casa vs Örgryte (15º) | fuera vs Örgryte (15º) | fuera vs Djurgården (4º)",
+          "future_away": "casa vs Halmstad (16º) | fuera vs Halmstad (16º) | casa vs Malmö (6º)",
           "data_confidence": {
             "nivel": "alta",
-            "score": 91,
+            "score": 93,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -2207,14 +2032,14 @@
               "liga identificada",
               "clima",
               "viaje",
-              "forma reciente"
+              "calendario próximo"
             ],
             "faltan": [
-              "calendario próximo",
+              "forma reciente",
               "H2H"
             ]
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (39.6%) y el publico de Loterias lo refleja de forma similar (43.0%). Sin gran divergencia entre mercado y quiniela. | local persigue titulo a 0 pts; visitante defiende salvacion con 1 pts de colchon | AIK persigue titulo a 0 pts en tramo temprano (must-win 82/100, no perder 58/100). Victoria supera linea de titulo. Derrota aleja titulo. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 12 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (39.6%) y el publico de Loterias lo refleja de forma similar (43.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por zona alta: equipos separados por 1 pts y 4 puestos. | AIK persigue zona alta a 2 pts en tramo medio (must-win 56/100, no perder 44/100). Victoria supera linea de zona alta. Derrota aleja zona alta. Calendario futuro con 2 rivales del top-6. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -2242,193 +2067,43 @@
             "2": 23.0
           },
           "home_table": {
-            "position": 12,
-            "points": 0,
-            "form": "L"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "away_table": {
-            "position": 9,
-            "points": 1,
-            "form": "D"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "pressure": {
-            "home": {
-              "score": 37.02,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            },
-            "away": {
-              "score": 40.07,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            }
+            "home": {},
+            "away": {}
           },
           "fatigue": {
             "home": {
-              "score": 9.0,
-              "label": "low"
+              "score": 45.0,
+              "label": "medium"
             },
             "away": {
-              "score": 18.93,
-              "label": "low"
+              "score": 54.94,
+              "label": "medium"
             }
           },
           "competitive_context": {
-            "season_context_phase": {
-              "key": "early",
-              "label": "tramo temprano",
-              "played": 1,
-              "total_rounds": 30,
-              "progress": 0.033,
-              "source": "played_matches"
-            },
-            "competitive_stakes_label": "duelo directo por salvacion",
+            "season_context_phase": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
             "direct_rivalry": {
-              "is_direct_rivalry": true,
-              "direct_rivalry_index": 91,
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "points_delta": 1,
-              "position_delta": 3,
-              "label": "duelo directo por salvacion"
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
             },
-            "home_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "high",
-              "summary": "defiende salvacion con 0 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 0,
-              "line_position": 14,
-              "line_points": 0,
-              "relevance_score": 100.0,
-              "must_win_index": 48,
-              "must_not_lose_index": 88,
-              "objective_swing_if_win": 75,
-              "objective_swing_if_lose": 83,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
-              "swing_summary_if_lose": "derrota puede meterle en descenso o dejarle al borde",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende salvacion con 0 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 0,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue zona alta a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 80.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 45.0
-                }
-              ]
-            },
-            "away_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "high",
-              "summary": "defiende salvacion con 1 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 1,
-              "line_position": 14,
-              "line_points": 0,
-              "relevance_score": 97.0,
-              "must_win_index": 43,
-              "must_not_lose_index": 76,
-              "objective_swing_if_win": 63,
-              "objective_swing_if_lose": 71,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
-              "swing_summary_if_lose": "derrota puede meterle en descenso o dejarle al borde",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende salvacion con 1 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 1,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 97.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue zona alta a 2 pts",
-                  "gap_points": 2,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 88.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 2 pts",
-                  "gap_points": 2,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 53.0
-                }
-              ]
-            },
-            "home_must_win_index": 48,
-            "away_must_win_index": 43,
-            "home_must_not_lose_index": 88,
-            "away_must_not_lose_index": 76,
-            "direct_rivalry_index": 91,
+            "home_objective": {},
+            "away_objective": {},
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
               "score": 0,
@@ -2452,11 +2127,11 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
+          "future_home": "fuera vs Sirius (1º) | casa vs Degerfors (13º) | casa vs Kalmar (12º) | fuera vs Degerfors (13º)",
+          "future_away": "casa vs Hammarby (2º) | casa vs Malmö (6º) | fuera vs Sirius (1º) | casa vs Örgryte (15º)",
           "data_confidence": {
             "nivel": "alta",
-            "score": 91,
+            "score": 93,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -2464,14 +2139,14 @@
               "liga identificada",
               "clima",
               "viaje",
-              "forma reciente"
+              "calendario próximo"
             ],
             "faltan": [
-              "calendario próximo",
+              "forma reciente",
               "H2H"
             ]
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (49.1%) y el publico de Loterias lo refleja de forma similar (51.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 1 pts y 3 puestos. | IFK Goteborg defiende salvacion con 0 pts de colchon en tramo temprano (must-win 48/100, no perder 88/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario próximo equilibrado, sin presión de conservar fuerzas. Situación clasificatoria muy delicada, partido de alto voltaje emocional. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (12 vs 11 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (49.1%) y el publico de Loterias lo refleja de forma similar (51.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -2499,193 +2174,43 @@
             "2": 44.0
           },
           "home_table": {
-            "position": 11,
-            "points": 0,
-            "form": "L"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "away_table": {
-            "position": 8,
-            "points": 1,
-            "form": "D"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "pressure": {
-            "home": {
-              "score": 38.06,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            },
-            "away": {
-              "score": 41.11,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            }
+            "home": {},
+            "away": {}
           },
           "fatigue": {
             "home": {
-              "score": 0.0,
-              "label": "low"
+              "score": 45.0,
+              "label": "medium"
             },
             "away": {
-              "score": 9.0,
-              "label": "low"
+              "score": 54.0,
+              "label": "medium"
             }
           },
           "competitive_context": {
-            "season_context_phase": {
-              "key": "early",
-              "label": "tramo temprano",
-              "played": 1,
-              "total_rounds": 30,
-              "progress": 0.033,
-              "source": "played_matches"
-            },
-            "competitive_stakes_label": "duelo directo por salvacion",
+            "season_context_phase": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
             "direct_rivalry": {
-              "is_direct_rivalry": true,
-              "direct_rivalry_index": 91,
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "points_delta": 1,
-              "position_delta": 3,
-              "label": "duelo directo por salvacion"
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
             },
-            "home_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "high",
-              "summary": "defiende salvacion con 0 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 0,
-              "line_position": 14,
-              "line_points": 0,
-              "relevance_score": 100.0,
-              "must_win_index": 48,
-              "must_not_lose_index": 88,
-              "objective_swing_if_win": 75,
-              "objective_swing_if_lose": 83,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
-              "swing_summary_if_lose": "derrota puede meterle en descenso o dejarle al borde",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende salvacion con 0 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 0,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue zona alta a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 80.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 45.0
-                }
-              ]
-            },
-            "away_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "high",
-              "summary": "defiende salvacion con 1 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 1,
-              "line_position": 14,
-              "line_points": 0,
-              "relevance_score": 97.0,
-              "must_win_index": 43,
-              "must_not_lose_index": 76,
-              "objective_swing_if_win": 63,
-              "objective_swing_if_lose": 71,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
-              "swing_summary_if_lose": "derrota puede meterle en descenso o dejarle al borde",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende salvacion con 1 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 1,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 97.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue zona alta a 2 pts",
-                  "gap_points": 2,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 88.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 2 pts",
-                  "gap_points": 2,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 53.0
-                }
-              ]
-            },
-            "home_must_win_index": 48,
-            "away_must_win_index": 43,
-            "home_must_not_lose_index": 88,
-            "away_must_not_lose_index": 76,
-            "direct_rivalry_index": 91,
+            "home_objective": {},
+            "away_objective": {},
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
               "score": 0,
@@ -2701,9 +2226,9 @@
           },
           "travel_km": 360.1,
           "weather": {
-            "temperature_c": 13.6,
-            "precipitation_probability": 73,
-            "wind_speed_kmh": 22.7
+            "temperature_c": 16.4,
+            "precipitation_probability": 84,
+            "wind_speed_kmh": 21.5
           },
           "referee": {
             "name": "no confirmado",
@@ -2713,7 +2238,7 @@
           "future_away": "sin calendario detectado",
           "data_confidence": {
             "nivel": "alta",
-            "score": 98,
+            "score": 83,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -2721,13 +2246,15 @@
               "liga identificada",
               "clima",
               "viaje",
-              "forma reciente"
+              "señales cualitativas"
             ],
             "faltan": [
-              "calendario próximo"
+              "calendario próximo",
+              "forma reciente",
+              "H2H"
             ]
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (46.7%) y el publico de Loterias lo refleja de forma similar (44.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 1 pts y 3 puestos. | IF Elfsborg defiende salvacion con 0 pts de colchon en tramo temprano (must-win 48/100, no perder 88/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario próximo equilibrado, sin presión de conservar fuerzas. Situación clasificatoria muy delicada, partido de alto voltaje emocional. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 16 días vs 14 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (46.7%) y el publico de Loterias lo refleja de forma similar (44.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -2755,187 +2282,42 @@
             "2": 15.0
           },
           "home_table": {
-            "position": 5,
-            "points": 3,
-            "form": "W"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "away_table": {
-            "position": 13,
-            "points": 0,
-            "form": "L"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "pressure": {
-            "home": {
-              "score": 44.08,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            },
-            "away": {
-              "score": 35.98,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            }
+            "home": {},
+            "away": {}
           },
           "fatigue": {
             "home": {
-              "score": 0.0,
-              "label": "low"
+              "score": 45.0,
+              "label": "medium"
             },
             "away": {
-              "score": 4.71,
-              "label": "low"
+              "score": 49.71,
+              "label": "medium"
             }
           },
           "competitive_context": {
-            "season_context_phase": {
-              "key": "early",
-              "label": "tramo temprano",
-              "played": 1,
-              "total_rounds": 30,
-              "progress": 0.033,
-              "source": "played_matches"
-            },
-            "competitive_stakes_label": "local persigue zona alta a 0 pts; visitante defiende salvacion con 0 pts de colchon",
+            "season_context_phase": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
             "direct_rivalry": {
               "is_direct_rivalry": false,
               "direct_rivalry_index": 0
             },
-            "home_objective": {
-              "objective_key": "upper_zone",
-              "objective_label": "zona alta",
-              "status": "chasing",
-              "urgency": "high",
-              "summary": "persigue zona alta a 0 pts",
-              "gap_points": 0,
-              "cushion_points": null,
-              "line_position": 3,
-              "line_points": 3,
-              "relevance_score": 100.0,
-              "must_win_index": 82,
-              "must_not_lose_index": 58,
-              "objective_swing_if_win": 83,
-              "objective_swing_if_lose": 75,
-              "swing_summary_if_win": "victoria supera linea de zona alta",
-              "swing_summary_if_lose": "derrota aleja zona alta",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "high",
-                  "summary": "persigue zona alta a 0 pts",
-                  "gap_points": 0,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "medium",
-                  "summary": "defiende salvacion con 3 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 3,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 77.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "high",
-                  "summary": "persigue titulo a 0 pts",
-                  "gap_points": 0,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 75.0
-                }
-              ]
-            },
-            "away_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "high",
-              "summary": "defiende salvacion con 0 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 0,
-              "line_position": 14,
-              "line_points": 0,
-              "relevance_score": 100.0,
-              "must_win_index": 48,
-              "must_not_lose_index": 88,
-              "objective_swing_if_win": 75,
-              "objective_swing_if_lose": 83,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
-              "swing_summary_if_lose": "derrota puede meterle en descenso o dejarle al borde",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende salvacion con 0 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 0,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue zona alta a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 80.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 45.0
-                }
-              ]
-            },
-            "home_must_win_index": 82,
-            "away_must_win_index": 48,
-            "home_must_not_lose_index": 58,
-            "away_must_not_lose_index": 88,
+            "home_objective": {},
+            "away_objective": {},
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
@@ -2952,19 +2334,19 @@
           },
           "travel_km": 188.3,
           "weather": {
-            "temperature_c": 16.5,
-            "precipitation_probability": 33,
-            "wind_speed_kmh": 13.1
+            "temperature_c": 13.1,
+            "precipitation_probability": 18,
+            "wind_speed_kmh": 4.7
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
+          "future_home": "fuera vs Brommapojkarna (11º) | casa vs Häcken (3º) | fuera vs Kalmar (12º)",
+          "future_away": "casa vs Djurgården (4º) | fuera vs IFK Göteborg (14º) | fuera vs Malmö (6º) | casa vs IFK Göteborg (14º)",
           "data_confidence": {
             "nivel": "alta",
-            "score": 91,
+            "score": 93,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -2972,14 +2354,14 @@
               "liga identificada",
               "clima",
               "viaje",
-              "forma reciente"
+              "calendario próximo"
             ],
             "faltan": [
-              "calendario próximo",
+              "forma reciente",
               "H2H"
             ]
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (77.1%), pero el publico de Loterias lo infravalora (66.0%). El favorito podría estar infravalorado en la quiniela. | local persigue zona alta a 0 pts; visitante defiende salvacion con 0 pts de colchon | Hammarby IF persigue zona alta a 0 pts en tramo temprano (must-win 82/100, no perder 58/100). Victoria supera linea de zona alta. Derrota aleja zona alta. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 15 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (77.1%), pero el publico de Loterias lo infravalora (66.0%). El favorito podría estar infravalorado en la quiniela. | contexto competitivo bajo o no calculable | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -3007,193 +2389,43 @@
             "2": 51.0
           },
           "home_table": {
-            "position": 15,
-            "points": 0,
-            "form": "L"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "away_table": {
-            "position": 14,
-            "points": 0,
-            "form": "L"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "pressure": {
-            "home": {
-              "score": 33.9,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            },
-            "away": {
-              "score": 34.94,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            }
+            "home": {},
+            "away": {}
           },
           "fatigue": {
             "home": {
-              "score": 0.0,
-              "label": "low"
+              "score": 45.0,
+              "label": "medium"
             },
             "away": {
-              "score": 12.16,
-              "label": "low"
+              "score": 48.16,
+              "label": "medium"
             }
           },
           "competitive_context": {
-            "season_context_phase": {
-              "key": "early",
-              "label": "tramo temprano",
-              "played": 1,
-              "total_rounds": 30,
-              "progress": 0.033,
-              "source": "played_matches"
-            },
-            "competitive_stakes_label": "duelo directo por salvacion",
+            "season_context_phase": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
             "direct_rivalry": {
-              "is_direct_rivalry": true,
-              "direct_rivalry_index": 98,
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "points_delta": 0,
-              "position_delta": 1,
-              "label": "duelo directo por salvacion"
+              "is_direct_rivalry": false,
+              "direct_rivalry_index": 0
             },
-            "home_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "chasing",
-              "urgency": "high",
-              "summary": "persigue salvacion a 0 pts",
-              "gap_points": 0,
-              "cushion_points": null,
-              "line_position": 14,
-              "line_points": 0,
-              "relevance_score": 100.0,
-              "must_win_index": 90,
-              "must_not_lose_index": 68,
-              "objective_swing_if_win": 83,
-              "objective_swing_if_lose": 75,
-              "swing_summary_if_win": "victoria supera linea de salvacion",
-              "swing_summary_if_lose": "derrota aleja salvacion",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "chasing",
-                  "urgency": "high",
-                  "summary": "persigue salvacion a 0 pts",
-                  "gap_points": 0,
-                  "cushion_points": null,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue zona alta a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 80.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 45.0
-                }
-              ]
-            },
-            "away_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "high",
-              "summary": "defiende salvacion con 0 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 0,
-              "line_position": 14,
-              "line_points": 0,
-              "relevance_score": 100.0,
-              "must_win_index": 56,
-              "must_not_lose_index": 100,
-              "objective_swing_if_win": 75,
-              "objective_swing_if_lose": 83,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
-              "swing_summary_if_lose": "derrota puede meterle en descenso o dejarle al borde",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende salvacion con 0 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 0,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue zona alta a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 80.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 3 pts",
-                  "gap_points": 3,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 45.0
-                }
-              ]
-            },
-            "home_must_win_index": 90,
-            "away_must_win_index": 56,
-            "home_must_not_lose_index": 68,
-            "away_must_not_lose_index": 100,
-            "direct_rivalry_index": 98,
+            "home_objective": {},
+            "away_objective": {},
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
+            "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
               "score": 0,
@@ -3209,19 +2441,19 @@
           },
           "travel_km": 126.6,
           "weather": {
-            "temperature_c": 18.5,
-            "precipitation_probability": 71,
-            "wind_speed_kmh": 10.9
+            "temperature_c": 20.4,
+            "precipitation_probability": 82,
+            "wind_speed_kmh": 7.8
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
+          "future_home": "fuera vs GAIS (5º) | casa vs Sirius (1º) | casa vs GAIS (5º) | fuera vs Häcken (3º)",
+          "future_away": "casa vs AIK (9º) | casa vs Kalmar (12º) | fuera vs Hammarby (2º) | casa vs Halmstad (16º)",
           "data_confidence": {
             "nivel": "alta",
-            "score": 91,
+            "score": 93,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -3229,14 +2461,14 @@
               "liga identificada",
               "clima",
               "viaje",
-              "forma reciente"
+              "calendario próximo"
             ],
             "faltan": [
-              "calendario próximo",
+              "forma reciente",
               "H2H"
             ]
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (61.2%), pero el publico de Loterias lo infravalora (51.0%). El favorito podría estar infravalorado en la quiniela. | duelo directo por salvacion: equipos separados por 0 pts y 1 puestos. | Halmstads BK persigue salvacion a 0 pts en tramo temprano (must-win 90/100, no perder 68/100). Victoria supera linea de salvacion. Derrota aleja salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Situación clasificatoria muy delicada, partido de alto voltaje emocional. | Ambos equipos llegan con una carga física similar (Low). El local descansó 15 días vs 13 días del visitante. Ligera ventaja física para el local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (61.2%), pero el publico de Loterias lo infravalora (51.0%). El favorito podría estar infravalorado en la quiniela. | contexto competitivo bajo o no calculable | Calendario futuro con 4 rivales del top-6. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -3264,187 +2496,42 @@
             "2": 39.0
           },
           "home_table": {
-            "position": 1,
-            "points": 3,
-            "form": "W"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "away_table": {
-            "position": 6,
-            "points": 3,
-            "form": "W"
+            "position": null,
+            "points": null,
+            "form": ""
           },
           "pressure": {
-            "home": {
-              "score": 48.24,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            },
-            "away": {
-              "score": 43.04,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": 0
-            }
+            "home": {},
+            "away": {}
           },
           "fatigue": {
             "home": {
-              "score": 0.0,
-              "label": "low"
+              "score": 45.0,
+              "label": "medium"
             },
             "away": {
-              "score": 5.97,
-              "label": "low"
+              "score": 50.98,
+              "label": "medium"
             }
           },
           "competitive_context": {
-            "season_context_phase": {
-              "key": "early",
-              "label": "tramo temprano",
-              "played": 1,
-              "total_rounds": 30,
-              "progress": 0.033,
-              "source": "played_matches"
-            },
-            "competitive_stakes_label": "local defiende titulo con 0 pts de colchon; visitante persigue zona alta a 0 pts",
+            "season_context_phase": {},
+            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
             "direct_rivalry": {
               "is_direct_rivalry": false,
               "direct_rivalry_index": 0
             },
-            "home_objective": {
-              "objective_key": "title",
-              "objective_label": "titulo",
-              "status": "defending",
-              "urgency": "high",
-              "summary": "defiende titulo con 0 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 0,
-              "line_position": 1,
-              "line_points": 3,
-              "relevance_score": 100.0,
-              "must_win_index": 48,
-              "must_not_lose_index": 78,
-              "objective_swing_if_win": 75,
-              "objective_swing_if_lose": 83,
-              "swing_summary_if_win": "victoria abre colchon en titulo",
-              "swing_summary_if_lose": "derrota deja en riesgo titulo",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende titulo con 0 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 0,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "defending",
-                  "urgency": "high",
-                  "summary": "defiende zona alta con 0 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 0,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "medium",
-                  "summary": "defiende salvacion con 3 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 3,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 77.0
-                }
-              ]
-            },
-            "away_objective": {
-              "objective_key": "upper_zone",
-              "objective_label": "zona alta",
-              "status": "chasing",
-              "urgency": "high",
-              "summary": "persigue zona alta a 0 pts",
-              "gap_points": 0,
-              "cushion_points": null,
-              "line_position": 3,
-              "line_points": 3,
-              "relevance_score": 100.0,
-              "must_win_index": 82,
-              "must_not_lose_index": 58,
-              "objective_swing_if_win": 83,
-              "objective_swing_if_lose": 75,
-              "swing_summary_if_win": "victoria supera linea de zona alta",
-              "swing_summary_if_lose": "derrota aleja zona alta",
-              "season_context_phase": {
-                "key": "early",
-                "label": "tramo temprano",
-                "played": 1,
-                "total_rounds": 30,
-                "progress": 0.033,
-                "source": "played_matches"
-              },
-              "objective_candidates": [
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "high",
-                  "summary": "persigue zona alta a 0 pts",
-                  "gap_points": 0,
-                  "cushion_points": null,
-                  "line_position": 3,
-                  "line_points": 3,
-                  "relevance_score": 100.0
-                },
-                {
-                  "objective_key": "survival",
-                  "objective_label": "salvacion",
-                  "status": "defending",
-                  "urgency": "medium",
-                  "summary": "defiende salvacion con 3 pts de colchon",
-                  "gap_points": null,
-                  "cushion_points": 3,
-                  "line_position": 14,
-                  "line_points": 0,
-                  "relevance_score": 77.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "high",
-                  "summary": "persigue titulo a 0 pts",
-                  "gap_points": 0,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 3,
-                  "relevance_score": 75.0
-                }
-              ]
-            },
-            "home_must_win_index": 48,
-            "away_must_win_index": 82,
-            "home_must_not_lose_index": 78,
-            "away_must_not_lose_index": 58,
+            "home_objective": {},
+            "away_objective": {},
+            "home_must_win_index": 0,
+            "away_must_win_index": 0,
+            "home_must_not_lose_index": 0,
+            "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
@@ -3461,9 +2548,9 @@
           },
           "travel_km": 239.0,
           "weather": {
-            "temperature_c": 16.7,
-            "precipitation_probability": 41,
-            "wind_speed_kmh": 22.8
+            "temperature_c": 14.9,
+            "precipitation_probability": 55,
+            "wind_speed_kmh": 24.1
           },
           "referee": {
             "name": "no confirmado",
@@ -3473,7 +2560,7 @@
           "future_away": "sin calendario detectado",
           "data_confidence": {
             "nivel": "alta",
-            "score": 91,
+            "score": 90,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -3481,14 +2568,14 @@
               "liga identificada",
               "clima",
               "viaje",
-              "forma reciente"
+              "H2H"
             ],
             "faltan": [
               "calendario próximo",
-              "H2H"
+              "forma reciente"
             ]
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (37.7%) y el publico de Loterias lo refleja de forma similar (39.0%). Sin gran divergencia entre mercado y quiniela. | local defiende titulo con 0 pts de colchon; visitante persigue zona alta a 0 pts | Kalmar FF defiende titulo con 0 pts de colchon en tramo temprano (must-win 48/100, no perder 78/100). Victoria abre colchon en titulo. Derrota deja en riesgo titulo. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (15 vs 16 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (37.7%) y el publico de Loterias lo refleja de forma similar (39.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -6337,17 +5424,17 @@
           },
           "pressure": {
             "home": {
-              "score": 88.17,
+              "score": 75.42,
               "label": "critical",
-              "future_difficulty": 96.91,
-              "hard_window_matches": 4,
+              "future_difficulty": 100.0,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": 0
             },
             "away": {
-              "score": 76.3,
-              "label": "critical",
-              "future_difficulty": 91.0,
-              "hard_window_matches": 3,
+              "score": 58.36,
+              "label": "high",
+              "future_difficulty": 72.5,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 0
             }
           },
@@ -6531,8 +5618,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs HJK Helsinki (3º) | casa vs IFK Mariehamn (9º) | fuera vs KuPS (7º) | fuera vs VPS (5º) | casa vs Inter Turku (1º)",
-          "future_away": "fuera vs IFK Mariehamn (9º) | casa vs Ilves (4º) | casa vs HJK Helsinki (3º) | casa vs Inter Turku (1º) | fuera vs Jaro (10º)",
+          "future_home": "casa vs Ilves Tampere (4º)",
+          "future_away": "casa vs IF Gnistan (12º)",
           "data_confidence": {
             "nivel": "media",
             "score": 69,
@@ -6551,7 +5638,7 @@
               "noticias/bajas/árbitro"
             ]
           },
-          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | No hay cuotas reales fiables. La referencia disponible favorece al local (37.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | local persigue titulo a 2 pts; visitante defiende salvacion con 1 pts de colchon | TPS persigue titulo a 2 pts en tramo temprano (must-win 56/100, no perder 44/100). Victoria supera linea de titulo. Derrota aleja titulo. Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (64 vs 64 días).",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | No hay cuotas reales fiables. La referencia disponible favorece al local (37.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | local persigue titulo a 2 pts; visitante defiende salvacion con 1 pts de colchon | TPS persigue titulo a 2 pts en tramo temprano (must-win 56/100, no perder 44/100). Victoria supera linea de titulo. Derrota aleja titulo. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (64 vs 64 días).",
           "analysis_ready": true
         },
         {
@@ -6586,17 +5673,17 @@
           },
           "pressure": {
             "home": {
-              "score": 65.38,
-              "label": "high",
-              "future_difficulty": 100.0,
-              "hard_window_matches": 1,
+              "score": 77.16,
+              "label": "critical",
+              "future_difficulty": 92.83,
+              "hard_window_matches": 4,
               "gap_to_drop_zone": 0
             },
             "away": {
-              "score": 68.5,
-              "label": "high",
-              "future_difficulty": 100.0,
-              "hard_window_matches": 1,
+              "score": 80.41,
+              "label": "critical",
+              "future_difficulty": 93.39,
+              "hard_window_matches": 4,
               "gap_to_drop_zone": 0
             }
           },
@@ -6606,7 +5693,7 @@
               "label": "low"
             },
             "away": {
-              "score": 7.89,
+              "score": 0.0,
               "label": "low"
             }
           },
@@ -6775,22 +5862,22 @@
               "next_high_importance_fixture": {}
             }
           },
-          "travel_km": 315.7,
+          "travel_km": 0.0,
           "weather": {
-            "temperature_c": 18.8,
+            "temperature_c": 19.0,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 11.2
+            "wind_speed_kmh": 9.4
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs AC Oulu (8º)",
-          "future_away": "casa vs FC Lahti (6º)",
+          "future_home": "fuera vs Inter Turku (1º) | casa vs KuPS (7º) | fuera vs SJK Seinajoki (11º) | casa vs Ilves (4º) | fuera vs HJK Helsinki (3º)",
+          "future_away": "casa vs AC Oulu (8º) | fuera vs TPS (2º) | fuera vs Ilves (4º) | casa vs SJK Seinajoki (11º) | fuera vs KuPS (7º)",
           "data_confidence": {
-            "nivel": "alta",
-            "score": 76,
-            "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
+            "nivel": "media",
+            "score": 69,
+            "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
               "referencia 1X2 sin cuotas reales",
               "porcentajes de quiniela",
@@ -6801,10 +5888,11 @@
             ],
             "faltan": [
               "cuotas reales",
+              "H2H",
               "noticias/bajas/árbitro"
             ]
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | No hay cuotas reales fiables. La referencia disponible favorece al local (77.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | duelo directo por salvacion: equipos separados por 0 pts y 3 puestos. | IF GNISTAN persigue salvacion a 0 pts en tramo temprano (must-win 90/100, no perder 68/100). Victoria supera linea de salvacion. Derrota aleja salvacion. Calendario próximo sin rivales especialmente exigentes. Urgencia clasificatoria alta, necesitan 7 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (63 vs 62 días).",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | No hay cuotas reales fiables. La referencia disponible favorece al local (77.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | duelo directo por salvacion: equipos separados por 0 pts y 3 puestos. | IF GNISTAN persigue salvacion a 0 pts en tramo temprano (must-win 90/100, no perder 68/100). Victoria supera linea de salvacion. Derrota aleja salvacion. Calendario futuro con 2 rivales del top-6. Urgencia clasificatoria alta, necesitan 7 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (63 vs 62 días).",
           "analysis_ready": true
         },
         {
