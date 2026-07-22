@@ -45,6 +45,8 @@ QUINIAI_DATA_URL=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/
 - Ahora mismo combina cuotas, noticias, clima, viajes e historicos cuando la fuente lo soporta.
 - Refresca el contexto de partidos activos aunque ya exista en cache, para evitar
   clasificaciones y estados competitivos obsoletos.
+- Resuelve ligas domesticas por la pertenencia historica de ambos equipos y valida
+  que pais, coordenadas y desplazamiento sean compatibles con esa liga.
 - Distingue entre una ausencia verificada y una ausencia no comprobable. La falta
   de noticias fiables nunca se presenta como plantilla completa.
 - Mantiene una base estructurada local en `cache/structured_context_db.json`.

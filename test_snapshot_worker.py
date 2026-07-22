@@ -47,6 +47,48 @@ class SnapshotWorkerQualityTests(unittest.TestCase):
         self.assertEqual(match["league_id"], "4358")
         self.assertEqual(match["league_name"], "Norwegian Eliteserien")
 
+    def test_known_league_gets_its_canonical_id_without_sportsdb_metadata(self):
+        match = {"league": "soccer_finland_veikkausliiga"}
+        worker._apply_dynamic_league_metadata(match, {})
+        self.assertEqual(match["league_id"], "4636")
+        self.assertEqual(match["league_name"], "Finnish Veikkausliiga")
+
+    def test_domestic_league_is_inferred_from_both_team_histories(self):
+        histories = {
+            "sportsdb_4636": [
+                {"HomeTeam": "VPS", "AwayTeam": "Inter Turku"},
+                {"HomeTeam": "HJK", "AwayTeam": "KuPS"},
+            ],
+            "soccer_sweden_allsvenskan": [
+                {"HomeTeam": "AIK", "AwayTeam": "Malmo"},
+            ],
+        }
+        self.assertEqual(
+            worker._infer_league_from_histories("VPS", "FC INTER TURKU", histories),
+            "soccer_finland_veikkausliiga",
+        )
+
+    def test_league_country_replaces_a_conflicting_cached_location(self):
+        wrong_profile = {
+            "team": "AIK",
+            "country": "United States",
+            "country_code": "US",
+            "latitude": 40.0,
+            "longitude": -75.0,
+        }
+        sweden = {
+            "country": "Sweden",
+            "country_code": "SE",
+            "city": "Solna",
+            "timezone": "Europe/Stockholm",
+            "latitude": 59.36,
+            "longitude": 18.0,
+        }
+        with patch.object(worker, "_geocode_team_profile_candidates", return_value=(sweden, "AIK")):
+            repaired = worker._repair_profile_location("AIK", wrong_profile, "SE")
+        self.assertEqual(repaired["country_code"], "SE")
+        self.assertEqual(repaired["country"], "Sweden")
+
     def test_unverified_absences_prevent_perfect_confidence(self):
         confidence = worker._match_data_confidence(_complete_quantitative_match())
         self.assertLess(confidence["score"], 100)
@@ -169,6 +211,32 @@ class SnapshotWorkerQualityTests(unittest.TestCase):
                     [("docs/monitor/audit-test-2.json", "{}")]
                 )
                 self.assertEqual(get_mock.call_count, 1)
+        finally:
+            worker.MONITOR_GITHUB_API_DISABLED = original_disabled
+
+    def test_monitor_api_write_404_also_switches_to_git_fallback(self):
+        ref_response = Mock(status_code=200)
+        ref_response.json.return_value = {"object": {"sha": "base"}}
+        commit_response = Mock(status_code=200)
+        commit_response.json.return_value = {"tree": {"sha": "tree-base"}}
+        tree_response = Mock(status_code=201)
+        tree_response.json.return_value = {"sha": "tree-new", "tree": []}
+        new_commit_response = Mock(status_code=201)
+        new_commit_response.json.return_value = {"sha": "commit-new"}
+        update_response = Mock(status_code=404)
+        original_disabled = worker.MONITOR_GITHUB_API_DISABLED
+        worker.MONITOR_GITHUB_API_DISABLED = False
+        try:
+            with patch.object(worker, "_monitor_github_headers", return_value={"Authorization": "test"}), patch.object(
+                worker.requests, "get", side_effect=[ref_response, commit_response]
+            ), patch.object(
+                worker.requests, "post", side_effect=[tree_response, new_commit_response]
+            ), patch.object(worker.requests, "patch", return_value=update_response):
+                published = worker._github_monitor_upsert_many(
+                    [("docs/monitor/audit-write-test.json", "{}")]
+                )
+                self.assertFalse(published)
+                self.assertTrue(worker.MONITOR_GITHUB_API_DISABLED)
         finally:
             worker.MONITOR_GITHUB_API_DISABLED = original_disabled
 

@@ -127,7 +127,7 @@ GIT_NONINTERACTIVE_ENV.update({
     "GIT_TERMINAL_PROMPT": "0",
     "GCM_INTERACTIVE": "Never",
 })
-TEAM_PROFILE_CACHE_VERSION = "v4"
+TEAM_PROFILE_CACHE_VERSION = "v5"
 
 CACHE_DIR = Path(__file__).with_name("cache")
 OUTPUT_DIR = Path(__file__).with_name("output")
@@ -239,6 +239,9 @@ LEAGUE_KEY_ALIASES = {
     "soccer_spain_la_liga2": "soccer_spain_segunda_division",
     "soccer_spain_la_liga_2": "soccer_spain_segunda_division",
     "soccer_spain_segunda": "soccer_spain_segunda_division",
+    "sportsdb_4358": "soccer_norway_eliteserien",
+    "sportsdb_4347": "soccer_sweden_allsvenskan",
+    "sportsdb_4636": "soccer_finland_veikkausliiga",
 }
 
 
@@ -290,6 +293,7 @@ LEAGUE_FOOTBALL_DATA_NEW_CODES = {
 LEAGUE_THESPORTSDB_IDS = {
     "soccer_norway_eliteserien": "4358",
     "soccer_sweden_allsvenskan": "4347",
+    "soccer_finland_veikkausliiga": "4636",
     "sportsdb_4358": "4358",
     "sportsdb_4347": "4347",
 }
@@ -530,6 +534,9 @@ LEAGUE_NEWS_SEARCH_TERMS = {
 COUNTRY_LABELS = {
     "ES": "Spain",
     "GB": "England",
+    "NO": "Norway",
+    "SE": "Sweden",
+    "FI": "Finland",
 }
 
 LOCAL_MEDIA_SOURCE_TOKENS = [
@@ -3864,6 +3871,14 @@ def _github_monitor_upsert_many(files: list[tuple[str, str]]) -> bool:
                 json={"sha": new_commit_sha, "force": False},
                 timeout=30,
             )
+            if update_response.status_code == 404:
+                MONITOR_GITHUB_API_DISABLED = True
+                LOGGER.warning(
+                    "monitor_github_api_write_disabled repo=%s branch=%s status=404; using_git_fallback",
+                    MONITOR_REPO,
+                    MONITOR_BRANCH,
+                )
+                return False
             if update_response.status_code in {409, 422} and attempt == 0:
                 last_error = update_response.text[:500]
                 continue
@@ -4461,6 +4476,13 @@ def _repair_profile_location(
     *extra_hints: str,
 ) -> dict:
     repaired = _apply_location_override_fields(profile or {}, team_name)
+    expected_country_code = str(country_hint or "").strip().upper()
+    actual_country_code = str(repaired.get("country_code") or "").strip().upper()
+    if expected_country_code and actual_country_code != expected_country_code:
+        for field in [
+            "location_hint", "city", "country", "country_code", "timezone", "latitude", "longitude"
+        ]:
+            repaired.pop(field, None)
     resolved_country_hint = _guess_country_hint(
         team_name,
         country_hint or repaired.get("country_code") or repaired.get("country_hint"),
@@ -4553,12 +4575,16 @@ def fetch_team_profile(team_name: str, country_hint: str | None = None) -> dict:
         or "national football team" in cached_title
         or "national soccer team" in cached_title
     )
+    expected_country_code = str(country_hint or "").strip().upper()
+    cached_country_code = str((cached or {}).get("country_code") or "").strip().upper()
+    cached_country_matches = not expected_country_code or cached_country_code == expected_country_code
     if (
         cached
         and cached.get("cache_version") == TEAM_PROFILE_CACHE_VERSION
         and cached.get("latitude") is not None
         and cached.get("longitude") is not None
         and cached_is_national_profile
+        and cached_country_matches
     ):
         return _apply_location_override_fields(cached, team_name)
 
@@ -5533,8 +5559,10 @@ def fetch_match_referee_news(home_team: str, away_team: str) -> list[dict]:
     return items
 
 
-def fetch_the_sportsdb_team(team_name: str) -> dict:
-    cached = _cache_get(THESPORTSDB_CACHE, f"team:{team_name}", 7 * 24 * 3600)
+def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> dict:
+    resolved_country_hint = _guess_country_hint(team_name, country_hint)
+    cache_key = f"team:{resolved_country_hint or 'any'}:{team_name}"
+    cached = _cache_get(THESPORTSDB_CACHE, cache_key, 7 * 24 * 3600)
     if cached:
         return cached
     canonical_team_name = _canonical_team_name(team_name)
@@ -5549,7 +5577,6 @@ def fetch_the_sportsdb_team(team_name: str) -> dict:
     teams = (data or {}).get("teams") or []
     payload = {}
     if teams:
-        country_hint = _guess_country_hint(team_name)
         best_score = -1.0
         for candidate in teams:
             if str(candidate.get("strSport", "")).strip().lower() != "soccer":
@@ -5558,15 +5585,15 @@ def fetch_the_sportsdb_team(team_name: str) -> dict:
                 _team_similarity_score(team_name, str(candidate.get("strTeam", "")).strip()),
                 _team_similarity_score(team_name, str(candidate.get("strTeamAlternate", "")).strip()),
             )
-            if country_hint and str(candidate.get("strCountry", "")).strip():
-                if str(candidate.get("strCountry", "")).strip().lower() == COUNTRY_LABELS.get(country_hint, "").lower():
+            if resolved_country_hint and str(candidate.get("strCountry", "")).strip():
+                if str(candidate.get("strCountry", "")).strip().lower() == COUNTRY_LABELS.get(resolved_country_hint, "").lower():
                     score += 0.08
             if str(candidate.get("idESPN", "")).strip():
                 score += 0.04
             if score > best_score:
                 best_score = score
                 payload = candidate
-    _cache_set(THESPORTSDB_CACHE, f"team:{team_name}", payload)
+    _cache_set(THESPORTSDB_CACHE, cache_key, payload)
     return payload
 
 
@@ -5714,6 +5741,7 @@ def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
         "4329": "soccer_efl_champ",
         "4358": "soccer_norway_eliteserien",
         "4347": "soccer_sweden_allsvenskan",
+        "4636": "soccer_finland_veikkausliiga",
     }
     league_name_aliases = {
         "spanish laliga": "soccer_spain_la_liga",
@@ -5731,6 +5759,8 @@ def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
         "eliteserien": "soccer_norway_eliteserien",
         "swedish allsvenskan": "soccer_sweden_allsvenskan",
         "allsvenskan": "soccer_sweden_allsvenskan",
+        "finnish veikkausliiga": "soccer_finland_veikkausliiga",
+        "veikkausliiga": "soccer_finland_veikkausliiga",
     }
     for payload in payloads:
         league_id = str((payload or {}).get("idLeague", "")).strip()
@@ -5790,6 +5820,8 @@ def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
         league_key = ""
         league_name = ""
         league_id = expected_league_id
+    elif not league_id and expected_league_id:
+        league_id = expected_league_id
     if league_key and (not current_league or current_league.startswith("sportsdb_")):
         match["league"] = league_key
     effective_league = str(match.get("league", "")).strip()
@@ -5803,13 +5835,19 @@ def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
         match["league_source"] = "TheSportsDB" if league_name and not metadata_conflicts else "league-key"
 
 
-def _event_team_api_if_better(team_name: str, current_api: dict, event_team_name: str, event_league_id: str) -> dict:
+def _event_team_api_if_better(
+    team_name: str,
+    current_api: dict,
+    event_team_name: str,
+    event_league_id: str,
+    country_hint: str | None = None,
+) -> dict:
     event_team_name = str(event_team_name or "").strip()
     event_league_id = str(event_league_id or "").strip()
     if not event_team_name:
         return current_api or {}
     try:
-        event_api = fetch_the_sportsdb_team(event_team_name)
+        event_api = fetch_the_sportsdb_team(event_team_name, country_hint)
     except Exception:
         event_api = {}
     if not event_api:
@@ -8311,7 +8349,7 @@ def _enrich_quiniela_match(match: dict) -> None:
         haystack = f"{merged_item.get('title', '')} {merged_item.get('source', '')}".lower()
         if any(keyword in haystack for keyword in DISCIPLINE_KEYWORDS):
             merged_signals["referee_count"] += 1
-        if any(keyword in haystack for keyword in INJURY_KEYWORDS):
+        if _contains_injury_signal(merged_item.get("title", "")):
             merged_signals["injury_count"] += 1
         if any(keyword in haystack for keyword in ROTATION_KEYWORDS):
             merged_signals["rotation_count"] += 1
@@ -8326,8 +8364,9 @@ def _enrich_quiniela_match(match: dict) -> None:
     match["match_signals"]["match_rotation_attention"] = merged_signals.get("rotation_count", 0)
     match["match_signals"]["match_weather_attention"] = merged_signals.get("weather_count", 0)
 
-    home_team_api = fetch_the_sportsdb_team(match["local"])
-    away_team_api = fetch_the_sportsdb_team(match["visitante"])
+    league_country_hint = LEAGUE_COUNTRY_HINTS.get(_canonical_league_key(match.get("league", "")))
+    home_team_api = fetch_the_sportsdb_team(match["local"], league_country_hint)
+    away_team_api = fetch_the_sportsdb_team(match["visitante"], league_country_hint)
     inferred_round = max(
         int(((match.get("history_context") or {}).get("home") or {}).get("table", {}).get("played", 0) or 0),
         int(((match.get("history_context") or {}).get("away") or {}).get("table", {}).get("played", 0) or 0),
@@ -8353,19 +8392,21 @@ def _enrich_quiniela_match(match: dict) -> None:
         home_team_api,
         sportsdb_event.get("strHomeTeam", ""),
         event_league_id,
+        league_country_hint,
     )
     away_team_api = _event_team_api_if_better(
         match["visitante"],
         away_team_api,
         sportsdb_event.get("strAwayTeam", ""),
         event_league_id,
+        league_country_hint,
     )
     _apply_dynamic_league_metadata(match, sportsdb_event, home_team_api, away_team_api)
 
     home_profile = _repair_profile_location(
         match["local"],
         (match.get("home_team_context") or {}).get("profile", {}),
-        LEAGUE_COUNTRY_HINTS.get(match.get("league", "")),
+        league_country_hint,
         sportsdb_event.get("strCity", ""),
         home_team_api.get("strLocation", ""),
         home_team_api.get("strStadiumLocation", ""),
@@ -8374,7 +8415,7 @@ def _enrich_quiniela_match(match: dict) -> None:
     away_profile = _repair_profile_location(
         match["visitante"],
         (match.get("away_team_context") or {}).get("profile", {}),
-        LEAGUE_COUNTRY_HINTS.get(match.get("league", "")),
+        league_country_hint,
         away_team_api.get("strLocation", ""),
         away_team_api.get("strStadiumLocation", ""),
         away_team_api.get("strStadium", ""),
@@ -8382,7 +8423,7 @@ def _enrich_quiniela_match(match: dict) -> None:
     venue_profile = _repair_profile_location(
         match["local"],
         dict(home_profile),
-        LEAGUE_COUNTRY_HINTS.get(match.get("league", "")),
+        league_country_hint,
         sportsdb_event.get("strCity", ""),
         sportsdb_event.get("strVenue", ""),
         home_team_api.get("strStadiumLocation", ""),
@@ -9444,7 +9485,8 @@ def _match_richness_score(match: dict) -> int:
 
 
 def _needs_dynamic_league_revalidation(match: dict) -> bool:
-    return str(match.get("league", "")).strip().startswith("sportsdb_")
+    league = str(match.get("league", "")).strip()
+    return not league or league == "league_unresolved" or league.startswith("sportsdb_")
 
 
 def _active_context_refresh_due(match: dict) -> bool:
@@ -9817,6 +9859,32 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
     return jornadas, all_keys, current_keys
 
 
+def _infer_league_from_histories(home_team: str, away_team: str, histories: dict) -> str:
+    candidates = []
+    for league_key, rows in (histories or {}).items():
+        if not rows:
+            continue
+        options = {
+            str(row.get(field, "")).strip()
+            for row in rows
+            for field in ("HomeTeam", "AwayTeam")
+            if str(row.get(field, "")).strip()
+        }
+        if not options:
+            continue
+        home_score = max((_team_similarity_score(home_team, option) for option in options), default=0.0)
+        away_score = max((_team_similarity_score(away_team, option) for option in options), default=0.0)
+        if min(home_score, away_score) < 0.72:
+            continue
+        combined = home_score + away_score
+        if combined >= 1.55:
+            candidates.append((combined, _canonical_league_key(league_key)))
+    if not candidates:
+        return ""
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    return candidates[0][1]
+
+
 def _bootstrap_quiniela_placeholder(
     match: dict,
     raw_matches: list[dict],
@@ -9828,24 +9896,48 @@ def _bootstrap_quiniela_placeholder(
     if not home_team or not away_team:
         return
 
+    history_inferred_league = _infer_league_from_histories(
+        home_team,
+        away_team,
+        histories,
+    )
+    current_league = _canonical_league_key(match.get("league", ""))
+    if history_inferred_league and (
+        not current_league
+        or current_league == "league_unresolved"
+        or str(match.get("league", "")).startswith("sportsdb_")
+    ):
+        match["league"] = history_inferred_league
+        match["league_name"] = _league_display_name(history_inferred_league)
+        match["league_id"] = _sportsdb_league_id_for_key(history_inferred_league)
+        match["league_source"] = "history-team-membership"
+        match["dynamic_league"] = False
+    league_country_hint = LEAGUE_COUNTRY_HINTS.get(
+        _canonical_league_key(match.get("league", "")),
+    )
+
     home_context = team_contexts.get(home_team)
     if not home_context:
-        home_context = _enrich_team(home_team, _guess_country_hint(home_team))
+        home_context = _enrich_team(home_team, _guess_country_hint(home_team, league_country_hint))
         team_contexts[home_team] = home_context
+    elif league_country_hint:
+        home_context["profile"] = fetch_team_profile(home_team, league_country_hint)
     away_context = team_contexts.get(away_team)
     if not away_context:
-        away_context = _enrich_team(away_team, _guess_country_hint(away_team))
+        away_context = _enrich_team(away_team, _guess_country_hint(away_team, league_country_hint))
         team_contexts[away_team] = away_context
+    elif league_country_hint:
+        away_context["profile"] = fetch_team_profile(away_team, league_country_hint)
 
     home_profile = _repair_profile_location(
         home_team,
         (home_context or {}).get("profile", {}),
-        _guess_country_hint(home_team),
+        _guess_country_hint(home_team, league_country_hint),
     )
     away_profile = _repair_profile_location(
         away_team,
         (away_context or {}).get("profile", {}),
-        _guess_country_hint(away_team),
+        _guess_country_hint(away_team, league_country_hint),
     )
     match.setdefault("home_team_context", {})["profile"] = home_profile
     match.setdefault("away_team_context", {})["profile"] = away_profile
@@ -9868,14 +9960,18 @@ def _bootstrap_quiniela_placeholder(
     match["home_team_context"].setdefault("official_site", {"website": "", "items": []})
     match["away_team_context"].setdefault("official_site", {"website": "", "items": []})
 
-    home_team_api = fetch_the_sportsdb_team(home_team)
-    away_team_api = fetch_the_sportsdb_team(away_team)
+    home_team_api = fetch_the_sportsdb_team(home_team, league_country_hint)
+    away_team_api = fetch_the_sportsdb_team(away_team, league_country_hint)
     inferred_league = match.get("league", "") or _dynamic_league_key_from_sportsdb(home_team_api, away_team_api)
     kickoff = str(match.get("kickoff", "")).strip()
     sportsdb_event = _resolve_sportsdb_event(home_team, away_team, kickoff, home_team_api, away_team_api) or {}
     event_league_id = str(sportsdb_event.get("idLeague", "")).strip()
-    home_team_api = _event_team_api_if_better(home_team, home_team_api, sportsdb_event.get("strHomeTeam", ""), event_league_id)
-    away_team_api = _event_team_api_if_better(away_team, away_team_api, sportsdb_event.get("strAwayTeam", ""), event_league_id)
+    home_team_api = _event_team_api_if_better(
+        home_team, home_team_api, sportsdb_event.get("strHomeTeam", ""), event_league_id, league_country_hint
+    )
+    away_team_api = _event_team_api_if_better(
+        away_team, away_team_api, sportsdb_event.get("strAwayTeam", ""), event_league_id, league_country_hint
+    )
     if not kickoff:
         kickoff = _sportsdb_event_kickoff(sportsdb_event)
         if kickoff:
@@ -10310,18 +10406,18 @@ def build_snapshot(raw_matches: list) -> dict:
                     "news": {"items": [], "signals": {}},
                 }
 
-    league_keys = sorted({str(item.get("sport_key", "")).strip() for item in raw_matches})
+    league_keys = sorted({_canonical_league_key(item.get("sport_key", "")) for item in raw_matches})
     league_team_names = {
         league_key: sorted(
             {
                 str(item.get("home_team", "")).strip()
                 for item in raw_matches
-                if str(item.get("sport_key", "")).strip() == league_key
+                if _canonical_league_key(item.get("sport_key", "")) == league_key
             }
             | {
                 str(item.get("away_team", "")).strip()
                 for item in raw_matches
-                if str(item.get("sport_key", "")).strip() == league_key
+                if _canonical_league_key(item.get("sport_key", "")) == league_key
             }
         )
         for league_key in league_keys
@@ -10338,7 +10434,7 @@ def build_snapshot(raw_matches: list) -> dict:
 
     matches = []
     for item in raw_matches:
-        league = str(item.get("sport_key", "")).strip()
+        league = _canonical_league_key(item.get("sport_key", ""))
         home_team = str(item.get("home_team", "")).strip()
         away_team = str(item.get("away_team", "")).strip()
         kickoff = str(item.get("commence_time", "")).strip()
@@ -10431,8 +10527,9 @@ def build_snapshot(raw_matches: list) -> dict:
             current_table_snapshot,
             season_code=season_code,
         )
-        home_team_api = fetch_the_sportsdb_team(home_team)
-        away_team_api = fetch_the_sportsdb_team(away_team)
+        league_country_hint = LEAGUE_COUNTRY_HINTS.get(_canonical_league_key(league))
+        home_team_api = fetch_the_sportsdb_team(home_team, league_country_hint)
+        away_team_api = fetch_the_sportsdb_team(away_team, league_country_hint)
         home_espn_upcoming = fetch_espn_team_fixtures(
             home_team,
             str(home_team_api.get("idESPN", "")).strip(),
@@ -10515,6 +10612,7 @@ def build_snapshot(raw_matches: list) -> dict:
                 "match_key": match_key,
                 "league": league,
                 "league_name": _league_display_name(league),
+                "league_id": _sportsdb_league_id_for_key(league),
                 "league_source": "odds-snapshot",
                 "local": home_team,
                 "visitante": away_team,
@@ -10896,7 +10994,13 @@ def build_snapshot(raw_matches: list) -> dict:
         "focus_rosters_checked": sum(
             1
             for match in quiniela_focus_matches
-            if _qualitative_context_status(match).get("roster_status") != "not_verified"
+            if _qualitative_context_status(match).get("roster_status")
+            in {"confirmed_absences", "sources_checked_no_confirmed_absence"}
+        ),
+        "focus_rosters_checked_partial": sum(
+            1
+            for match in quiniela_focus_matches
+            if _qualitative_context_status(match).get("roster_status") == "partial_verification"
         ),
         "focus_referees_confirmed": sum(
             1
