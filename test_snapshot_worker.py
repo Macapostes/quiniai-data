@@ -89,6 +89,55 @@ class SnapshotWorkerQualityTests(unittest.TestCase):
         self.assertEqual(repaired["country_code"], "SE")
         self.assertEqual(repaired["country"], "Sweden")
 
+    def test_location_hint_removes_natural_language_prefix(self):
+        self.assertEqual(worker._clean_location_hint("the city of Kristiansand"), "Kristiansand")
+        self.assertEqual(worker._clean_location_hint("the town of Fredrikstad"), "Fredrikstad")
+
+    def test_nordic_abbreviation_has_stable_location_override(self):
+        profile = worker._repair_profile_location("IK Start", {}, "NO")
+        self.assertEqual(profile["city"], "Kristiansand")
+        self.assertEqual(profile["country_code"], "NO")
+        mjallby = worker._repair_profile_location("Mj\u00e4llby AIF", {}, "SE")
+        self.assertEqual(mjallby["city"], "Hallevik")
+        self.assertEqual(mjallby["country_code"], "SE")
+
+    def test_sportsdb_rejects_wrong_country_and_womens_team(self):
+        wrong_country = {
+            "strSport": "Soccer",
+            "strTeam": "KFUM Odense",
+            "strTeamAlternate": "KFUM",
+            "strCountry": "Denmark",
+        }
+        womens_team = {
+            "strSport": "Soccer",
+            "strTeam": "Aalesunds Women",
+            "strTeamAlternate": "Aalesunds FK",
+            "strCountry": "Norway",
+        }
+        valid_team = {
+            "strSport": "Soccer",
+            "strTeam": "Aalesund",
+            "strTeamAlternate": "Aalesunds FK",
+            "strCountry": "Norway",
+        }
+        worker.THESPORTSDB_CACHE.pop("team:NO:KFUM", None)
+        worker.THESPORTSDB_CACHE.pop("team:NO:AALESUNDS", None)
+        with patch.object(
+            worker,
+            "_request_json",
+            return_value={"teams": [wrong_country]},
+        ):
+            self.assertEqual(worker.fetch_the_sportsdb_team("KFUM", "NO"), {})
+        with patch.object(
+            worker,
+            "_request_json",
+            return_value={"teams": [womens_team, valid_team]},
+        ):
+            self.assertEqual(
+                worker.fetch_the_sportsdb_team("AALESUNDS", "NO").get("strTeam"),
+                "Aalesund",
+            )
+
     def test_unverified_absences_prevent_perfect_confidence(self):
         confidence = worker._match_data_confidence(_complete_quantitative_match())
         self.assertLess(confidence["score"], 100)

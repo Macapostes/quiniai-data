@@ -402,6 +402,26 @@ TEAM_NAME_ALIASES = {
     "bodo glimt": "Bodo Glimt",
     "bodo/glimt": "Bodo Glimt",
     "hamkan": "Hamarkameratene",
+    "start": "IK Start",
+    "kfum": "KFUM Oslo",
+    "kfum oslo": "KFUM Oslo",
+    "aalesund": "Aalesunds FK",
+    "aalesunds": "Aalesunds FK",
+    "rosenborg": "Rosenborg BK",
+    "fredrikstad fk": "Fredrikstad",
+    "vasteras": "Vasteras SK",
+    "vasteras sk": "Vasteras SK",
+    "orgryte": "Orgryte IS",
+    "orgryte is": "Orgryte IS",
+    "hacken": "BK Hacken",
+    "bk hacken": "BK Hacken",
+    "aik": "AIK Fotboll",
+    "brann": "SK Brann",
+    "brommapojkarna": "IF Brommapojkarna",
+    "malmo": "Malmo FF",
+    "vps": "Vaasan Palloseura",
+    "vps vaasa": "Vaasan Palloseura",
+    "fc inter turku": "Inter Turku",
     "athletic de bilbao": "Athletic Bilbao",
     "athletic club": "Athletic Bilbao",
     "athletic bilbao": "Athletic Bilbao",
@@ -673,6 +693,39 @@ TEAM_LOCATION_OVERRIDES = {
     "plymouth argyle": {"query": "Plymouth, England"},
     "cardiff city": {"query": "Cardiff, Wales"},
     "birmingham city": {"query": "Birmingham, England"},
+    # Nordic clubs frequently arrive abbreviated in LAE/The Odds API. Keeping
+    # the home city separate from the display name makes travel and weather
+    # deterministic even when a free directory cannot resolve the abbreviation.
+    "ik start": {"query": "Kristiansand, Norway", "city": "Kristiansand", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "kfum oslo": {"query": "Oslo, Norway", "city": "Oslo", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "aalesunds fk": {"query": "Alesund, Norway", "city": "Alesund", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "rosenborg bk": {"query": "Trondheim, Norway", "city": "Trondheim", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "fredrikstad": {"query": "Fredrikstad, Norway", "city": "Fredrikstad", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "molde": {"query": "Molde, Norway", "city": "Molde", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "viking fk": {"query": "Stavanger, Norway", "city": "Stavanger", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "sk brann": {"query": "Bergen, Norway", "city": "Bergen", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "kristiansund bk": {"query": "Kristiansund, Norway", "city": "Kristiansund", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "tromso": {"query": "Tromso, Norway", "city": "Tromso", "country": "Norway", "country_code": "NO", "timezone": "Europe/Oslo"},
+    "vasteras sk": {"query": "Vasteras, Sweden", "city": "Vasteras", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "orgryte is": {"query": "Gothenburg, Sweden", "city": "Gothenburg", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "kalmar ff": {"query": "Kalmar, Sweden", "city": "Kalmar", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "if brommapojkarna": {"query": "Stockholm, Sweden", "city": "Stockholm", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "bk hacken": {"query": "Gothenburg, Sweden", "city": "Gothenburg", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "aik fotboll": {"query": "Solna, Sweden", "city": "Solna", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "malmo ff": {"query": "Malmo, Sweden", "city": "Malmo", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "hammarby if": {"query": "Stockholm, Sweden", "city": "Stockholm", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "djurgardens if": {"query": "Stockholm, Sweden", "city": "Stockholm", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "mjallby aif": {"query": "Hallevik, Sweden", "city": "Hallevik", "country": "Sweden", "country_code": "SE", "timezone": "Europe/Stockholm"},
+    "vaasan palloseura": {"query": "Vaasa, Finland", "city": "Vaasa", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
+    "inter turku": {"query": "Turku, Finland", "city": "Turku", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
+    "tps": {"query": "Turku, Finland", "city": "Turku", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
+    "ifk mariehamn": {"query": "Mariehamn, Finland", "city": "Mariehamn", "country": "Finland", "country_code": "FI", "timezone": "Europe/Mariehamn"},
+    "ac oulu": {"query": "Oulu, Finland", "city": "Oulu", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
+    "ilves": {"query": "Tampere, Finland", "city": "Tampere", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
+    "fc lahti": {"query": "Lahti, Finland", "city": "Lahti", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
+    "ff jaro": {"query": "Jakobstad, Finland", "city": "Jakobstad", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
+    "if gnistan": {"query": "Helsinki, Finland", "city": "Helsinki", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
+    "kups kuopio": {"query": "Kuopio, Finland", "city": "Kuopio", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
 }
 
 AMBIGUOUS_GEO_TEAM_TOKENS = {
@@ -4284,6 +4337,12 @@ def _clean_location_hint(location_hint: str) -> str:
         return ""
     cleaned = re.split(r"\bthat\b|\bwhich\b|\bwhere\b|\bcompetes\b", location_hint, maxsplit=1)[0]
     cleaned = cleaned.replace("\n", " ").strip(" ,.;")
+    cleaned = re.sub(
+        r"^(?:the\s+)?(?:city|town|municipality|borough|village|suburb)\s+of\s+",
+        "",
+        cleaned,
+        flags=re.IGNORECASE,
+    ).strip(" ,.;")
     return cleaned
 
 
@@ -5566,28 +5625,50 @@ def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> 
     if cached:
         return cached
     canonical_team_name = _canonical_team_name(team_name)
-    try:
-        data = _request_json(
-            THESPORTSDB_SEARCH_TEAM_URL,
-            params={"t": canonical_team_name},
-            timeout=20,
-        )
-    except Exception:
-        data = {}
-    teams = (data or {}).get("teams") or []
+    queries = []
+    for query in [canonical_team_name, team_name]:
+        query = str(query or "").strip()
+        if query and query.casefold() not in {item.casefold() for item in queries}:
+            queries.append(query)
+    teams = []
+    for query in queries:
+        try:
+            data = _request_json(
+                THESPORTSDB_SEARCH_TEAM_URL,
+                params={"t": query},
+                timeout=20,
+            )
+        except Exception:
+            data = {}
+        teams.extend((data or {}).get("teams") or [])
     payload = {}
     if teams:
         best_score = -1.0
         for candidate in teams:
             if str(candidate.get("strSport", "")).strip().lower() != "soccer":
                 continue
+            candidate_name = str(candidate.get("strTeam", "")).strip()
+            candidate_alt = str(candidate.get("strTeamAlternate", "")).strip()
+            candidate_country = str(candidate.get("strCountry", "")).strip()
+            expected_country = COUNTRY_LABELS.get(resolved_country_hint or "", "")
+            if expected_country and candidate_country and candidate_country.casefold() != expected_country.casefold():
+                continue
+            gender_haystack = _normalize_ascii(f"{candidate_name} {candidate_alt}").lower()
+            requested_haystack = _normalize_ascii(f"{team_name} {canonical_team_name}").lower()
+            if any(token in gender_haystack for token in [" women", " ladies", " dam "]) and not any(
+                token in requested_haystack for token in [" women", " ladies", " dam "]
+            ):
+                continue
             score = max(
-                _team_similarity_score(team_name, str(candidate.get("strTeam", "")).strip()),
-                _team_similarity_score(team_name, str(candidate.get("strTeamAlternate", "")).strip()),
+                _team_similarity_score(team_name, candidate_name),
+                _team_similarity_score(team_name, candidate_alt),
+                _team_similarity_score(canonical_team_name, candidate_name),
+                _team_similarity_score(canonical_team_name, candidate_alt),
             )
-            if resolved_country_hint and str(candidate.get("strCountry", "")).strip():
-                if str(candidate.get("strCountry", "")).strip().lower() == COUNTRY_LABELS.get(resolved_country_hint, "").lower():
-                    score += 0.08
+            if score < 0.6:
+                continue
+            if expected_country and candidate_country.casefold() == expected_country.casefold():
+                score += 0.08
             if str(candidate.get("idESPN", "")).strip():
                 score += 0.04
             if score > best_score:
@@ -8448,11 +8529,12 @@ def _enrich_quiniela_match(match: dict) -> None:
         away_profile.get("latitude"),
         away_profile.get("longitude"),
     )
+    league_country_label = COUNTRY_LABELS.get(league_country_hint or "", "")
     match["travel_context"] = {
         "distance_km": travel_distance_km,
         "distance_bucket": _distance_bucket(travel_distance_km),
-        "home_country": home_profile.get("country", ""),
-        "away_country": away_profile.get("country", ""),
+        "home_country": home_profile.get("country", "") or league_country_label,
+        "away_country": away_profile.get("country", "") or league_country_label,
         "international_trip": bool(
             home_profile.get("country_code")
             and away_profile.get("country_code")
