@@ -1,0 +1,177 @@
+import unittest
+from datetime import datetime, timedelta, timezone
+from unittest.mock import Mock, patch
+
+import snapshot_worker as worker
+
+
+def _complete_quantitative_match() -> dict:
+    return {
+        "league": "soccer_norway_eliteserien",
+        "local": "Kristiansund BK",
+        "visitante": "IK Start",
+        "kickoff": (datetime.now(timezone.utc) + timedelta(days=2)).isoformat(),
+        "odds": {"1": 2.1, "X": 3.4, "2": 3.0},
+        "market_context": {
+            "source": "odds",
+            "normalized_percent": {"1": 44, "X": 27, "2": 29},
+        },
+        "official_quiniela_percentages": {"1": 50, "X": 25, "2": 25},
+        "weather_context": {"temperature_c": 14},
+        "travel_context": {"distance_km": 550},
+        "competition_context": {
+            "home_upcoming": [{"opponent": "KFUM"}],
+            "away_upcoming": [{"opponent": "Viking"}],
+        },
+        "history_context": {
+            "table_quality": {"valid": True},
+            "home": {"recent_all": {"form": "WLLLD"}},
+            "away": {"recent_all": {"form": "LWLLL"}},
+            "head_to_head": {"meetings": 4},
+        },
+        "home_team_context": {},
+        "away_team_context": {},
+        "structured_context": {"injury_context": {}, "referee_context": {}},
+        "match_news_context": {"items": []},
+    }
+
+
+class SnapshotWorkerQualityTests(unittest.TestCase):
+    def test_conflicting_sportsdb_metadata_cannot_replace_known_league(self):
+        match = {"league": "soccer_norway_eliteserien"}
+        worker._apply_dynamic_league_metadata(
+            match,
+            {"idLeague": "4834", "strLeague": "_No League Soccer"},
+        )
+        self.assertEqual(match["league"], "soccer_norway_eliteserien")
+        self.assertEqual(match["league_id"], "4358")
+        self.assertEqual(match["league_name"], "Norwegian Eliteserien")
+
+    def test_unverified_absences_prevent_perfect_confidence(self):
+        confidence = worker._match_data_confidence(_complete_quantitative_match())
+        self.assertLess(confidence["score"], 100)
+        self.assertIn("noticias y bajas verificadas", confidence["faltan"])
+        self.assertIn("arbitro confirmado", confidence["faltan"])
+
+    def test_one_checked_roster_is_reported_as_partial_coverage(self):
+        match = _complete_quantitative_match()
+        match["structured_context"]["injury_context"] = {
+            "home_team": {
+                "verification_status": "sources_checked_no_confirmed_absence",
+                "items": [],
+            },
+            "away_team": {"verification_status": "not_verified", "items": []},
+        }
+        confidence = worker._match_data_confidence(match)
+        self.assertEqual(confidence["cobertura_cualitativa"]["roster_status"], "partial_verification")
+        self.assertIn("bajas/convocatorias del otro equipo", confidence["faltan"])
+
+    def test_incomplete_table_sample_is_rejected(self):
+        table = {f"Team {idx}": {"played": 13} for idx in range(8)}
+        table["Home"] = {"played": 3}
+        table["Away"] = {"played": 2}
+        quality = worker._table_quality_snapshot(table, "Home", "Away")
+        self.assertFalse(quality["valid"])
+        self.assertEqual(quality["minimum_expected"], 11)
+
+    def test_active_context_refreshes_when_stale(self):
+        match = _complete_quantitative_match()
+        match["structured_context"]["updated_at"] = (
+            datetime.now(timezone.utc) - timedelta(seconds=worker.ACTIVE_CONTEXT_REFRESH_SECONDS + 60)
+        ).isoformat()
+        self.assertTrue(worker._active_context_refresh_due(match))
+        match["structured_context"]["updated_at"] = datetime.now(timezone.utc).isoformat()
+        self.assertFalse(worker._active_context_refresh_due(match))
+
+    def test_nordic_injury_terms_are_understood(self):
+        self.assertEqual(worker._infer_injury_status("Spilleren er skadet og ute"), "out")
+        self.assertEqual(worker._infer_injury_status("Avstängd efter senaste matchen"), "suspended")
+        self.assertEqual(worker._infer_injury_status("Status rundt skadesituasjonen"), "watch")
+
+    def test_injury_terms_do_not_match_inside_unrelated_words(self):
+        self.assertEqual(worker._infer_injury_status("Billetter & partoutkort"), "watch")
+        self.assertEqual(worker._infer_injury_status("Ackreditering/scouting"), "watch")
+        self.assertEqual(
+            worker._build_injury_entities(
+                "SK Brann",
+                [{"title": "Billetter & partoutkort", "source": "Web oficial", "link": ""}],
+            ),
+            [],
+        )
+
+    def test_womens_team_injury_is_not_assigned_to_mens_match(self):
+        self.assertEqual(
+            worker._build_injury_entities(
+                "IF Brommapojkarna",
+                [{
+                    "title": "DAM: Patricia Fischerova drabbad av korsbandsskada",
+                    "source": "Web oficial",
+                    "link": "https://example.com/dam-patricia",
+                }],
+            ),
+            [],
+        )
+
+    def test_calendar_year_leagues_keep_one_season_across_july(self):
+        june = datetime(2026, 6, 15, tzinfo=timezone.utc)
+        august = datetime(2026, 8, 15, tzinfo=timezone.utc)
+        self.assertEqual(
+            worker._league_season_code_for("soccer_norway_eliteserien", june),
+            "2627",
+        )
+        self.assertEqual(
+            worker._league_season_code_for("soccer_norway_eliteserien", august),
+            "2627",
+        )
+        self.assertEqual(worker._league_season_code_for("soccer_spain_la_liga", june), "2526")
+
+    def test_survival_pressure_rises_when_team_is_below_the_safe_line(self):
+        rows = {
+            f"Team {position}": {
+                "team": f"Team {position}",
+                "position": position,
+                "played": 13,
+                "points": 35 - position,
+            }
+            for position in range(1, 17)
+        }
+        del rows["Team 15"]
+        del rows["Team 16"]
+        rows["Kristiansund"] = {
+            "team": "Kristiansund", "position": 15, "played": 13, "points": 12
+        }
+        rows["Start"] = {"team": "Start", "position": 16, "played": 14, "points": 7}
+        rows["Team 14"] = {"team": "Team 14", "position": 14, "played": 13, "points": 12}
+        kickoff = datetime(2026, 7, 25, tzinfo=timezone.utc)
+        kristiansund = worker._team_objective_context(
+            "soccer_norway_eliteserien", rows, "Kristiansund", kickoff
+        )
+        start = worker._team_objective_context(
+            "soccer_norway_eliteserien", rows, "Start", kickoff
+        )
+        self.assertGreater(start["must_win_index"], kristiansund["must_win_index"])
+        self.assertGreaterEqual(start["must_win_index"], 90)
+
+    def test_monitor_api_404_switches_to_git_fallback_for_the_process(self):
+        response = Mock(status_code=404)
+        original_disabled = worker.MONITOR_GITHUB_API_DISABLED
+        worker.MONITOR_GITHUB_API_DISABLED = False
+        try:
+            with patch.object(worker, "_monitor_github_headers", return_value={"Authorization": "test"}), patch.object(
+                worker.requests, "get", return_value=response
+            ) as get_mock:
+                published = worker._github_monitor_upsert_many(
+                    [("docs/monitor/audit-test.json", "{}")]
+                )
+                self.assertFalse(published)
+                self.assertTrue(worker.MONITOR_GITHUB_API_DISABLED)
+                worker._github_monitor_upsert_many(
+                    [("docs/monitor/audit-test-2.json", "{}")]
+                )
+                self.assertEqual(get_mock.call_count, 1)
+        finally:
+            worker.MONITOR_GITHUB_API_DISABLED = original_disabled
+
+
+if __name__ == "__main__":
+    unittest.main()

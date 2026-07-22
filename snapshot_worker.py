@@ -72,6 +72,10 @@ LOCAL_MEDIA_NEWS_ITEMS = int(os.getenv("QUINIAI_LOCAL_MEDIA_NEWS_ITEMS", "12"))
 MAX_WORKERS = max(2, int(os.getenv("QUINIAI_MAX_WORKERS", "6")))
 HISTORY_SEASONS_BACK = max(2, min(6, int(os.getenv("QUINIAI_HISTORY_SEASONS_BACK", "3"))))
 UPCOMING_FIXTURE_WINDOW = max(5, int(os.getenv("QUINIAI_UPCOMING_FIXTURE_WINDOW", "5")))
+ACTIVE_CONTEXT_REFRESH_SECONDS = max(
+    1800,
+    int(os.getenv("QUINIAI_ACTIVE_CONTEXT_REFRESH_SECONDS", "14400")),
+)
 NEWS_CACHE_TTL_SECONDS = int(os.getenv("QUINIAI_NEWS_CACHE_TTL_SECONDS", "21600"))
 MATCH_NEWS_CACHE_TTL_SECONDS = int(
     os.getenv("QUINIAI_MATCH_NEWS_CACHE_TTL_SECONDS", "21600")
@@ -251,6 +255,32 @@ LEAGUE_FOOTBALL_DATA_CODES = {
     "soccer_epl": "E0",
     "soccer_efl_champ": "E1",
 }
+
+LEAGUE_DISPLAY_NAMES = {
+    "soccer_spain_la_liga": "LaLiga",
+    "soccer_spain_segunda_division": "Segunda Division",
+    "soccer_epl": "English Premier League",
+    "soccer_efl_champ": "EFL Championship",
+    "soccer_norway_eliteserien": "Norwegian Eliteserien",
+    "soccer_sweden_allsvenskan": "Swedish Allsvenskan",
+    "soccer_sweden_superettan": "Swedish Superettan",
+    "soccer_finland_veikkausliiga": "Finnish Veikkausliiga",
+    "soccer_fifa_world_cup": "FIFA World Cup",
+    "soccer_uefa_european_championship": "UEFA European Championship",
+    "soccer_conmebol_copa_america": "Copa America",
+    "soccer_international_friendlies": "International Friendlies",
+}
+
+
+def _league_display_name(league_key: object, fallback: object = "") -> str:
+    key = _canonical_league_key(league_key)
+    configured = LEAGUE_DISPLAY_NAMES.get(key, "")
+    raw_fallback = str(fallback or "").strip()
+    if configured:
+        return configured
+    if raw_fallback and raw_fallback not in {"_No League Soccer", "league_unresolved"}:
+        return raw_fallback
+    return "Liga no resuelta" if key == "league_unresolved" else (key or "-")
 
 LEAGUE_FOOTBALL_DATA_NEW_CODES = {
     "soccer_norway_eliteserien": "NOR",
@@ -661,6 +691,18 @@ INJURY_KEYWORDS = [
     "suspension",
     "sancion",
     "absence",
+    "skade",
+    "skadet",
+    "skader",
+    "skada",
+    "skadad",
+    "skador",
+    "fravaer",
+    "frånvaro",
+    "karantene",
+    "utestengt",
+    "avstangd",
+    "avstängd",
 ]
 ROTATION_KEYWORDS = [
     "rotation",
@@ -681,6 +723,11 @@ ROTATION_KEYWORDS = [
     "champions",
     "europa league",
     "conference league",
+    "rotasjon",
+    "rotering",
+    "hvile",
+    "vila",
+    "belastning",
 ]
 DISCIPLINE_KEYWORDS = [
     "referee",
@@ -691,6 +738,12 @@ DISCIPLINE_KEYWORDS = [
     "tarjeta roja",
     "suspension",
     "sancion",
+    "dommer",
+    "domare",
+    "karantene",
+    "utestengt",
+    "avstangd",
+    "avstängd",
 ]
 PRESS_CONFERENCE_KEYWORDS = [
     "rueda de prensa",
@@ -702,6 +755,10 @@ PRESS_CONFERENCE_KEYWORDS = [
     "coach",
     "entrenador",
     "míster",
+    "pressekonferanse",
+    "presskonferens",
+    "trener",
+    "tränare",
 ]
 SQUAD_KEYWORDS = [
     "convocatoria",
@@ -712,6 +769,14 @@ SQUAD_KEYWORDS = [
     "alineacion",
     "lineup",
     "line-up",
+    "tropp",
+    "troppen",
+    "kamptrupp",
+    "trupp",
+    "startelva",
+    "startelvan",
+    "lagoppstilling",
+    "laguttagning",
 ]
 MORALE_KEYWORDS = [
     "crisis",
@@ -732,6 +797,14 @@ MORALE_KEYWORDS = [
     "ascenso",
     "title race",
     "objetivo",
+    "nedrykk",
+    "nedflytting",
+    "nedflyttning",
+    "opprykk",
+    "uppflyttning",
+    "gullkamp",
+    "tittelkamp",
+    "titelstrid",
 ]
 NOISE_FORMAT_KEYWORDS = [
     "foto",
@@ -923,6 +996,7 @@ STRUCTURED_DB = _load_cache(STRUCTURED_DB_PATH) or {
 RUN_HISTORY = _load_cache(RUN_HISTORY_PATH) or {"runs": []}
 QUINIELA_HISTORY = _load_cache(QUINIELA_HISTORY_PATH) or {"season": None, "current_jornada": None, "jornadas": {}}
 MONITOR_PUBLISH_STATE = _load_cache(MONITOR_PUBLISH_STATE_PATH) or {"files": {}}
+MONITOR_GITHUB_API_DISABLED = False
 LEGACY_SNAPSHOT = _load_cache(LEGACY_SNAPSHOT_PATH) if LEGACY_SNAPSHOT_PATH.exists() else {}
 
 
@@ -1892,14 +1966,65 @@ def _local_media_items(items: list[dict]) -> list[dict]:
 
 
 def _infer_injury_status(title: str) -> str:
-    lowered = title.lower()
-    if any(token in lowered for token in ["out", "baja", "injured", "lesionado", "ruled out"]):
+    lowered = _normalize_ascii(title).lower()
+    if re.search(
+        r"\b(?:out|baja|bajas|injured|injury|injuries|lesionado|lesionados|lesionada|lesionadas|ruled\s+out)\b"
+        r"|\b(?:skadet|skadad|skadade|skadede|\w*tidsskadad)\b|\b\w*fravaer\w*\b"
+        r"|\bdrabbad\b.{0,40}\bskada\b",
+        lowered,
+    ):
         return "out"
-    if any(token in lowered for token in ["doubt", "duda", "questionable"]):
+    if re.search(r"\b(?:doubt|doubtful|duda|questionable|usikker|tveksam)\b", lowered):
         return "doubtful"
-    if any(token in lowered for token in ["suspension", "sancion", "banned"]):
+    if re.search(
+        r"\b(?:suspension|sancion|sancionado|banned|karantene|utestengt|avstangd)\b",
+        lowered,
+    ):
         return "suspended"
     return "watch"
+
+
+def _contains_injury_signal(text: str) -> bool:
+    normalized = _normalize_ascii(text).lower()
+    return bool(
+        re.search(
+            r"\b(?:out|baja|bajas|injury|injuries|injured|lesion|lesiones|lesionado|lesionada|"
+            r"doubt|doubtful|questionable|suspension|sancion|sancionado|banned|karantene|"
+            r"utestengt|avstangd|usikker|tveksam)\b|\b\w*skad\w*\b|\b\w*fravaer\w*\b",
+            normalized,
+        )
+    )
+
+
+def _is_non_first_team_news(item: dict) -> bool:
+    title = _normalize_ascii(str(item.get("title", ""))).lower()
+    link = _normalize_ascii(str(item.get("link", ""))).lower()
+    category_tokens = [
+        "dam:", "damer", "damlag", "kvinner", "kvinnelag", "women", "women's",
+        "femenino", "femenina", "u19", "u-19", "u21", "u-21", "academy", "ungdom",
+    ]
+    if any(token in f"{title} {link}" for token in category_tokens):
+        return True
+    if str(item.get("source", "")).strip().lower() != "web oficial" or not link.startswith("http"):
+        return False
+    try:
+        cache_key = f"official-article-category:{hashlib.sha256(link.encode('utf-8')).hexdigest()}"
+        page = _fetch_cached_html(str(item.get("link", "")), cache_key, 12 * 3600)
+    except Exception:
+        return False
+    category_fragments = []
+    category_fragments.extend(
+        re.findall(r'"articleSection"\s*:\s*(\[[^\]]+\]|"[^"]+")', page, flags=re.IGNORECASE)
+    )
+    category_fragments.extend(
+        re.findall(
+            r'<meta[^>]+(?:property|name)=["\']article:section["\'][^>]+content=["\']([^"\']+)',
+            page,
+            flags=re.IGNORECASE,
+        )
+    )
+    categories = _normalize_ascii(" ".join(category_fragments)).lower()
+    return any(token in categories for token in ["damer", "damlag", "kvinner", "women", "femenin", "ungdom"])
 
 
 def _build_injury_entities(team_name: str, items: list[dict]) -> list[dict]:
@@ -1919,16 +2044,28 @@ def _build_injury_entities(team_name: str, items: list[dict]) -> list[dict]:
         "relegation",
         "resultado",
         "result",
+        "dam:",
+        "damer",
+        "damlag",
+        "kvinner",
+        "women",
+        "femenin",
+        "u19",
+        "u-19",
+        "academy",
+        "ungdom",
     ]
-    ignored_people = {"predicted", "relegation", "foxes", "saints", "pompey", "swans"}
+    ignored_people = {
+        "predicted", "relegation", "foxes", "saints", "pompey", "swans", "status",
+        "siste", "veckans", "skaderapport", "skadeuppdatering", "ackreditering", "billetter",
+    }
     for item in items:
         title = str(item.get("title", "")).strip()
         source_name = str(item.get("source", "")).strip()
-        haystack = f"{title} {item.get('source', '')}".lower()
-        if not any(keyword in haystack for keyword in INJURY_KEYWORDS):
+        if not _contains_injury_signal(title):
             continue
         normalized_title = _normalize_ascii(title).lower()
-        if any(token in normalized_title for token in ignored_title_tokens):
+        if any(token in normalized_title for token in ignored_title_tokens) or _is_non_first_team_news(item):
             continue
         source_tokens = {
             token
@@ -1946,15 +2083,18 @@ def _build_injury_entities(team_name: str, items: list[dict]) -> list[dict]:
                 continue
             if _looks_like_known_team_entity(candidate):
                 continue
-            if _normalize_ascii(candidate).lower().strip() in ignored_people:
+            normalized_candidate = _normalize_ascii(candidate).lower().strip()
+            if normalized_candidate in ignored_people:
+                continue
+            if any(normalized_candidate.startswith(f"{token} ") for token in ignored_people):
+                continue
+            if any(normalized_candidate.endswith(f" {token}") for token in ignored_people):
                 continue
             if candidate_tokens and source_tokens and all(token in source_tokens for token in candidate_tokens):
                 continue
             people.append(candidate)
-        if not people and not _looks_like_hard_signal_news(title, source_name):
-            continue
         if not people:
-            people = [""]
+            continue
         for person in people[:3]:
             entities.append(
                 {
@@ -2313,11 +2453,9 @@ def _monitor_league_label(match: dict) -> str:
         ((match.get("structured_context") or {}).get("event_context") or {}).get("league")
         or ""
     )
-    return (
-        str(match.get("league_name", "")).strip()
-        or str(structured_league).strip()
-        or str(match.get("league", "")).strip()
-        or "-"
+    return _league_display_name(
+        match.get("league", ""),
+        str(match.get("league_name", "")).strip() or str(structured_league).strip(),
     )
 
 
@@ -2398,6 +2536,12 @@ def _monitor_match_payload(match: dict) -> dict:
         },
         "future_home": _monitor_future_summary(match, "home"),
         "future_away": _monitor_future_summary(match, "away"),
+        "history_quality": history.get("table_quality", {}),
+        "availability": {
+            "home": (structured.get("injury_context") or {}).get("home_team", {}),
+            "away": (structured.get("injury_context") or {}).get("away_team", {}),
+        },
+        "context_updated_at": structured.get("updated_at", ""),
         "data_confidence": briefing.get("calidad_datos") or _match_data_confidence(match),
         "briefing_excerpt": _briefing_excerpt_from_dict(briefing),
         "analysis_ready": bool(briefing),
@@ -3629,6 +3773,9 @@ def _github_monitor_upsert(repo_path: str, content: str) -> bool:
 
 
 def _github_monitor_upsert_many(files: list[tuple[str, str]]) -> bool:
+    global MONITOR_GITHUB_API_DISABLED
+    if MONITOR_GITHUB_API_DISABLED:
+        return False
     headers = _monitor_github_headers()
     if not headers or not MONITOR_REPO:
         return False
@@ -3654,6 +3801,14 @@ def _github_monitor_upsert_many(files: list[tuple[str, str]]) -> bool:
     for attempt in range(2):
         try:
             ref_response = requests.get(ref_url, headers=headers, timeout=25)
+            if ref_response.status_code == 404:
+                MONITOR_GITHUB_API_DISABLED = True
+                LOGGER.warning(
+                    "monitor_github_api_disabled repo=%s branch=%s status=404; using_git_fallback",
+                    MONITOR_REPO,
+                    MONITOR_BRANCH,
+                )
+                return False
             ref_response.raise_for_status()
             base_sha = ((ref_response.json() or {}).get("object") or {}).get("sha")
             if not base_sha:
@@ -5058,6 +5213,10 @@ def fetch_focus_team_news(team_name: str) -> dict:
         f'{team_query} descenso OR permanencia OR playoff OR ascenso OR title race OR crisis OR moral OR presion',
         f'{team_query} Champions OR Europa League OR Conference League OR semifinal OR rotaciones OR descanso',
         f'{team_query} convocatoria OR once probable OR probable lineup OR parte medico OR medical update',
+        (
+            f'{team_query} skade OR skadet OR skada OR skadad OR karantene OR avstängd '
+            'OR tropp OR trupp OR trener OR tränare OR pressekonferanse OR presskonferens'
+        ),
     ]
     items = []
     try:
@@ -5151,6 +5310,10 @@ def fetch_match_news(home_team: str, away_team: str) -> dict:
             ),
             f'"{home_team}" "{away_team}" previa OR bajas OR alineacion OR convocatoria OR partido',
             f'"{home_team}" "{away_team}" entrenador OR rueda de prensa OR sancion OR lesion OR duda',
+            (
+                f'"{home_team}" "{away_team}" skade OR skada OR karantene OR avstängd '
+                'OR tropp OR trupp OR før kampen OR inför matchen'
+            ),
         ]
         for query in queries:
             xml_text = _request_text(
@@ -5413,7 +5576,7 @@ def fetch_official_site_headlines(team_name: str, team_api: dict, limit: int = 4
         return {"website": "", "items": []}
     if not website.startswith("http"):
         website = "https://" + website.lstrip("/")
-    cache_key = f"official:v3:{website}"
+    cache_key = f"official:v4:{website}"
     cached = _cache_get(OFFICIAL_SITE_CACHE, cache_key, 12 * 3600)
     if cached:
         return cached
@@ -5426,24 +5589,45 @@ def fetch_official_site_headlines(team_name: str, team_api: dict, limit: int = 4
                 items.extend(_parse_generic_rss(feed_text, default_source="Web oficial"))
             except Exception:
                 continue
-        matches = []
-        if not items:
-            matches = re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', html_text, flags=re.IGNORECASE | re.DOTALL)
-        for href, body in matches:
-            text = html.unescape(re.sub(r"<[^>]+>", " ", body))
-            text = re.sub(r"\s+", " ", text).strip(" -\t\r\n")
-            if len(text) < 25 or len(text) > 140:
+        page_candidates = [(website, html_text)]
+        section_links = []
+        for href, body in re.findall(
+            r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+            html_text,
+            flags=re.IGNORECASE | re.DOTALL,
+        ):
+            label = _normalize_ascii(html.unescape(re.sub(r"<[^>]+>", " ", body))).lower()
+            href_norm = _normalize_ascii(href).lower()
+            if any(token in f"{label} {href_norm}" for token in ["nyheter", "news", "aktuellt", "noticias"]):
+                resolved = href if href.startswith("http") else urllib.parse.urljoin(website, href)
+                if _safe_url_host(resolved) == _safe_url_host(website) and resolved not in section_links:
+                    section_links.append(resolved)
+        for section_url in section_links[:2]:
+            try:
+                page_candidates.append((section_url, _request_text(section_url, timeout=20)))
+            except Exception:
                 continue
-            if _team_relevance_score(text, team_name) <= 0 and not any(
-                token in text.lower() for token in ["coach", "match", "previa", "crónica", "convocatoria", "lesión", "injury"]
-            ):
-                continue
-            link = href if href.startswith("http") else urllib.parse.urljoin(website, href)
-            items.append({"title": text, "link": link, "source": "Web oficial"})
+
+        for page_url, page_html in page_candidates:
+            matches = re.findall(
+                r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+                page_html,
+                flags=re.IGNORECASE | re.DOTALL,
+            )
+            for href, body in matches:
+                text = html.unescape(re.sub(r"<[^>]+>", " ", body))
+                text = re.sub(r"\s+", " ", text).strip(" -\t\r\n")
+                if len(text) < 18 or len(text) > 180:
+                    continue
+                if _signal_strength_score(text, "Web oficial") <= 0:
+                    continue
+                link = href if href.startswith("http") else urllib.parse.urljoin(page_url, href)
+                items.append({"title": text, "link": link, "source": "Web oficial"})
         filtered = [
             item
             for item in _official_predictive_items(items)
-            if _passes_team_news_quality(item, team_name, require_signal=True)
+            if not _is_official_noise_title(str(item.get("title", "")))
+            and _signal_strength_score(str(item.get("title", "")), "Web oficial") > 0
         ]
         items = _clean_news_items(filtered, TEAM_NEWS_MAX_AGE_DAYS, limit)
         deduped = []
@@ -5595,15 +5779,28 @@ def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
         "",
     )
     current_league = str(match.get("league", "")).strip()
+    expected_league_id = LEAGUE_THESPORTSDB_IDS.get(_canonical_league_key(current_league), "")
+    metadata_conflicts = bool(
+        current_league
+        and expected_league_id
+        and league_id
+        and league_id != expected_league_id
+    )
+    if metadata_conflicts:
+        league_key = ""
+        league_name = ""
+        league_id = expected_league_id
     if league_key and (not current_league or current_league.startswith("sportsdb_")):
         match["league"] = league_key
-    if league_name:
-        match["league_name"] = league_name
+    effective_league = str(match.get("league", "")).strip()
+    match["league_name"] = _league_display_name(effective_league, league_name)
     if league_id:
         match["league_id"] = league_id
     if match.get("league") and str(match.get("league", "")).startswith("sportsdb_"):
         match["dynamic_league"] = True
         match["league_source"] = "TheSportsDB"
+    elif effective_league and not match.get("league_source"):
+        match["league_source"] = "TheSportsDB" if league_name and not metadata_conflicts else "league-key"
 
 
 def _event_team_api_if_better(team_name: str, current_api: dict, event_team_name: str, event_league_id: str) -> dict:
@@ -6217,6 +6414,23 @@ def _season_code_for(date_value: datetime | None = None) -> str:
     return f"{start_year % 100:02d}{(start_year + 1) % 100:02d}"
 
 
+CALENDAR_YEAR_LEAGUES = {
+    "soccer_norway_eliteserien",
+    "soccer_sweden_allsvenskan",
+    "soccer_sweden_superettan",
+    "soccer_finland_veikkausliiga",
+    "sportsdb_4358",
+    "sportsdb_4347",
+}
+
+
+def _league_season_code_for(league_key: str, date_value: datetime | None = None) -> str:
+    current = date_value or datetime.now(timezone.utc)
+    if _canonical_league_key(league_key) in CALENDAR_YEAR_LEAGUES:
+        return f"{current.year % 100:02d}{(current.year + 1) % 100:02d}"
+    return _season_code_for(current)
+
+
 def _recent_season_codes(limit: int | None = None) -> list[str]:
     current = datetime.now(timezone.utc)
     start_year = current.year if current.month >= 7 else current.year - 1
@@ -6780,6 +6994,38 @@ def _table_snapshot(rows: list[dict]) -> dict:
     return positions
 
 
+def _table_quality_snapshot(table: dict, home_team: str, away_team: str) -> dict:
+    played_values = sorted(
+        int(row.get("played", 0) or 0)
+        for row in table.values()
+        if int(row.get("played", 0) or 0) > 0
+    )
+    if not played_values:
+        return {"valid": False, "reason": "tabla vacia"}
+    middle = len(played_values) // 2
+    if len(played_values) % 2:
+        median_played = float(played_values[middle])
+    else:
+        median_played = (played_values[middle - 1] + played_values[middle]) / 2.0
+    home_played = int((table.get(home_team) or {}).get("played", 0) or 0)
+    away_played = int((table.get(away_team) or {}).get("played", 0) or 0)
+    minimum_expected = max(1, int(median_played) - 2)
+    valid = bool(
+        len(table) >= 8
+        and home_played >= minimum_expected
+        and away_played >= minimum_expected
+    )
+    return {
+        "valid": valid,
+        "teams": len(table),
+        "median_played": median_played,
+        "minimum_expected": minimum_expected,
+        "home_played": home_played,
+        "away_played": away_played,
+        "reason": "" if valid else "muestra de tabla incompleta para uno o ambos equipos",
+    }
+
+
 def _head_to_head_metrics(rows: list[dict], home_team: str, away_team: str, last_n: int = 10) -> dict:
     meetings = []
     for row in rows:
@@ -6826,11 +7072,16 @@ def _head_to_head_metrics(rows: list[dict], home_team: str, away_team: str, last
     }
 
 
-def _team_history_context(rows: list[dict], team_name: str, kickoff_dt: datetime | None) -> dict:
+def _team_history_context(
+    rows: list[dict],
+    team_name: str,
+    kickoff_dt: datetime | None,
+    season_code: str | None = None,
+) -> dict:
     if not rows:
         return {}
-    season_code = _season_code_for(kickoff_dt or datetime.now(timezone.utc))
-    filtered = _completed_rows_before_kickoff(_season_rows(rows, season_code), kickoff_dt)
+    effective_season_code = season_code or _season_code_for(kickoff_dt or datetime.now(timezone.utc))
+    filtered = _completed_rows_before_kickoff(_season_rows(rows, effective_season_code), kickoff_dt)
     if not filtered:
         return {}
     resolved = _resolve_csv_team_name(team_name, filtered)
@@ -6853,10 +7104,16 @@ def _team_history_context(rows: list[dict], team_name: str, kickoff_dt: datetime
     }
 
 
-def _days_since_last_match(rows: list[dict], team_name: str, kickoff_dt: datetime | None) -> int | None:
+def _days_since_last_match(
+    rows: list[dict],
+    team_name: str,
+    kickoff_dt: datetime | None,
+    season_code: str | None = None,
+) -> int | None:
     if not kickoff_dt:
         return None
-    filtered = _completed_rows_before_kickoff(_season_rows(rows, _season_code_for(kickoff_dt)), kickoff_dt)
+    effective_season_code = season_code or _season_code_for(kickoff_dt)
+    filtered = _completed_rows_before_kickoff(_season_rows(rows, effective_season_code), kickoff_dt)
     relevant = [row for row in filtered if row.get("HomeTeam") == team_name or row.get("AwayTeam") == team_name]
     if not relevant:
         return None
@@ -6867,11 +7124,16 @@ def _days_since_last_match(rows: list[dict], team_name: str, kickoff_dt: datetim
 
 
 def _matches_in_recent_days(
-    rows: list[dict], team_name: str, kickoff_dt: datetime | None, days: int = 14
+    rows: list[dict],
+    team_name: str,
+    kickoff_dt: datetime | None,
+    days: int = 14,
+    season_code: str | None = None,
 ) -> int:
     if not kickoff_dt:
         return 0
-    filtered = _completed_rows_before_kickoff(_season_rows(rows, _season_code_for(kickoff_dt)), kickoff_dt)
+    effective_season_code = season_code or _season_code_for(kickoff_dt)
+    filtered = _completed_rows_before_kickoff(_season_rows(rows, effective_season_code), kickoff_dt)
     window_start = kickoff_dt.timestamp() - days * 86400
     count = 0
     for row in filtered:
@@ -6891,10 +7153,12 @@ def _upcoming_team_fixtures(
     kickoff_dt: datetime | None,
     table_snapshot: dict,
     next_n: int = UPCOMING_FIXTURE_WINDOW,
+    season_code: str | None = None,
 ) -> list[dict]:
     if not kickoff_dt:
         return []
-    season_rows = _season_rows(rows, _season_code_for(kickoff_dt))
+    effective_season_code = season_code or _season_code_for(kickoff_dt)
+    season_rows = _season_rows(rows, effective_season_code)
     fixtures = []
     for row in season_rows:
         parsed_dt = _parse_iso_datetime(row.get("_parsed_date", ""))
@@ -7440,7 +7704,10 @@ def _team_objective_context(
     if primary.get("objective_key") == "survival":
         must_not_lose += 10
         if primary.get("status") == "chasing":
-            must_win += 8
+            early_penalty = 18 if phase_key == "early" else 0
+            deficit_pressure = min(max(margin_value, 0), 6) * 3
+            must_win = 82 + deficit_pressure + phase_bonus - early_penalty
+            must_not_lose = 68 + deficit_pressure + phase_bonus - early_penalty
         if primary.get("status") == "defending":
             position = _safe_int(team_row.get("position"), 99)
             line_position = _safe_int(primary.get("line_position"), 0)
@@ -8160,9 +8427,10 @@ def _enrich_quiniela_match(match: dict) -> None:
     history_context = match.get("history_context") or {}
     league_history_for_schedule = fetch_league_history(match.get("league", ""))
     kickoff_dt = _parse_iso_datetime(match.get("kickoff", ""))
+    schedule_season_code = _league_season_code_for(match.get("league", ""), kickoff_dt)
     season_history_for_schedule = _season_rows(
         league_history_for_schedule,
-        _season_code_for(kickoff_dt),
+        schedule_season_code,
     )
     current_table_snapshot = _table_snapshot(
         _completed_rows_before_kickoff(season_history_for_schedule, kickoff_dt)
@@ -8360,8 +8628,34 @@ def _enrich_quiniela_match(match: dict) -> None:
         match.get("visitante", ""),
         league_history_for_schedule,
     )
-    home_injuries = _build_injury_entities(match["local"], match["home_team_context"].get("news", []))
-    away_injuries = _build_injury_entities(match["visitante"], match["away_team_context"].get("news", []))
+    def _availability_source_items(team_context: dict) -> list[dict]:
+        candidates = []
+        generic_news = team_context.get("news") or {}
+        if isinstance(generic_news, dict):
+            candidates.extend(list(generic_news.get("items") or []))
+        elif isinstance(generic_news, list):
+            candidates.extend(generic_news)
+        for bucket in ("focus_news", "media_news", "official_site"):
+            candidates.extend(list(((team_context.get(bucket) or {}).get("items")) or []))
+        candidates.extend(merged_match_news_items)
+        return _dedupe_news_items(candidates)
+
+    home_availability_items = _availability_source_items(match["home_team_context"])
+    away_availability_items = _availability_source_items(match["away_team_context"])
+    home_injuries = _build_injury_entities(match["local"], home_availability_items)
+    away_injuries = _build_injury_entities(match["visitante"], away_availability_items)
+
+    def _availability_status(items: list[dict], injuries: list[dict]) -> str:
+        if injuries:
+            return "confirmed_absences"
+        checked = any(
+            _contains_any(
+                f"{item.get('title', '')} {item.get('source', '')}",
+                INJURY_KEYWORDS + DISCIPLINE_KEYWORDS + SQUAD_KEYWORDS,
+            )
+            for item in items
+        )
+        return "sources_checked_no_confirmed_absence" if checked else "not_verified"
     structured_context = {
         "match_key": match.get("match_key")
         or _match_key(
@@ -8386,11 +8680,15 @@ def _enrich_quiniela_match(match: dict) -> None:
                 "team": match["local"],
                 "items": home_injuries,
                 "count": len(home_injuries),
+                "verification_status": _availability_status(home_availability_items, home_injuries),
+                "source_items_checked": len(home_availability_items),
             },
             "away_team": {
                 "team": match["visitante"],
                 "items": away_injuries,
                 "count": len(away_injuries),
+                "verification_status": _availability_status(away_availability_items, away_injuries),
+                "source_items_checked": len(away_availability_items),
             },
         },
         "updated_at": _now_iso(),
@@ -8654,10 +8952,63 @@ def _news_signal_count(team_context: dict) -> int:
         total += len(section.get("items") or [])
         signals = section.get("signals") or {}
         total += sum(_safe_int(value, 0) or 0 for value in signals.values())
-    total += len(team_context.get("news") or [])
+    generic_news = team_context.get("news") or {}
+    if isinstance(generic_news, dict):
+        total += len(generic_news.get("items") or [])
+    elif isinstance(generic_news, list):
+        total += len(generic_news)
     official = team_context.get("official_site") or {}
     total += len(official.get("items") or [])
     return total
+
+
+def _qualitative_context_status(match: dict) -> dict:
+    home_context = match.get("home_team_context") or {}
+    away_context = match.get("away_team_context") or {}
+    structured = match.get("structured_context") or {}
+    injury_context = structured.get("injury_context") or {}
+    home_injury = injury_context.get("home_team") or {}
+    away_injury = injury_context.get("away_team") or {}
+    injury_items = list(home_injury.get("items") or []) + list(away_injury.get("items") or [])
+    official_items = (
+        list(((home_context.get("official_site") or {}).get("items")) or [])
+        + list(((away_context.get("official_site") or {}).get("items")) or [])
+    )
+    match_items = list(((match.get("match_news_context") or {}).get("items")) or [])
+    team_items = []
+    for context in (home_context, away_context):
+        for bucket in ("focus_news", "media_news"):
+            team_items.extend(list(((context.get(bucket) or {}).get("items")) or []))
+    availability_items = [
+        item
+        for item in official_items + match_items + team_items
+        if _contains_injury_signal(str(item.get("title", "")))
+        or _contains_any(str(item.get("title", "")), DISCIPLINE_KEYWORDS + SQUAD_KEYWORDS)
+    ]
+    referee = (structured.get("referee_context") or {}).get("assigned_referee")
+    home_status = str(home_injury.get("verification_status", "not_verified"))
+    away_status = str(away_injury.get("verification_status", "not_verified"))
+    verified_teams = sum(status != "not_verified" for status in (home_status, away_status))
+    if verified_teams == 2 and injury_items:
+        roster_status = "confirmed_absences"
+    elif verified_teams == 2:
+        roster_status = "sources_checked_no_confirmed_absence"
+    elif verified_teams == 1:
+        roster_status = "partial_verification"
+    else:
+        roster_status = "not_verified"
+    return {
+        "roster_status": roster_status,
+        "injury_items": len(injury_items),
+        "availability_items": len(availability_items),
+        "official_items": len(official_items),
+        "match_items": len(match_items),
+        "team_items": len(team_items),
+        "verified_teams": verified_teams,
+        "home_roster_status": home_status,
+        "away_roster_status": away_status,
+        "referee_confirmed": bool(referee),
+    }
 
 
 def _match_data_confidence(match: dict) -> dict:
@@ -8671,32 +9022,24 @@ def _match_data_confidence(match: dict) -> dict:
     competition = match.get("competition_context") or {}
     weather = match.get("weather_context") or {}
     travel = match.get("travel_context") or {}
-    home_context = match.get("home_team_context") or {}
-    away_context = match.get("away_team_context") or {}
-    structured = match.get("structured_context") or {}
-    referee = (structured.get("referee_context") or {}).get("assigned_referee")
-    injury_context = structured.get("injury_context") or {}
-    injuries = (
-        len(((injury_context.get("home_team") or {}).get("items")) or [])
-        + len(((injury_context.get("away_team") or {}).get("items")) or [])
-    )
+    qualitative = _qualitative_context_status(match)
 
     score = 0
     strengths: list[str] = []
     missing: list[str] = []
 
     if has_real_odds:
-        score += 40
+        score += 25
         strengths.append("cuotas reales")
     elif has_reference:
-        score += 15
+        score += 10
         strengths.append("referencia 1X2 sin cuotas reales")
         missing.append("cuotas reales")
     else:
         missing.append("cuotas/referencia 1X2")
 
     if has_official:
-        score += 15
+        score += 10
         strengths.append("porcentajes de quiniela")
     else:
         missing.append("porcentajes de quiniela")
@@ -8708,13 +9051,13 @@ def _match_data_confidence(match: dict) -> dict:
         missing.append("liga identificada")
 
     if _safe_float(weather.get("temperature_c")) is not None:
-        score += 8
+        score += 5
         strengths.append("clima")
     else:
         missing.append("clima")
 
     if _safe_float(travel.get("distance_km")) is not None:
-        score += 8
+        score += 5
         strengths.append("viaje")
     else:
         missing.append("viaje")
@@ -8729,24 +9072,45 @@ def _match_data_confidence(match: dict) -> dict:
 
     home_recent = ((history.get("home") or {}).get("recent_all") or {}).get("form")
     away_recent = ((history.get("away") or {}).get("recent_all") or {}).get("form")
-    if home_recent and away_recent:
+    table_quality = history.get("table_quality") or {}
+    if home_recent and away_recent and table_quality.get("valid"):
+        score += 20
+        strengths.append("clasificacion y forma verificadas")
+    elif home_recent and away_recent:
         score += 8
-        strengths.append("forma reciente")
+        strengths.append("forma reciente con tabla no validada")
+        missing.append("clasificacion completa validada")
     else:
-        missing.append("forma reciente")
+        missing.append("clasificacion/forma reciente")
 
     if (history.get("head_to_head") or {}).get("meetings"):
-        score += 7
+        score += 5
         strengths.append("H2H")
     else:
         missing.append("H2H")
 
-    news_total = _news_signal_count(home_context) + _news_signal_count(away_context)
-    if news_total or referee or injuries:
+    if qualitative.get("roster_status") == "confirmed_absences":
+        score += 10
+        strengths.append("bajas verificadas")
+    elif qualitative.get("roster_status") == "sources_checked_no_confirmed_absence":
         score += 7
-        strengths.append("señales cualitativas")
+        strengths.append("plantillas investigadas en fuentes recientes")
+    elif qualitative.get("roster_status") == "partial_verification":
+        score += 4
+        strengths.append("una plantilla investigada en fuentes recientes")
+        missing.append("bajas/convocatorias del otro equipo")
+    elif qualitative.get("team_items") or qualitative.get("match_items"):
+        score += 3
+        strengths.append("noticias de equipo limitadas")
+        missing.append("bajas/convocatorias verificadas")
     else:
-        missing.append("noticias/bajas/árbitro")
+        missing.append("noticias y bajas verificadas")
+
+    if qualitative.get("referee_confirmed"):
+        score += 5
+        strengths.append("arbitro confirmado")
+    else:
+        missing.append("arbitro confirmado")
 
     score = max(0, min(100, score))
     if score >= 70:
@@ -8764,7 +9128,8 @@ def _match_data_confidence(match: dict) -> dict:
         "score": score,
         "resumen": summary,
         "fortalezas": strengths[:6],
-        "faltan": missing[:6],
+        "faltan": missing[:8],
+        "cobertura_cualitativa": qualitative,
     }
 
 
@@ -8844,18 +9209,26 @@ def _focus_match_ai_briefing(match: dict) -> dict:
     referee_name = referee_context.get("assigned_referee", "") or "No confirmado"
     referee_bias = _referee_analysis_summary(referee_analysis) if referee_analysis else "Sin histórico arbitral fiable"
 
-    home_injury_names = [i.get("player", "") for i in home_injuries[:4] if i.get("player")]
-    away_injury_names = [i.get("player", "") for i in away_injuries[:4] if i.get("player")]
+    home_injury_names = [
+        i.get("player_name") or i.get("player", "")
+        for i in home_injuries[:4]
+        if i.get("player_name") or i.get("player")
+    ]
+    away_injury_names = [
+        i.get("player_name") or i.get("player", "")
+        for i in away_injuries[:4]
+        if i.get("player_name") or i.get("player")
+    ]
     home_injury_text = (
         f"{len(home_injuries)} baja(s) detectada(s)"
         + (f": {', '.join(home_injury_names)}" if home_injury_names else "")
         + "."
-    ) if home_injuries else "Sin bajas confirmadas."
+    ) if home_injuries else "Bajas no verificadas; no equivale a plantilla completa."
     away_injury_text = (
         f"{len(away_injuries)} baja(s) detectada(s)"
         + (f": {', '.join(away_injury_names)}" if away_injury_names else "")
         + "."
-    ) if away_injuries else "Sin bajas confirmadas."
+    ) if away_injuries else "Bajas no verificadas; no equivale a plantilla completa."
 
     h2h_text = (
         f"{h2h.get('meetings', 0)} encuentros históricos: "
@@ -9072,6 +9445,25 @@ def _match_richness_score(match: dict) -> int:
 
 def _needs_dynamic_league_revalidation(match: dict) -> bool:
     return str(match.get("league", "")).strip().startswith("sportsdb_")
+
+
+def _active_context_refresh_due(match: dict) -> bool:
+    kickoff = _parse_iso_datetime(str(match.get("kickoff", "")).strip())
+    if not kickoff:
+        return False
+    if kickoff.tzinfo is None:
+        kickoff = kickoff.replace(tzinfo=timezone.utc)
+    now = datetime.now(timezone.utc)
+    if kickoff < now - timedelta(days=2):
+        return False
+    updated_at = _parse_iso_datetime(
+        str(((match.get("structured_context") or {}).get("updated_at") or "")).strip()
+    )
+    if not updated_at:
+        return True
+    if updated_at.tzinfo is None:
+        updated_at = updated_at.replace(tzinfo=timezone.utc)
+    return (now - updated_at).total_seconds() >= ACTIVE_CONTEXT_REFRESH_SECONDS
 
 
 def _apply_quiniela_slot(match: dict, jornada: int, slot: dict) -> None:
@@ -9516,13 +9908,16 @@ def _bootstrap_quiniela_placeholder(
         histories[league_key] = fetch_league_history(league_key)
     league_history = histories.get(league_key, [])
     kickoff_dt = _parse_iso_datetime(match.get("kickoff", ""))
-    season_code = _season_code_for(kickoff_dt or datetime.now(timezone.utc))
+    season_code = _league_season_code_for(
+        league_key,
+        kickoff_dt or datetime.now(timezone.utc),
+    )
     season_history = _season_rows(league_history, season_code)
     completed_history = _completed_rows_before_kickoff(season_history, kickoff_dt)
     all_completed_history = _completed_rows_before_kickoff(league_history, kickoff_dt)
     current_table_snapshot = _table_snapshot(completed_history)
-    home_history = _team_history_context(league_history, home_team, kickoff_dt)
-    away_history = _team_history_context(league_history, away_team, kickoff_dt)
+    home_history = _team_history_context(league_history, home_team, kickoff_dt, season_code)
+    away_history = _team_history_context(league_history, away_team, kickoff_dt, season_code)
     home_resolved_name = home_history.get("resolved_name", home_team)
     away_resolved_name = away_history.get("resolved_name", away_team)
     h2h_history = _head_to_head_metrics(
@@ -9530,10 +9925,14 @@ def _bootstrap_quiniela_placeholder(
         home_resolved_name,
         away_resolved_name,
     )
-    home_rest_days = _days_since_last_match(league_history, home_resolved_name, kickoff_dt)
-    away_rest_days = _days_since_last_match(league_history, away_resolved_name, kickoff_dt)
-    home_recent_matches = _matches_in_recent_days(league_history, home_resolved_name, kickoff_dt, 14)
-    away_recent_matches = _matches_in_recent_days(league_history, away_resolved_name, kickoff_dt, 14)
+    home_rest_days = _days_since_last_match(league_history, home_resolved_name, kickoff_dt, season_code)
+    away_rest_days = _days_since_last_match(league_history, away_resolved_name, kickoff_dt, season_code)
+    home_recent_matches = _matches_in_recent_days(
+        league_history, home_resolved_name, kickoff_dt, 14, season_code
+    )
+    away_recent_matches = _matches_in_recent_days(
+        league_history, away_resolved_name, kickoff_dt, 14, season_code
+    )
 
     home_feed_upcoming = _upcoming_feed_fixtures(
         raw_matches,
@@ -9556,12 +9955,14 @@ def _bootstrap_quiniela_placeholder(
         home_resolved_name,
         kickoff_dt,
         current_table_snapshot,
+        season_code=season_code,
     )
     away_schedule_upcoming = _upcoming_team_fixtures(
         season_history,
         away_resolved_name,
         kickoff_dt,
         current_table_snapshot,
+        season_code=season_code,
     )
     home_espn_upcoming = fetch_espn_team_fixtures(
         home_team,
@@ -9687,6 +10088,12 @@ def _bootstrap_quiniela_placeholder(
     match["weather_context"] = weather
     match["history_context"] = {
         "supported": bool(league_history),
+        "updated_at": _now_iso(),
+        "table_quality": _table_quality_snapshot(
+            current_table_snapshot,
+            home_resolved_name,
+            away_resolved_name,
+        ),
         "home": home_history,
         "away": away_history,
         "head_to_head": h2h_history,
@@ -9957,10 +10364,13 @@ def build_snapshot(raw_matches: list) -> dict:
         away_news = away_context.get("news", {})
 
         league_history = histories.get(league, [])
-        season_code = _season_code_for(kickoff_dt or datetime.now(timezone.utc))
+        season_code = _league_season_code_for(
+            league,
+            kickoff_dt or datetime.now(timezone.utc),
+        )
         season_history = _season_rows(league_history, season_code)
-        home_history = _team_history_context(league_history, home_team, kickoff_dt)
-        away_history = _team_history_context(league_history, away_team, kickoff_dt)
+        home_history = _team_history_context(league_history, home_team, kickoff_dt, season_code)
+        away_history = _team_history_context(league_history, away_team, kickoff_dt, season_code)
         completed_history = _completed_rows_before_kickoff(season_history, kickoff_dt)
         all_completed_history = _completed_rows_before_kickoff(league_history, kickoff_dt)
         current_table_snapshot = _table_snapshot(completed_history)
@@ -9971,19 +10381,25 @@ def build_snapshot(raw_matches: list) -> dict:
             home_resolved_name,
             away_resolved_name,
         )
-        home_rest_days = _days_since_last_match(league_history, home_resolved_name, kickoff_dt)
-        away_rest_days = _days_since_last_match(league_history, away_resolved_name, kickoff_dt)
+        home_rest_days = _days_since_last_match(
+            league_history, home_resolved_name, kickoff_dt, season_code
+        )
+        away_rest_days = _days_since_last_match(
+            league_history, away_resolved_name, kickoff_dt, season_code
+        )
         home_recent_matches = _matches_in_recent_days(
             league_history,
             home_resolved_name,
             kickoff_dt,
             14,
+            season_code,
         )
         away_recent_matches = _matches_in_recent_days(
             league_history,
             away_resolved_name,
             kickoff_dt,
             14,
+            season_code,
         )
         home_feed_upcoming = _upcoming_feed_fixtures(
             raw_matches,
@@ -10006,12 +10422,14 @@ def build_snapshot(raw_matches: list) -> dict:
             home_resolved_name,
             kickoff_dt,
             current_table_snapshot,
+            season_code=season_code,
         )
         away_schedule_upcoming = _upcoming_team_fixtures(
             season_history,
             away_resolved_name,
             kickoff_dt,
             current_table_snapshot,
+            season_code=season_code,
         )
         home_team_api = fetch_the_sportsdb_team(home_team)
         away_team_api = fetch_the_sportsdb_team(away_team)
@@ -10096,6 +10514,8 @@ def build_snapshot(raw_matches: list) -> dict:
             {
                 "match_key": match_key,
                 "league": league,
+                "league_name": _league_display_name(league),
+                "league_source": "odds-snapshot",
                 "local": home_team,
                 "visitante": away_team,
                 "kickoff": kickoff,
@@ -10116,6 +10536,12 @@ def build_snapshot(raw_matches: list) -> dict:
                 "weather_context": weather,
                 "history_context": {
                     "supported": bool(league_history),
+                    "updated_at": _now_iso(),
+                    "table_quality": _table_quality_snapshot(
+                        current_table_snapshot,
+                        home_resolved_name,
+                        away_resolved_name,
+                    ),
                     "home": home_history,
                     "away": away_history,
                     "head_to_head": h2h_history,
@@ -10303,6 +10729,7 @@ def build_snapshot(raw_matches: list) -> dict:
                 competition_context = match.get("competition_context") or {}
                 needs_bootstrap = (
                     _needs_dynamic_league_revalidation(match)
+                    or _active_context_refresh_due(match)
                     or
                     not match.get("league")
                     or not match.get("kickoff")
@@ -10318,6 +10745,7 @@ def build_snapshot(raw_matches: list) -> dict:
                 away_upcoming = competition_context.get("away_upcoming") or []
                 should_refresh = (
                     _needs_dynamic_league_revalidation(match)
+                    or _active_context_refresh_due(match)
                     or
                     not match.get("focus_ai_briefing")
                     or (
@@ -10359,6 +10787,7 @@ def build_snapshot(raw_matches: list) -> dict:
                 competition_context = match.get("competition_context") or {}
                 if (
                     _needs_dynamic_league_revalidation(match)
+                    or _active_context_refresh_due(match)
                     or
                     not match.get("league")
                     or not match.get("kickoff")
@@ -10459,6 +10888,27 @@ def build_snapshot(raw_matches: list) -> dict:
         "structured_focus_matches": len(active_match_keys),
         "structured_teams": len(STRUCTURED_DB.get("teams", {})),
         "structured_referees": len(STRUCTURED_DB.get("referees", {})),
+        "focus_valid_tables": sum(
+            1
+            for match in quiniela_focus_matches
+            if ((match.get("history_context") or {}).get("table_quality") or {}).get("valid")
+        ),
+        "focus_rosters_checked": sum(
+            1
+            for match in quiniela_focus_matches
+            if _qualitative_context_status(match).get("roster_status") != "not_verified"
+        ),
+        "focus_referees_confirmed": sum(
+            1
+            for match in quiniela_focus_matches
+            if _qualitative_context_status(match).get("referee_confirmed")
+        ),
+        "focus_resolved_leagues": sum(
+            1
+            for match in quiniela_focus_matches
+            if _league_display_name(match.get("league", ""), match.get("league_name", ""))
+            not in {"-", "Liga no resuelta"}
+        ),
     }
     source_health = _source_health_summary(competition_headlines)
     coverage.update(source_health)

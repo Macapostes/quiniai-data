@@ -10,7 +10,8 @@ Crear un archivo `.env` junto a `snapshot_worker.py`:
 ```env
 QUINIAI_ADMIN_KEY=tu_admin_key_del_backend
 QUINIAI_BACKEND_URL=https://quiniela-backend-production-cb1a.up.railway.app
-SNAPSHOT_POLL_SECONDS=900
+SNAPSHOT_POLL_SECONDS=21600
+QUINIAI_ACTIVE_CONTEXT_REFRESH_SECONDS=14400
 QUINIAI_DATA_URL=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json
 ```
 
@@ -25,13 +26,13 @@ QUINIAI_DATA_URL=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/
 2. Enriquece cada partido con contexto adicional:
    - noticias recientes por equipo
    - noticias especificas de partido para los 15 focos quiniela
-   - senales de lesiones, rotaciones y disciplina en titulares
+   - senales de lesiones, rotaciones y disciplina en titulares y fuentes oficiales
    - capa estructurada de lesiones por equipo para los 15 focos
    - capa estructurada de arbitros cuando la fuente gratuita lo permite
    - clima previsto
    - contexto geografico y distancia aproximada de viaje
    - perfiles base de equipos via Wikipedia
-   - historicos recientes, forma y H2H en ligas domesticamente soportadas
+   - clasificacion, historicos recientes, forma y H2H en ligas soportadas
    - probabilidades implicitas y overround del mercado
 3. Genera `ia_feed_snapshot.json` en local.
 4. Sube el snapshot al endpoint `/admin/ia-feed` del backend.
@@ -42,6 +43,10 @@ QUINIAI_DATA_URL=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/
 - Monitoriza todos los partidos del feed externo, no solo 15.
 - Marca ademas 15 partidos en `quiniela_focus_matches` para tener un foco tipo quiniela.
 - Ahora mismo combina cuotas, noticias, clima, viajes e historicos cuando la fuente lo soporta.
+- Refresca el contexto de partidos activos aunque ya exista en cache, para evitar
+  clasificaciones y estados competitivos obsoletos.
+- Distingue entre una ausencia verificada y una ausencia no comprobable. La falta
+  de noticias fiables nunca se presenta como plantilla completa.
 - Mantiene una base estructurada local en `cache/structured_context_db.json`.
 - Esa base conserva solo los partidos foco activos y los recientes; los partidos viejos se podan automaticamente.
 
