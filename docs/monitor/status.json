@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-01T13:07:10.151027+00:00",
-  "snapshot_generated_at": "2026-08-01T13:07:08.183353+00:00",
+  "generated_at": "2026-08-01T17:04:03.605072+00:00",
+  "snapshot_generated_at": "2026-08-01T17:04:02.070036+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -22,9 +22,9 @@
   },
   "structured_db_summary": {
     "teams": 124,
-    "matches": 171,
+    "matches": 170,
     "referees": 1,
-    "last_pruned_at": "2026-08-01T13:07:08.181762+00:00"
+    "last_pruned_at": "2026-08-01T17:04:02.068486+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,24 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-07-31T14:53:16.785198+00:00",
-      "finished_at": "2026-07-31T15:07:53.731786+00:00",
-      "ok": true,
-      "duration_seconds": 876.95,
-      "monitored_matches": 67,
-      "tracked_matches": 60,
-      "current_jornada": 75
-    },
-    {
-      "started_at": "2026-07-31T16:53:18.368665+00:00",
-      "finished_at": "2026-07-31T16:56:14.970060+00:00",
-      "ok": true,
-      "duration_seconds": 176.6,
-      "monitored_matches": 67,
-      "tracked_matches": 60,
-      "current_jornada": 75
-    },
     {
       "started_at": "2026-07-31T18:53:19.728288+00:00",
       "finished_at": "2026-07-31T19:08:07.597907+00:00",
@@ -134,6 +116,24 @@
       "finished_at": "2026-08-01T13:07:10.150162+00:00",
       "ok": true,
       "duration_seconds": 818.39,
+      "monitored_matches": 68,
+      "tracked_matches": 60,
+      "current_jornada": 75
+    },
+    {
+      "started_at": "2026-08-01T14:53:32.625634+00:00",
+      "finished_at": "2026-08-01T14:59:36.475741+00:00",
+      "ok": true,
+      "duration_seconds": 363.85,
+      "monitored_matches": 68,
+      "tracked_matches": 60,
+      "current_jornada": 75
+    },
+    {
+      "started_at": "2026-08-01T16:53:34.421473+00:00",
+      "finished_at": "2026-08-01T17:04:03.604213+00:00",
+      "ok": true,
+      "duration_seconds": 629.18,
       "monitored_matches": 68,
       "tracked_matches": 60,
       "current_jornada": 75
@@ -322,13 +322,13 @@
                   "objective_key": "title",
                   "objective_label": "titulo",
                   "status": "chasing",
-                  "urgency": "medium",
-                  "summary": "persigue titulo a 5 pts",
-                  "gap_points": 5,
+                  "urgency": "low",
+                  "summary": "persigue titulo a 8 pts",
+                  "gap_points": 8,
                   "cushion_points": null,
                   "line_position": 1,
-                  "line_points": 36,
-                  "relevance_score": 72.0
+                  "line_points": 39,
+                  "relevance_score": 44.0
                 },
                 {
                   "objective_key": "survival",
@@ -364,9 +364,9 @@
           },
           "travel_km": 296.1,
           "weather": {
-            "temperature_c": 21.7,
-            "precipitation_probability": 4,
-            "wind_speed_kmh": 9.4
+            "temperature_c": 21.6,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 12.2
           },
           "referee": {
             "name": "no confirmado",
@@ -377,7 +377,7 @@
           "history_quality": {
             "valid": true,
             "teams": 12,
-            "median_played": 17.0,
+            "median_played": 17.5,
             "minimum_expected": 15,
             "home_played": 17,
             "away_played": 17,
@@ -399,7 +399,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-01T13:05:18.168138+00:00",
+          "context_updated_at": "2026-08-01T17:01:12.643899+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -458,17 +458,17 @@
           },
           "home_table": {
             "position": 8,
-            "points": 22,
-            "form": "WLWLL"
+            "points": 25,
+            "form": "LWLLW"
           },
           "away_table": {
             "position": 12,
             "points": 5,
-            "form": "LLLLD"
+            "form": "LLLDL"
           },
           "pressure": {
             "home": {
-              "score": 81.6,
+              "score": 81.38,
               "label": "critical",
               "future_difficulty": 100.0,
               "hard_window_matches": 4,
@@ -484,82 +484,77 @@
           },
           "fatigue": {
             "home": {
-              "score": 20.0,
-              "label": "low"
+              "score": 77.0,
+              "label": "high"
             },
             "away": {
-              "score": 21.35,
-              "label": "low"
+              "score": 80.35,
+              "label": "high"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "decisive",
               "label": "tramo decisivo",
-              "played": 17,
+              "played": 18,
               "total_rounds": 22,
-              "progress": 0.773,
+              "progress": 0.818,
               "source": "played_matches"
             },
-            "competitive_stakes_label": "visitante persigue salvacion a 10 pts",
+            "competitive_stakes_label": "local persigue zona alta a 6 pts; visitante persigue salvacion a 10 pts",
             "direct_rivalry": {
               "is_direct_rivalry": false,
-              "direct_rivalry_index": 0,
-              "objective_key": "",
-              "objective_label": "",
-              "points_delta": 17,
-              "position_delta": 4,
-              "label": ""
+              "direct_rivalry_index": 0
             },
             "home_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "low",
-              "summary": "defiende salvacion con 8 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 8,
-              "line_position": 10,
-              "line_points": 15,
-              "relevance_score": 46.0,
-              "must_win_index": 20,
-              "must_not_lose_index": 4,
-              "objective_swing_if_win": 12,
-              "objective_swing_if_lose": 20,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
+              "objective_key": "upper_zone",
+              "objective_label": "zona alta",
+              "status": "chasing",
+              "urgency": "medium",
+              "summary": "persigue zona alta a 6 pts",
+              "gap_points": 6,
+              "cushion_points": null,
+              "line_position": 2,
+              "line_points": 31,
+              "relevance_score": 64.0,
+              "must_win_index": 16,
+              "must_not_lose_index": 28,
+              "objective_swing_if_win": 23,
+              "objective_swing_if_lose": 15,
+              "swing_summary_if_win": "impacto material bajo",
               "swing_summary_if_lose": "impacto material bajo",
               "season_context_phase": {
                 "key": "decisive",
                 "label": "tramo decisivo",
-                "played": 17,
+                "played": 18,
                 "total_rounds": 22,
-                "progress": 0.773,
+                "progress": 0.818,
                 "source": "played_matches"
               },
               "objective_candidates": [
+                {
+                  "objective_key": "upper_zone",
+                  "objective_label": "zona alta",
+                  "status": "chasing",
+                  "urgency": "medium",
+                  "summary": "persigue zona alta a 6 pts",
+                  "gap_points": 6,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 31,
+                  "relevance_score": 64.0
+                },
                 {
                   "objective_key": "survival",
                   "objective_label": "salvacion",
                   "status": "defending",
                   "urgency": "low",
-                  "summary": "defiende salvacion con 8 pts de colchon",
+                  "summary": "defiende salvacion con 11 pts de colchon",
                   "gap_points": null,
-                  "cushion_points": 8,
+                  "cushion_points": 11,
                   "line_position": 10,
                   "line_points": 15,
-                  "relevance_score": 46.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "low",
-                  "summary": "persigue zona alta a 9 pts",
-                  "gap_points": 9,
-                  "cushion_points": null,
-                  "line_position": 2,
-                  "line_points": 31,
-                  "relevance_score": 16.0
+                  "relevance_score": 25.0
                 }
               ]
             },
@@ -583,9 +578,9 @@
               "season_context_phase": {
                 "key": "decisive",
                 "label": "tramo decisivo",
-                "played": 17,
+                "played": 18,
                 "total_rounds": 22,
-                "progress": 0.773,
+                "progress": 0.818,
                 "source": "played_matches"
               },
               "objective_candidates": [
@@ -603,9 +598,9 @@
                 }
               ]
             },
-            "home_must_win_index": 20,
+            "home_must_win_index": 16,
             "away_must_win_index": 100,
-            "home_must_not_lose_index": 4,
+            "home_must_not_lose_index": 28,
             "away_must_not_lose_index": 98,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
@@ -636,10 +631,10 @@
           "history_quality": {
             "valid": true,
             "teams": 12,
-            "median_played": 17.0,
+            "median_played": 17.5,
             "minimum_expected": 15,
-            "home_played": 17,
-            "away_played": 17,
+            "home_played": 18,
+            "away_played": 18,
             "reason": ""
           },
           "availability": {
@@ -658,7 +653,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-01T13:06:31.070808+00:00",
+          "context_updated_at": "2026-08-01T17:01:22.830458+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -688,7 +683,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (60.7%), pero el público de la quiniela lo sobrevalora aún más (73.0%). Hay valor matemático en buscar la sorpresa o el empate. | visitante persigue salvacion a 10 pts | TPS Turku defiende salvacion con 8 pts de colchon en tramo decisivo (must-win 20/100, no perder 4/100). Victoria abre colchon en salvacion. Calendario futuro con 4 rivales del top-6. Urgencia clasificatoria alta, necesitan 14 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (60.7%), pero el público de la quiniela lo sobrevalora aún más (73.0%). Hay valor matemático en buscar la sorpresa o el empate. | local persigue zona alta a 6 pts; visitante persigue salvacion a 10 pts | TPS Turku persigue zona alta a 6 pts en tramo decisivo (must-win 16/100, no perder 28/100). Calendario futuro con 4 rivales del top-6. | Ambos equipos llegan con una carga física similar (High). Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -889,9 +884,9 @@
           },
           "travel_km": 400.1,
           "weather": {
-            "temperature_c": 18.3,
-            "precipitation_probability": 10,
-            "wind_speed_kmh": 9.4
+            "temperature_c": 20.7,
+            "precipitation_probability": 15,
+            "wind_speed_kmh": 6.5
           },
           "referee": {
             "name": "no confirmado",
@@ -902,7 +897,7 @@
           "history_quality": {
             "valid": true,
             "teams": 12,
-            "median_played": 17.0,
+            "median_played": 17.5,
             "minimum_expected": 15,
             "home_played": 17,
             "away_played": 17,
@@ -924,7 +919,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-01T13:06:33.789991+00:00",
+          "context_updated_at": "2026-08-01T17:01:34.723363+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -983,17 +978,17 @@
           },
           "home_table": {
             "position": 7,
-            "points": 22,
-            "form": "DWWWL"
+            "points": 25,
+            "form": "WWWLW"
           },
           "away_table": {
             "position": 10,
             "points": 15,
-            "form": "DLWDW"
+            "form": "LWDWL"
           },
           "pressure": {
             "home": {
-              "score": 78.14,
+              "score": 77.92,
               "label": "critical",
               "future_difficulty": 100.0,
               "hard_window_matches": 3,
@@ -1009,82 +1004,77 @@
           },
           "fatigue": {
             "home": {
-              "score": 20.0,
-              "label": "low"
+              "score": 77.0,
+              "label": "high"
             },
             "away": {
-              "score": 26.4,
-              "label": "low"
+              "score": 85.4,
+              "label": "high"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "decisive",
               "label": "tramo decisivo",
-              "played": 17,
+              "played": 18,
               "total_rounds": 22,
-              "progress": 0.773,
+              "progress": 0.818,
               "source": "played_matches"
             },
-            "competitive_stakes_label": "visitante defiende salvacion con 1 pts de colchon",
+            "competitive_stakes_label": "local persigue zona alta a 6 pts; visitante defiende salvacion con 1 pts de colchon",
             "direct_rivalry": {
               "is_direct_rivalry": false,
-              "direct_rivalry_index": 0,
-              "objective_key": "",
-              "objective_label": "",
-              "points_delta": 7,
-              "position_delta": 3,
-              "label": ""
+              "direct_rivalry_index": 0
             },
             "home_objective": {
-              "objective_key": "survival",
-              "objective_label": "salvacion",
-              "status": "defending",
-              "urgency": "low",
-              "summary": "defiende salvacion con 8 pts de colchon",
-              "gap_points": null,
-              "cushion_points": 8,
-              "line_position": 10,
-              "line_points": 15,
-              "relevance_score": 46.0,
-              "must_win_index": 20,
-              "must_not_lose_index": 4,
-              "objective_swing_if_win": 12,
-              "objective_swing_if_lose": 20,
-              "swing_summary_if_win": "victoria abre colchon en salvacion",
+              "objective_key": "upper_zone",
+              "objective_label": "zona alta",
+              "status": "chasing",
+              "urgency": "medium",
+              "summary": "persigue zona alta a 6 pts",
+              "gap_points": 6,
+              "cushion_points": null,
+              "line_position": 2,
+              "line_points": 31,
+              "relevance_score": 64.0,
+              "must_win_index": 16,
+              "must_not_lose_index": 28,
+              "objective_swing_if_win": 23,
+              "objective_swing_if_lose": 15,
+              "swing_summary_if_win": "impacto material bajo",
               "swing_summary_if_lose": "impacto material bajo",
               "season_context_phase": {
                 "key": "decisive",
                 "label": "tramo decisivo",
-                "played": 17,
+                "played": 18,
                 "total_rounds": 22,
-                "progress": 0.773,
+                "progress": 0.818,
                 "source": "played_matches"
               },
               "objective_candidates": [
+                {
+                  "objective_key": "upper_zone",
+                  "objective_label": "zona alta",
+                  "status": "chasing",
+                  "urgency": "medium",
+                  "summary": "persigue zona alta a 6 pts",
+                  "gap_points": 6,
+                  "cushion_points": null,
+                  "line_position": 2,
+                  "line_points": 31,
+                  "relevance_score": 64.0
+                },
                 {
                   "objective_key": "survival",
                   "objective_label": "salvacion",
                   "status": "defending",
                   "urgency": "low",
-                  "summary": "defiende salvacion con 8 pts de colchon",
+                  "summary": "defiende salvacion con 11 pts de colchon",
                   "gap_points": null,
-                  "cushion_points": 8,
+                  "cushion_points": 11,
                   "line_position": 10,
                   "line_points": 15,
-                  "relevance_score": 46.0
-                },
-                {
-                  "objective_key": "upper_zone",
-                  "objective_label": "zona alta",
-                  "status": "chasing",
-                  "urgency": "low",
-                  "summary": "persigue zona alta a 9 pts",
-                  "gap_points": 9,
-                  "cushion_points": null,
-                  "line_position": 2,
-                  "line_points": 31,
-                  "relevance_score": 16.0
+                  "relevance_score": 25.0
                 }
               ]
             },
@@ -1108,9 +1098,9 @@
               "season_context_phase": {
                 "key": "decisive",
                 "label": "tramo decisivo",
-                "played": 17,
+                "played": 18,
                 "total_rounds": 22,
-                "progress": 0.773,
+                "progress": 0.818,
                 "source": "played_matches"
               },
               "objective_candidates": [
@@ -1128,9 +1118,9 @@
                 }
               ]
             },
-            "home_must_win_index": 20,
+            "home_must_win_index": 16,
             "away_must_win_index": 63,
-            "home_must_not_lose_index": 4,
+            "home_must_not_lose_index": 28,
             "away_must_not_lose_index": 100,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
@@ -1148,9 +1138,9 @@
           },
           "travel_km": 336.0,
           "weather": {
-            "temperature_c": 23.6,
+            "temperature_c": 23.8,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 17.6
+            "wind_speed_kmh": 18.4
           },
           "referee": {
             "name": "no confirmado",
@@ -1161,10 +1151,10 @@
           "history_quality": {
             "valid": true,
             "teams": 12,
-            "median_played": 17.0,
+            "median_played": 17.5,
             "minimum_expected": 15,
-            "home_played": 17,
-            "away_played": 17,
+            "home_played": 18,
+            "away_played": 18,
             "reason": ""
           },
           "availability": {
@@ -1183,7 +1173,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-01T13:06:35.511859+00:00",
+          "context_updated_at": "2026-08-01T17:01:45.192670+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -1213,7 +1203,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (57.5%), pero el público de la quiniela lo sobrevalora aún más (66.0%). Hay valor matemático en buscar la sorpresa o el empate. | visitante defiende salvacion con 1 pts de colchon | FC Lahti defiende salvacion con 8 pts de colchon en tramo decisivo (must-win 20/100, no perder 4/100). Victoria abre colchon en salvacion. Calendario futuro con 3 rivales del top-6. Urgencia clasificatoria alta, necesitan 14 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 8 días vs 6 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (57.5%), pero el público de la quiniela lo sobrevalora aún más (66.0%). Hay valor matemático en buscar la sorpresa o el empate. | local persigue zona alta a 6 pts; visitante defiende salvacion con 1 pts de colchon | FC Lahti persigue zona alta a 6 pts en tramo decisivo (must-win 16/100, no perder 28/100). Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (High). Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -1243,11 +1233,11 @@
           "home_table": {
             "position": 4,
             "points": 28,
-            "form": "DLWWW"
+            "form": "LWWWL"
           },
           "away_table": {
             "position": 1,
-            "points": 36,
+            "points": 39,
             "form": "WWWWW"
           },
           "pressure": {
@@ -1259,7 +1249,7 @@
               "gap_to_drop_zone": 0
             },
             "away": {
-              "score": 81.07,
+              "score": 80.85,
               "label": "critical",
               "future_difficulty": 90.41,
               "hard_window_matches": 3,
@@ -1268,24 +1258,24 @@
           },
           "fatigue": {
             "home": {
-              "score": 11.0,
-              "label": "low"
+              "score": 68.0,
+              "label": "medium"
             },
             "away": {
-              "score": 17.39,
-              "label": "low"
+              "score": 76.39,
+              "label": "high"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "decisive",
               "label": "tramo decisivo",
-              "played": 17,
+              "played": 18,
               "total_rounds": 22,
-              "progress": 0.773,
+              "progress": 0.818,
               "source": "played_matches"
             },
-            "competitive_stakes_label": "local persigue zona alta a 3 pts; visitante defiende titulo con 5 pts de colchon",
+            "competitive_stakes_label": "local persigue zona alta a 3 pts",
             "direct_rivalry": {
               "is_direct_rivalry": false,
               "direct_rivalry_index": 0
@@ -1310,9 +1300,9 @@
               "season_context_phase": {
                 "key": "decisive",
                 "label": "tramo decisivo",
-                "played": 17,
+                "played": 18,
                 "total_rounds": 22,
-                "progress": 0.773,
+                "progress": 0.818,
                 "source": "played_matches"
               },
               "objective_candidates": [
@@ -1327,18 +1317,6 @@
                   "line_position": 2,
                   "line_points": 31,
                   "relevance_score": 94.0
-                },
-                {
-                  "objective_key": "title",
-                  "objective_label": "titulo",
-                  "status": "chasing",
-                  "urgency": "low",
-                  "summary": "persigue titulo a 8 pts",
-                  "gap_points": 8,
-                  "cushion_points": null,
-                  "line_position": 1,
-                  "line_points": 36,
-                  "relevance_score": 44.0
                 },
                 {
                   "objective_key": "survival",
@@ -1358,25 +1336,25 @@
               "objective_key": "title",
               "objective_label": "titulo",
               "status": "defending",
-              "urgency": "medium",
-              "summary": "defiende titulo con 5 pts de colchon",
+              "urgency": "low",
+              "summary": "defiende titulo con 8 pts de colchon",
               "gap_points": null,
-              "cushion_points": 5,
+              "cushion_points": 8,
               "line_position": 1,
-              "line_points": 36,
-              "relevance_score": 66.0,
-              "must_win_index": 35,
-              "must_not_lose_index": 30,
-              "objective_swing_if_win": 27,
-              "objective_swing_if_lose": 35,
+              "line_points": 39,
+              "relevance_score": 38.0,
+              "must_win_index": 20,
+              "must_not_lose_index": 0,
+              "objective_swing_if_win": 12,
+              "objective_swing_if_lose": 20,
               "swing_summary_if_win": "victoria abre colchon en titulo",
               "swing_summary_if_lose": "impacto material bajo",
               "season_context_phase": {
                 "key": "decisive",
                 "label": "tramo decisivo",
-                "played": 17,
+                "played": 18,
                 "total_rounds": 22,
-                "progress": 0.773,
+                "progress": 0.818,
                 "source": "played_matches"
               },
               "objective_candidates": [
@@ -1384,34 +1362,34 @@
                   "objective_key": "title",
                   "objective_label": "titulo",
                   "status": "defending",
-                  "urgency": "medium",
-                  "summary": "defiende titulo con 5 pts de colchon",
+                  "urgency": "low",
+                  "summary": "defiende titulo con 8 pts de colchon",
                   "gap_points": null,
-                  "cushion_points": 5,
+                  "cushion_points": 8,
                   "line_position": 1,
-                  "line_points": 36,
-                  "relevance_score": 66.0
+                  "line_points": 39,
+                  "relevance_score": 38.0
                 },
                 {
                   "objective_key": "upper_zone",
                   "objective_label": "zona alta",
                   "status": "defending",
                   "urgency": "low",
-                  "summary": "defiende zona alta con 8 pts de colchon",
+                  "summary": "defiende zona alta con 11 pts de colchon",
                   "gap_points": null,
-                  "cushion_points": 8,
+                  "cushion_points": 11,
                   "line_position": 2,
                   "line_points": 31,
-                  "relevance_score": 38.0
+                  "relevance_score": 14.0
                 },
                 {
                   "objective_key": "survival",
                   "objective_label": "salvacion",
                   "status": "defending",
                   "urgency": "low",
-                  "summary": "defiende salvacion con 22 pts de colchon",
+                  "summary": "defiende salvacion con 25 pts de colchon",
                   "gap_points": null,
-                  "cushion_points": 22,
+                  "cushion_points": 25,
                   "line_position": 10,
                   "line_points": 15,
                   "relevance_score": 0.0
@@ -1419,9 +1397,9 @@
               ]
             },
             "home_must_win_index": 55,
-            "away_must_win_index": 35,
+            "away_must_win_index": 20,
             "home_must_not_lose_index": 49,
-            "away_must_not_lose_index": 30,
+            "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
@@ -1438,9 +1416,9 @@
           },
           "travel_km": 335.8,
           "weather": {
-            "temperature_c": 22.8,
+            "temperature_c": 22.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 23.0
+            "wind_speed_kmh": 24.1
           },
           "referee": {
             "name": "no confirmado",
@@ -1451,10 +1429,10 @@
           "history_quality": {
             "valid": true,
             "teams": 12,
-            "median_played": 17.0,
+            "median_played": 17.5,
             "minimum_expected": 15,
-            "home_played": 17,
-            "away_played": 17,
+            "home_played": 18,
+            "away_played": 18,
             "reason": ""
           },
           "availability": {
@@ -1473,7 +1451,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-01T13:06:37.100991+00:00",
+          "context_updated_at": "2026-08-01T17:01:55.362055+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -1503,7 +1481,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (43.6%) y el publico de Loterias lo refleja de forma similar (51.0%). Sin gran divergencia entre mercado y quiniela. | local persigue zona alta a 3 pts; visitante defiende titulo con 5 pts de colchon | IF Gnistan persigue zona alta a 3 pts en tramo decisivo (must-win 55/100, no perder 49/100). Victoria le mete de lleno en zona alta. Derrota aleja zona alta. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (43.6%) y el publico de Loterias lo refleja de forma similar (51.0%). Sin gran divergencia entre mercado y quiniela. | local persigue zona alta a 3 pts | IF Gnistan persigue zona alta a 3 pts en tramo decisivo (must-win 55/100, no perder 49/100). Victoria le mete de lleno en zona alta. Derrota aleja zona alta. Calendario futuro con 1 rivales del top-6. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -1709,9 +1687,9 @@
           },
           "travel_km": 42.6,
           "weather": {
-            "temperature_c": 19.0,
+            "temperature_c": 19.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 24.5
+            "wind_speed_kmh": 24.8
           },
           "referee": {
             "name": "no confirmado",
@@ -1744,7 +1722,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-01T12:56:48.876109+00:00",
+          "context_updated_at": "2026-08-01T16:56:25.144172+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -1987,9 +1965,9 @@
           },
           "travel_km": 160.0,
           "weather": {
-            "temperature_c": 20.2,
-            "precipitation_probability": 98,
-            "wind_speed_kmh": 21.2
+            "temperature_c": 17.5,
+            "precipitation_probability": 90,
+            "wind_speed_kmh": 20.9
           },
           "referee": {
             "name": "no confirmado",
@@ -2022,7 +2000,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-01T12:56:50.283629+00:00",
+          "context_updated_at": "2026-08-01T16:56:30.473771+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 92,
@@ -2292,7 +2270,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-08-01T13:06:41.776341+00:00",
+          "context_updated_at": "2026-08-01T17:02:00.424680+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -2563,7 +2541,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-01T12:56:53.050150+00:00",
+          "context_updated_at": "2026-08-01T16:56:38.708164+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -2806,9 +2784,9 @@
           },
           "travel_km": 981.7,
           "weather": {
-            "temperature_c": 12.4,
+            "temperature_c": 11.7,
             "precipitation_probability": 100,
-            "wind_speed_kmh": 26.3
+            "wind_speed_kmh": 27.0
           },
           "referee": {
             "name": "no confirmado",
@@ -2841,7 +2819,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-01T12:56:51.700759+00:00",
+          "context_updated_at": "2026-08-01T16:56:32.785426+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -3112,7 +3090,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-01T12:56:56.361717+00:00",
+          "context_updated_at": "2026-08-01T16:56:50.390794+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -3378,7 +3356,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-08-01T12:57:00.192778+00:00",
+          "context_updated_at": "2026-08-01T16:56:59.054362+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -3706,7 +3684,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-08-01T12:57:01.449916+00:00",
+          "context_updated_at": "2026-08-01T16:57:08.749029+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 95,
@@ -3971,7 +3949,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-01T12:57:03.114152+00:00",
+          "context_updated_at": "2026-08-01T16:57:18.838570+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -4230,10 +4208,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-01T12:57:24.227462+00:00",
+          "context_updated_at": "2026-08-01T16:57:28.148244+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 77,
@@ -4254,10 +4232,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 6,
+              "availability_items": 4,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 6,
+              "team_items": 4,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -4512,7 +4490,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-01T12:56:58.926507+00:00",
+          "context_updated_at": "2026-08-01T16:56:51.788942+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 79,
@@ -4745,7 +4723,7 @@
           "travel_km": 838.0,
           "weather": {
             "temperature_c": 16.3,
-            "precipitation_probability": 3,
+            "precipitation_probability": 23,
             "wind_speed_kmh": 15.3
           },
           "referee": {
@@ -4779,22 +4757,23 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-08-01T09:01:28.421985+00:00",
+          "context_updated_at": "2026-08-01T16:59:36.869749+00:00",
           "data_confidence": {
             "nivel": "media",
-            "score": 57,
+            "score": 47,
             "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
               "clasificacion y forma verificadas",
-              "H2H"
+              "H2H",
+              "plantillas investigadas en fuentes recientes"
             ],
             "faltan": [
               "cuotas/referencia 1X2",
               "porcentajes de quiniela",
+              "calendario próximo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
@@ -4810,7 +4789,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | visitante defiende titulo con 1 pts de colchon | VALERENGA defiende salvacion con 8 pts de colchon en tramo medio (must-win 8/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario futuro con 3 rivales del top-6. Nivel de urgencia bajo (+8 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | visitante defiende titulo con 1 pts de colchon | VALERENGA defiende salvacion con 8 pts de colchon en tramo medio (must-win 8/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Nivel de urgencia bajo (+8 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -5824,7 +5803,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-01T13:01:09.890351+00:00",
+          "context_updated_at": "2026-08-01T16:59:38.335598+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 54,
@@ -6138,17 +6117,17 @@
           },
           "pressure": {
             "home": {
-              "score": 58.03,
-              "label": "high",
-              "future_difficulty": 66.06,
-              "hard_window_matches": 2,
+              "score": 53.75,
+              "label": "medium",
+              "future_difficulty": 66.95,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": 0
             },
             "away": {
-              "score": 64.25,
+              "score": 60.48,
               "label": "high",
-              "future_difficulty": 96.99,
-              "hard_window_matches": 4,
+              "future_difficulty": 100.0,
+              "hard_window_matches": 3,
               "gap_to_drop_zone": 12
             }
           },
@@ -6308,8 +6287,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Brommapojkarna (12º) | casa vs Halmstad (16º) | fuera vs IFK Göteborg (13º) | casa vs Hammarby (2º) | fuera vs Malmö (8º)",
-          "future_away": "fuera vs Djurgården (4º) | casa vs Hammarby (2º) | fuera vs Malmö (8º) | casa vs Västerås (5º) | casa vs Mjällby (10º)",
+          "future_home": "fuera vs Brommapojkarna (12º) | casa vs Halmstad (16º) | fuera vs IFK Göteborg (13º) | casa vs Hammarby (2º)",
+          "future_away": "fuera vs Djurgården (4º) | casa vs Hammarby (2º) | fuera vs Malmö (8º) | casa vs Mjällby (10º)",
           "history_quality": {
             "valid": true,
             "teams": 16,
@@ -6395,10 +6374,10 @@
           },
           "pressure": {
             "home": {
-              "score": 60.82,
-              "label": "high",
-              "future_difficulty": 98.5,
-              "hard_window_matches": 4,
+              "score": 53.86,
+              "label": "medium",
+              "future_difficulty": 88.25,
+              "hard_window_matches": 3,
               "gap_to_drop_zone": 7
             },
             "away": {
@@ -6565,7 +6544,7 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Sirius (1º) | fuera vs Djurgården (4º) | casa vs IFK Göteborg (13º) | fuera vs Häcken (3º) | fuera vs AIK (6º)",
+          "future_home": "casa vs Sirius (1º) | fuera vs Djurgården (4º) | casa vs IFK Göteborg (13º) | fuera vs AIK (6º) | casa vs Degerfors (14º)",
           "future_away": "casa vs Västerås (5º) | fuera vs IFK Göteborg (13º) | casa vs Degerfors (14º) | fuera vs Brommapojkarna (12º) | casa vs Kalmar (11º)",
           "history_quality": {
             "valid": true,
@@ -6853,7 +6832,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-01T13:02:32.629727+00:00",
+          "context_updated_at": "2026-08-01T17:01:01.069406+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 44,
@@ -6913,17 +6892,17 @@
           },
           "pressure": {
             "home": {
-              "score": 21.04,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 56.1,
+              "label": "high",
+              "future_difficulty": 89.82,
+              "hard_window_matches": 3,
               "gap_to_drop_zone": 10
             },
             "away": {
-              "score": 34.22,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 59.7,
+              "label": "high",
+              "future_difficulty": 68.68,
+              "hard_window_matches": 2,
               "gap_to_drop_zone": 0
             }
           },
@@ -7083,8 +7062,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
+          "future_home": "fuera vs GAIS (9º) | casa vs Djurgården (4º) | fuera vs Sirius (1º) | casa vs AIK (6º) | casa vs Örgryte (15º)",
+          "future_away": "casa vs IFK Göteborg (13º) | fuera vs Brommapojkarna (12º) | fuera vs Elfsborg (7º) | casa vs Halmstad (16º) | fuera vs Sirius (1º)",
           "history_quality": {
             "valid": true,
             "teams": 16,
@@ -7110,7 +7089,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-08-01T13:03:05.031903+00:00",
+          "context_updated_at": "2026-08-01T14:58:19.879596+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 44,
@@ -7170,17 +7149,17 @@
           },
           "pressure": {
             "home": {
-              "score": 44.6,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 64.91,
+              "label": "high",
+              "future_difficulty": 65.91,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": -3
             },
             "away": {
-              "score": 20.0,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 60.54,
+              "label": "high",
+              "future_difficulty": 93.93,
+              "hard_window_matches": 4,
               "gap_to_drop_zone": 10
             }
           },
@@ -7340,8 +7319,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
+          "future_home": "fuera vs Häcken (3º) | fuera vs Örgryte (15º) | casa vs Kalmar (11º) | fuera vs Degerfors (14º) | fuera vs IFK Göteborg (13º)",
+          "future_away": "casa vs Malmö (8º) | fuera vs Hammarby (2º) | casa vs Brommapojkarna (12º) | casa vs Häcken (3º) | fuera vs Djurgården (4º)",
           "history_quality": {
             "valid": true,
             "teams": 16,
@@ -7367,7 +7346,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-01T13:04:07.692083+00:00",
+          "context_updated_at": "2026-08-01T14:58:22.716920+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 47,
