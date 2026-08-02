@@ -1,0 +1,51 @@
+name: Control seguro de pushes de partidos
+
+on:
+  workflow_dispatch:
+    inputs:
+      accion:
+        description: "Acción sobre las notificaciones de partidos"
+        required: true
+        type: choice
+        options:
+          - desactivar
+          - reactivar
+      motivo:
+        description: "Motivo para la auditoría"
+        required: false
+        default: "Control desde el dashboard QuiniAI"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  control:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validar configuración
+        env:
+          QUINIAI_ADMIN_KEY: ${{ secrets.QUINIAI_ADMIN_KEY }}
+          QUINIAI_BACKEND_URL: ${{ secrets.QUINIAI_BACKEND_URL }}
+        run: |
+          test -n "$QUINIAI_ADMIN_KEY"
+          test -n "$QUINIAI_BACKEND_URL"
+
+      - name: Aplicar control de pushes
+        env:
+          QUINIAI_ADMIN_KEY: ${{ secrets.QUINIAI_ADMIN_KEY }}
+          QUINIAI_BACKEND_URL: ${{ secrets.QUINIAI_BACKEND_URL }}
+          ACTION: ${{ inputs.accion }}
+          REASON: ${{ inputs.motivo }}
+        run: |
+          if [ "$ACTION" = "desactivar" ]; then ENABLED=false; else ENABLED=true; fi
+          export ENABLED
+          python - <<'PY' > payload.json
+          import json, os
+          print(json.dumps({"enabled": os.environ["ENABLED"] == "true", "motivo": os.environ.get("REASON") or "Control desde GitHub Actions"}))
+          PY
+          curl --fail-with-body --silent --show-error \
+            -X POST "${QUINIAI_BACKEND_URL}/admin/push-control/partidos" \
+            -H "Content-Type: application/json" \
+            -H "x-admin-key: ${QUINIAI_ADMIN_KEY}" \
+            --data @payload.json
