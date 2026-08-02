@@ -4,10 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       accion:
-        description: "Acción sobre las notificaciones de partidos"
+        description: "Deja 'sin_cambios' si solo estás consultando el panel"
         required: true
         type: choice
+        default: sin_cambios
         options:
+          - sin_cambios
           - desactivar
           - reactivar
       motivo:
@@ -38,6 +40,10 @@ jobs:
           ACTION: ${{ inputs.accion }}
           REASON: ${{ inputs.motivo }}
         run: |
+          if [ "$ACTION" = "sin_cambios" ]; then
+            echo "Sin cambios solicitados. El estado actual se consulta en el dashboard."
+            exit 0
+          fi
           if [ "$ACTION" = "desactivar" ]; then ENABLED=false; else ENABLED=true; fi
           export ENABLED
           python - <<'PY' > payload.json
