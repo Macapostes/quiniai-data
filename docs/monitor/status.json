@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-08-04T11:02:31.478801+00:00",
-  "snapshot_generated_at": "2026-08-04T11:02:29.430116+00:00",
+  "generated_at": "2026-08-04T15:08:41.504255+00:00",
+  "snapshot_generated_at": "2026-08-04T15:08:39.198576+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
   "coverage": {
-    "monitored_matches": 84,
+    "monitored_matches": 89,
     "focus_matches": 15,
     "tracked_quiniela_matches": 60,
     "quiniela_jornadas": 4,
     "quiniela_current_jornada": 76,
     "quiniela_latest_available_jornada": 76,
-    "weather_matches": 76,
-    "travel_matches": 67,
-    "history_matches": 69,
-    "sources_total": 9,
-    "sources_ok": 9,
+    "weather_matches": 77,
+    "travel_matches": 69,
+    "history_matches": 74,
+    "sources_total": 12,
+    "sources_ok": 12,
     "fresh_headlines": 12,
     "structured_focus_matches": 60,
     "structured_referees": 0
@@ -24,7 +24,7 @@
     "teams": 122,
     "matches": 173,
     "referees": 0,
-    "last_pruned_at": "2026-08-04T11:02:29.427677+00:00"
+    "last_pruned_at": "2026-08-04T15:08:39.196300+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,24 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-08-03T12:53:59.489848+00:00",
-      "finished_at": "2026-08-03T12:59:13.071311+00:00",
-      "ok": true,
-      "duration_seconds": 313.58,
-      "monitored_matches": 84,
-      "tracked_matches": 60,
-      "current_jornada": 76
-    },
-    {
-      "started_at": "2026-08-03T14:54:00.691753+00:00",
-      "finished_at": "2026-08-03T15:05:48.762865+00:00",
-      "ok": true,
-      "duration_seconds": 708.07,
-      "monitored_matches": 84,
-      "tracked_matches": 60,
-      "current_jornada": 76
-    },
     {
       "started_at": "2026-08-03T16:54:02.247969+00:00",
       "finished_at": "2026-08-03T16:58:47.019435+00:00",
@@ -137,6 +119,24 @@
       "monitored_matches": 84,
       "tracked_matches": 60,
       "current_jornada": 76
+    },
+    {
+      "started_at": "2026-08-04T12:54:13.960197+00:00",
+      "finished_at": "2026-08-04T12:59:18.181336+00:00",
+      "ok": true,
+      "duration_seconds": 304.22,
+      "monitored_matches": 89,
+      "tracked_matches": 60,
+      "current_jornada": 76
+    },
+    {
+      "started_at": "2026-08-04T14:54:14.792807+00:00",
+      "finished_at": "2026-08-04T15:08:41.503308+00:00",
+      "ok": true,
+      "duration_seconds": 866.71,
+      "monitored_matches": 89,
+      "tracked_matches": 60,
+      "current_jornada": 76
     }
   ],
   "public_jornadas": [
@@ -185,17 +185,17 @@
           },
           "pressure": {
             "home": {
-              "score": 64.07,
-              "label": "high",
-              "future_difficulty": 93.19,
-              "hard_window_matches": 4,
+              "score": 23.7,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 3
             },
             "away": {
-              "score": 54.29,
-              "label": "medium",
-              "future_difficulty": 75.54,
-              "hard_window_matches": 3,
+              "score": 22.66,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 3
             }
           },
@@ -360,8 +360,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Sarpsborg 08 (7º) | casa vs Brann (6º) | casa vs Viking (2º) | fuera vs Bodø/Glimt (1º) | casa vs Start (16º)",
-          "future_away": "casa vs Lillestrøm (4º) | fuera vs Start (16º) | fuera vs Molde (5º) | casa vs Aalesund (14º) | fuera vs Sarpsborg 08 (7º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 16,
@@ -376,8 +376,8 @@
               "team": "Sandefjord",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "verification_status": "not_verified",
+              "source_items_checked": 1
             },
             "away": {
               "team": "KFUM",
@@ -387,10 +387,10 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T10:57:56.249120+00:00",
+          "context_updated_at": "2026-08-04T15:03:26.587699+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 89,
+            "score": 75,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -398,26 +398,27 @@
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo"
+              "clasificacion y forma verificadas"
             ],
             "faltan": [
-              "bajas/convocatorias del otro equipo",
+              "calendario próximo",
+              "noticias y bajas verificadas",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "partial_verification",
+              "roster_status": "not_verified",
               "injury_items": 0,
-              "availability_items": 1,
+              "availability_items": 0,
               "official_items": 1,
               "match_items": 0,
-              "team_items": 1,
-              "verified_teams": 1,
-              "home_roster_status": "sources_checked_no_confirmed_absence",
+              "team_items": 0,
+              "verified_teams": 0,
+              "home_roster_status": "not_verified",
               "away_roster_status": "not_verified",
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (45.2%) y el publico de Loterias lo refleja de forma similar (50.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 0 pts y 1 puestos. | Sandefjord defiende salvacion con 3 pts de colchon en tramo medio (must-win 33/100, no perder 52/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario futuro con 3 rivales del top-6. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 5 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (45.2%) y el publico de Loterias lo refleja de forma similar (50.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 0 pts y 1 puestos. | Sandefjord defiende salvacion con 3 pts de colchon en tramo medio (must-win 33/100, no perder 52/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario próximo equilibrado, sin presión de conservar fuerzas. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 5 días).",
           "analysis_ready": true
         },
         {
@@ -456,17 +457,17 @@
           },
           "pressure": {
             "home": {
-              "score": 52.67,
-              "label": "medium",
-              "future_difficulty": 79.87,
-              "hard_window_matches": 3,
+              "score": 20.0,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 8
             },
             "away": {
-              "score": 47.44,
-              "label": "medium",
-              "future_difficulty": 66.31,
-              "hard_window_matches": 1,
+              "score": 27.02,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 26
             }
           },
@@ -638,8 +639,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Aalesund (14º) | casa vs Molde (5º) | fuera vs Sarpsborg 08 (7º) | fuera vs Lillestrøm (4º) | casa vs Fredrikstad (11º)",
-          "future_away": "casa vs Rosenborg (10º) | fuera vs Fredrikstad (11º) | casa vs Sandefjord (12º) | fuera vs Brann (6º) | casa vs Kristiansund (15º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 16,
@@ -665,10 +666,10 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-04T10:58:07.232770+00:00",
+          "context_updated_at": "2026-08-04T15:03:29.251168+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 89,
+            "score": 79,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -676,9 +677,10 @@
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo"
+              "clasificacion y forma verificadas"
             ],
             "faltan": [
+              "calendario próximo",
               "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
@@ -695,7 +697,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (66.1%), pero el publico de Loterias lo infravalora (49.0%). El favorito podría estar infravalorado en la quiniela. | visitante defiende titulo con 1 pts de colchon | Vålerenga defiende salvacion con 8 pts de colchon en tramo medio (must-win 8/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario futuro con 2 rivales del top-6. Nivel de urgencia bajo (+8 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 8 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (66.1%), pero el publico de Loterias lo infravalora (49.0%). El favorito podría estar infravalorado en la quiniela. | visitante defiende titulo con 1 pts de colchon | Vålerenga defiende salvacion con 8 pts de colchon en tramo medio (must-win 8/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Nivel de urgencia bajo (+8 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 8 días).",
           "analysis_ready": true
         },
         {
@@ -908,9 +910,9 @@
           },
           "travel_km": 308.7,
           "weather": {
-            "temperature_c": 17.3,
-            "precipitation_probability": 51,
-            "wind_speed_kmh": 23.8
+            "temperature_c": 17.2,
+            "precipitation_probability": 53,
+            "wind_speed_kmh": 15.3
           },
           "referee": {
             "name": "no confirmado",
@@ -940,13 +942,13 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 3
+              "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T11:00:44.189829+00:00",
+          "context_updated_at": "2026-08-04T15:03:53.555212+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 85,
+            "score": 75,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -954,9 +956,10 @@
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo"
+              "clasificacion y forma verificadas"
             ],
             "faltan": [
+              "calendario próximo",
               "noticias y bajas verificadas",
               "arbitro confirmado"
             ],
@@ -964,7 +967,7 @@
               "roster_status": "not_verified",
               "injury_items": 0,
               "availability_items": 0,
-              "official_items": 3,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 0,
               "verified_teams": 0,
@@ -973,7 +976,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (69.0%) y el publico de Loterias lo refleja de forma similar (61.0%). Sin gran divergencia entre mercado y quiniela. | local persigue titulo a 1 pts | Viking FK persigue titulo a 1 pts en tramo medio (must-win 69/100, no perder 51/100). Victoria supera linea de titulo. Derrota aleja titulo. Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (69.0%) y el publico de Loterias lo refleja de forma similar (61.0%). Sin gran divergencia entre mercado y quiniela. | local persigue titulo a 1 pts | Viking FK persigue titulo a 1 pts en tramo medio (must-win 69/100, no perder 51/100). Victoria supera linea de titulo. Derrota aleja titulo. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -1214,7 +1217,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T10:58:11.183412+00:00",
+          "context_updated_at": "2026-08-04T15:00:20.270620+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -1480,7 +1483,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T10:58:16.908027+00:00",
+          "context_updated_at": "2026-08-04T15:03:55.074447+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -1717,8 +1720,8 @@
           "travel_km": 319.5,
           "weather": {
             "temperature_c": 19.0,
-            "precipitation_probability": 18,
-            "wind_speed_kmh": 21.6
+            "precipitation_probability": 33,
+            "wind_speed_kmh": 16.5
           },
           "referee": {
             "name": "no confirmado",
@@ -1751,7 +1754,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-04T11:00:45.356225+00:00",
+          "context_updated_at": "2026-08-04T15:03:56.236773+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -1794,14 +1797,14 @@
           "kickoff": "2026-08-09T17:15:00Z",
           "bookmaker": "Unibet (FR)",
           "odds": {
-            "1": 3.9,
-            "X": 3.5,
-            "2": 1.67
+            "1": 4.1,
+            "X": 3.65,
+            "2": 1.66
           },
           "normalized_percent": {
-            "1": 22.47,
-            "X": 25.04,
-            "2": 52.48
+            "1": 21.77,
+            "X": 24.46,
+            "2": 53.77
           },
           "official_percent": {
             "1": 28.0,
@@ -1982,9 +1985,9 @@
           },
           "travel_km": 50.5,
           "weather": {
-            "temperature_c": 15.4,
-            "precipitation_probability": 67,
-            "wind_speed_kmh": 15.1
+            "temperature_c": 19.4,
+            "precipitation_probability": 63,
+            "wind_speed_kmh": 6.6
           },
           "referee": {
             "name": "no confirmado",
@@ -2017,7 +2020,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-04T10:58:27.430662+00:00",
+          "context_updated_at": "2026-08-04T15:01:21.829406+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -2047,7 +2050,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (52.5%) y el publico de Loterias lo refleja de forma similar (47.0%). Sin gran divergencia entre mercado y quiniela. | local persigue salvacion a 1 pts | Kristiansund BK persigue salvacion a 1 pts en tramo medio (must-win 85/100, no perder 71/100). Victoria supera linea de salvacion. Derrota aleja salvacion. Calendario futuro con 2 rivales del top-6. Urgencia clasificatoria alta, necesitan 1 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (53.8%) y el publico de Loterias lo refleja de forma similar (47.0%). Sin gran divergencia entre mercado y quiniela. | local persigue salvacion a 1 pts | Kristiansund BK persigue salvacion a 1 pts en tramo medio (must-win 85/100, no perder 71/100). Victoria supera linea de salvacion. Derrota aleja salvacion. Calendario futuro con 2 rivales del top-6. Urgencia clasificatoria alta, necesitan 1 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -2060,14 +2063,14 @@
           "kickoff": "2026-08-08T13:00:00Z",
           "bookmaker": "LeoVegas (SE)",
           "odds": {
-            "1": 3.35,
+            "1": 3.0,
             "X": 3.55,
-            "2": 2.02
+            "2": 2.18
           },
           "normalized_percent": {
-            "1": 27.76,
-            "X": 26.2,
-            "2": 46.04
+            "1": 31.04,
+            "X": 26.23,
+            "2": 42.72
           },
           "official_percent": {
             "1": 32.0,
@@ -2283,7 +2286,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T10:58:57.508194+00:00",
+          "context_updated_at": "2026-08-04T15:01:23.438915+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -2313,7 +2316,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (46.0%) y el publico de Loterias lo refleja de forma similar (43.0%). Sin gran divergencia entre mercado y quiniela. | local defiende salvacion con 3 pts de colchon; visitante persigue zona alta a 4 pts | Örgryte IS defiende salvacion con 3 pts de colchon en tramo medio (must-win 41/100, no perder 74/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario futuro con 2 rivales del top-6. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (42.7%) y el publico de Loterias lo refleja de forma similar (43.0%). Sin gran divergencia entre mercado y quiniela. | local defiende salvacion con 3 pts de colchon; visitante persigue zona alta a 4 pts | Örgryte IS defiende salvacion con 3 pts de colchon en tramo medio (must-win 41/100, no perder 74/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario futuro con 2 rivales del top-6. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -2326,14 +2329,14 @@
           "kickoff": "2026-08-08T15:30:00Z",
           "bookmaker": "Unibet (SE)",
           "odds": {
-            "1": 2.05,
-            "X": 3.6,
-            "2": 3.85
+            "1": 2.35,
+            "X": 3.35,
+            "2": 3.2
           },
           "normalized_percent": {
-            "1": 47.58,
-            "X": 27.09,
-            "2": 25.33
+            "1": 41.05,
+            "X": 28.8,
+            "2": 30.15
           },
           "official_percent": {
             "1": 45.0,
@@ -2549,7 +2552,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T10:59:08.019670+00:00",
+          "context_updated_at": "2026-08-04T15:01:26.309023+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -2579,7 +2582,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (47.6%) y el publico de Loterias lo refleja de forma similar (45.0%). Sin gran divergencia entre mercado y quiniela. | visitante persigue zona alta a 5 pts | Mjällby AIF defiende salvacion con 7 pts de colchon en tramo medio (must-win 13/100, no perder 4/100). Victoria abre colchon en salvacion. Calendario futuro con 4 rivales del top-6. Nivel de urgencia bajo (+7 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (41.0%) y el publico de Loterias lo refleja de forma similar (45.0%). Sin gran divergencia entre mercado y quiniela. | visitante persigue zona alta a 5 pts | Mjällby AIF defiende salvacion con 7 pts de colchon en tramo medio (must-win 13/100, no perder 4/100). Victoria abre colchon en salvacion. Calendario futuro con 4 rivales del top-6. Nivel de urgencia bajo (+7 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -2785,9 +2788,9 @@
           },
           "travel_km": 409.5,
           "weather": {
-            "temperature_c": 20.1,
-            "precipitation_probability": 6,
-            "wind_speed_kmh": 14.9
+            "temperature_c": 19.7,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 13.1
           },
           "referee": {
             "name": "no confirmado",
@@ -2820,7 +2823,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T11:00:45.943626+00:00",
+          "context_updated_at": "2026-08-04T15:03:57.347130+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 75,
@@ -2864,14 +2867,14 @@
           "kickoff": "2026-08-09T12:00:00Z",
           "bookmaker": "Unibet (SE)",
           "odds": {
-            "1": 1.53,
-            "X": 4.6,
-            "2": 6.5
+            "1": 1.47,
+            "X": 4.8,
+            "2": 7.5
           },
           "normalized_percent": {
-            "1": 63.78,
-            "X": 21.21,
-            "2": 15.01
+            "1": 66.57,
+            "X": 20.39,
+            "2": 13.05
           },
           "official_percent": {
             "1": 62.0,
@@ -3052,9 +3055,9 @@
           },
           "travel_km": 412.8,
           "weather": {
-            "temperature_c": 21.4,
-            "precipitation_probability": 1,
-            "wind_speed_kmh": 20.5
+            "temperature_c": 21.8,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 21.9
           },
           "referee": {
             "name": "no confirmado",
@@ -3087,7 +3090,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-04T10:59:39.743690+00:00",
+          "context_updated_at": "2026-08-04T15:01:34.387603+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 92,
@@ -3116,7 +3119,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (63.8%) y el publico de Loterias lo refleja de forma similar (62.0%). Sin gran divergencia entre mercado y quiniela. | local persigue zona alta a 3 pts; visitante persigue salvacion a 3 pts | Malmo FF persigue zona alta a 3 pts en tramo medio (must-win 43/100, no perder 37/100). Victoria le mete de lleno en zona alta. Derrota aleja zona alta. Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (66.6%) y el publico de Loterias lo refleja de forma similar (62.0%). Sin gran divergencia entre mercado y quiniela. | local persigue zona alta a 3 pts; visitante persigue salvacion a 3 pts | Malmo FF persigue zona alta a 3 pts en tramo medio (must-win 43/100, no perder 37/100). Victoria le mete de lleno en zona alta. Derrota aleja zona alta. Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -3129,14 +3132,14 @@
           "kickoff": "2026-08-09T14:30:00Z",
           "bookmaker": "LeoVegas (SE)",
           "odds": {
-            "1": 4.2,
-            "X": 3.6,
-            "2": 1.8
+            "1": 5.1,
+            "X": 3.9,
+            "2": 1.61
           },
           "normalized_percent": {
-            "1": 22.22,
-            "X": 25.93,
-            "2": 51.85
+            "1": 18.26,
+            "X": 23.88,
+            "2": 57.85
           },
           "official_percent": {
             "1": 30.0,
@@ -3349,10 +3352,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 1
+              "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-04T10:59:48.453195+00:00",
+          "context_updated_at": "2026-08-04T15:01:39.943514+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 92,
@@ -3371,17 +3374,17 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 3,
+              "availability_items": 5,
               "official_items": 1,
               "match_items": 0,
-              "team_items": 2,
+              "team_items": 4,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "sources_checked_no_confirmed_absence",
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (51.9%), pero el publico de Loterias lo infravalora (43.0%). El favorito podría estar infravalorado en la quiniela. | local persigue salvacion a 6 pts; visitante persigue zona alta a 6 pts | Halmstads BK persigue salvacion a 6 pts en tramo medio (must-win 100/100, no perder 86/100). Calendario futuro con 1 rivales del top-6. Urgencia clasificatoria alta, necesitan 6 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 14 días vs 6 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (57.9%), pero el publico de Loterias lo infravalora (43.0%). El favorito podría estar infravalorado en la quiniela. | local persigue salvacion a 6 pts; visitante persigue zona alta a 6 pts | Halmstads BK persigue salvacion a 6 pts en tramo medio (must-win 100/100, no perder 86/100). Calendario futuro con 1 rivales del top-6. Urgencia clasificatoria alta, necesitan 6 puntos para la salvación. Juegan con la presión del descenso. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 14 días vs 6 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         },
         {
@@ -3644,10 +3647,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-08-04T11:00:07.419522+00:00",
+          "context_updated_at": "2026-08-04T15:02:05.525374+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 95,
@@ -3666,10 +3669,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 3,
-              "availability_items": 9,
+              "availability_items": 11,
               "official_items": 8,
               "match_items": 0,
-              "team_items": 2,
+              "team_items": 4,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
               "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -3690,13 +3693,13 @@
           "bookmaker": "Winamax (FR)",
           "odds": {
             "1": 1.26,
-            "X": 5.1,
-            "2": 6.0
+            "X": 4.9,
+            "2": 6.25
           },
           "normalized_percent": {
-            "1": 68.63,
-            "X": 16.96,
-            "2": 14.41
+            "1": 68.55,
+            "X": 17.63,
+            "2": 13.82
           },
           "official_percent": {
             "1": 62.0,
@@ -3890,7 +3893,7 @@
           "travel_km": 63.6,
           "weather": {
             "temperature_c": 21.4,
-            "precipitation_probability": 31,
+            "precipitation_probability": 43,
             "wind_speed_kmh": 22.5
           },
           "referee": {
@@ -3924,7 +3927,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-04T11:00:30.187667+00:00",
+          "context_updated_at": "2026-08-04T15:02:09.830716+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -3954,7 +3957,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (68.6%) y el publico de Loterias lo refleja de forma similar (62.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | IK Sirius defiende titulo con 14 pts de colchon en tramo medio (must-win 0/100, no perder 0/100). Victoria abre colchon en titulo. Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (68.5%) y el publico de Loterias lo refleja de forma similar (62.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | IK Sirius defiende titulo con 14 pts de colchon en tramo medio (must-win 0/100, no perder 0/100). Victoria abre colchon en titulo. Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
           "analysis_ready": true
         },
         {
@@ -3967,14 +3970,14 @@
           "kickoff": "2026-08-10T17:00:00Z",
           "bookmaker": "Winamax (DE)",
           "odds": {
-            "1": 3.45,
-            "X": 3.65,
-            "2": 1.74
+            "1": 3.75,
+            "X": 3.85,
+            "2": 1.64
           },
           "normalized_percent": {
-            "1": 25.46,
-            "X": 24.06,
-            "2": 50.48
+            "1": 23.47,
+            "X": 22.86,
+            "2": 53.67
           },
           "official_percent": {},
           "home_table": {
@@ -3989,17 +3992,17 @@
           },
           "pressure": {
             "home": {
-              "score": 62.28,
-              "label": "high",
-              "future_difficulty": 93.09,
-              "hard_window_matches": 4,
+              "score": 21.94,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 12
             },
             "away": {
-              "score": 54.58,
-              "label": "medium",
-              "future_difficulty": 82.37,
-              "hard_window_matches": 2,
+              "score": 25.81,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 16
             }
           },
@@ -4157,15 +4160,15 @@
           "travel_km": 91.4,
           "weather": {
             "temperature_c": 21.2,
-            "precipitation_probability": 32,
+            "precipitation_probability": 42,
             "wind_speed_kmh": 17.9
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Elfsborg (8º) | casa vs Kalmar (10º) | fuera vs Häcken (4º) | casa vs Sirius (1º) | fuera vs AIK (6º)",
-          "future_away": "casa vs AIK (6º) | fuera vs Malmö (5º) | casa vs Mjällby (11º) | fuera vs Kalmar (10º) | casa vs GAIS (9º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 16,
@@ -4188,24 +4191,25 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 1
+              "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T11:00:20.103237+00:00",
+          "context_updated_at": "2026-08-04T15:04:50.089732+00:00",
           "data_confidence": {
-            "nivel": "alta",
-            "score": 79,
-            "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
+            "nivel": "media",
+            "score": 69,
+            "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
               "cuotas reales",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "clasificacion y forma verificadas"
+              "clasificacion y forma verificadas",
+              "H2H"
             ],
             "faltan": [
               "porcentajes de quiniela",
+              "calendario próximo",
               "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
@@ -4213,7 +4217,7 @@
               "roster_status": "partial_verification",
               "injury_items": 0,
               "availability_items": 2,
-              "official_items": 1,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 2,
               "verified_teams": 1,
@@ -4222,7 +4226,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (50.5%). | duelo directo por zona alta: equipos separados por 4 pts y 4 puestos. | Västerås SK persigue zona alta a 4 pts en tramo medio (must-win 30/100, no perder 30/100). Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | El visitante es favorito para las casas de apuestas (53.7%). | duelo directo por zona alta: equipos separados por 4 pts y 4 puestos. | Västerås SK persigue zona alta a 4 pts en tramo medio (must-win 30/100, no perder 30/100). Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
           "analysis_ready": true
         }
       ]
@@ -4279,10 +4283,10 @@
               "gap_to_drop_zone": 0
             },
             "away": {
-              "score": 91.47,
+              "score": 86.97,
               "label": "critical",
               "future_difficulty": 100.0,
-              "hard_window_matches": 5,
+              "hard_window_matches": 4,
               "gap_to_drop_zone": 0
             }
           },
@@ -4443,21 +4447,10 @@
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
-              "risk": "medium",
-              "score": 68,
-              "reason": "FC Inter Turku tiene UEFA Conference League vs Vaduz en 4.1 dias",
-              "next_high_importance_fixture": {
-                "date": "2026-08-06",
-                "kickoff": "2026-08-06T15:00:00Z",
-                "venue": "home",
-                "opponent": "Vaduz",
-                "opponent_position": 3,
-                "opponent_points": 30,
-                "league": "UEFA Conference League",
-                "round": "400",
-                "stage": "",
-                "source": "sportsdb-next"
-              }
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
             }
           },
           "travel_km": 296.1,
@@ -4470,8 +4463,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Jaro (10º)",
-          "future_away": "casa vs Vaduz (3º, UEFA Conference League)",
+          "future_home": "fuera vs Jaro (10º) | casa vs TPS (8º) | fuera vs Ilves (9º) | casa vs Lahti (7º)",
+          "future_away": "casa vs Lahti (7º) | fuera vs AC Oulu (3º) | fuera vs TPS (8º) | casa vs KuPS (1º)",
           "history_quality": {
             "valid": true,
             "teams": 12,
@@ -4522,7 +4515,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-04T11:01:20.251077+00:00",
+          "context_updated_at": "2026-08-04T15:05:18.212488+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -4552,7 +4545,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (39.0%) y el publico de Loterias lo refleja de forma similar (39.0%). Sin gran divergencia entre mercado y quiniela. | visitante defiende zona alta con 4 pts de colchon | visitante: FC Inter Turku tiene UEFA Conference League vs Vaduz en 4.1 dias (riesgo medium) | VPS Vaasa persigue zona alta a 7 pts en tramo decisivo (must-win 3/100, no perder 21/100). Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (39.0%) y el publico de Loterias lo refleja de forma similar (39.0%). Sin gran divergencia entre mercado y quiniela. | visitante defiende zona alta con 4 pts de colchon | VPS Vaasa persigue zona alta a 7 pts en tramo decisivo (must-win 3/100, no perder 21/100). Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -4598,9 +4591,9 @@
               "gap_to_drop_zone": 0
             },
             "away": {
-              "score": 60.64,
+              "score": 62.24,
               "label": "high",
-              "future_difficulty": 81.18,
+              "future_difficulty": 87.83,
               "hard_window_matches": 1,
               "gap_to_drop_zone": 0
             }
@@ -4750,7 +4743,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs KuPS (1º) | fuera vs VPS (5º) | casa vs Inter Turku (2º) | fuera vs Gnistan (4º)",
-          "future_away": "fuera vs Ilves (9º)",
+          "future_away": "fuera vs Ilves (9º) | casa vs SJK Seinajoki (11º) | fuera vs KuPS (1º) | casa vs Jaro (10º)",
           "history_quality": {
             "valid": true,
             "teams": 12,
@@ -4776,7 +4769,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T11:01:29.739741+00:00",
+          "context_updated_at": "2026-08-04T15:05:39.521505+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -5042,7 +5035,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T11:01:31.526256+00:00",
+          "context_updated_at": "2026-08-04T15:06:15.385890+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -5296,7 +5289,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T11:01:33.410583+00:00",
+          "context_updated_at": "2026-08-04T15:06:25.843916+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -5372,10 +5365,10 @@
               "gap_to_drop_zone": 0
             },
             "away": {
-              "score": 85.3,
+              "score": 80.85,
               "label": "critical",
-              "future_difficulty": 90.21,
-              "hard_window_matches": 4,
+              "future_difficulty": 90.41,
+              "hard_window_matches": 3,
               "gap_to_drop_zone": 0
             }
           },
@@ -5531,21 +5524,10 @@
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
-              "risk": "medium",
-              "score": 68,
-              "reason": "KuPS Kuopio tiene UEFA Europa League vs Universitatea Craiova en 5.0 dias",
-              "next_high_importance_fixture": {
-                "date": "2026-08-06",
-                "kickoff": "2026-08-06T15:00:00Z",
-                "venue": "home",
-                "opponent": "Universitatea Craiova",
-                "opponent_position": 4,
-                "opponent_points": 28,
-                "league": "UEFA Europa League",
-                "round": "400",
-                "stage": "",
-                "source": "sportsdb-next"
-              }
+              "risk": "low",
+              "score": 0,
+              "reason": "",
+              "next_high_importance_fixture": {}
             }
           },
           "travel_km": 335.8,
@@ -5558,8 +5540,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs SJK Seinajoki (11º)",
-          "future_away": "casa vs Universitatea Craiova (4º, UEFA Europa League)",
+          "future_home": "fuera vs SJK Seinajoki (11º) | casa vs Ilves (9º) | fuera vs HJK Helsinki (3º) | casa vs TPS (8º)",
+          "future_away": "casa vs TPS (8º) | fuera vs Lahti (7º) | casa vs IFK Mariehamn (12º) | fuera vs Inter Turku (2º)",
           "history_quality": {
             "valid": true,
             "teams": 12,
@@ -5582,10 +5564,10 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 0
+              "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-04T11:01:36.626428+00:00",
+          "context_updated_at": "2026-08-04T15:06:58.389262+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -5606,7 +5588,7 @@
               "roster_status": "partial_verification",
               "injury_items": 0,
               "availability_items": 0,
-              "official_items": 1,
+              "official_items": 2,
               "match_items": 0,
               "team_items": 0,
               "verified_teams": 1,
@@ -5615,7 +5597,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (52.0%) y el publico de Loterias lo refleja de forma similar (52.0%). Sin gran divergencia entre mercado y quiniela. | local persigue zona alta a 3 pts | visitante: KuPS Kuopio tiene UEFA Europa League vs Universitatea Craiova en 5.0 dias (riesgo medium) | IF Gnistan persigue zona alta a 3 pts en tramo decisivo (must-win 55/100, no perder 49/100). Victoria le mete de lleno en zona alta. Derrota aleja zona alta. Calendario futuro con 1 rivales del top-6. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (52.0%) y el publico de Loterias lo refleja de forma similar (52.0%). Sin gran divergencia entre mercado y quiniela. | local persigue zona alta a 3 pts | IF Gnistan persigue zona alta a 3 pts en tramo decisivo (must-win 55/100, no perder 49/100). Victoria le mete de lleno en zona alta. Derrota aleja zona alta. Calendario futuro con 1 rivales del top-6. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -6203,10 +6185,10 @@
           },
           "pressure": {
             "home": {
-              "score": 50.24,
+              "score": 36.12,
               "label": "medium",
-              "future_difficulty": 72.08,
-              "hard_window_matches": 2,
+              "future_difficulty": 50.75,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 11
             },
             "away": {
@@ -6400,7 +6382,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T11:01:37.874281+00:00",
+          "context_updated_at": "2026-08-04T15:07:27.612741+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -6430,7 +6412,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (65.0%) y el publico de Loterias lo refleja de forma similar (65.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Molde persigue zona alta a 10 pts en tramo medio (must-win 0/100, no perder 0/100). Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (65.0%) y el publico de Loterias lo refleja de forma similar (65.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Molde persigue zona alta a 10 pts en tramo medio (must-win 0/100, no perder 0/100). Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -7226,7 +7208,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-04T11:01:53.393135+00:00",
+          "context_updated_at": "2026-08-04T15:07:28.964208+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
