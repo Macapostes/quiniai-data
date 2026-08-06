@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-06T01:04:56.796940+00:00",
-  "snapshot_generated_at": "2026-08-06T01:04:55.089730+00:00",
+  "generated_at": "2026-08-06T05:01:31.733869+00:00",
+  "snapshot_generated_at": "2026-08-06T05:01:29.488862+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -24,7 +24,7 @@
     "teams": 120,
     "matches": 172,
     "referees": 0,
-    "last_pruned_at": "2026-08-06T01:04:55.087927+00:00"
+    "last_pruned_at": "2026-08-06T05:01:29.486035+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,22 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-08-05T02:54:21.883899+00:00",
-      "finished_at": "2026-08-05T03:00:37.010494+00:00",
-      "ok": false,
-      "duration_seconds": 375.13,
-      "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
-    },
-    {
-      "started_at": "2026-08-05T04:54:22.599646+00:00",
-      "finished_at": "2026-08-05T05:07:54.820812+00:00",
-      "ok": true,
-      "duration_seconds": 812.22,
-      "monitored_matches": 89,
-      "tracked_matches": 60,
-      "current_jornada": 76
-    },
     {
       "started_at": "2026-08-05T06:54:23.773624+00:00",
       "finished_at": "2026-08-05T06:59:41.007555+00:00",
@@ -134,6 +118,22 @@
       "finished_at": "2026-08-06T01:04:56.796111+00:00",
       "ok": true,
       "duration_seconds": 623.65,
+      "monitored_matches": 89,
+      "tracked_matches": 60,
+      "current_jornada": 76
+    },
+    {
+      "started_at": "2026-08-06T02:54:32.558906+00:00",
+      "finished_at": "2026-08-06T03:00:43.658571+00:00",
+      "ok": false,
+      "duration_seconds": 371.1,
+      "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+      "started_at": "2026-08-06T04:54:33.231113+00:00",
+      "finished_at": "2026-08-06T05:01:31.732560+00:00",
+      "ok": true,
+      "duration_seconds": 418.5,
       "monitored_matches": 89,
       "tracked_matches": 60,
       "current_jornada": 76
@@ -387,7 +387,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:01:04.445800+00:00",
+          "context_updated_at": "2026-08-06T04:58:15.101297+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -665,7 +665,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-06T00:58:17.207198+00:00",
+          "context_updated_at": "2026-08-06T04:58:16.280913+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -734,10 +734,10 @@
           },
           "pressure": {
             "home": {
-              "score": 26.06,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 45.22,
+              "label": "medium",
+              "future_difficulty": 61.12,
+              "hard_window_matches": 1,
               "gap_to_drop_zone": 25
             },
             "away": {
@@ -916,7 +916,7 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "fuera vs Rosenborg (10º) | casa vs Aalesund (14º) | fuera vs Sandefjord (12º) | casa vs Kristiansund (15º) | fuera vs Brann (6º)",
           "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
@@ -940,10 +940,10 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 3
+              "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-06T01:01:05.697914+00:00",
+          "context_updated_at": "2026-08-06T04:59:10.997673+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -964,7 +964,7 @@
               "roster_status": "not_verified",
               "injury_items": 0,
               "availability_items": 0,
-              "official_items": 3,
+              "official_items": 4,
               "match_items": 0,
               "team_items": 0,
               "verified_teams": 0,
@@ -1179,9 +1179,9 @@
           },
           "travel_km": 207.4,
           "weather": {
-            "temperature_c": 18.6,
-            "precipitation_probability": 31,
-            "wind_speed_kmh": 21.0
+            "temperature_c": 18.4,
+            "precipitation_probability": 34,
+            "wind_speed_kmh": 19.9
           },
           "referee": {
             "name": "no confirmado",
@@ -1214,7 +1214,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T00:58:20.207711+00:00",
+          "context_updated_at": "2026-08-06T04:58:25.848491+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -1480,7 +1480,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T00:58:21.810959+00:00",
+          "context_updated_at": "2026-08-06T04:58:27.607544+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -1556,9 +1556,9 @@
               "gap_to_drop_zone": 9
             },
             "away": {
-              "score": 57.3,
+              "score": 56.87,
               "label": "high",
-              "future_difficulty": 76.57,
+              "future_difficulty": 74.79,
               "hard_window_matches": 2,
               "gap_to_drop_zone": 1
             }
@@ -1716,16 +1716,16 @@
           },
           "travel_km": 319.5,
           "weather": {
-            "temperature_c": 20.1,
-            "precipitation_probability": 22,
-            "wind_speed_kmh": 19.3
+            "temperature_c": 19.3,
+            "precipitation_probability": 21,
+            "wind_speed_kmh": 16.5
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "casa vs Vålerenga (9º) | fuera vs Viking (2º) | casa vs Start (16º) | fuera vs KFUM-Kameratene Oslo (13º) | fuera vs Molde (5º)",
+          "future_away": "casa vs Vålerenga (9º) | fuera vs Viking (2º) | casa vs Start (16º) | fuera vs KFUM-Kameratene Oslo (13º) | casa vs Sarpsborg 08 (7º)",
           "history_quality": {
             "valid": true,
             "teams": 16,
@@ -1751,7 +1751,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-06T01:01:30.125837+00:00",
+          "context_updated_at": "2026-08-06T04:59:11.792633+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -2017,7 +2017,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-06T00:58:29.760690+00:00",
+          "context_updated_at": "2026-08-06T04:58:30.383354+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -2283,7 +2283,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:01:41.103176+00:00",
+          "context_updated_at": "2026-08-06T04:58:31.696326+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -2549,7 +2549,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:01:50.591658+00:00",
+          "context_updated_at": "2026-08-06T04:58:32.792522+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -2785,9 +2785,9 @@
           },
           "travel_km": 409.5,
           "weather": {
-            "temperature_c": 20.4,
-            "precipitation_probability": 1,
-            "wind_speed_kmh": 20.1
+            "temperature_c": 20.0,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 20.8
           },
           "referee": {
             "name": "no confirmado",
@@ -2820,7 +2820,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:01:52.093992+00:00",
+          "context_updated_at": "2026-08-06T04:59:15.709543+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 75,
@@ -3087,7 +3087,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-06T01:02:02.219058+00:00",
+          "context_updated_at": "2026-08-06T04:58:35.324279+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 92,
@@ -3352,7 +3352,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-06T01:02:12.489972+00:00",
+          "context_updated_at": "2026-08-06T04:58:37.210180+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -3421,17 +3421,17 @@
           },
           "pressure": {
             "home": {
-              "score": 33.73,
+              "score": 16.13,
               "label": "low",
-              "future_difficulty": 54.59,
-              "hard_window_matches": 1,
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 6
             },
             "away": {
-              "score": 58.18,
-              "label": "high",
-              "future_difficulty": 87.81,
-              "hard_window_matches": 4,
+              "score": 19.1,
+              "label": "low",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 8
             }
           },
@@ -3596,8 +3596,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Degerfors (15º) | casa vs Elfsborg (8º) | casa vs Örgryte (14º) | fuera vs Mjällby (11º) | casa vs Halmstad (16º)",
-          "future_away": "casa vs Hammarby (2º) | fuera vs Västerås (7º) | fuera vs Halmstad (16º) | casa vs Djurgården (3º) | fuera vs Elfsborg (8º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 16,
@@ -3648,10 +3648,10 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-08-06T01:02:36.883317+00:00",
+          "context_updated_at": "2026-08-06T04:59:43.545379+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 95,
+            "score": 85,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -3659,9 +3659,10 @@
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo"
+              "clasificacion y forma verificadas"
             ],
             "faltan": [
+              "calendario próximo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
@@ -3677,7 +3678,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (42.4%) y el publico de Loterias lo refleja de forma similar (48.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 2 pts y 3 puestos. | IFK Goteborg defiende salvacion con 6 pts de colchon en tramo medio (must-win 18/100, no perder 16/100). Victoria abre colchon en salvacion. Calendario próximo sin rivales especialmente exigentes. Nivel de urgencia bajo (+6 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (42.4%) y el publico de Loterias lo refleja de forma similar (48.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por salvacion: equipos separados por 2 pts y 3 puestos. | IFK Goteborg defiende salvacion con 6 pts de colchon en tramo medio (must-win 18/100, no perder 16/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Nivel de urgencia bajo (+6 puntos sobre el descenso), juegan sin presión extrema. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
           "analysis_ready": true
         },
         {
@@ -3925,7 +3926,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-06T01:02:46.324581+00:00",
+          "context_updated_at": "2026-08-06T04:59:08.002584+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -4192,7 +4193,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-06T01:02:49.721733+00:00",
+          "context_updated_at": "2026-08-06T04:59:06.416842+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 75,
@@ -4463,9 +4464,9 @@
           },
           "travel_km": 296.1,
           "weather": {
-            "temperature_c": 14.3,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 10.4
+            "temperature_c": 13.9,
+            "precipitation_probability": 73,
+            "wind_speed_kmh": 14.0
           },
           "referee": {
             "name": "no confirmado",
@@ -4498,7 +4499,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:02:56.211208+00:00",
+          "context_updated_at": "2026-08-06T05:00:11.089371+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -4717,9 +4718,9 @@
           },
           "travel_km": 134.0,
           "weather": {
-            "temperature_c": 16.6,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 7.2
+            "temperature_c": 19.0,
+            "precipitation_probability": 65,
+            "wind_speed_kmh": 17.3
           },
           "referee": {
             "name": "no confirmado",
@@ -4752,7 +4753,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:03:25.903112+00:00",
+          "context_updated_at": "2026-08-06T05:00:47.399311+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -4828,9 +4829,9 @@
               "gap_to_drop_zone": 0
             },
             "away": {
-              "score": 74.29,
+              "score": 71.28,
               "label": "high",
-              "future_difficulty": 92.64,
+              "future_difficulty": 80.12,
               "hard_window_matches": 3,
               "gap_to_drop_zone": 0
             }
@@ -4975,24 +4976,35 @@
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "medium",
+              "score": 68,
+              "reason": "Ilves Tampere tiene UEFA Conference League vs Rijeka en 4.2 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-08-06",
+                "kickoff": "2026-08-06T18:45:00Z",
+                "venue": "away",
+                "opponent": "Rijeka",
+                "opponent_position": 12,
+                "opponent_points": 5,
+                "league": "UEFA Conference League",
+                "round": "400",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
             }
           },
           "travel_km": 400.1,
           "weather": {
-            "temperature_c": 15.1,
-            "precipitation_probability": 86,
-            "wind_speed_kmh": 15.8
+            "temperature_c": 14.5,
+            "precipitation_probability": 47,
+            "wind_speed_kmh": 10.8
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "casa vs HJK Helsinki (4º)",
-          "future_away": "casa vs IFK Mariehamn (12º) | fuera vs Gnistan (5º) | casa vs VPS (6º) | casa vs HJK Helsinki (4º)",
+          "future_away": "fuera vs Rijeka (12º, UEFA Conference League)",
           "history_quality": {
             "valid": true,
             "teams": 12,
@@ -5018,7 +5030,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:03:53.312336+00:00",
+          "context_updated_at": "2026-08-06T05:01:00.997531+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -5048,7 +5060,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (44.0%) y el publico de Loterias lo refleja de forma similar (44.0%). Sin gran divergencia entre mercado y quiniela. | local persigue zona alta a 4 pts | AC Oulu persigue zona alta a 4 pts en tramo decisivo (must-win 42/100, no perder 42/100). Calendario futuro con 2 rivales del top-6. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (44.0%) y el publico de Loterias lo refleja de forma similar (44.0%). Sin gran divergencia entre mercado y quiniela. | local persigue zona alta a 4 pts | visitante: Ilves Tampere tiene UEFA Conference League vs Rijeka en 4.2 dias (riesgo medium) | AC Oulu persigue zona alta a 4 pts en tramo decisivo (must-win 42/100, no perder 42/100). Calendario futuro con 2 rivales del top-6. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
@@ -5237,9 +5249,9 @@
           },
           "travel_km": 336.0,
           "weather": {
-            "temperature_c": 15.1,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 4.7
+            "temperature_c": 17.5,
+            "precipitation_probability": 63,
+            "wind_speed_kmh": 9.4
           },
           "referee": {
             "name": "no confirmado",
@@ -5272,7 +5284,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:03:55.936544+00:00",
+          "context_updated_at": "2026-08-06T05:01:13.128917+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -5526,9 +5538,9 @@
           },
           "travel_km": 335.8,
           "weather": {
-            "temperature_c": 17.1,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 11.2
+            "temperature_c": 19.0,
+            "precipitation_probability": 16,
+            "wind_speed_kmh": 15.8
           },
           "referee": {
             "name": "no confirmado",
@@ -5550,8 +5562,8 @@
               "team": "IF Gnistan",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "verification_status": "not_verified",
+              "source_items_checked": 0
             },
             "away": {
               "team": "KuPS Kuopio",
@@ -5561,10 +5573,10 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:04:43.709704+00:00",
+          "context_updated_at": "2026-08-06T05:01:15.813703+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 89,
+            "score": 85,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -5575,18 +5587,18 @@
               "calendario próximo"
             ],
             "faltan": [
-              "bajas/convocatorias del otro equipo",
+              "noticias y bajas verificadas",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "partial_verification",
+              "roster_status": "not_verified",
               "injury_items": 0,
               "availability_items": 0,
-              "official_items": 2,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 0,
-              "verified_teams": 1,
-              "home_roster_status": "sources_checked_no_confirmed_absence",
+              "verified_teams": 0,
+              "home_roster_status": "not_verified",
               "away_roster_status": "not_verified",
               "referee_confirmed": false
             }
@@ -6179,10 +6191,10 @@
           },
           "pressure": {
             "home": {
-              "score": 36.05,
+              "score": 50.17,
               "label": "medium",
-              "future_difficulty": 50.75,
-              "hard_window_matches": 0,
+              "future_difficulty": 72.08,
+              "hard_window_matches": 2,
               "gap_to_drop_zone": 12
             },
             "away": {
@@ -6341,15 +6353,15 @@
           },
           "travel_km": 438.9,
           "weather": {
-            "temperature_c": 13.2,
-            "precipitation_probability": 14,
-            "wind_speed_kmh": 4.0
+            "temperature_c": 16.2,
+            "precipitation_probability": 73,
+            "wind_speed_kmh": 2.2
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Kristiansund (15º)",
+          "future_home": "casa vs Tromsø (3º) | fuera vs Vålerenga (9º) | casa vs KFUM-Kameratene Oslo (13º) | fuera vs Hamarkameratene (8º) | fuera vs Lillestrøm (4º)",
           "future_away": "fuera vs Viking FK (2º)",
           "history_quality": {
             "valid": true,
@@ -6376,7 +6388,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-06T01:04:46.300328+00:00",
+          "context_updated_at": "2026-08-06T05:01:21.959688+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -6406,7 +6418,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (65.0%) y el publico de Loterias lo refleja de forma similar (65.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Molde persigue zona alta a 10 pts en tramo medio (must-win 0/100, no perder 0/100). Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (65.0%) y el publico de Loterias lo refleja de forma similar (65.0%). Sin gran divergencia entre mercado y quiniela. | contexto competitivo bajo o no calculable | Molde persigue zona alta a 10 pts en tramo medio (must-win 0/100, no perder 0/100). Calendario futuro con 1 rivales del top-6. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local. Tiempo de descanso similar (0 vs 0 días).",
           "analysis_ready": true
         },
         {
