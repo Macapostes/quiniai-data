@@ -1,46 +1,37 @@
 {
-  "generated_at": "2026-08-07T03:00:32.631596+00:00",
-  "snapshot_generated_at": "",
-  "ok": false,
-  "last_error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))",
+  "generated_at": "2026-08-07T05:11:08.783402+00:00",
+  "snapshot_generated_at": "2026-08-07T05:11:07.295342+00:00",
+  "ok": true,
+  "last_error": "",
   "poll_seconds": 7200,
   "coverage": {
-    "monitored_matches": null,
-    "focus_matches": null,
-    "tracked_quiniela_matches": null,
-    "quiniela_jornadas": null,
-    "quiniela_current_jornada": null,
-    "quiniela_latest_available_jornada": null,
-    "weather_matches": null,
-    "travel_matches": null,
-    "history_matches": null,
-    "sources_total": null,
-    "sources_ok": null,
-    "fresh_headlines": null,
-    "structured_focus_matches": null,
-    "structured_referees": null
+    "monitored_matches": 89,
+    "focus_matches": 15,
+    "tracked_quiniela_matches": 15,
+    "quiniela_jornadas": 1,
+    "quiniela_current_jornada": 0,
+    "quiniela_latest_available_jornada": 0,
+    "weather_matches": 82,
+    "travel_matches": 78,
+    "history_matches": 74,
+    "sources_total": 12,
+    "sources_ok": 12,
+    "fresh_headlines": 13,
+    "structured_focus_matches": 15,
+    "structured_referees": 0
   },
   "structured_db_summary": {
-    "teams": null,
-    "matches": null,
-    "referees": null,
-    "last_pruned_at": null
+    "teams": 137,
+    "matches": 172,
+    "referees": 0,
+    "last_pruned_at": "2026-08-07T05:11:07.289953+00:00"
   },
   "quiniela_integrity": {
-    "ok": null,
-    "checked_slots": null,
-    "mismatch_count": null
+    "ok": true,
+    "checked_slots": 0,
+    "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-08-06T04:54:33.231113+00:00",
-      "finished_at": "2026-08-06T05:01:31.732560+00:00",
-      "ok": true,
-      "duration_seconds": 418.5,
-      "monitored_matches": 89,
-      "tracked_matches": 60,
-      "current_jornada": 76
-    },
     {
       "started_at": "2026-08-06T06:54:34.933850+00:00",
       "finished_at": "2026-08-06T07:12:01.103543+00:00",
@@ -137,7 +128,63 @@
       "ok": false,
       "duration_seconds": 347.46,
       "error": "HTTPSConnectionPool(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Max retries exceeded with url: /admin/ia-feed (Caused by NameResolutionError(\"HTTPSConnection(host='quiniela-backend-production-cb1a.up.railway.app', port=443): Failed to resolve 'quiniela-backend-production-cb1a.up.railway.app' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+      "started_at": "2026-08-07T04:54:45.662228+00:00",
+      "finished_at": "2026-08-07T05:11:08.782522+00:00",
+      "ok": true,
+      "duration_seconds": 983.12,
+      "monitored_matches": 89,
+      "tracked_matches": 15,
+      "current_jornada": 0
     }
   ],
-  "public_jornadas": []
+  "public_jornadas": [],
+  "audit_news_quality": {
+    "news_language": "es",
+    "news_country": "ES",
+    "high_trust_domains": [
+      "abc.es",
+      "as.com",
+      "bbc.co.uk",
+      "cadenaser.com",
+      "cope.es",
+      "diariodecadiz.es",
+      "diariodejerez.es",
+      "diariodesevilla.es",
+      "elconfidencial.com",
+      "eldesmarque.com",
+      "estadiodeportivo.com",
+      "estadiohuesca.com",
+      "fifa.com",
+      "heraldo.es",
+      "informacion.es",
+      "laopiniondemalaga.es",
+      "lavanguardia.com",
+      "marca.com",
+      "mundodeportivo.com",
+      "okdiario.com",
+      "premierleague.com",
+      "relevo.com",
+      "skysports.com",
+      "sport.es",
+      "superdeporte.es",
+      "theguardian.com",
+      "uefa.com"
+    ],
+    "low_trust_domains": [
+      "facebook.com",
+      "instagram.com",
+      "pinterest.com",
+      "reddit.com",
+      "telegram.org",
+      "tiktok.com",
+      "twitter.com",
+      "whatsapp.com",
+      "x.com",
+      "youtu.be",
+      "youtube.com"
+    ],
+    "notes": "Se resuelven enlaces de Google News RSS cuando incluyen url/q, se filtra ruido y se prioriza prensa fiable."
+  }
 }
