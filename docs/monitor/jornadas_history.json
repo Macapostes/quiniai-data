@@ -9,7 +9,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-08-07T17:00:00Z",
       "kickoff_to": "2026-08-10T17:00:00Z",
-      "updated_at": "2026-08-08T15:14:11.177820+00:00",
+      "updated_at": "2026-08-08T19:06:31.908212+00:00",
       "matches": [
         {
           "match_key": "soccer_norway_eliteserien|sandefjord|kfum|2026-08-07T17:00:00Z",
@@ -64,7 +64,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T12:59:30.431451+00:00",
+            "updated_at": "2026-08-08T19:00:01.335597+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -966,7 +966,7 @@
                 "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T13:01:41.416920+00:00"
+            "updated_at": "2026-08-08T19:01:53.864682+00:00"
           },
           "focus_digest": [
             "convocatoria",
@@ -1315,6 +1315,8 @@
             "source=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "official_quiniela_percentages": {
@@ -1382,7 +1384,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T15:05:00.917670+00:00",
+            "updated_at": "2026-08-08T18:56:33.832182+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -2030,6 +2032,8 @@
             "home_must_not_lose_index": 0,
             "away_must_not_lose_index": 66,
             "direct_rivalry_index": 0,
+            "home_rotation_risk_index": 0,
+            "away_rotation_risk_index": 18,
             "home_objective_swing_if_win": 0,
             "home_objective_swing_if_lose": 8,
             "away_objective_swing_if_win": 63,
@@ -2276,14 +2280,14 @@
           "structured_context": {
             "match_key": "soccer_norway_eliteserien|valerenga|bod glimt|2026-08-08T12:00:00Z",
             "event_context": {
-              "sportsdb_event_id": "",
+              "sportsdb_event_id": "2399126",
               "sportsdb_home_team_id": "134574",
               "sportsdb_away_team_id": "",
               "venue": "Ullevaal Stadion",
               "stadium_city": "Oslo",
               "league": "Norwegian Eliteserien",
               "round": "17",
-              "status": ""
+              "status": "FT"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -2327,19 +2331,19 @@
                 "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T14:58:55.514210+00:00"
+            "updated_at": "2026-08-08T18:58:10.737282+00:00"
           },
           "focus_digest": [
             "viaje largo",
             "bajas local 2",
             "convocatoria",
-            "objetivo competitivo"
+            "ventana dura"
           ],
           "focus_ai_briefing": {
             "partido": "Vålerenga vs Bodø/Glimt",
             "calidad_datos": {
               "nivel": "alta",
-              "score": 79,
+              "score": 89,
               "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
               "fortalezas": [
                 "cuotas reales",
@@ -2347,10 +2351,9 @@
                 "liga identificada",
                 "clima",
                 "viaje",
-                "clasificacion y forma verificadas"
+                "calendario próximo"
               ],
               "faltan": [
-                "calendario próximo",
                 "bajas/convocatorias del otro equipo",
                 "arbitro confirmado"
               ],
@@ -2382,8 +2385,8 @@
               "objetivo_local": "defiende salvacion con 8 pts de colchon",
               "objetivo_visitante": "defiende titulo con 1 pts de colchon",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
-              "analisis_calendario_local": "Vålerenga defiende salvacion con 8 pts de colchon en tramo medio (must-win 8/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Nivel de urgencia bajo (+8 puntos sobre el descenso), juegan sin presión extrema.",
-              "analisis_calendario_visitante": "Bodø/Glimt defiende titulo con 1 pts de colchon en tramo medio (must-win 43/100, no perder 66/100). Victoria abre colchon en titulo. Derrota deja en riesgo titulo. Calendario próximo equilibrado, sin presión de conservar fuerzas.",
+              "analisis_calendario_local": "Vålerenga defiende salvacion con 8 pts de colchon en tramo medio (must-win 8/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario futuro con 2 rivales del top-6. Nivel de urgencia bajo (+8 puntos sobre el descenso), juegan sin presión extrema.",
+              "analisis_calendario_visitante": "Bodø/Glimt defiende titulo con 1 pts de colchon en tramo medio (must-win 43/100, no perder 66/100). Victoria abre colchon en titulo. Derrota deja en riesgo titulo. Calendario futuro con 1 rivales del top-6.",
               "h2h_resumen": "10 encuentros históricos: gana Vålerenga en 1, empates 2, gana Bodø/Glimt en 7 (ventana de 5 años)."
             },
             "contexto_competitivo_avanzado": {
@@ -2716,7 +2719,7 @@
             "timezone": "Europe/Oslo",
             "forecast_time": "2026-08-08T14:00",
             "temperature_c": 16.1,
-            "precipitation_probability": 98,
+            "precipitation_probability": 100,
             "precipitation_mm": 0.0,
             "wind_speed_kmh": 22.3,
             "wind_gusts_kmh": 38.9,
@@ -2724,7 +2727,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T15:05:01.424246+00:00",
+            "updated_at": "2026-08-08T19:00:02.261168+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -3590,7 +3593,7 @@
                 "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T15:09:34.136977+00:00"
+            "updated_at": "2026-08-08T19:01:54.964019+00:00"
           },
           "focus_digest": [
             "clima duro",
@@ -3945,7 +3948,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:56:56.294051+00:00",
+            "updated_at": "2026-08-08T18:56:35.024821+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -4569,7 +4572,15 @@
             },
             "rotation_risk": "low",
             "focus_news": {
-              "items": [],
+              "items": [
+                {
+                  "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                  "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                }
+              ],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -4577,7 +4588,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 0,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 6
@@ -4651,7 +4662,15 @@
             },
             "rotation_risk": "low",
             "focus_news": {
-              "items": [],
+              "items": [
+                {
+                  "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                  "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                }
+              ],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -4659,13 +4678,21 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 0,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 6
             },
             "media_news": {
-              "items": [],
+              "items": [
+                {
+                  "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                  "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                }
+              ],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -4673,7 +4700,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 0,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 3
@@ -4684,7 +4711,15 @@
             }
           },
           "match_news_context": {
-            "items": [],
+            "items": [
+              {
+                "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                "source": "Eurosport",
+                "_signal": 1.7
+              }
+            ],
             "signals": {
               "referee_count": 0,
               "injury_count": 0,
@@ -4796,13 +4831,14 @@
                 "team": "Fredrikstad FK",
                 "items": [],
                 "count": 0,
-                "verification_status": "not_verified",
-                "source_items_checked": 0
+                "verification_status": "sources_checked_no_confirmed_absence",
+                "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T14:59:42.968972+00:00"
+            "updated_at": "2026-08-08T18:58:22.426668+00:00"
           },
           "focus_digest": [
+            "convocatoria",
             "ventana dura",
             "objetivo competitivo"
           ],
@@ -4810,7 +4846,7 @@
             "partido": "IK Start vs Fredrikstad FK",
             "calidad_datos": {
               "nivel": "alta",
-              "score": 89,
+              "score": 92,
               "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
               "fortalezas": [
                 "cuotas reales",
@@ -4821,19 +4857,18 @@
                 "calendario próximo"
               ],
               "faltan": [
-                "bajas/convocatorias del otro equipo",
                 "arbitro confirmado"
               ],
               "cobertura_cualitativa": {
-                "roster_status": "partial_verification",
+                "roster_status": "sources_checked_no_confirmed_absence",
                 "injury_items": 0,
-                "availability_items": 1,
+                "availability_items": 5,
                 "official_items": 2,
-                "match_items": 0,
-                "team_items": 1,
-                "verified_teams": 1,
+                "match_items": 1,
+                "team_items": 4,
+                "verified_teams": 2,
                 "home_roster_status": "sources_checked_no_confirmed_absence",
-                "away_roster_status": "not_verified",
+                "away_roster_status": "sources_checked_no_confirmed_absence",
                 "referee_confirmed": false
               }
             },
@@ -5187,7 +5222,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:56:56.963499+00:00",
+            "updated_at": "2026-08-08T18:56:35.671700+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -6079,7 +6114,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T14:59:51.962595+00:00"
+            "updated_at": "2026-08-08T18:58:31.942337+00:00"
           },
           "focus_digest": [
             "clima duro",
@@ -6473,7 +6508,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T15:05:01.798143+00:00",
+            "updated_at": "2026-08-08T19:00:02.836300+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -7259,7 +7294,7 @@
                 "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T15:09:35.107798+00:00"
+            "updated_at": "2026-08-08T19:01:56.127699+00:00"
           },
           "focus_digest": [
             "ventana dura",
@@ -7595,7 +7630,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:56:58.120374+00:00",
+            "updated_at": "2026-08-08T18:56:56.814879+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -8331,6 +8366,13 @@
             "focus_news": {
               "items": [
                 {
+                  "title": "Molde - Sarpsborg 08 Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPQTVhalFTMW1wZFNZVHotSEV0dm1JNHRXR3hPd2tXdDB1bGdiQ216eWE3cXJrM0tMdlZsZXNvRW1IckpmclM1eHUwYXppVjJ1NHRwVmhjUXBlVWlTcE1pSUtUZ1BTQTB4N21FYTZuS0xQZGJXOC1FQk04SnZuTFotVGdUYWxLc05ncHItdFlZeG9LVTM0VUc1MVVCSTk?oc=5",
+                  "published_at": "Sat, 01 Aug 2026 01:46:58 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                },
+                {
                   "title": "Molde - Stabæk Fotball Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
                   "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPS2IyUzRJcmVSd0F6UUFvWUdJeno5WjUtMUQtTVVhVkZSX21nS3Z3QlJNdk42QWlUb2NuRG9fa3VLcU9GelFlb21USmJINi1YVTNRVlVwV3U1Y1YxMmV0cXVXbmFzSXhuTDJxV0JzNkxNWjhjR3ZNb0JIMlBjeUVjVEo4bXo2Wmt0bVV6UERpT3NVVlVZZHZhMGx6SHI0a2tt?oc=5",
                   "published_at": "Thu, 30 Jul 2026 23:31:35 GMT",
@@ -8345,7 +8387,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 1,
+                "squad_count": 2,
                 "morale_count": 0
               },
               "query_count": 6
@@ -8483,10 +8525,10 @@
                 "items": [],
                 "count": 0,
                 "verification_status": "sources_checked_no_confirmed_absence",
-                "source_items_checked": 1
+                "source_items_checked": 2
               }
             },
-            "updated_at": "2026-08-08T15:00:52.350137+00:00"
+            "updated_at": "2026-08-08T18:58:44.421135+00:00"
           },
           "focus_digest": [
             "clima duro",
@@ -8515,10 +8557,10 @@
               "cobertura_cualitativa": {
                 "roster_status": "partial_verification",
                 "injury_items": 0,
-                "availability_items": 1,
+                "availability_items": 2,
                 "official_items": 0,
                 "match_items": 0,
-                "team_items": 1,
+                "team_items": 2,
                 "verified_teams": 1,
                 "home_roster_status": "not_verified",
                 "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -8870,7 +8912,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:56:59.266413+00:00",
+            "updated_at": "2026-08-08T18:57:23.156659+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -9716,7 +9758,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:00:58.757124+00:00"
+            "updated_at": "2026-08-08T18:58:54.225335+00:00"
           },
           "focus_digest": [
             "clima duro",
@@ -10091,7 +10133,7 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-08T15:00",
-            "temperature_c": 23.2,
+            "temperature_c": 22.9,
             "precipitation_probability": 1,
             "precipitation_mm": 0.0,
             "wind_speed_kmh": 16.9,
@@ -10100,7 +10142,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:56:59.711715+00:00",
+            "updated_at": "2026-08-08T18:57:23.851142+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -10985,7 +11027,7 @@
               "stadium_city": "Hällevik",
               "league": "Swedish Allsvenskan",
               "round": "16",
-              "status": "NS"
+              "status": "2H"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -11012,7 +11054,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:01:28.359006+00:00"
+            "updated_at": "2026-08-08T18:59:07.379737+00:00"
           },
           "focus_digest": [
             "ventana dura",
@@ -11396,16 +11438,16 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-09T12:00",
-            "temperature_c": 21.2,
+            "temperature_c": 20.7,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 16.9,
-            "wind_gusts_kmh": 42.5,
-            "weather_code": 2
+            "wind_speed_kmh": 18.0,
+            "wind_gusts_kmh": 45.0,
+            "weather_code": 1
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T15:05:02.184813+00:00",
+            "updated_at": "2026-08-08T19:00:03.144186+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -12082,7 +12124,7 @@
             "source_health": []
           },
           "match_signals": {
-            "weather_risk": "medium",
+            "weather_risk": "high",
             "travel_burden_away": "medium",
             "injury_attention_home": 0,
             "injury_attention_away": 0,
@@ -12184,9 +12226,10 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:09:36.281156+00:00"
+            "updated_at": "2026-08-08T19:01:57.324034+00:00"
           },
           "focus_digest": [
+            "clima duro",
             "duelo directo"
           ],
           "focus_ai_briefing": {
@@ -12469,7 +12512,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:57:00.433780+00:00",
+            "updated_at": "2026-08-08T18:57:24.889376+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -13164,33 +13207,8 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "https://www.mff.se",
-              "items": [
-                {
-                  "title": "2026-07-23 Veckans skadeuppdatering",
-                  "link": "https://www.mff.se/nyheter/veckans-skadeuppdatering-2026-07-23/",
-                  "source": "Web oficial",
-                  "_signal": 3.0
-                },
-                {
-                  "title": "2026-07-30 Veckans skadeuppdatering",
-                  "link": "https://www.mff.se/nyheter/veckans-skadeuppdatering-2026-07-30/",
-                  "source": "Web oficial",
-                  "_signal": 3.0
-                },
-                {
-                  "title": "2026-08-07 Veckans skadeuppdatering",
-                  "link": "https://www.mff.se/nyheter/veckan-skadeuppdatering-2026-08-07/",
-                  "source": "Web oficial",
-                  "_signal": 3.0
-                },
-                {
-                  "title": "Erics Bar & Restaurang",
-                  "link": "https://www.mff.se/eleda-stadion/erics-bar-restaurang/",
-                  "source": "Web oficial",
-                  "_signal": 2.0
-                }
-              ]
+              "website": "",
+              "items": []
             }
           },
           "away_team_context": {
@@ -13363,10 +13381,10 @@
             "match_key": "soccer_sweden_allsvenskan|malmo ff|degerfors if|2026-08-09T12:00:00Z",
             "event_context": {
               "sportsdb_event_id": "2477932",
-              "sportsdb_home_team_id": "134166",
+              "sportsdb_home_team_id": "",
               "sportsdb_away_team_id": "134728",
               "venue": "Eleda Stadion",
-              "stadium_city": "Malmö, Sweden",
+              "stadium_city": "",
               "league": "Swedish Allsvenskan",
               "round": "16",
               "status": "NS"
@@ -13385,8 +13403,8 @@
                 "team": "Malmo FF",
                 "items": [],
                 "count": 0,
-                "verification_status": "sources_checked_no_confirmed_absence",
-                "source_items_checked": 4
+                "verification_status": "not_verified",
+                "source_items_checked": 0
               },
               "away_team": {
                 "team": "Degerfors IF",
@@ -13396,7 +13414,7 @@
                 "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T15:02:32.742722+00:00"
+            "updated_at": "2026-08-08T18:59:18.370414+00:00"
           },
           "focus_digest": [
             "ventana dura",
@@ -13406,7 +13424,7 @@
             "partido": "Malmo FF vs Degerfors IF",
             "calidad_datos": {
               "nivel": "alta",
-              "score": 92,
+              "score": 89,
               "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
               "fortalezas": [
                 "cuotas reales",
@@ -13417,17 +13435,18 @@
                 "calendario próximo"
               ],
               "faltan": [
+                "bajas/convocatorias del otro equipo",
                 "arbitro confirmado"
               ],
               "cobertura_cualitativa": {
-                "roster_status": "sources_checked_no_confirmed_absence",
+                "roster_status": "partial_verification",
                 "injury_items": 0,
-                "availability_items": 4,
-                "official_items": 8,
+                "availability_items": 1,
+                "official_items": 4,
                 "match_items": 0,
                 "team_items": 0,
-                "verified_teams": 2,
-                "home_roster_status": "sources_checked_no_confirmed_absence",
+                "verified_teams": 1,
+                "home_roster_status": "not_verified",
                 "away_roster_status": "sources_checked_no_confirmed_absence",
                 "referee_confirmed": false
               }
@@ -13768,16 +13787,16 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-09T14:00",
-            "temperature_c": 24.2,
+            "temperature_c": 24.5,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 16.2,
-            "wind_gusts_kmh": 42.1,
-            "weather_code": 2
+            "wind_speed_kmh": 15.5,
+            "wind_gusts_kmh": 40.3,
+            "weather_code": 3
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:57:01.195836+00:00",
+            "updated_at": "2026-08-08T18:57:26.068589+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -14630,7 +14649,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:02:43.001927+00:00"
+            "updated_at": "2026-08-08T18:59:27.782068+00:00"
           },
           "focus_digest": [
             "ventana dura",
@@ -15012,7 +15031,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:57:01.747463+00:00",
+            "updated_at": "2026-08-08T18:57:26.634055+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -15974,7 +15993,7 @@
                 "source_items_checked": 3
               }
             },
-            "updated_at": "2026-08-08T15:02:50.628021+00:00"
+            "updated_at": "2026-08-08T18:59:37.408319+00:00"
           },
           "focus_digest": [
             "clima duro",
@@ -16362,7 +16381,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:57:23.156357+00:00",
+            "updated_at": "2026-08-08T18:57:28.205491+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -17301,7 +17320,7 @@
                 "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T15:03:45.333220+00:00"
+            "updated_at": "2026-08-08T18:59:53.779998+00:00"
           },
           "focus_digest": [
             "ventana dura",
@@ -17690,7 +17709,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:57:22.317291+00:00",
+            "updated_at": "2026-08-08T18:57:27.140578+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -18545,7 +18564,7 @@
                 "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T15:03:22.501003+00:00"
+            "updated_at": "2026-08-08T18:59:47.415317+00:00"
           },
           "focus_digest": [
             "ventana dura",
@@ -18890,7 +18909,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-08-07T17:00:00Z",
       "kickoff_to": "2026-08-14T15:00:00Z",
-      "updated_at": "2026-08-08T15:14:11.187634+00:00",
+      "updated_at": "2026-08-08T19:06:31.917704+00:00",
       "matches": [
         {
           "match_key": "soccer_finland_veikkausliiga|vps vaasa|tps turku|2026-08-14T15:00:00Z",
@@ -18945,13 +18964,13 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T14:57:51.505814+00:00",
+            "updated_at": "2026-08-08T18:57:57.569407+00:00",
             "table_quality": {
               "valid": true,
               "teams": 12,
               "median_played": 18.0,
               "minimum_expected": 16,
-              "home_played": 18,
+              "home_played": 19,
               "away_played": 18,
               "reason": ""
             },
@@ -18959,23 +18978,23 @@
               "resolved_name": "VPS",
               "table": {
                 "team": "VPS",
-                "played": 18,
-                "points": 27,
-                "goals_for": 24,
-                "goals_against": 17,
-                "goal_diff": 7,
-                "position": 6
+                "played": 19,
+                "points": 30,
+                "goals_for": 27,
+                "goals_against": 18,
+                "goal_diff": 9,
+                "position": 3
               },
               "recent_all": {
                 "matches": 5,
-                "form": "WWLLL",
+                "form": "WLLLW",
                 "points": 6,
                 "points_per_game": 1.2,
-                "goals_for": 7,
-                "goals_against": 6,
-                "avg_goals_for": 1.4,
-                "avg_goals_against": 1.2,
-                "clean_sheets": 2
+                "goals_for": 6,
+                "goals_against": 7,
+                "avg_goals_for": 1.2,
+                "avg_goals_against": 1.4,
+                "clean_sheets": 1
               },
               "recent_home": {
                 "matches": 5,
@@ -18990,20 +19009,20 @@
               },
               "recent_away": {
                 "matches": 5,
-                "form": "LWDLL",
-                "points": 4,
-                "points_per_game": 0.8,
-                "goals_for": 5,
+                "form": "WDLLW",
+                "points": 7,
+                "points_per_game": 1.4,
+                "goals_for": 8,
                 "goals_against": 8,
-                "avg_goals_for": 1.0,
+                "avg_goals_for": 1.6,
                 "avg_goals_against": 1.6,
                 "clean_sheets": 0
               },
               "rolling": {
                 "5": {
                   "matches": 5,
-                  "avg_goals_for": 1.4,
-                  "avg_goals_against": 1.2,
+                  "avg_goals_for": 1.2,
+                  "avg_goals_against": 1.4,
                   "avg_shots_for": null,
                   "avg_shots_against": null,
                   "avg_shots_on_target_for": null,
@@ -19011,7 +19030,7 @@
                 },
                 "10": {
                   "matches": 10,
-                  "avg_goals_for": 1.6,
+                  "avg_goals_for": 1.9,
                   "avg_goals_against": 1.1,
                   "avg_shots_for": null,
                   "avg_shots_against": null,
@@ -19021,7 +19040,7 @@
                 "15": {
                   "matches": 15,
                   "avg_goals_for": 1.6,
-                  "avg_goals_against": 1.07,
+                  "avg_goals_against": 1.0,
                   "avg_shots_for": null,
                   "avg_shots_against": null,
                   "avg_shots_on_target_for": null,
@@ -19029,10 +19048,10 @@
                 }
               },
               "streak": {
-                "sequence": "WWLLL",
-                "morale": "low"
+                "sequence": "WLLLW",
+                "morale": "neutral"
               },
-              "elo_rating": 1514.6
+              "elo_rating": 1523.68
             },
             "away": {
               "resolved_name": "TPS",
@@ -19132,13 +19151,13 @@
           "competition_context": {
             "season_code": "2627",
             "home_relegation": {
-              "position": 6,
-              "points": 27,
+              "position": 3,
+              "points": 30,
               "drop_zone_starts_at": null,
-              "drop_zone_points": 27,
+              "drop_zone_points": 30,
               "safe_line_points": 39,
               "gap_to_drop_zone": 0,
-              "gap_to_safe_line": 12,
+              "gap_to_safe_line": 9,
               "urgency": "high"
             },
             "away_relegation": {
@@ -19152,36 +19171,36 @@
               "urgency": "high"
             },
             "season_context_phase": {
-              "key": "decisive",
-              "label": "tramo decisivo",
-              "played": 18,
+              "key": "final",
+              "label": "final de temporada",
+              "played": 19,
               "total_rounds": 22,
-              "progress": 0.818,
+              "progress": 0.864,
               "source": "played_matches"
             },
             "home_objective": {
               "objective_key": "upper_zone",
               "objective_label": "zona alta",
               "status": "chasing",
-              "urgency": "low",
-              "summary": "persigue zona alta a 7 pts",
-              "gap_points": 7,
+              "urgency": "medium",
+              "summary": "persigue zona alta a 4 pts",
+              "gap_points": 4,
               "cushion_points": null,
               "line_position": 2,
               "line_points": 34,
-              "relevance_score": 32.0,
-              "must_win_index": 3,
-              "must_not_lose_index": 21,
-              "objective_swing_if_win": 20,
-              "objective_swing_if_lose": 12,
+              "relevance_score": 84.0,
+              "must_win_index": 48,
+              "must_not_lose_index": 48,
+              "objective_swing_if_win": 53,
+              "objective_swing_if_lose": 45,
               "swing_summary_if_win": "impacto material bajo",
               "swing_summary_if_lose": "impacto material bajo",
               "season_context_phase": {
-                "key": "decisive",
-                "label": "tramo decisivo",
-                "played": 18,
+                "key": "final",
+                "label": "final de temporada",
+                "played": 19,
                 "total_rounds": 22,
-                "progress": 0.818,
+                "progress": 0.864,
                 "source": "played_matches"
               },
               "objective_candidates": [
@@ -19189,25 +19208,25 @@
                   "objective_key": "upper_zone",
                   "objective_label": "zona alta",
                   "status": "chasing",
-                  "urgency": "low",
-                  "summary": "persigue zona alta a 7 pts",
-                  "gap_points": 7,
+                  "urgency": "medium",
+                  "summary": "persigue zona alta a 4 pts",
+                  "gap_points": 4,
                   "cushion_points": null,
                   "line_position": 2,
                   "line_points": 34,
-                  "relevance_score": 32.0
+                  "relevance_score": 84.0
                 },
                 {
                   "objective_key": "survival",
                   "objective_label": "salvacion",
                   "status": "defending",
                   "urgency": "low",
-                  "summary": "defiende salvacion con 12 pts de colchon",
+                  "summary": "defiende salvacion con 15 pts de colchon",
                   "gap_points": null,
-                  "cushion_points": 12,
+                  "cushion_points": 15,
                   "line_position": 10,
                   "line_points": 18,
-                  "relevance_score": 18.0
+                  "relevance_score": 0.0
                 }
               ]
             },
@@ -19267,7 +19286,7 @@
               "is_direct_rivalry": false,
               "direct_rivalry_index": 0
             },
-            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "competitive_stakes_label": "local persigue zona alta a 4 pts",
             "home_rotation_context": {
               "risk": "low",
               "score": 0,
@@ -19318,7 +19337,7 @@
                 "kickoff": "2026-08-31T16:00:00Z",
                 "venue": "away",
                 "opponent": "Gnistan",
-                "opponent_position": 4,
+                "opponent_position": 5,
                 "opponent_points": 29,
                 "round": "22",
                 "source": "sportsdb-rounds+football-data"
@@ -19339,8 +19358,8 @@
             "away_future_difficulty": {
               "matches": 2,
               "difficulty_index": 100.0,
-              "avg_opponent_position": 3.0,
-              "top4_matches": 2,
+              "avg_opponent_position": 3.5,
+              "top4_matches": 1,
               "top6_matches": 2,
               "top8_matches": 2,
               "hard_opponents": [
@@ -19352,11 +19371,11 @@
           },
           "schedule_context": {
             "home": {
-              "days_since_last_match": 12,
-              "matches_last_14_days": 1,
+              "days_since_last_match": 6,
+              "matches_last_14_days": 2,
               "fatigue": "low",
               "fatigue_index": {
-                "score": 9.0,
+                "score": 20.0,
                 "label": "low"
               }
             },
@@ -19372,7 +19391,7 @@
           },
           "analytics_context": {
             "home_pressure_index": {
-              "score": 68.92,
+              "score": 71.83,
               "label": "high",
               "future_difficulty": 96.28,
               "hard_window_matches": 1,
@@ -19386,18 +19405,18 @@
               "gap_to_drop_zone": 0
             },
             "home_fatigue_index": {
-              "score": 9.0,
+              "score": 20.0,
               "label": "low"
             },
             "away_fatigue_index": {
               "score": 16.4,
               "label": "low"
             },
-            "home_elo": 1514.6,
+            "home_elo": 1523.68,
             "away_elo": 1491.94,
             "home_trend": {
-              "sequence": "WWLLL",
-              "morale": "low"
+              "sequence": "WLLLW",
+              "morale": "neutral"
             },
             "away_trend": {
               "sequence": "LWLLW",
@@ -19406,8 +19425,8 @@
             "home_rolling": {
               "5": {
                 "matches": 5,
-                "avg_goals_for": 1.4,
-                "avg_goals_against": 1.2,
+                "avg_goals_for": 1.2,
+                "avg_goals_against": 1.4,
                 "avg_shots_for": null,
                 "avg_shots_against": null,
                 "avg_shots_on_target_for": null,
@@ -19415,7 +19434,7 @@
               },
               "10": {
                 "matches": 10,
-                "avg_goals_for": 1.6,
+                "avg_goals_for": 1.9,
                 "avg_goals_against": 1.1,
                 "avg_shots_for": null,
                 "avg_shots_against": null,
@@ -19425,7 +19444,7 @@
               "15": {
                 "matches": 15,
                 "avg_goals_for": 1.6,
-                "avg_goals_against": 1.07,
+                "avg_goals_against": 1.0,
                 "avg_shots_for": null,
                 "avg_shots_against": null,
                 "avg_shots_on_target_for": null,
@@ -19461,15 +19480,15 @@
                 "avg_shots_on_target_against": null
               }
             },
-            "home_must_win_index": 3,
+            "home_must_win_index": 48,
             "away_must_win_index": 10,
-            "home_must_not_lose_index": 21,
+            "home_must_not_lose_index": 48,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_risk_index": 0,
             "away_rotation_risk_index": 0,
-            "home_objective_swing_if_win": 20,
-            "home_objective_swing_if_lose": 12,
+            "home_objective_swing_if_win": 53,
+            "home_objective_swing_if_lose": 45,
             "away_objective_swing_if_win": 12,
             "away_objective_swing_if_lose": 20
           },
@@ -19620,30 +19639,30 @@
             "discipline_attention_away": 0,
             "home_form_points_last_5": 6,
             "away_form_points_last_5": 6,
-            "home_league_position": 6,
+            "home_league_position": 3,
             "away_league_position": 8,
-            "home_league_points": 27,
+            "home_league_points": 30,
             "away_league_points": 25,
             "home_gap_to_drop": 0,
             "away_gap_to_drop": 0,
-            "home_rest_days": 12,
+            "home_rest_days": 6,
             "away_rest_days": 13,
-            "home_matches_last_14_days": 1,
+            "home_matches_last_14_days": 2,
             "away_matches_last_14_days": 1,
-            "home_pressure_index": 68.92,
+            "home_pressure_index": 71.83,
             "away_pressure_index": 72.38,
-            "home_must_win_index": 3,
+            "home_must_win_index": 48,
             "away_must_win_index": 10,
-            "home_must_not_lose_index": 21,
+            "home_must_not_lose_index": 48,
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
-            "season_context_phase": "decisive",
-            "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+            "season_context_phase": "final",
+            "competitive_stakes_label": "local persigue zona alta a 4 pts",
             "home_rotation_risk_index": 0,
             "away_rotation_risk_index": 0,
-            "home_fatigue_index": 9.0,
+            "home_fatigue_index": 20.0,
             "away_fatigue_index": 16.4,
-            "home_elo": 1514.6,
+            "home_elo": 1523.68,
             "away_elo": 1491.94,
             "match_referee_attention": 0,
             "match_injury_attention": 0,
@@ -19712,7 +19731,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:10:03.675209+00:00"
+            "updated_at": "2026-08-08T19:01:59.477832+00:00"
           },
           "focus_digest": [
             "ventana dura",
@@ -19757,27 +19776,27 @@
               "insight_mercado": "El local es favorito para las casas de apuestas (56.7%), pero el publico de Loterias lo infravalora (32.0%). El favorito podría estar infravalorado en la quiniela."
             },
             "contexto_deportivo": {
-              "racha_local": "WWLLL (Mala racha reciente)",
+              "racha_local": "WLLLW (Mala racha reciente)",
               "racha_visitante": "LWLLW (Mala racha reciente)",
-              "fase_temporada": "tramo decisivo",
-              "contexto_competitivo": "contexto competitivo bajo o no calculable",
-              "objetivo_local": "persigue zona alta a 7 pts",
+              "fase_temporada": "final de temporada",
+              "contexto_competitivo": "local persigue zona alta a 4 pts",
+              "objetivo_local": "persigue zona alta a 4 pts",
               "objetivo_visitante": "defiende salvacion con 10 pts de colchon",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
-              "analisis_calendario_local": "VPS Vaasa persigue zona alta a 7 pts en tramo decisivo (must-win 3/100, no perder 21/100). Calendario próximo sin rivales especialmente exigentes.",
+              "analisis_calendario_local": "VPS Vaasa persigue zona alta a 4 pts en final de temporada (must-win 48/100, no perder 48/100). Calendario próximo sin rivales especialmente exigentes.",
               "analisis_calendario_visitante": "TPS Turku defiende salvacion con 10 pts de colchon en tramo decisivo (must-win 10/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario futuro con 2 rivales del top-6. Urgencia clasificatoria alta, necesitan 14 puntos para la salvación. Juegan con la presión del descenso.",
               "h2h_resumen": "1 encuentros históricos: gana VPS Vaasa en 0, empates 0, gana TPS Turku en 1 (ventana de 0 años)."
             },
             "contexto_competitivo_avanzado": {
               "season_context_phase": {
-                "key": "decisive",
-                "label": "tramo decisivo",
-                "played": 18,
+                "key": "final",
+                "label": "final de temporada",
+                "played": 19,
                 "total_rounds": 22,
-                "progress": 0.818,
+                "progress": 0.864,
                 "source": "played_matches"
               },
-              "competitive_stakes_label": "contexto competitivo bajo o no calculable",
+              "competitive_stakes_label": "local persigue zona alta a 4 pts",
               "direct_rivalry": {
                 "is_direct_rivalry": false,
                 "direct_rivalry_index": 0
@@ -19786,25 +19805,25 @@
                 "objective_key": "upper_zone",
                 "objective_label": "zona alta",
                 "status": "chasing",
-                "urgency": "low",
-                "summary": "persigue zona alta a 7 pts",
-                "gap_points": 7,
+                "urgency": "medium",
+                "summary": "persigue zona alta a 4 pts",
+                "gap_points": 4,
                 "cushion_points": null,
                 "line_position": 2,
                 "line_points": 34,
-                "relevance_score": 32.0,
-                "must_win_index": 3,
-                "must_not_lose_index": 21,
-                "objective_swing_if_win": 20,
-                "objective_swing_if_lose": 12,
+                "relevance_score": 84.0,
+                "must_win_index": 48,
+                "must_not_lose_index": 48,
+                "objective_swing_if_win": 53,
+                "objective_swing_if_lose": 45,
                 "swing_summary_if_win": "impacto material bajo",
                 "swing_summary_if_lose": "impacto material bajo",
                 "season_context_phase": {
-                  "key": "decisive",
-                  "label": "tramo decisivo",
-                  "played": 18,
+                  "key": "final",
+                  "label": "final de temporada",
+                  "played": 19,
                   "total_rounds": 22,
-                  "progress": 0.818,
+                  "progress": 0.864,
                   "source": "played_matches"
                 },
                 "objective_candidates": [
@@ -19812,25 +19831,25 @@
                     "objective_key": "upper_zone",
                     "objective_label": "zona alta",
                     "status": "chasing",
-                    "urgency": "low",
-                    "summary": "persigue zona alta a 7 pts",
-                    "gap_points": 7,
+                    "urgency": "medium",
+                    "summary": "persigue zona alta a 4 pts",
+                    "gap_points": 4,
                     "cushion_points": null,
                     "line_position": 2,
                     "line_points": 34,
-                    "relevance_score": 32.0
+                    "relevance_score": 84.0
                   },
                   {
                     "objective_key": "survival",
                     "objective_label": "salvacion",
                     "status": "defending",
                     "urgency": "low",
-                    "summary": "defiende salvacion con 12 pts de colchon",
+                    "summary": "defiende salvacion con 15 pts de colchon",
                     "gap_points": null,
-                    "cushion_points": 12,
+                    "cushion_points": 15,
                     "line_position": 10,
                     "line_points": 18,
-                    "relevance_score": 18.0
+                    "relevance_score": 0.0
                   }
                 ]
               },
@@ -19900,7 +19919,7 @@
               }
             },
             "factores_externos": {
-              "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (12 vs 13 días).",
+              "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). El visitante descansó 13 días vs 6 días del local. Ligera ventaja física para el visitante.",
               "clima_e_impacto": "Temperatura ideal (22ºC), sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento moderado para el visitante (296 km). Impacto mínimo.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
@@ -19948,7 +19967,7 @@
                 "kickoff": "2026-08-31T00:00:00+00:00",
                 "venue": "away",
                 "opponent": "Gnistan",
-                "opponent_position": 4,
+                "opponent_position": 5,
                 "opponent_points": 29,
                 "source": "football-data"
               }
@@ -19995,7 +20014,7 @@
                 "kickoff": "2026-08-31T16:00:00Z",
                 "venue": "away",
                 "opponent": "Gnistan",
-                "opponent_position": 4,
+                "opponent_position": 5,
                 "opponent_points": 29,
                 "round": "22",
                 "source": "sportsdb-rounds"
@@ -20043,11 +20062,11 @@
             "timezone": "Europe/Helsinki",
             "forecast_time": "2026-08-09T14:00",
             "temperature_c": 21.6,
-            "precipitation_probability": 1,
+            "precipitation_probability": 0,
             "precipitation_mm": 0.0,
             "wind_speed_kmh": 22.3,
-            "wind_gusts_kmh": 43.9,
-            "weather_code": 2
+            "wind_gusts_kmh": 44.3,
+            "weather_code": 3
           },
           "travel_context": {
             "distance_km": 134.0,
@@ -20418,8 +20437,8 @@
                 "kickoff": "2026-08-14T15:00:00Z",
                 "venue": "away",
                 "opponent": "VPS",
-                "opponent_position": 6,
-                "opponent_points": 27,
+                "opponent_position": 3,
+                "opponent_points": 30,
                 "round": "20",
                 "source": "sportsdb-rounds+football-data"
               },
@@ -20438,7 +20457,7 @@
                 "kickoff": "2026-08-31T16:00:00Z",
                 "venue": "away",
                 "opponent": "Gnistan",
-                "opponent_position": 4,
+                "opponent_position": 5,
                 "opponent_points": 29,
                 "round": "22",
                 "source": "sportsdb-rounds+football-data"
@@ -20479,7 +20498,7 @@
             "home_future_difficulty": {
               "matches": 3,
               "difficulty_index": 100.0,
-              "avg_opponent_position": 4.0,
+              "avg_opponent_position": 3.33,
               "top4_matches": 2,
               "top6_matches": 3,
               "top8_matches": 3,
@@ -20609,14 +20628,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|tps|ifk mariehamn|j75-2",
             "event_context": {
-              "sportsdb_event_id": "2405309",
+              "sportsdb_event_id": "2405319",
               "sportsdb_home_team_id": "134328",
-              "sportsdb_away_team_id": "134337",
-              "venue": "Veritas Stadion",
+              "sportsdb_away_team_id": "134328",
+              "venue": "Väre Areena",
               "stadium_city": "Turku, Finland.",
               "league": "Finnish Veikkausliiga",
-              "round": "18",
-              "status": "FT"
+              "round": "19",
+              "status": "NS"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -20660,7 +20679,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:10:59.377386+00:00"
+            "updated_at": "2026-08-08T19:02:01.628787+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -20788,7 +20807,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "https://www.ifkmariehamn.com",
+              "website": "https://fc.tps.fi",
               "items": []
             }
           },
@@ -21045,6 +21064,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|tps|ifk mariehamn|j75-2",
@@ -21156,8 +21177,8 @@
                 "kickoff": "2026-08-14T15:00:00Z",
                 "venue": "away",
                 "opponent": "VPS",
-                "opponent_position": 6,
-                "opponent_points": 27,
+                "opponent_position": 3,
+                "opponent_points": 30,
                 "round": "20",
                 "source": "sportsdb-rounds"
               },
@@ -21176,7 +21197,7 @@
                 "kickoff": "2026-08-31T16:00:00Z",
                 "venue": "away",
                 "opponent": "Gnistan",
-                "opponent_position": 4,
+                "opponent_position": 5,
                 "opponent_points": 29,
                 "round": "22",
                 "source": "sportsdb-rounds"
@@ -21239,11 +21260,11 @@
           "weather_context": {
             "timezone": "Europe/Helsinki",
             "forecast_time": "2026-08-09T16:00",
-            "temperature_c": 19.4,
-            "precipitation_probability": 5,
+            "temperature_c": 18.6,
+            "precipitation_probability": 11,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 12.2,
-            "wind_gusts_kmh": 25.2,
+            "wind_speed_kmh": 14.0,
+            "wind_gusts_kmh": 27.7,
             "weather_code": 3
           },
           "travel_context": {
@@ -21649,7 +21670,7 @@
                 "opponent_position": 4,
                 "opponent_points": 28,
                 "league": "soccer_finland_veikkausliiga",
-                "source": "odds-feed+sportsdb-rounds+sportsdb-next",
+                "source": "odds-feed+sportsdb-next",
                 "round": "19"
               },
               {
@@ -21689,7 +21710,7 @@
                 "kickoff": "2026-08-17T15:00:00Z",
                 "venue": "away",
                 "opponent": "Gnistan",
-                "opponent_position": 4,
+                "opponent_position": 5,
                 "opponent_points": 29,
                 "round": "20",
                 "source": "sportsdb-rounds+football-data"
@@ -21699,8 +21720,8 @@
                 "kickoff": "2026-08-22T14:00:00Z",
                 "venue": "home",
                 "opponent": "VPS",
-                "opponent_position": 6,
-                "opponent_points": 27,
+                "opponent_position": 3,
+                "opponent_points": 30,
                 "round": "21",
                 "source": "sportsdb-rounds+football-data"
               },
@@ -21709,7 +21730,7 @@
                 "kickoff": "2026-08-31T16:00:00Z",
                 "venue": "home",
                 "opponent": "HJK Helsinki",
-                "opponent_position": 5,
+                "opponent_position": 6,
                 "opponent_points": 28,
                 "round": "22",
                 "source": "sportsdb-rounds+football-data"
@@ -21731,7 +21752,7 @@
             "away_future_difficulty": {
               "matches": 3,
               "difficulty_index": 100.0,
-              "avg_opponent_position": 5.0,
+              "avg_opponent_position": 4.67,
               "top4_matches": 1,
               "top6_matches": 3,
               "top8_matches": 3,
@@ -21849,14 +21870,14 @@
           "structured_context": {
             "match_key": "quiniela_cache|ac oulu|ilves|j75-3",
             "event_context": {
-              "sportsdb_event_id": "2405311",
+              "sportsdb_event_id": "2405317",
               "sportsdb_home_team_id": "140517",
               "sportsdb_away_team_id": "136687",
-              "venue": "Raatin Stadion",
+              "venue": "Tammelan Stadion",
               "stadium_city": "Koskikeskus, Oulu",
               "league": "Finnish Veikkausliiga",
-              "round": "18",
-              "status": "FT"
+              "round": "19",
+              "status": "NS"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -21883,7 +21904,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:11:09.296367+00:00"
+            "updated_at": "2026-08-08T19:02:31.727186+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -22266,6 +22287,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|ac oulu|ilves|j75-3",
@@ -22386,7 +22409,7 @@
                 "kickoff": "2026-08-09T16:00:00Z",
                 "venue": "home",
                 "opponent": "HJK Helsinki",
-                "opponent_position": 5,
+                "opponent_position": 6,
                 "opponent_points": 28,
                 "league": "Finnish Veikkausliiga",
                 "round": "19",
@@ -22396,16 +22419,6 @@
             ],
             "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [
-              {
-                "date": "2026-08-09",
-                "kickoff": "2026-08-09T16:00:00Z",
-                "venue": "home",
-                "opponent": "HJK Helsinki",
-                "opponent_position": 5,
-                "opponent_points": 28,
-                "round": "19",
-                "source": "sportsdb-rounds"
-              },
               {
                 "date": "2026-08-16",
                 "kickoff": "2026-08-16T14:00:00Z",
@@ -22443,7 +22456,7 @@
                 "kickoff": "2026-08-17T15:00:00Z",
                 "venue": "away",
                 "opponent": "Gnistan",
-                "opponent_position": 4,
+                "opponent_position": 5,
                 "opponent_points": 29,
                 "round": "20",
                 "source": "sportsdb-rounds"
@@ -22453,8 +22466,8 @@
                 "kickoff": "2026-08-22T14:00:00Z",
                 "venue": "home",
                 "opponent": "VPS",
-                "opponent_position": 6,
-                "opponent_points": 27,
+                "opponent_position": 3,
+                "opponent_points": 30,
                 "round": "21",
                 "source": "sportsdb-rounds"
               },
@@ -22463,7 +22476,7 @@
                 "kickoff": "2026-08-31T16:00:00Z",
                 "venue": "home",
                 "opponent": "HJK Helsinki",
-                "opponent_position": 5,
+                "opponent_position": 6,
                 "opponent_points": 28,
                 "round": "22",
                 "source": "sportsdb-rounds"
@@ -22814,17 +22827,17 @@
               "line_points": 18,
               "relevance_score": 100.0,
               "must_win_index": 100,
-              "must_not_lose_index": 89,
-              "objective_swing_if_win": 59,
-              "objective_swing_if_lose": 51,
+              "must_not_lose_index": 95,
+              "objective_swing_if_win": 65,
+              "objective_swing_if_lose": 57,
               "swing_summary_if_win": "victoria le mete de lleno en salvacion",
               "swing_summary_if_lose": "derrota aleja salvacion",
               "season_context_phase": {
-                "key": "decisive",
-                "label": "tramo decisivo",
-                "played": 18,
+                "key": "final",
+                "label": "final de temporada",
+                "played": 19,
                 "total_rounds": 22,
-                "progress": 0.818,
+                "progress": 0.864,
                 "source": "played_matches"
               },
               "objective_candidates": [
@@ -22869,12 +22882,12 @@
                 "date": "2026-08-09",
                 "kickoff": "2026-08-09T14:00:00Z",
                 "venue": "away",
-                "opponent": "FC Inter Turku",
+                "opponent": "Inter Turku",
                 "opponent_position": 2,
                 "opponent_points": 34,
-                "league": "soccer_finland_veikkausliiga",
-                "source": "odds-feed+sportsdb-rounds+sportsdb-next+football-data",
-                "round": "19"
+                "round": "19",
+                "source": "sportsdb-rounds+odds-feed+football-data",
+                "league": "soccer_finland_veikkausliiga"
               },
               {
                 "date": "2026-08-16",
@@ -22901,8 +22914,8 @@
                 "kickoff": "2026-08-31T16:00:00Z",
                 "venue": "away",
                 "opponent": "VPS",
-                "opponent_position": 6,
-                "opponent_points": 27,
+                "opponent_position": 3,
+                "opponent_points": 30,
                 "round": "22",
                 "source": "sportsdb-rounds+football-data"
               }
@@ -22913,7 +22926,7 @@
                 "kickoff": "2026-08-16T13:00:00Z",
                 "venue": "away",
                 "opponent": "HJK Helsinki",
-                "opponent_position": 5,
+                "opponent_position": 6,
                 "opponent_points": 28,
                 "round": "20",
                 "source": "sportsdb-rounds+football-data"
@@ -22923,7 +22936,7 @@
                 "kickoff": "2026-08-22T14:00:00Z",
                 "venue": "home",
                 "opponent": "AC Oulu",
-                "opponent_position": 3,
+                "opponent_position": 4,
                 "opponent_points": 30,
                 "round": "21",
                 "source": "sportsdb-rounds+football-data"
@@ -22942,12 +22955,12 @@
             "home_future_difficulty": {
               "matches": 4,
               "difficulty_index": 100.0,
-              "avg_opponent_position": 4.75,
-              "top4_matches": 2,
+              "avg_opponent_position": 4.0,
+              "top4_matches": 3,
               "top6_matches": 3,
               "top8_matches": 3,
               "hard_opponents": [
-                "FC Inter Turku",
+                "Inter Turku",
                 "KuPS",
                 "VPS"
               ],
@@ -22955,8 +22968,8 @@
             },
             "away_future_difficulty": {
               "matches": 3,
-              "difficulty_index": 100.0,
-              "avg_opponent_position": 6.67,
+              "difficulty_index": 97.52,
+              "avg_opponent_position": 7.33,
               "top4_matches": 1,
               "top6_matches": 2,
               "top8_matches": 2,
@@ -22976,9 +22989,9 @@
               "gap_to_drop_zone": 0
             },
             "away_pressure_index": {
-              "score": 69.98,
+              "score": 69.38,
               "label": "high",
-              "future_difficulty": 100.0,
+              "future_difficulty": 97.52,
               "hard_window_matches": 2,
               "gap_to_drop_zone": 0
             },
@@ -23061,12 +23074,12 @@
             "home_must_win_index": 10,
             "away_must_win_index": 100,
             "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 89,
+            "away_must_not_lose_index": 95,
             "direct_rivalry_index": 0,
             "home_objective_swing_if_win": 12,
             "home_objective_swing_if_lose": 20,
-            "away_objective_swing_if_win": 59,
-            "away_objective_swing_if_lose": 51,
+            "away_objective_swing_if_win": 65,
+            "away_objective_swing_if_lose": 57,
             "home_rotation_risk_index": 0,
             "away_rotation_risk_index": 0
           },
@@ -23107,7 +23120,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:11:21.383421+00:00"
+            "updated_at": "2026-08-08T19:03:19.852557+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -23256,11 +23269,11 @@
             "home_matches_last_14_days": 2,
             "away_matches_last_14_days": 1,
             "home_pressure_index": 77.92,
-            "away_pressure_index": 69.98,
+            "away_pressure_index": 69.38,
             "home_must_win_index": 10,
             "away_must_win_index": 100,
             "home_must_not_lose_index": 0,
-            "away_must_not_lose_index": 89,
+            "away_must_not_lose_index": 95,
             "direct_rivalry_index": 0,
             "season_context_phase": "decisive",
             "competitive_stakes_label": "visitante persigue salvacion a 3 pts",
@@ -23330,7 +23343,7 @@
               "objetivo_visitante": "persigue salvacion a 3 pts",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
               "analisis_calendario_local": "FC LAHTI defiende salvacion con 10 pts de colchon en tramo decisivo (must-win 10/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario futuro con 3 rivales del top-6. Urgencia clasificatoria alta, necesitan 14 puntos para la salvación. Juegan con la presión del descenso.",
-              "analisis_calendario_visitante": "FF JARO persigue salvacion a 3 pts en tramo decisivo (must-win 100/100, no perder 89/100). Victoria le mete de lleno en salvacion. Derrota aleja salvacion. Calendario futuro con 2 rivales del top-6. Urgencia clasificatoria alta, necesitan 24 puntos para la salvación. Juegan con la presión del descenso.",
+              "analisis_calendario_visitante": "FF JARO persigue salvacion a 3 pts en final de temporada (must-win 100/100, no perder 95/100). Victoria le mete de lleno en salvacion. Derrota aleja salvacion. Calendario futuro con 2 rivales del top-6. Urgencia clasificatoria alta, necesitan 24 puntos para la salvación. Juegan con la presión del descenso.",
               "h2h_resumen": "2 encuentros históricos: gana FC LAHTI en 2, empates 0, gana FF JARO en 0 (ventana de 0 años)."
             },
             "contexto_competitivo_avanzado": {
@@ -23416,17 +23429,17 @@
                 "line_points": 18,
                 "relevance_score": 100.0,
                 "must_win_index": 100,
-                "must_not_lose_index": 89,
-                "objective_swing_if_win": 59,
-                "objective_swing_if_lose": 51,
+                "must_not_lose_index": 95,
+                "objective_swing_if_win": 65,
+                "objective_swing_if_lose": 57,
                 "swing_summary_if_win": "victoria le mete de lleno en salvacion",
                 "swing_summary_if_lose": "derrota aleja salvacion",
                 "season_context_phase": {
-                  "key": "decisive",
-                  "label": "tramo decisivo",
-                  "played": 18,
+                  "key": "final",
+                  "label": "final de temporada",
+                  "played": 19,
                   "total_rounds": 22,
-                  "progress": 0.818,
+                  "progress": 0.864,
                   "source": "played_matches"
                 },
                 "objective_candidates": [
@@ -23469,6 +23482,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -23606,20 +23621,7 @@
             ],
             "home_espn_upcoming": [],
             "away_espn_upcoming": [],
-            "home_sportsdb_next_upcoming": [
-              {
-                "date": "2026-08-09",
-                "kickoff": "2026-08-09T14:00:00Z",
-                "venue": "away",
-                "opponent": "Inter Turku",
-                "opponent_position": 2,
-                "opponent_points": 34,
-                "league": "Finnish Veikkausliiga",
-                "round": "19",
-                "stage": "",
-                "source": "sportsdb-next"
-              }
-            ],
+            "home_sportsdb_next_upcoming": [],
             "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [
               {
@@ -23657,8 +23659,8 @@
                 "kickoff": "2026-08-31T16:00:00Z",
                 "venue": "away",
                 "opponent": "VPS",
-                "opponent_position": 6,
-                "opponent_points": 27,
+                "opponent_position": 3,
+                "opponent_points": 30,
                 "round": "22",
                 "source": "sportsdb-rounds"
               }
@@ -23669,7 +23671,7 @@
                 "kickoff": "2026-08-16T13:00:00Z",
                 "venue": "away",
                 "opponent": "HJK Helsinki",
-                "opponent_position": 5,
+                "opponent_position": 6,
                 "opponent_points": 28,
                 "round": "20",
                 "source": "sportsdb-rounds"
@@ -23679,7 +23681,7 @@
                 "kickoff": "2026-08-22T14:00:00Z",
                 "venue": "home",
                 "opponent": "AC Oulu",
-                "opponent_position": 3,
+                "opponent_position": 4,
                 "opponent_points": 30,
                 "round": "21",
                 "source": "sportsdb-rounds"
@@ -23720,11 +23722,11 @@
           "weather_context": {
             "timezone": "Europe/Helsinki",
             "forecast_time": "2026-08-09T12:00",
-            "temperature_c": 19.4,
-            "precipitation_probability": 8,
+            "temperature_c": 19.9,
+            "precipitation_probability": 10,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 28.1,
-            "wind_gusts_kmh": 47.2,
+            "wind_speed_kmh": 29.2,
+            "wind_gusts_kmh": 49.3,
             "weather_code": 0
           },
           "travel_context": {
@@ -24142,14 +24144,15 @@
                 "opponent_position": 9,
                 "opponent_points": 22,
                 "round": "20",
-                "source": "sportsdb-rounds+football-data"
+                "source": "sportsdb-rounds+sportsdb-next+football-data",
+                "league": "Finnish Veikkausliiga"
               },
               {
                 "date": "2026-08-23",
                 "kickoff": "2026-08-23T12:00:00Z",
                 "venue": "away",
                 "opponent": "HJK Helsinki",
-                "opponent_position": 5,
+                "opponent_position": 6,
                 "opponent_points": 28,
                 "round": "21",
                 "source": "sportsdb-rounds+football-data"
@@ -24199,8 +24202,8 @@
             ],
             "home_future_difficulty": {
               "matches": 3,
-              "difficulty_index": 95.89,
-              "avg_opponent_position": 7.33,
+              "difficulty_index": 93.71,
+              "avg_opponent_position": 7.67,
               "top4_matches": 0,
               "top6_matches": 1,
               "top8_matches": 2,
@@ -24226,9 +24229,9 @@
           },
           "analytics_context": {
             "home_pressure_index": {
-              "score": 74.3,
+              "score": 73.77,
               "label": "high",
-              "future_difficulty": 95.89,
+              "future_difficulty": 93.71,
               "hard_window_matches": 2,
               "gap_to_drop_zone": 0
             },
@@ -24364,7 +24367,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:11:48.321926+00:00"
+            "updated_at": "2026-08-08T19:03:55.522263+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -24526,7 +24529,7 @@
             "away_rest_days": 8,
             "home_matches_last_14_days": 1,
             "away_matches_last_14_days": 1,
-            "home_pressure_index": 74.3,
+            "home_pressure_index": 73.77,
             "away_pressure_index": 77.97,
             "home_must_win_index": 35,
             "away_must_win_index": 35,
@@ -24750,7 +24753,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 8 días).",
-              "clima_e_impacto": "Temperatura ideal (19ºC), sin riesgo de lluvia, viento moderado (28 km/h).",
+              "clima_e_impacto": "Temperatura ideal (20ºC), sin riesgo de lluvia, viento moderado (29 km/h).",
               "viaje": "Viaje notable para el visitante (336 km). Leve impacto físico.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -24760,6 +24763,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -24877,7 +24882,20 @@
             ],
             "home_espn_upcoming": [],
             "away_espn_upcoming": [],
-            "home_sportsdb_next_upcoming": [],
+            "home_sportsdb_next_upcoming": [
+              {
+                "date": "2026-08-17",
+                "kickoff": "2026-08-17T15:00:00Z",
+                "venue": "home",
+                "opponent": "Ilves",
+                "opponent_position": 9,
+                "opponent_points": 22,
+                "league": "Finnish Veikkausliiga",
+                "round": "20",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [
               {
@@ -24895,7 +24913,7 @@
                 "kickoff": "2026-08-23T12:00:00Z",
                 "venue": "away",
                 "opponent": "HJK Helsinki",
-                "opponent_position": 5,
+                "opponent_position": 6,
                 "opponent_points": 28,
                 "round": "21",
                 "source": "sportsdb-rounds"
@@ -25004,7 +25022,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T12:59:57.275363+00:00",
+            "updated_at": "2026-08-08T19:00:06.866243+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -25639,8 +25657,8 @@
                 "team": "FREDRIKSTAD",
                 "items": [],
                 "count": 0,
-                "verification_status": "not_verified",
-                "source_items_checked": 0
+                "verification_status": "sources_checked_no_confirmed_absence",
+                "source_items_checked": 1
               },
               "away_team": {
                 "team": "SANDEFJORD",
@@ -25650,7 +25668,7 @@
                 "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T13:02:53.099828+00:00"
+            "updated_at": "2026-08-08T19:04:02.327414+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -25681,7 +25699,15 @@
             },
             "rotation_risk": "low",
             "focus_news": {
-              "items": [],
+              "items": [
+                {
+                  "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                  "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                }
+              ],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -25689,13 +25715,21 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 0,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 6
             },
             "media_news": {
-              "items": [],
+              "items": [
+                {
+                  "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                  "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                }
+              ],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -25703,7 +25737,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 0,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 3
@@ -25846,7 +25880,7 @@
             "partido": "FREDRIKSTAD vs SANDEFJORD",
             "calidad_datos": {
               "nivel": "alta",
-              "score": 74,
+              "score": 77,
               "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
               "fortalezas": [
                 "referencia 1X2 sin cuotas reales",
@@ -25858,18 +25892,17 @@
               ],
               "faltan": [
                 "cuotas reales",
-                "bajas/convocatorias del otro equipo",
                 "arbitro confirmado"
               ],
               "cobertura_cualitativa": {
-                "roster_status": "partial_verification",
+                "roster_status": "sources_checked_no_confirmed_absence",
                 "injury_items": 0,
-                "availability_items": 2,
+                "availability_items": 4,
                 "official_items": 0,
                 "match_items": 0,
-                "team_items": 2,
-                "verified_teams": 1,
-                "home_roster_status": "not_verified",
+                "team_items": 4,
+                "verified_teams": 2,
+                "home_roster_status": "sources_checked_no_confirmed_absence",
                 "away_roster_status": "sources_checked_no_confirmed_absence",
                 "referee_confirmed": false
               }
@@ -26041,6 +26074,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -27394,6 +27429,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|ik start|viking|j75-7",
@@ -27583,16 +27620,16 @@
           "weather_context": {
             "timezone": "Europe/Oslo",
             "forecast_time": "2026-08-08T14:00",
-            "temperature_c": 14.3,
+            "temperature_c": 15.3,
             "precipitation_probability": 96,
-            "precipitation_mm": 0.6,
-            "wind_speed_kmh": 5.4,
-            "wind_gusts_kmh": 9.7,
+            "precipitation_mm": 0.5,
+            "wind_speed_kmh": 6.1,
+            "wind_gusts_kmh": 11.5,
             "weather_code": 53
           },
           "travel_context": {
-            "distance_km": 298.2,
-            "distance_bucket": "short",
+            "distance_km": 438.9,
+            "distance_bucket": "medium",
             "home_country": "Norway",
             "away_country": "Norway",
             "international_trip": false
@@ -27612,14 +27649,14 @@
               "matches_last_14_days": 2,
               "fatigue": "low",
               "fatigue_index": {
-                "score": 27.45,
+                "score": 30.97,
                 "label": "low"
               }
             }
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T12:59:57.772896+00:00",
+            "updated_at": "2026-08-08T19:00:08.367933+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -28013,12 +28050,12 @@
                 "date": "2026-08-09",
                 "kickoff": "2026-08-09T17:15:00Z",
                 "venue": "away",
-                "opponent": "Kristiansund",
+                "opponent": "Kristiansund BK",
                 "opponent_position": 15,
                 "opponent_points": 12,
-                "round": "17",
-                "source": "sportsdb-rounds+odds-feed",
-                "league": "soccer_norway_eliteserien"
+                "league": "soccer_norway_eliteserien",
+                "source": "odds-feed+sportsdb-rounds+sportsdb-next",
+                "round": "17"
               },
               {
                 "date": "2026-08-16",
@@ -28159,7 +28196,7 @@
               "label": "low"
             },
             "away_fatigue_index": {
-              "score": 27.45,
+              "score": 30.97,
               "label": "low"
             },
             "home_elo": 1516.41,
@@ -28279,7 +28316,7 @@
                 "source_items_checked": 5
               }
             },
-            "updated_at": "2026-08-08T13:02:54.354586+00:00"
+            "updated_at": "2026-08-08T19:04:05.327933+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -28364,13 +28401,13 @@
               "wikipedia_title": "",
               "summary": "",
               "wikipedia_url": "",
-              "location_hint": "Hamar, Norway",
-              "city": "Hamar",
+              "location_hint": "Sarpsborg",
+              "city": "Sarpsborg",
               "country": "Norway",
               "country_code": "NO",
               "timezone": "Europe/Oslo",
-              "latitude": 60.7945,
-              "longitude": 11.06798,
+              "latitude": 59.28391,
+              "longitude": 11.10962,
               "cache_version": "v5"
             },
             "news": [],
@@ -28386,15 +28423,7 @@
             },
             "rotation_risk": "low",
             "focus_news": {
-              "items": [
-                {
-                  "title": "Molde - Sarpsborg 08 Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
-                  "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPQTVhalFTMW1wZFNZVHotSEV0dm1JNHRXR3hPd2tXdDB1bGdiQ216eWE3cXJrM0tMdlZsZXNvRW1IckpmclM1eHUwYXppVjJ1NHRwVmhjUXBlVWlTcE1pSUtUZ1BTQTB4N21FYTZuS0xQZGJXOC1FQk04SnZuTFotVGdUYWxLc05ncHItdFlZeG9LVTM0VUc1MVVCSTk?oc=5",
-                  "published_at": "Sat, 01 Aug 2026 01:46:58 GMT",
-                  "source": "Eurosport",
-                  "_signal": 1.7
-                }
-              ],
+              "items": [],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -28402,7 +28431,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 1,
+                "squad_count": 0,
                 "morale_count": 0
               },
               "query_count": 6
@@ -28471,7 +28500,7 @@
           },
           "match_signals": {
             "weather_risk": "high",
-            "travel_burden_away": "short",
+            "travel_burden_away": "medium",
             "home_form_points_last_5": 8,
             "away_form_points_last_5": 11,
             "home_league_position": 5,
@@ -28494,7 +28523,7 @@
             "season_context_phase": "middle",
             "competitive_stakes_label": "contexto competitivo bajo o no calculable",
             "home_fatigue_index": 20.0,
-            "away_fatigue_index": 27.45,
+            "away_fatigue_index": 30.97,
             "home_elo": 1516.41,
             "away_elo": 1514.7,
             "match_referee_attention": 0,
@@ -28534,10 +28563,10 @@
               "cobertura_cualitativa": {
                 "roster_status": "sources_checked_no_confirmed_absence",
                 "injury_items": 0,
-                "availability_items": 4,
+                "availability_items": 3,
                 "official_items": 4,
                 "match_items": 0,
-                "team_items": 4,
+                "team_items": 3,
                 "verified_teams": 2,
                 "home_roster_status": "sources_checked_no_confirmed_absence",
                 "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -28696,8 +28725,8 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 6 días).",
-              "clima_e_impacto": "Temperatura 14ºC, alta probabilidad de lluvia que puede alterar el juego técnico, sin viento significativo.",
-              "viaje": "Desplazamiento moderado para el visitante (298 km). Impacto mínimo.",
+              "clima_e_impacto": "Temperatura ideal (15ºC), alta probabilidad de lluvia que puede alterar el juego técnico, sin viento significativo.",
+              "viaje": "Viaje notable para el visitante (439 km). Leve impacto físico.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
                 "local": "Bajas no verificadas; no equivale a plantilla completa.",
@@ -28706,6 +28735,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -28778,7 +28809,20 @@
             "away_schedule_upcoming": [],
             "home_espn_upcoming": [],
             "away_espn_upcoming": [],
-            "home_sportsdb_next_upcoming": [],
+            "home_sportsdb_next_upcoming": [
+              {
+                "date": "2026-08-09",
+                "kickoff": "2026-08-09T17:15:00Z",
+                "venue": "away",
+                "opponent": "Kristiansund",
+                "opponent_position": 15,
+                "opponent_points": 12,
+                "league": "Norwegian Eliteserien",
+                "round": "17",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [
               {
@@ -28909,11 +28953,11 @@
           "weather_context": {
             "timezone": "Europe/Oslo",
             "forecast_time": "2026-08-09T17:00",
-            "temperature_c": 20.2,
-            "precipitation_probability": 33,
+            "temperature_c": 20.3,
+            "precipitation_probability": 18,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 26.6,
-            "wind_gusts_kmh": 46.8,
+            "wind_speed_kmh": 25.6,
+            "wind_gusts_kmh": 46.1,
             "weather_code": 3
           },
           "travel_context": {
@@ -28945,7 +28989,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T12:59:58.423194+00:00",
+            "updated_at": "2026-08-08T19:00:09.200770+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -29583,7 +29627,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T13:02:55.624112+00:00"
+            "updated_at": "2026-08-08T19:04:08.416261+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -29965,7 +30009,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
-              "clima_e_impacto": "Temperatura ideal (20ºC), posibilidad de lluvia moderada, viento moderado (27 km/h).",
+              "clima_e_impacto": "Temperatura ideal (20ºC), sin riesgo de lluvia, viento moderado (26 km/h).",
               "viaje": "Viaje notable para el visitante (404 km). Leve impacto físico.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -29975,6 +30019,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -31293,6 +31339,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|aalesunds fk|tromso|j75-10",
@@ -31471,11 +31519,11 @@
           "weather_context": {
             "timezone": "Europe/Oslo",
             "forecast_time": "2026-08-09T12:00",
-            "temperature_c": 14.9,
+            "temperature_c": 14.5,
             "precipitation_probability": 100,
-            "precipitation_mm": 5.2,
-            "wind_speed_kmh": 27.4,
-            "wind_gusts_kmh": 52.9,
+            "precipitation_mm": 6.0,
+            "wind_speed_kmh": 16.2,
+            "wind_gusts_kmh": 37.8,
             "weather_code": 63
           },
           "travel_context": {
@@ -31507,7 +31555,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T12:59:59.182418+00:00",
+            "updated_at": "2026-08-08T19:00:09.968254+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -31885,10 +31933,21 @@
             },
             "competitive_stakes_label": "visitante defiende salvacion con 6 pts de colchon",
             "home_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "high",
+              "score": 88,
+              "reason": "SK Brann tiene UEFA Conference League vs Apollon Limassol en 2.2 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-08-11",
+                "kickoff": "2026-08-11T17:00:00Z",
+                "venue": "away",
+                "opponent": "Apollon Limassol",
+                "opponent_position": 1,
+                "opponent_points": 38,
+                "league": "UEFA Conference League",
+                "round": "400",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
             },
             "away_rotation_context": {
               "risk": "low",
@@ -31897,6 +31956,18 @@
               "next_high_importance_fixture": {}
             },
             "home_upcoming": [
+              {
+                "date": "2026-08-11",
+                "kickoff": "2026-08-11T17:00:00Z",
+                "venue": "away",
+                "opponent": "Apollon Limassol",
+                "opponent_position": 1,
+                "opponent_points": 38,
+                "league": "UEFA Conference League",
+                "round": "400",
+                "stage": "",
+                "source": "sportsdb-next"
+              },
               {
                 "date": "2026-08-16",
                 "kickoff": "2026-08-16T15:00:00Z",
@@ -31935,16 +32006,6 @@
                 "opponent_position": 16,
                 "opponent_points": 10,
                 "round": "21",
-                "source": "sportsdb-rounds"
-              },
-              {
-                "date": "2026-09-20",
-                "kickoff": "2026-09-20T17:15:00Z",
-                "venue": "home",
-                "opponent": "Bodø/Glimt",
-                "opponent_position": 1,
-                "opponent_points": 38,
-                "round": "22",
                 "source": "sportsdb-rounds"
               }
             ],
@@ -32003,15 +32064,15 @@
             ],
             "home_future_difficulty": {
               "matches": 5,
-              "difficulty_index": 79.45,
+              "difficulty_index": 84.46,
               "avg_opponent_position": 8.2,
               "top4_matches": 2,
               "top6_matches": 2,
               "top8_matches": 3,
               "hard_opponents": [
+                "Apollon Limassol",
                 "Hamarkameratene",
-                "Lillestrøm",
-                "Bodø/Glimt"
+                "Lillestrøm"
               ],
               "label": "critical"
             },
@@ -32033,9 +32094,9 @@
           },
           "analytics_context": {
             "home_pressure_index": {
-              "score": 55.54,
+              "score": 56.75,
               "label": "high",
-              "future_difficulty": 79.45,
+              "future_difficulty": 84.46,
               "hard_window_matches": 3,
               "gap_to_drop_zone": 10
             },
@@ -32131,7 +32192,7 @@
             "home_objective_swing_if_lose": 0,
             "away_objective_swing_if_win": 3,
             "away_objective_swing_if_lose": 11,
-            "home_rotation_risk_index": 0,
+            "home_rotation_risk_index": 88,
             "away_rotation_risk_index": 0
           },
           "structured_context": {
@@ -32161,7 +32222,7 @@
                 "items": [],
                 "count": 0,
                 "verification_status": "sources_checked_no_confirmed_absence",
-                "source_items_checked": 4
+                "source_items_checked": 3
               },
               "away_team": {
                 "team": "Rosenborg BK",
@@ -32171,7 +32232,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T13:02:58.452345+00:00"
+            "updated_at": "2026-08-08T19:04:11.728323+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -32242,12 +32303,6 @@
                   "title": "Ny i Brann og rett til Champions League-kvalifisering",
                   "link": "https://www.brann.no/nyheter/ny-i-brann-og-rett-til-champions-league-kvalifisering",
                   "published_at": "Tue, 04 Aug 2026 18:27:31 +0100",
-                  "source": "Web oficial",
-                  "_signal": 2.0
-                },
-                {
-                  "title": "05. august 2026 Videre i Budapest A-lag kvinner Video Brann var suverene i første kvalifiseringskamp til Champions League. Nå venter gruppefinale på lørdag.",
-                  "link": "https://www.brann.no/nyheter/videre-i-budapest",
                   "source": "Web oficial",
                   "_signal": 2.0
                 },
@@ -32345,7 +32400,7 @@
             "away_rest_days": 7,
             "home_matches_last_14_days": 1,
             "away_matches_last_14_days": 2,
-            "home_pressure_index": 55.54,
+            "home_pressure_index": 56.75,
             "away_pressure_index": 60.82,
             "home_must_win_index": 0,
             "away_must_win_index": 18,
@@ -32362,7 +32417,7 @@
             "match_injury_attention": 0,
             "match_rotation_attention": 0,
             "match_weather_attention": 0,
-            "home_rotation_risk_index": 0,
+            "home_rotation_risk_index": 88,
             "away_rotation_risk_index": 0,
             "structured_home_injuries": 0,
             "structured_away_injuries": 0,
@@ -32371,7 +32426,8 @@
           "focus_digest": [
             "clima duro",
             "ventana dura",
-            "objetivo competitivo"
+            "objetivo competitivo",
+            "rotacion probable"
           ],
           "focus_ai_briefing": {
             "partido": "SK Brann vs Rosenborg BK",
@@ -32396,7 +32452,7 @@
                 "roster_status": "partial_verification",
                 "injury_items": 0,
                 "availability_items": 0,
-                "official_items": 4,
+                "official_items": 3,
                 "match_items": 0,
                 "team_items": 0,
                 "verified_teams": 1,
@@ -32419,7 +32475,7 @@
               "contexto_competitivo": "visitante defiende salvacion con 6 pts de colchon",
               "objetivo_local": "persigue zona alta a 12 pts",
               "objetivo_visitante": "defiende salvacion con 6 pts de colchon",
-              "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
+              "riesgo_rotacion_competitiva": "local: SK Brann tiene UEFA Conference League vs Apollon Limassol en 2.2 dias (riesgo high)",
               "analisis_calendario_local": "SK Brann persigue zona alta a 12 pts en tramo medio (must-win 0/100, no perder 0/100). Calendario futuro con 2 rivales del top-6.",
               "analisis_calendario_visitante": "Rosenborg BK defiende salvacion con 6 pts de colchon en tramo medio (must-win 18/100, no perder 16/100). Victoria abre colchon en salvacion. Calendario futuro con 3 rivales del top-6. Nivel de urgencia bajo (+6 puntos sobre el descenso), juegan sin presión extrema.",
               "h2h_resumen": "10 encuentros históricos: gana SK Brann en 6, empates 3, gana Rosenborg BK en 1 (ventana de 5 años)."
@@ -32543,10 +32599,21 @@
                 ]
               },
               "home_rotation_context": {
-                "risk": "low",
-                "score": 0,
-                "reason": "",
-                "next_high_importance_fixture": {}
+                "risk": "high",
+                "score": 88,
+                "reason": "SK Brann tiene UEFA Conference League vs Apollon Limassol en 2.2 dias",
+                "next_high_importance_fixture": {
+                  "date": "2026-08-11",
+                  "kickoff": "2026-08-11T17:00:00Z",
+                  "venue": "away",
+                  "opponent": "Apollon Limassol",
+                  "opponent_position": 1,
+                  "opponent_points": 38,
+                  "league": "UEFA Conference League",
+                  "round": "400",
+                  "stage": "",
+                  "source": "sportsdb-next"
+                }
               },
               "away_rotation_context": {
                 "risk": "low",
@@ -32557,7 +32624,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
-              "clima_e_impacto": "Temperatura 15ºC, alta probabilidad de lluvia que puede alterar el juego técnico, viento moderado (27 km/h).",
+              "clima_e_impacto": "Temperatura 14ºC, alta probabilidad de lluvia que puede alterar el juego técnico, sin viento significativo.",
               "viaje": "Viaje notable para el visitante (428 km). Leve impacto físico.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -32567,6 +32634,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -32639,7 +32708,20 @@
             "away_schedule_upcoming": [],
             "home_espn_upcoming": [],
             "away_espn_upcoming": [],
-            "home_sportsdb_next_upcoming": [],
+            "home_sportsdb_next_upcoming": [
+              {
+                "date": "2026-08-11",
+                "kickoff": "2026-08-11T17:00:00Z",
+                "venue": "away",
+                "opponent": "Apollon Limassol",
+                "opponent_position": 1,
+                "opponent_points": 38,
+                "league": "UEFA Conference League",
+                "round": "400",
+                "stage": "",
+                "source": "sportsdb-next"
+              }
+            ],
             "away_sportsdb_next_upcoming": [],
             "home_round_upcoming": [
               {
@@ -32770,12 +32852,12 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-09T14:00",
-            "temperature_c": 22.9,
+            "temperature_c": 23.0,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 22.7,
-            "wind_gusts_kmh": 48.2,
-            "weather_code": 3
+            "wind_speed_kmh": 23.4,
+            "wind_gusts_kmh": 49.7,
+            "weather_code": 2
           },
           "travel_context": {
             "distance_km": 297.1,
@@ -32806,7 +32888,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T12:59:59.818805+00:00",
+            "updated_at": "2026-08-08T19:00:12.107965+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -33468,7 +33550,7 @@
                 "source_items_checked": 3
               }
             },
-            "updated_at": "2026-08-08T13:03:10.082258+00:00"
+            "updated_at": "2026-08-08T19:04:17.825297+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -33874,6 +33956,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|bk hacken|kalmar|j75-12",
@@ -34052,12 +34136,12 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-09T14:00",
-            "temperature_c": 24.3,
+            "temperature_c": 24.0,
             "precipitation_probability": 2,
             "precipitation_mm": 0.0,
             "wind_speed_kmh": 22.7,
-            "wind_gusts_kmh": 46.1,
-            "weather_code": 3
+            "wind_gusts_kmh": 46.4,
+            "weather_code": 2
           },
           "travel_context": {
             "distance_km": 222.5,
@@ -34088,7 +34172,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:00.524681+00:00",
+            "updated_at": "2026-08-08T19:00:13.789834+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -34772,7 +34856,7 @@
                 "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T13:03:16.860205+00:00"
+            "updated_at": "2026-08-08T19:04:23.872712+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -35199,6 +35283,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -36545,6 +36631,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|if brommapojkarna|malmo ff|j75-14",
@@ -36749,7 +36837,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T15:06:26.741294+00:00",
+            "updated_at": "2026-08-08T19:00:34.269947+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -37316,19 +37404,21 @@
             "home_objective_swing_if_win": 35,
             "home_objective_swing_if_lose": 27,
             "away_objective_swing_if_win": 39,
-            "away_objective_swing_if_lose": 47
+            "away_objective_swing_if_lose": 47,
+            "home_rotation_risk_index": 0,
+            "away_rotation_risk_index": 0
           },
           "structured_context": {
             "match_key": "quiniela_cache|aik fotboll|orgryte is|j75-15",
             "event_context": {
-              "sportsdb_event_id": "",
-              "sportsdb_home_team_id": "",
-              "sportsdb_away_team_id": "",
-              "venue": "",
-              "stadium_city": "",
-              "league": "",
-              "round": "16",
-              "status": ""
+              "sportsdb_event_id": "2398863",
+              "sportsdb_home_team_id": "134011",
+              "sportsdb_away_team_id": "135668",
+              "venue": "Strawberry Arena",
+              "stadium_city": "Solna, Stockholm",
+              "league": "Swedish Allsvenskan",
+              "round": "15",
+              "status": "FT"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -37352,10 +37442,10 @@
                 "items": [],
                 "count": 0,
                 "verification_status": "sources_checked_no_confirmed_absence",
-                "source_items_checked": 2
+                "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T13:03:21.194467+00:00"
+            "updated_at": "2026-08-08T19:04:52.496893+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -37414,7 +37504,7 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
+              "website": "https://www.aikfotboll.se",
               "items": []
             }
           },
@@ -37454,13 +37544,6 @@
                   "published_at": "Fri, 07 Aug 2026 04:04:51 GMT",
                   "source": "Eurosport",
                   "_signal": 1.7
-                },
-                {
-                  "title": "Örgryte IS - Dalkurd FF Convocatoria & Alineación: Superettan Fútbol - Eurosport",
-                  "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOMTVEeGJicW5WOUQxQmwweVBQbC1VYjI3Z2RxUmhLSnlpaXctWjB1UF8tTld5OXBsMk9yMEdNM3VLU0Z2SDlCVHNYTndfTlJRVXB3UVlpcnFLcTI0ZTRia3d0dWdZeEdPMWpFRWk0Y3NWbGU5WGZmS2pXaWJuOFJCc00welhHVGlmc1FLenI1NHVaaHR2MWUxWHctV0lvUE0?oc=5",
-                  "published_at": "Wed, 29 Jul 2026 07:19:58 GMT",
-                  "source": "Eurosport",
-                  "_signal": 1.7
                 }
               ],
               "signals": {
@@ -37470,7 +37553,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 2,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 6
@@ -37483,13 +37566,6 @@
                   "published_at": "Fri, 07 Aug 2026 04:04:51 GMT",
                   "source": "Eurosport",
                   "_signal": 1.7
-                },
-                {
-                  "title": "Örgryte IS - Dalkurd FF Convocatoria & Alineación: Superettan Fútbol - Eurosport",
-                  "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOMTVEeGJicW5WOUQxQmwweVBQbC1VYjI3Z2RxUmhLSnlpaXctWjB1UF8tTld5OXBsMk9yMEdNM3VLU0Z2SDlCVHNYTndfTlJRVXB3UVlpcnFLcTI0ZTRia3d0dWdZeEdPMWpFRWk0Y3NWbGU5WGZmS2pXaWJuOFJCc00welhHVGlmc1FLenI1NHVaaHR2MWUxWHctV0lvUE0?oc=5",
-                  "published_at": "Wed, 29 Jul 2026 07:19:58 GMT",
-                  "source": "Eurosport",
-                  "_signal": 1.7
                 }
               ],
               "signals": {
@@ -37499,7 +37575,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 2,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 3
@@ -37558,36 +37634,36 @@
           },
           "focus_digest": [
             "convocatoria",
+            "ventana dura",
             "objetivo competitivo"
           ],
           "focus_ai_briefing": {
             "partido": "AIK Fotboll vs Orgryte IS",
             "calidad_datos": {
-              "nivel": "baja",
-              "score": 44,
-              "resumen": "Confianza baja: análisis orientativo; faltan datos clave.",
+              "nivel": "media",
+              "score": 54,
+              "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
               "fortalezas": [
                 "liga identificada",
                 "clima",
                 "viaje",
+                "calendario próximo",
                 "clasificacion y forma verificadas",
-                "H2H",
-                "una plantilla investigada en fuentes recientes"
+                "H2H"
               ],
               "faltan": [
                 "cuotas/referencia 1X2",
                 "porcentajes de quiniela",
-                "calendario próximo",
                 "bajas/convocatorias del otro equipo",
                 "arbitro confirmado"
               ],
               "cobertura_cualitativa": {
                 "roster_status": "partial_verification",
                 "injury_items": 0,
-                "availability_items": 4,
+                "availability_items": 2,
                 "official_items": 0,
                 "match_items": 0,
-                "team_items": 4,
+                "team_items": 2,
                 "verified_teams": 1,
                 "home_roster_status": "not_verified",
                 "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -37609,8 +37685,8 @@
               "objetivo_local": "persigue zona alta a 4 pts",
               "objetivo_visitante": "defiende salvacion con 3 pts de colchon",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
-              "analisis_calendario_local": "AIK Fotboll persigue zona alta a 4 pts en tramo medio (must-win 30/100, no perder 30/100). Calendario próximo equilibrado, sin presión de conservar fuerzas.",
-              "analisis_calendario_visitante": "Orgryte IS defiende salvacion con 3 pts de colchon en tramo medio (must-win 41/100, no perder 74/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario próximo equilibrado, sin presión de conservar fuerzas. Cierta tensión clasificatoria, aunque no en zona crítica.",
+              "analisis_calendario_local": "AIK Fotboll persigue zona alta a 4 pts en tramo medio (must-win 30/100, no perder 30/100). Calendario futuro con 3 rivales del top-6.",
+              "analisis_calendario_visitante": "Orgryte IS defiende salvacion con 3 pts de colchon en tramo medio (must-win 41/100, no perder 74/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario futuro con 2 rivales del top-6. Cierta tensión clasificatoria, aunque no en zona crítica.",
               "h2h_resumen": "1 encuentros históricos: gana AIK Fotboll en 0, empates 0, gana Orgryte IS en 1 (ventana de 0 años)."
             },
             "contexto_competitivo_avanzado": {
@@ -37756,6 +37832,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -37924,7 +38002,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-08-08T12:00:00Z",
       "kickoff_to": "2026-08-11T17:00:00Z",
-      "updated_at": "2026-08-08T15:14:11.196734+00:00",
+      "updated_at": "2026-08-08T19:06:31.926276+00:00",
       "matches": [
         {
           "local": "KRISTIANSUND",
@@ -39033,6 +39111,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|kristiansund|ik start|j74-1",
@@ -39271,7 +39351,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T15:07:37.652221+00:00",
+            "updated_at": "2026-08-08T19:00:54.846900+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -39892,19 +39972,21 @@
             "home_objective_swing_if_win": 8,
             "home_objective_swing_if_lose": 0,
             "away_objective_swing_if_win": 0,
-            "away_objective_swing_if_lose": 8
+            "away_objective_swing_if_lose": 8,
+            "home_rotation_risk_index": 0,
+            "away_rotation_risk_index": 0
           },
           "structured_context": {
             "match_key": "quiniela_cache|sk brann|valerenga|j74-2",
             "event_context": {
-              "sportsdb_event_id": "2554892",
+              "sportsdb_event_id": "2399126",
               "sportsdb_home_team_id": "134571",
-              "sportsdb_away_team_id": "",
-              "venue": "Alphamega Stadium",
-              "stadium_city": "Limassol",
-              "league": "UEFA Conference League",
-              "round": "400",
-              "status": "NS"
+              "sportsdb_away_team_id": "134574",
+              "venue": "Ullevaal Stadion",
+              "stadium_city": "Bergen, Norway",
+              "league": "Norwegian Eliteserien",
+              "round": "17",
+              "status": "FT"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -39921,17 +40003,34 @@
                 "items": [],
                 "count": 0,
                 "verification_status": "sources_checked_no_confirmed_absence",
-                "source_items_checked": 4
+                "source_items_checked": 3
               },
               "away_team": {
                 "team": "VALERENGA",
-                "items": [],
-                "count": 0,
-                "verification_status": "sources_checked_no_confirmed_absence",
-                "source_items_checked": 1
+                "items": [
+                  {
+                    "player_name": "Ivan",
+                    "status": "suspended",
+                    "headline": "08. august 2026 Ivan tilbake fra start! Både Ivan Näsberg og Kolbeinn Finnsson er tilbake fra start etter å ha sonet karantene i forrige kamp.",
+                    "source": "Web oficial",
+                    "link": "https://www.vif-fotball.no/nyheter/ivan-tilbake-fra-start",
+                    "published_at": ""
+                  },
+                  {
+                    "player_name": "Kolbeinn Finnsson",
+                    "status": "suspended",
+                    "headline": "08. august 2026 Ivan tilbake fra start! Både Ivan Näsberg og Kolbeinn Finnsson er tilbake fra start etter å ha sonet karantene i forrige kamp.",
+                    "source": "Web oficial",
+                    "link": "https://www.vif-fotball.no/nyheter/ivan-tilbake-fra-start",
+                    "published_at": ""
+                  }
+                ],
+                "count": 2,
+                "verification_status": "confirmed_absences",
+                "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T13:03:43.974341+00:00"
+            "updated_at": "2026-08-08T19:04:58.906340+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -40002,12 +40101,6 @@
                   "title": "Ny i Brann og rett til Champions League-kvalifisering",
                   "link": "https://www.brann.no/nyheter/ny-i-brann-og-rett-til-champions-league-kvalifisering",
                   "published_at": "Tue, 04 Aug 2026 18:27:31 +0100",
-                  "source": "Web oficial",
-                  "_signal": 2.0
-                },
-                {
-                  "title": "05. august 2026 Videre i Budapest A-lag kvinner Video Brann var suverene i første kvalifiseringskamp til Champions League. Nå venter gruppefinale på lørdag.",
-                  "link": "https://www.brann.no/nyheter/videre-i-budapest",
                   "source": "Web oficial",
                   "_signal": 2.0
                 },
@@ -40085,8 +40178,28 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "",
-              "items": []
+              "website": "https://www.vif-fotball.no",
+              "items": [
+                {
+                  "title": "08. august 2026 Ivan tilbake fra start! Både Ivan Näsberg og Kolbeinn Finnsson er tilbake fra start etter å ha sonet karantene i forrige kamp.",
+                  "link": "https://www.vif-fotball.no/nyheter/ivan-tilbake-fra-start",
+                  "source": "Web oficial",
+                  "_signal": 5.5
+                },
+                {
+                  "title": "Slik trener VÃ¥lerenga i uke 32",
+                  "link": "https://www.vif-fotball.no/nyheter/slik-trener-valerenga-i-uke-32",
+                  "published_at": "Mon, 03 Aug 2026 13:31:59 +0100",
+                  "source": "Web oficial",
+                  "_signal": 1.7
+                },
+                {
+                  "title": "03. august 2026 Slik trener Vålerenga i uke 32 Treningene til Vålerenga er åpne for alle.",
+                  "link": "https://www.vif-fotball.no/nyheter/slik-trener-valerenga-i-uke-32",
+                  "source": "Web oficial",
+                  "_signal": 1.7
+                }
+              ]
             }
           },
           "match_news_context": {
@@ -40133,42 +40246,43 @@
             "home_rotation_risk_index": 0,
             "away_rotation_risk_index": 0,
             "structured_home_injuries": 0,
-            "structured_away_injuries": 0,
+            "structured_away_injuries": 2,
             "structured_referee_known": false
           },
           "focus_digest": [
+            "bajas visitante 2",
             "convocatoria",
+            "ventana dura",
             "objetivo competitivo"
           ],
           "focus_ai_briefing": {
             "partido": "SK Brann vs VALERENGA",
             "calidad_datos": {
-              "nivel": "media",
-              "score": 67,
-              "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
+              "nivel": "alta",
+              "score": 80,
+              "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
               "fortalezas": [
                 "referencia 1X2 sin cuotas reales",
                 "porcentajes de quiniela",
                 "liga identificada",
                 "clima",
                 "viaje",
-                "clasificacion y forma verificadas"
+                "calendario próximo"
               ],
               "faltan": [
                 "cuotas reales",
-                "calendario próximo",
                 "arbitro confirmado"
               ],
               "cobertura_cualitativa": {
-                "roster_status": "sources_checked_no_confirmed_absence",
-                "injury_items": 0,
-                "availability_items": 1,
-                "official_items": 4,
+                "roster_status": "confirmed_absences",
+                "injury_items": 2,
+                "availability_items": 2,
+                "official_items": 6,
                 "match_items": 0,
                 "team_items": 1,
                 "verified_teams": 2,
                 "home_roster_status": "sources_checked_no_confirmed_absence",
-                "away_roster_status": "sources_checked_no_confirmed_absence",
+                "away_roster_status": "confirmed_absences",
                 "referee_confirmed": false
               }
             },
@@ -40187,8 +40301,8 @@
               "objetivo_local": "persigue zona alta a 12 pts",
               "objetivo_visitante": "defiende salvacion con 8 pts de colchon",
               "riesgo_rotacion_competitiva": "Sin senal fuerte de rotacion por calendario externo.",
-              "analisis_calendario_local": "SK Brann persigue zona alta a 12 pts en tramo medio (must-win 0/100, no perder 0/100). Calendario próximo equilibrado, sin presión de conservar fuerzas.",
-              "analisis_calendario_visitante": "VALERENGA defiende salvacion con 8 pts de colchon en tramo medio (must-win 8/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario próximo equilibrado, sin presión de conservar fuerzas. Nivel de urgencia bajo (+8 puntos sobre el descenso), juegan sin presión extrema.",
+              "analisis_calendario_local": "SK Brann persigue zona alta a 12 pts en tramo medio (must-win 0/100, no perder 0/100). Calendario futuro con 2 rivales del top-6.",
+              "analisis_calendario_visitante": "VALERENGA defiende salvacion con 8 pts de colchon en tramo medio (must-win 8/100, no perder 0/100). Victoria abre colchon en salvacion. Calendario futuro con 2 rivales del top-6. Nivel de urgencia bajo (+8 puntos sobre el descenso), juegan sin presión extrema.",
               "h2h_resumen": "10 encuentros históricos: gana SK Brann en 4, empates 0, gana VALERENGA en 6 (ventana de 7 años)."
             },
             "contexto_competitivo_avanzado": {
@@ -40329,11 +40443,13 @@
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
                 "local": "Bajas no verificadas; no equivale a plantilla completa.",
-                "visitante": "Bajas no verificadas; no equivale a plantilla completa."
+                "visitante": "2 baja(s) detectada(s): Ivan, Kolbeinn Finnsson."
               }
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -40562,7 +40678,7 @@
           },
           "history_context": {
             "supported": false,
-            "updated_at": "2026-08-08T15:07:40.730941+00:00",
+            "updated_at": "2026-08-08T19:00:55.250542+00:00",
             "table_quality": {
               "valid": false,
               "reason": "tabla vacia"
@@ -40786,7 +40902,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:12:22.396099+00:00"
+            "updated_at": "2026-08-08T19:05:00.089343+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -41097,6 +41213,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|sarpsborg|hamarkameratene|j74-3",
@@ -41275,11 +41393,11 @@
           "weather_context": {
             "timezone": "Europe/Oslo",
             "forecast_time": "2026-08-08T12:00",
-            "temperature_c": 19.1,
-            "precipitation_probability": 14,
+            "temperature_c": 18.2,
+            "precipitation_probability": 5,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 21.2,
-            "wind_gusts_kmh": 41.8,
+            "wind_speed_kmh": 20.5,
+            "wind_gusts_kmh": 41.0,
             "weather_code": 3
           },
           "travel_context": {
@@ -41311,7 +41429,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:30.084426+00:00",
+            "updated_at": "2026-08-08T19:00:57.937744+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -41958,7 +42076,7 @@
               "stadium_city": "Sandefjord, Norway",
               "league": "Norwegian Eliteserien",
               "round": "17",
-              "status": "NS"
+              "status": "FT"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -41985,7 +42103,7 @@
                 "source_items_checked": 5
               }
             },
-            "updated_at": "2026-08-08T13:03:46.509600+00:00"
+            "updated_at": "2026-08-08T19:05:07.518497+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -42408,7 +42526,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Carga física: local low, visitante medium. Tiempo de descanso similar (7 vs 8 días).",
-              "clima_e_impacto": "Temperatura ideal (19ºC), sin riesgo de lluvia, viento moderado (21 km/h).",
+              "clima_e_impacto": "Temperatura ideal (18ºC), sin riesgo de lluvia, viento moderado (20 km/h).",
               "viaje": "Viaje largo para el visitante (903 km). Desgaste adicional a considerar.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -42418,6 +42536,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -42623,11 +42743,11 @@
           "weather_context": {
             "timezone": "Europe/Oslo",
             "forecast_time": "2026-08-09T17:00",
-            "temperature_c": 20.2,
-            "precipitation_probability": 33,
+            "temperature_c": 20.3,
+            "precipitation_probability": 18,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 26.6,
-            "wind_gusts_kmh": 46.8,
+            "wind_speed_kmh": 25.6,
+            "wind_gusts_kmh": 46.1,
             "weather_code": 3
           },
           "travel_context": {
@@ -42659,7 +42779,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:30.715668+00:00",
+            "updated_at": "2026-08-08T19:00:58.543235+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -43291,7 +43411,7 @@
                 "source_items_checked": 2
               }
             },
-            "updated_at": "2026-08-08T13:03:47.963801+00:00"
+            "updated_at": "2026-08-08T19:05:09.990588+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -43682,7 +43802,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
-              "clima_e_impacto": "Temperatura ideal (20ºC), posibilidad de lluvia moderada, viento moderado (27 km/h).",
+              "clima_e_impacto": "Temperatura ideal (20ºC), sin riesgo de lluvia, viento moderado (26 km/h).",
               "viaje": "Viaje notable para el visitante (368 km). Leve impacto físico.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -43692,6 +43812,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -45010,6 +45132,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|aalesunds fk|viking|j74-6",
@@ -45223,12 +45347,12 @@
           "weather_context": {
             "timezone": "Europe/Oslo",
             "forecast_time": "2026-08-08T16:00",
-            "temperature_c": 15.8,
-            "precipitation_probability": 84,
-            "precipitation_mm": 0.5,
-            "wind_speed_kmh": 2.5,
-            "wind_gusts_kmh": 11.5,
-            "weather_code": 53
+            "temperature_c": 17.6,
+            "precipitation_probability": 85,
+            "precipitation_mm": 0.4,
+            "wind_speed_kmh": 2.2,
+            "wind_gusts_kmh": 8.3,
+            "weather_code": 51
           },
           "travel_context": {
             "distance_km": 467.1,
@@ -45259,7 +45383,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:31.770666+00:00",
+            "updated_at": "2026-08-08T19:00:59.461735+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -45908,11 +46032,11 @@
                 "team": "FREDRIKSTAD",
                 "items": [],
                 "count": 0,
-                "verification_status": "not_verified",
-                "source_items_checked": 0
+                "verification_status": "sources_checked_no_confirmed_absence",
+                "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T13:04:19.115615+00:00"
+            "updated_at": "2026-08-08T19:05:12.756665+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -46004,7 +46128,15 @@
             },
             "rotation_risk": "low",
             "focus_news": {
-              "items": [],
+              "items": [
+                {
+                  "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                  "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                }
+              ],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -46012,13 +46144,21 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 0,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 6
             },
             "media_news": {
-              "items": [],
+              "items": [
+                {
+                  "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                  "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                }
+              ],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -46026,7 +46166,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 0,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 3
@@ -46085,6 +46225,7 @@
           },
           "focus_digest": [
             "clima duro",
+            "convocatoria",
             "ventana dura",
             "duelo directo"
           ],
@@ -46092,7 +46233,7 @@
             "partido": "Rosenborg BK vs FREDRIKSTAD",
             "calidad_datos": {
               "nivel": "alta",
-              "score": 70,
+              "score": 74,
               "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
               "fortalezas": [
                 "referencia 1X2 sin cuotas reales",
@@ -46104,19 +46245,19 @@
               ],
               "faltan": [
                 "cuotas reales",
-                "noticias y bajas verificadas",
+                "bajas/convocatorias del otro equipo",
                 "arbitro confirmado"
               ],
               "cobertura_cualitativa": {
-                "roster_status": "not_verified",
+                "roster_status": "partial_verification",
                 "injury_items": 0,
-                "availability_items": 0,
+                "availability_items": 2,
                 "official_items": 0,
                 "match_items": 0,
-                "team_items": 0,
-                "verified_teams": 0,
+                "team_items": 2,
+                "verified_teams": 1,
                 "home_roster_status": "not_verified",
-                "away_roster_status": "not_verified",
+                "away_roster_status": "sources_checked_no_confirmed_absence",
                 "referee_confirmed": false
               }
             },
@@ -46277,7 +46418,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 7 días).",
-              "clima_e_impacto": "Temperatura ideal (16ºC), alta probabilidad de lluvia que puede alterar el juego técnico, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (18ºC), alta probabilidad de lluvia que puede alterar el juego técnico, sin viento significativo.",
               "viaje": "Viaje notable para el visitante (467 km). Leve impacto físico.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -46287,6 +46428,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -46513,12 +46656,12 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-10T17:00",
-            "temperature_c": 20.3,
-            "precipitation_probability": 16,
+            "temperature_c": 20.1,
+            "precipitation_probability": 33,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 20.1,
-            "wind_gusts_kmh": 41.9,
-            "weather_code": 1
+            "wind_speed_kmh": 21.6,
+            "wind_gusts_kmh": 39.6,
+            "weather_code": 0
           },
           "travel_context": {
             "distance_km": 339.6,
@@ -46549,7 +46692,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:32.204938+00:00",
+            "updated_at": "2026-08-08T19:01:01.004033+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -47131,7 +47274,7 @@
               "stadium_city": "Västerås, Sweden",
               "league": "Swedish Allsvenskan",
               "round": "16",
-              "status": "NS"
+              "status": "1H"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -47155,10 +47298,10 @@
                 "items": [],
                 "count": 0,
                 "verification_status": "sources_checked_no_confirmed_absence",
-                "source_items_checked": 2
+                "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T13:04:22.376097+00:00"
+            "updated_at": "2026-08-08T19:05:18.227016+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -47257,13 +47400,6 @@
                   "published_at": "Fri, 07 Aug 2026 04:04:51 GMT",
                   "source": "Eurosport",
                   "_signal": 1.7
-                },
-                {
-                  "title": "Örgryte IS - Dalkurd FF Convocatoria & Alineación: Superettan Fútbol - Eurosport",
-                  "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOMTVEeGJicW5WOUQxQmwweVBQbC1VYjI3Z2RxUmhLSnlpaXctWjB1UF8tTld5OXBsMk9yMEdNM3VLU0Z2SDlCVHNYTndfTlJRVXB3UVlpcnFLcTI0ZTRia3d0dWdZeEdPMWpFRWk0Y3NWbGU5WGZmS2pXaWJuOFJCc00welhHVGlmc1FLenI1NHVaaHR2MWUxWHctV0lvUE0?oc=5",
-                  "published_at": "Wed, 29 Jul 2026 07:19:58 GMT",
-                  "source": "Eurosport",
-                  "_signal": 1.7
                 }
               ],
               "signals": {
@@ -47273,7 +47409,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 2,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 6
@@ -47286,13 +47422,6 @@
                   "published_at": "Fri, 07 Aug 2026 04:04:51 GMT",
                   "source": "Eurosport",
                   "_signal": 1.7
-                },
-                {
-                  "title": "Örgryte IS - Dalkurd FF Convocatoria & Alineación: Superettan Fútbol - Eurosport",
-                  "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOMTVEeGJicW5WOUQxQmwweVBQbC1VYjI3Z2RxUmhLSnlpaXctWjB1UF8tTld5OXBsMk9yMEdNM3VLU0Z2SDlCVHNYTndfTlJRVXB3UVlpcnFLcTI0ZTRia3d0dWdZeEdPMWpFRWk0Y3NWbGU5WGZmS2pXaWJuOFJCc00welhHVGlmc1FLenI1NHVaaHR2MWUxWHctV0lvUE0?oc=5",
-                  "published_at": "Wed, 29 Jul 2026 07:19:58 GMT",
-                  "source": "Eurosport",
-                  "_signal": 1.7
                 }
               ],
               "signals": {
@@ -47302,7 +47431,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 2,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 3
@@ -47386,10 +47515,10 @@
               "cobertura_cualitativa": {
                 "roster_status": "partial_verification",
                 "injury_items": 0,
-                "availability_items": 4,
+                "availability_items": 2,
                 "official_items": 0,
                 "match_items": 0,
-                "team_items": 4,
+                "team_items": 2,
                 "verified_teams": 1,
                 "home_roster_status": "not_verified",
                 "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -47548,7 +47677,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
-              "clima_e_impacto": "Temperatura ideal (20ºC), sin riesgo de lluvia, viento moderado (20 km/h).",
+              "clima_e_impacto": "Temperatura ideal (20ºC), posibilidad de lluvia moderada, viento moderado (22 km/h).",
               "viaje": "Viaje notable para el visitante (340 km). Leve impacto físico.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -47558,6 +47687,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -47761,12 +47892,12 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-09T12:00",
-            "temperature_c": 19.4,
-            "precipitation_probability": 2,
+            "temperature_c": 20.0,
+            "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 16.9,
-            "wind_gusts_kmh": 39.2,
-            "weather_code": 3
+            "wind_speed_kmh": 17.3,
+            "wind_gusts_kmh": 39.6,
+            "weather_code": 2
           },
           "travel_context": {
             "distance_km": 90.2,
@@ -47797,7 +47928,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:32.811446+00:00",
+            "updated_at": "2026-08-08T19:01:02.850319+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -48452,7 +48583,7 @@
                 "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T13:04:23.851138+00:00"
+            "updated_at": "2026-08-08T19:05:24.329831+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -48860,7 +48991,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
-              "clima_e_impacto": "Temperatura ideal (19ºC), sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (20ºC), sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento corto para el visitante (90 km). Impacto nulo.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -48870,6 +49001,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -49073,11 +49206,11 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-08T15:00",
-            "temperature_c": 22.8,
+            "temperature_c": 22.7,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 19.8,
-            "wind_gusts_kmh": 35.3,
+            "wind_speed_kmh": 20.2,
+            "wind_gusts_kmh": 35.6,
             "weather_code": 0
           },
           "travel_context": {
@@ -49109,7 +49242,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:33.354905+00:00",
+            "updated_at": "2026-08-08T19:01:04.604317+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -49751,7 +49884,7 @@
               "stadium_city": "Kalmar",
               "league": "Swedish Allsvenskan",
               "round": "16",
-              "status": "NS"
+              "status": "2H"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -49778,7 +49911,7 @@
                 "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T13:04:25.000134+00:00"
+            "updated_at": "2026-08-08T19:05:30.188484+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -50192,7 +50325,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). El visitante descansó 14 días vs 7 días del local. Ligera ventaja física para el visitante.",
-              "clima_e_impacto": "Temperatura ideal (23ºC), sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (23ºC), sin riesgo de lluvia, viento moderado (20 km/h).",
               "viaje": "Desplazamiento moderado para el visitante (124 km). Impacto mínimo.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -50202,6 +50335,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -50418,12 +50553,12 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-10T17:00",
-            "temperature_c": 18.4,
-            "precipitation_probability": 63,
-            "precipitation_mm": 0.05,
-            "wind_speed_kmh": 6.6,
-            "wind_gusts_kmh": 19.4,
-            "weather_code": 2
+            "temperature_c": 17.9,
+            "precipitation_probability": 71,
+            "precipitation_mm": 0.0,
+            "wind_speed_kmh": 16.6,
+            "wind_gusts_kmh": 32.0,
+            "weather_code": 1
           },
           "travel_context": {
             "distance_km": 638.3,
@@ -50454,7 +50589,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:34.347695+00:00",
+            "updated_at": "2026-08-08T19:01:06.924185+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -51126,7 +51261,7 @@
                 "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T13:04:26.747157+00:00"
+            "updated_at": "2026-08-08T19:05:37.066124+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -51310,7 +51445,7 @@
             }
           },
           "match_signals": {
-            "weather_risk": "medium",
+            "weather_risk": "high",
             "travel_burden_away": "medium",
             "home_form_points_last_5": 13,
             "away_form_points_last_5": 6,
@@ -51348,6 +51483,7 @@
             "structured_referee_known": false
           },
           "focus_digest": [
+            "clima duro",
             "ventana dura",
             "objetivo competitivo"
           ],
@@ -51557,6 +51693,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -52891,6 +53029,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|if brommapojkarna|hammarby|j74-12",
@@ -54119,6 +54259,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|gais|halmstads|j74-13",
@@ -54297,12 +54439,12 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-08T15:00",
-            "temperature_c": 21.3,
+            "temperature_c": 22.4,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 10.1,
-            "wind_gusts_kmh": 30.6,
-            "weather_code": 0
+            "wind_speed_kmh": 13.0,
+            "wind_gusts_kmh": 33.1,
+            "weather_code": 1
           },
           "travel_context": {
             "distance_km": 235.2,
@@ -54333,7 +54475,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:34.891894+00:00",
+            "updated_at": "2026-08-08T19:01:09.122114+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -54999,7 +55141,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T13:04:48.040975+00:00"
+            "updated_at": "2026-08-08T19:05:42.913219+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -55391,7 +55533,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). El visitante descansó 13 días vs 6 días del local. Ligera ventaja física para el visitante.",
-              "clima_e_impacto": "Temperatura ideal (21ºC), sin riesgo de lluvia, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (22ºC), sin riesgo de lluvia, sin viento significativo.",
               "viaje": "Desplazamiento moderado para el visitante (235 km). Impacto mínimo.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -55401,6 +55543,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -55632,7 +55776,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T15:07:44.833469+00:00",
+            "updated_at": "2026-08-08T19:01:09.349522+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -56283,6 +56427,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|bk hacken|aik fotboll|j74-15",
@@ -56335,7 +56481,7 @@
       "source_url": "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes",
       "kickoff_from": "2026-08-07T17:00:00Z",
       "kickoff_to": "2026-09-26T18:45:00Z",
-      "updated_at": "2026-08-08T15:14:11.205245+00:00",
+      "updated_at": "2026-08-08T19:06:31.934780+00:00",
       "matches": [
         {
           "local": "Bodo Glimt",
@@ -56360,11 +56506,11 @@
           "weather_context": {
             "timezone": "Europe/Oslo",
             "forecast_time": "2026-08-08T16:00",
-            "temperature_c": 14.8,
-            "precipitation_probability": 53,
+            "temperature_c": 14.3,
+            "precipitation_probability": 33,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 10.4,
-            "wind_gusts_kmh": 27.4,
+            "wind_speed_kmh": 15.5,
+            "wind_gusts_kmh": 35.3,
             "weather_code": 3
           },
           "travel_context": {
@@ -56396,7 +56542,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:00:35.693679+00:00",
+            "updated_at": "2026-08-08T19:01:10.110281+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -57011,7 +57157,7 @@
               "stadium_city": "Bodø, Norway",
               "league": "Norwegian Eliteserien",
               "round": "17",
-              "status": "NS"
+              "status": "FT"
             },
             "referee_context": {
               "assigned_referee": "",
@@ -57034,11 +57180,11 @@
                 "team": "FREDRIKSTAD",
                 "items": [],
                 "count": 0,
-                "verification_status": "not_verified",
-                "source_items_checked": 0
+                "verification_status": "sources_checked_no_confirmed_absence",
+                "source_items_checked": 1
               }
             },
-            "updated_at": "2026-08-08T13:04:49.375831+00:00"
+            "updated_at": "2026-08-08T19:05:45.601231+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -57164,7 +57310,15 @@
             },
             "rotation_risk": "low",
             "focus_news": {
-              "items": [],
+              "items": [
+                {
+                  "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                  "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                }
+              ],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -57172,13 +57326,21 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 0,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 6
             },
             "media_news": {
-              "items": [],
+              "items": [
+                {
+                  "title": "IK Start - Fredrikstad FK Convocatoria & Alineación: Eliteserien Fútbol - Eurosport",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPYVhkRVNKS3FKV1F3bklfNWs3V3NpSU9PUHVlZEZvQ3JLeEoxQjJIWmw5cW1VLTVLaGFuVlRGN0ZfV2NnWFZpdkd3NXpncWc2Rk1LRjRsWG1vcjFmanZISlgwZHRER1JLdEhjWWJid0hJUmQ4ckZCZkhhX19yMU9GVEpXSVFvYllramRHQlJfcUFLbEhzRVZXaFJ1OHptSFBTRlVnaHloYUpfdw?oc=5",
+                  "published_at": "Fri, 07 Aug 2026 18:20:42 GMT",
+                  "source": "Eurosport",
+                  "_signal": 1.7
+                }
+              ],
               "signals": {
                 "injury_count": 0,
                 "rotation_count": 0,
@@ -57186,7 +57348,7 @@
                 "europe_count": 0,
                 "weather_count": 0,
                 "press_count": 0,
-                "squad_count": 0,
+                "squad_count": 1,
                 "morale_count": 0
               },
               "query_count": 3
@@ -57245,6 +57407,7 @@
           },
           "focus_digest": [
             "viaje largo",
+            "convocatoria",
             "ventana dura",
             "objetivo competitivo"
           ],
@@ -57252,7 +57415,7 @@
             "partido": "Bodo Glimt vs FREDRIKSTAD",
             "calidad_datos": {
               "nivel": "alta",
-              "score": 73,
+              "score": 74,
               "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
               "fortalezas": [
                 "referencia 1X2 sin cuotas reales",
@@ -57264,19 +57427,19 @@
               ],
               "faltan": [
                 "cuotas reales",
-                "bajas/convocatorias verificadas",
+                "bajas/convocatorias del otro equipo",
                 "arbitro confirmado"
               ],
               "cobertura_cualitativa": {
-                "roster_status": "not_verified",
+                "roster_status": "partial_verification",
                 "injury_items": 0,
-                "availability_items": 0,
+                "availability_items": 2,
                 "official_items": 4,
                 "match_items": 0,
-                "team_items": 1,
-                "verified_teams": 0,
+                "team_items": 3,
+                "verified_teams": 1,
                 "home_roster_status": "not_verified",
-                "away_roster_status": "not_verified",
+                "away_roster_status": "sources_checked_no_confirmed_absence",
                 "referee_confirmed": false
               }
             },
@@ -57444,7 +57607,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Carga física: local low, visitante medium. Tiempo de descanso similar (8 vs 7 días).",
-              "clima_e_impacto": "Temperatura 15ºC, posibilidad de lluvia moderada, sin viento significativo.",
+              "clima_e_impacto": "Temperatura 14ºC, posibilidad de lluvia moderada, sin viento significativo.",
               "viaje": "Viaje largo para el visitante (912 km). Desgaste adicional a considerar.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -57454,6 +57617,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -57682,7 +57847,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T15:08:12.261209+00:00",
+            "updated_at": "2026-08-08T19:01:36.773276+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -58222,7 +58387,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T15:13:08.852854+00:00"
+            "updated_at": "2026-08-08T19:06:13.340950+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -58604,6 +58769,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -59744,6 +59911,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -61099,6 +61268,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|kristiansund|sarpsborg|j73-4",
@@ -62414,6 +62585,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|ik start|rosenborg bk|j73-5",
@@ -62639,7 +62812,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T15:08:45.029697+00:00",
+            "updated_at": "2026-08-08T19:01:37.480356+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -63033,42 +63206,151 @@
               "reason": "",
               "next_high_importance_fixture": {}
             },
-            "home_upcoming": [],
-            "away_upcoming": [],
+            "home_upcoming": [
+              {
+                "date": "2026-08-16",
+                "kickoff": "2026-08-16T15:00:00Z",
+                "venue": "home",
+                "opponent": "Tromsø",
+                "opponent_position": 3,
+                "opponent_points": 34,
+                "round": "18",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-08-29",
+                "kickoff": "2026-08-29T14:00:00Z",
+                "venue": "away",
+                "opponent": "Vålerenga",
+                "opponent_position": 9,
+                "opponent_points": 20,
+                "round": "19",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-06",
+                "kickoff": "2026-09-06T15:00:00Z",
+                "venue": "home",
+                "opponent": "KFUM-Kameratene Oslo",
+                "opponent_position": 13,
+                "opponent_points": 15,
+                "round": "20",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-13",
+                "kickoff": "2026-09-13T15:00:00Z",
+                "venue": "away",
+                "opponent": "Hamarkameratene",
+                "opponent_position": 8,
+                "opponent_points": 21,
+                "round": "21",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-19",
+                "kickoff": "2026-09-19T16:00:00Z",
+                "venue": "home",
+                "opponent": "Aalesund",
+                "opponent_position": 14,
+                "opponent_points": 13,
+                "round": "22",
+                "source": "sportsdb-rounds"
+              }
+            ],
+            "away_upcoming": [
+              {
+                "date": "2026-08-16",
+                "kickoff": "2026-08-16T15:00:00Z",
+                "venue": "home",
+                "opponent": "Hamarkameratene",
+                "opponent_position": 8,
+                "opponent_points": 21,
+                "round": "18",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-08-30",
+                "kickoff": "2026-08-30T15:00:00Z",
+                "venue": "away",
+                "opponent": "Sandefjord",
+                "opponent_position": 12,
+                "opponent_points": 15,
+                "round": "19",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-05",
+                "kickoff": "2026-09-05T16:00:00Z",
+                "venue": "home",
+                "opponent": "Lillestrøm",
+                "opponent_position": 4,
+                "opponent_points": 25,
+                "round": "20",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-13",
+                "kickoff": "2026-09-13T15:00:00Z",
+                "venue": "away",
+                "opponent": "Start",
+                "opponent_position": 16,
+                "opponent_points": 10,
+                "round": "21",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-20",
+                "kickoff": "2026-09-20T17:15:00Z",
+                "venue": "home",
+                "opponent": "Bodø/Glimt",
+                "opponent_position": 1,
+                "opponent_points": 38,
+                "round": "22",
+                "source": "sportsdb-rounds"
+              }
+            ],
             "home_future_difficulty": {
-              "matches": 0,
-              "difficulty_index": 0.0,
-              "avg_opponent_position": null,
-              "top4_matches": 0,
-              "top6_matches": 0,
-              "top8_matches": 0,
-              "hard_opponents": [],
-              "label": "low"
+              "matches": 5,
+              "difficulty_index": 76.73,
+              "avg_opponent_position": 9.4,
+              "top4_matches": 1,
+              "top6_matches": 1,
+              "top8_matches": 2,
+              "hard_opponents": [
+                "Tromsø",
+                "Hamarkameratene"
+              ],
+              "label": "critical"
             },
             "away_future_difficulty": {
-              "matches": 0,
-              "difficulty_index": 0.0,
-              "avg_opponent_position": null,
-              "top4_matches": 0,
-              "top6_matches": 0,
-              "top8_matches": 0,
-              "hard_opponents": [],
-              "label": "low"
+              "matches": 5,
+              "difficulty_index": 79.45,
+              "avg_opponent_position": 8.2,
+              "top4_matches": 2,
+              "top6_matches": 2,
+              "top8_matches": 3,
+              "hard_opponents": [
+                "Hamarkameratene",
+                "Lillestrøm",
+                "Bodø/Glimt"
+              ],
+              "label": "critical"
             }
           },
           "analytics_context": {
             "home_pressure_index": {
-              "score": 23.87,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 51.29,
+              "label": "medium",
+              "future_difficulty": 76.73,
+              "hard_window_matches": 2,
               "gap_to_drop_zone": 12
             },
             "away_pressure_index": {
-              "score": 22.98,
-              "label": "low",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
+              "score": 55.54,
+              "label": "high",
+              "future_difficulty": 79.45,
+              "hard_window_matches": 3,
               "gap_to_drop_zone": 10
             },
             "home_fatigue_index": {
@@ -63155,9 +63437,7 @@
             "home_objective_swing_if_win": 8,
             "home_objective_swing_if_lose": 0,
             "away_objective_swing_if_win": 8,
-            "away_objective_swing_if_lose": 0,
-            "home_rotation_risk_index": 0,
-            "away_rotation_risk_index": 0
+            "away_objective_swing_if_lose": 0
           },
           "structured_context": {
             "match_key": "quiniela_cache|molde|sk brann|j73-6",
@@ -63196,7 +63476,7 @@
                 "source_items_checked": 3
               }
             },
-            "updated_at": "2026-08-08T15:13:41.016496+00:00"
+            "updated_at": "2026-08-08T17:02:35.785809+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -63379,8 +63659,8 @@
             "away_rest_days": 9,
             "home_matches_last_14_days": 1,
             "away_matches_last_14_days": 1,
-            "home_pressure_index": 23.87,
-            "away_pressure_index": 22.98,
+            "home_pressure_index": 51.29,
+            "away_pressure_index": 55.54,
             "home_must_win_index": 0,
             "away_must_win_index": 0,
             "home_must_not_lose_index": 0,
@@ -63620,6 +63900,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|molde|sk brann|j73-6",
@@ -63669,8 +63951,110 @@
             "away_espn_upcoming": [],
             "home_sportsdb_next_upcoming": [],
             "away_sportsdb_next_upcoming": [],
-            "home_round_upcoming": [],
-            "away_round_upcoming": []
+            "home_round_upcoming": [
+              {
+                "date": "2026-08-16",
+                "kickoff": "2026-08-16T15:00:00Z",
+                "venue": "home",
+                "opponent": "Tromsø",
+                "opponent_position": 3,
+                "opponent_points": 34,
+                "round": "18",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-08-29",
+                "kickoff": "2026-08-29T14:00:00Z",
+                "venue": "away",
+                "opponent": "Vålerenga",
+                "opponent_position": 9,
+                "opponent_points": 20,
+                "round": "19",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-06",
+                "kickoff": "2026-09-06T15:00:00Z",
+                "venue": "home",
+                "opponent": "KFUM-Kameratene Oslo",
+                "opponent_position": 13,
+                "opponent_points": 15,
+                "round": "20",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-13",
+                "kickoff": "2026-09-13T15:00:00Z",
+                "venue": "away",
+                "opponent": "Hamarkameratene",
+                "opponent_position": 8,
+                "opponent_points": 21,
+                "round": "21",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-19",
+                "kickoff": "2026-09-19T16:00:00Z",
+                "venue": "home",
+                "opponent": "Aalesund",
+                "opponent_position": 14,
+                "opponent_points": 13,
+                "round": "22",
+                "source": "sportsdb-rounds"
+              }
+            ],
+            "away_round_upcoming": [
+              {
+                "date": "2026-08-16",
+                "kickoff": "2026-08-16T15:00:00Z",
+                "venue": "home",
+                "opponent": "Hamarkameratene",
+                "opponent_position": 8,
+                "opponent_points": 21,
+                "round": "18",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-08-30",
+                "kickoff": "2026-08-30T15:00:00Z",
+                "venue": "away",
+                "opponent": "Sandefjord",
+                "opponent_position": 12,
+                "opponent_points": 15,
+                "round": "19",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-05",
+                "kickoff": "2026-09-05T16:00:00Z",
+                "venue": "home",
+                "opponent": "Lillestrøm",
+                "opponent_position": 4,
+                "opponent_points": 25,
+                "round": "20",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-13",
+                "kickoff": "2026-09-13T15:00:00Z",
+                "venue": "away",
+                "opponent": "Start",
+                "opponent_position": 16,
+                "opponent_points": 10,
+                "round": "21",
+                "source": "sportsdb-rounds"
+              },
+              {
+                "date": "2026-09-20",
+                "kickoff": "2026-09-20T17:15:00Z",
+                "venue": "home",
+                "opponent": "Bodø/Glimt",
+                "opponent_position": 1,
+                "opponent_points": 38,
+                "round": "22",
+                "source": "sportsdb-rounds"
+              }
+            ]
           }
         },
         {
@@ -64822,6 +65206,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|viking|sandefjord|j73-7",
@@ -65047,11 +65433,11 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-10T17:00",
-            "temperature_c": 17.7,
-            "precipitation_probability": 76,
-            "precipitation_mm": 0.2,
+            "temperature_c": 17.0,
+            "precipitation_probability": 80,
+            "precipitation_mm": 0.1,
             "wind_speed_kmh": 18.7,
-            "wind_gusts_kmh": 40.1,
+            "wind_gusts_kmh": 35.6,
             "weather_code": 51
           },
           "travel_context": {
@@ -65083,7 +65469,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:01:23.494698+00:00",
+            "updated_at": "2026-08-08T19:01:38.205325+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -65706,7 +66092,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T13:05:53.062995+00:00"
+            "updated_at": "2026-08-08T19:06:15.767861+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -66094,7 +66480,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). El local descansó 16 días vs 7 días del visitante. Ligera ventaja física para el local.",
-              "clima_e_impacto": "Temperatura ideal (18ºC), alta probabilidad de lluvia que puede alterar el juego técnico, sin viento significativo.",
+              "clima_e_impacto": "Temperatura ideal (17ºC), alta probabilidad de lluvia que puede alterar el juego técnico, sin viento significativo.",
               "viaje": "Viaje notable para el visitante (412 km). Leve impacto físico.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -66104,6 +66490,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -67368,6 +67756,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -68699,6 +69089,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|goteborg|if brommapojkarna|j73-10",
@@ -68877,11 +69269,11 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-10T17:00",
-            "temperature_c": 17.9,
-            "precipitation_probability": 22,
+            "temperature_c": 17.6,
+            "precipitation_probability": 4,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 21.2,
-            "wind_gusts_kmh": 47.0,
+            "wind_speed_kmh": 22.0,
+            "wind_gusts_kmh": 46.4,
             "weather_code": 2
           },
           "travel_context": {
@@ -68913,7 +69305,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:01:24.117376+00:00",
+            "updated_at": "2026-08-08T19:01:39.157957+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -69586,7 +69978,7 @@
                 "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T13:06:00.567319+00:00"
+            "updated_at": "2026-08-08T19:06:18.278922+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -69983,7 +70375,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). El local descansó 15 días vs 7 días del visitante. Ligera ventaja física para el local.",
-              "clima_e_impacto": "Temperatura ideal (18ºC), sin riesgo de lluvia, viento moderado (21 km/h).",
+              "clima_e_impacto": "Temperatura ideal (18ºC), sin riesgo de lluvia, viento moderado (22 km/h).",
               "viaje": "Viaje largo para el visitante (611 km). Desgaste adicional a considerar.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -69993,6 +70385,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -70196,12 +70590,12 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-09T12:00",
-            "temperature_c": 21.4,
+            "temperature_c": 21.1,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 17.6,
-            "wind_gusts_kmh": 43.2,
-            "weather_code": 1
+            "wind_speed_kmh": 18.4,
+            "wind_gusts_kmh": 44.6,
+            "weather_code": 2
           },
           "travel_context": {
             "distance_km": 187.9,
@@ -70232,7 +70626,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:01:25.879493+00:00",
+            "updated_at": "2026-08-08T19:01:40.081317+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -70852,10 +71246,10 @@
             "match_key": "quiniela_cache|hammarby|degerfors|j73-12",
             "event_context": {
               "sportsdb_event_id": "2477932",
-              "sportsdb_home_team_id": "134731",
+              "sportsdb_home_team_id": "134166",
               "sportsdb_away_team_id": "134728",
               "venue": "Eleda Stadion",
-              "stadium_city": "Stockholm, Sweden",
+              "stadium_city": "Malmö, Sweden",
               "league": "Swedish Allsvenskan",
               "round": "16",
               "status": "NS"
@@ -70885,7 +71279,7 @@
                 "source_items_checked": 4
               }
             },
-            "updated_at": "2026-08-08T13:06:08.206511+00:00"
+            "updated_at": "2026-08-08T19:06:24.163008+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -70959,35 +71353,31 @@
               "query_count": 3
             },
             "official_site": {
-              "website": "https://www.hammarbyfotboll.se",
+              "website": "https://www.mff.se",
               "items": [
                 {
-                  "title": "Matchdag: Semifinal i kvalturneringen – avspark 15.30",
-                  "link": "https://www.hammarbyfotboll.se/nyheter/matchdag-semifinal-i-kvalturneringen-avspark-15-30",
-                  "published_at": "Wed, 05 Aug 2026 06:01:25 GMT",
+                  "title": "2026-07-23 Veckans skadeuppdatering",
+                  "link": "https://www.mff.se/nyheter/veckans-skadeuppdatering-2026-07-23/",
+                  "source": "Web oficial",
+                  "_signal": 3.0
+                },
+                {
+                  "title": "2026-07-30 Veckans skadeuppdatering",
+                  "link": "https://www.mff.se/nyheter/veckans-skadeuppdatering-2026-07-30/",
+                  "source": "Web oficial",
+                  "_signal": 3.0
+                },
+                {
+                  "title": "2026-08-07 Veckans skadeuppdatering",
+                  "link": "https://www.mff.se/nyheter/veckan-skadeuppdatering-2026-08-07/",
+                  "source": "Web oficial",
+                  "_signal": 3.0
+                },
+                {
+                  "title": "Erics Bar & Restaurang",
+                  "link": "https://www.mff.se/eleda-stadion/erics-bar-restaurang/",
                   "source": "Web oficial",
                   "_signal": 2.0
-                },
-                {
-                  "title": "UECL: Här är lagen Hammarby kan ställas mot i playoff",
-                  "link": "https://www.hammarbyfotboll.se/nyheter/uecl-playoff-lottat",
-                  "published_at": "Mon, 03 Aug 2026 12:35:39 GMT",
-                  "source": "Web oficial",
-                  "_signal": 1.8
-                },
-                {
-                  "title": "UECL: Här är lagen Hammarby kan lottas mot i playoff",
-                  "link": "https://www.hammarbyfotboll.se/nyheter/uecl-har-ar-lagen-hammarby-kan-lottas-mot-i-playoff",
-                  "published_at": "Mon, 03 Aug 2026 07:57:44 GMT",
-                  "source": "Web oficial",
-                  "_signal": 1.8
-                },
-                {
-                  "title": "Startelvan i bortamötet med Raków",
-                  "link": "https://www.hammarbyfotboll.se/nyheter/startelvan-i-bortamotet-med-rakow",
-                  "published_at": "Thu, 06 Aug 2026 15:45:00 GMT",
-                  "source": "Web oficial",
-                  "_signal": 1.7
                 }
               ]
             }
@@ -71151,7 +71541,7 @@
               "cobertura_cualitativa": {
                 "roster_status": "sources_checked_no_confirmed_absence",
                 "injury_items": 0,
-                "availability_items": 4,
+                "availability_items": 6,
                 "official_items": 8,
                 "match_items": 0,
                 "team_items": 2,
@@ -71323,6 +71713,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -71515,12 +71907,12 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-09T14:00",
-            "temperature_c": 24.2,
+            "temperature_c": 24.5,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 16.2,
-            "wind_gusts_kmh": 42.1,
-            "weather_code": 2
+            "wind_speed_kmh": 15.5,
+            "wind_gusts_kmh": 40.3,
+            "weather_code": 3
           },
           "travel_context": {
             "distance_km": 126.6,
@@ -71551,7 +71943,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:01:26.774066+00:00",
+            "updated_at": "2026-08-08T19:01:40.891335+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -72210,7 +72602,7 @@
                 "source_items_checked": 0
               }
             },
-            "updated_at": "2026-08-08T13:06:34.755555+00:00"
+            "updated_at": "2026-08-08T19:06:27.135511+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -72593,6 +72985,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|halmstads|bk hacken|j73-13",
@@ -72771,11 +73165,11 @@
           "weather_context": {
             "timezone": "Europe/Stockholm",
             "forecast_time": "2026-08-09T14:00",
-            "temperature_c": 19.9,
+            "temperature_c": 20.1,
             "precipitation_probability": 0,
             "precipitation_mm": 0.0,
-            "wind_speed_kmh": 32.0,
-            "wind_gusts_kmh": 49.0,
+            "wind_speed_kmh": 34.2,
+            "wind_gusts_kmh": 51.1,
             "weather_code": 3
           },
           "travel_context": {
@@ -72807,7 +73201,7 @@
           },
           "history_context": {
             "supported": true,
-            "updated_at": "2026-08-08T13:01:27.306850+00:00",
+            "updated_at": "2026-08-08T19:01:41.691962+00:00",
             "table_quality": {
               "valid": true,
               "teams": 16,
@@ -73470,7 +73864,7 @@
                 "source_items_checked": 3
               }
             },
-            "updated_at": "2026-08-08T13:06:41.128272+00:00"
+            "updated_at": "2026-08-08T19:06:29.697144+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -73873,7 +74267,7 @@
             },
             "factores_externos": {
               "fatiga_y_descanso": "Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 7 días).",
-              "clima_e_impacto": "Temperatura ideal (20ºC), sin riesgo de lluvia, viento moderado (32 km/h).",
+              "clima_e_impacto": "Temperatura ideal (20ºC), sin riesgo de lluvia, viento moderado (34 km/h).",
               "viaje": "Desplazamiento moderado para el visitante (239 km). Impacto mínimo.",
               "arbitro": "No confirmado. Sin histórico arbitral fiable",
               "lesiones": {
@@ -73883,6 +74277,8 @@
             }
           },
           "notes": [
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
@@ -74101,7 +74497,7 @@
           },
           "history_context": {
             "supported": false,
-            "updated_at": "2026-08-08T15:09:32.818169+00:00",
+            "updated_at": "2026-08-08T19:01:43.141738+00:00",
             "table_quality": {
               "valid": false,
               "reason": "tabla vacia"
@@ -74283,7 +74679,7 @@
                 "source_items_checked": 6
               }
             },
-            "updated_at": "2026-08-08T15:14:11.177582+00:00"
+            "updated_at": "2026-08-08T19:06:31.907983+00:00"
           },
           "home_team_context": {
             "profile": {
@@ -74631,6 +75027,8 @@
             "source=eduardo-history",
             "source=eduardo-history",
             "source=eduardo-history",
+            "source=eduardo-history",
+            "source=eduardo-history",
             "source=eduardo-history"
           ],
           "match_key": "quiniela_cache|spain|argentina|j73-15",
@@ -74728,5 +75126,5 @@
       "unmatched_slots": []
     }
   },
-  "updated_at": "2026-08-08T15:14:11.177814+00:00"
+  "updated_at": "2026-08-08T19:06:31.908206+00:00"
 }
