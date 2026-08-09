@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-09T05:14:10.815146+00:00",
-  "snapshot_generated_at": "2026-08-09T05:14:09.079430+00:00",
+  "generated_at": "2026-08-09T09:13:24.654537+00:00",
+  "snapshot_generated_at": "2026-08-09T09:13:23.016495+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -24,7 +24,7 @@
     "teams": 183,
     "matches": 228,
     "referees": 0,
-    "last_pruned_at": "2026-08-09T05:14:09.077172+00:00"
+    "last_pruned_at": "2026-08-09T09:13:23.014084+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -32,24 +32,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-08-08T06:54:57.348024+00:00",
-      "finished_at": "2026-08-08T07:19:06.494680+00:00",
-      "ok": true,
-      "duration_seconds": 1449.15,
-      "monitored_matches": 89,
-      "tracked_matches": 60,
-      "current_jornada": 76
-    },
-    {
-      "started_at": "2026-08-08T08:54:58.314649+00:00",
-      "finished_at": "2026-08-08T09:01:54.107793+00:00",
-      "ok": true,
-      "duration_seconds": 415.79,
-      "monitored_matches": 89,
-      "tracked_matches": 60,
-      "current_jornada": 76
-    },
     {
       "started_at": "2026-08-08T10:54:59.774112+00:00",
       "finished_at": "2026-08-08T11:01:12.600113+00:00",
@@ -134,6 +116,24 @@
       "finished_at": "2026-08-09T05:14:10.814321+00:00",
       "ok": true,
       "duration_seconds": 1141.15,
+      "monitored_matches": 91,
+      "tracked_matches": 45,
+      "current_jornada": 1
+    },
+    {
+      "started_at": "2026-08-09T06:55:10.592955+00:00",
+      "finished_at": "2026-08-09T07:10:58.760327+00:00",
+      "ok": true,
+      "duration_seconds": 948.17,
+      "monitored_matches": 91,
+      "tracked_matches": 45,
+      "current_jornada": 1
+    },
+    {
+      "started_at": "2026-08-09T08:55:11.486695+00:00",
+      "finished_at": "2026-08-09T09:13:24.653678+00:00",
+      "ok": true,
+      "duration_seconds": 1093.17,
       "monitored_matches": 91,
       "tracked_matches": 45,
       "current_jornada": 1
@@ -318,8 +318,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Rayo Vallecano (4º) | casa vs Villarreal (9º) | casa vs Osasuna (9º) | fuera vs Racing de Santander (4º) | casa vs Valencia (7º)",
-          "future_away": "casa vs Racing de Santander (4º) | fuera vs Osasuna (9º) | casa vs Celta Vigo (2º) | casa vs Deportivo de A Coruña (8º) | fuera vs Real Betis (4º)",
+          "future_home": "fuera vs Rayo Vallecano (4º) | casa vs Atlético Madrid (3º) | fuera vs Celta Vigo (2º)",
+          "future_away": "casa vs Racing de Santander (4º) | fuera vs Barcelona (9º) | casa vs Rayo Vallecano (4º)",
           "history_quality": {
             "valid": false,
             "teams": 10,
@@ -394,7 +394,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-08-09T05:00:39.083053+00:00",
+          "context_updated_at": "2026-08-09T08:58:58.994752+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -598,8 +598,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Athletic Bilbao (3º) | casa vs Atlético Madrid (3º) | fuera vs Espanyol (10º) | casa vs Valencia (7º) | fuera vs Deportivo de A Coruña (8º)",
-          "future_away": "casa vs Deportivo Alavés (4º) | fuera vs Barcelona (9º) | casa vs Racing de Santander (4º) | fuera vs Real Madrid (4º) | casa vs Espanyol (10º)",
+          "future_home": "fuera vs Athletic Bilbao (3º) | fuera vs Levante (2º) | fuera vs Real Madrid (4º)",
+          "future_away": "casa vs Deportivo Alavés (4º) | casa vs Athletic Bilbao (3º) | fuera vs Getafe (-)",
           "history_quality": {
             "valid": false,
             "teams": 10,
@@ -625,7 +625,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-08-09T05:00:52.695813+00:00",
+          "context_updated_at": "2026-08-09T08:59:26.612192+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -664,10 +664,10 @@
           "slot": "3.",
           "local": "RACING S.",
           "visitante": "VILLARREAL",
-          "league": "Liga no resuelta",
+          "league": "Spanish La Liga",
           "league_key": "league_unresolved",
           "league_source": "quiniela-placeholder",
-          "kickoff": "",
+          "kickoff": "2026-08-16T15:00:00Z",
           "bookmaker": "",
           "odds": {},
           "normalized_percent": {},
@@ -692,7 +692,7 @@
               "label": "medium"
             },
             "away": {
-              "score": 52.79,
+              "score": 57.46,
               "label": "medium"
             }
           },
@@ -718,64 +718,118 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 0,
-              "reason": "",
+              "score": 18,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             }
           },
-          "travel_km": 311.5,
+          "travel_km": 498.3,
           "weather": {
-            "temperature_c": null,
-            "precipitation_probability": null,
-            "wind_speed_kmh": null
+            "temperature_c": 22.7,
+            "precipitation_probability": 11,
+            "wind_speed_kmh": 9.4
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
-          "future_away": "sin calendario detectado",
+          "future_home": "fuera vs Getafe (-) | casa vs Elche (-) | fuera vs Rayo Vallecano (-) | casa vs Alavés (-) | fuera vs Barcelona (-)",
+          "future_away": "fuera vs Atlético Madrid (-) | fuera vs Deportivo Alavés (-) | casa vs Deportivo de A Coruña (-) | casa vs Real Betis (-) | fuera vs Málaga (-)",
           "history_quality": {
             "valid": false,
             "reason": "tabla vacia"
           },
           "availability": {
-            "home": {},
-            "away": {}
+            "home": {
+              "team": "RACING S.",
+              "items": [],
+              "count": 0,
+              "verification_status": "sources_checked_no_confirmed_absence",
+              "source_items_checked": 3
+            },
+            "away": {
+              "team": "VILLARREAL",
+              "items": [
+                {
+                  "player_name": "Baja",
+                  "status": "out",
+                  "headline": "Baja sensible en Los Andes: se confirmó la lesión de Facundo Villarreal - launion.com.ar",
+                  "source": "launion.com.ar",
+                  "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNdkdJRlFIM2ZodEx6N29yY2RkMkFZbE56clVzNFkzZzlSTXFUOFEtY3dveE5YVzlLNDRWVVRZOHRkQWxhS3N6YmhkUVAtRWdTa1pweVI5MjBKZ1d3cTlZQ1RObWxTRzkzcDhNeE40UkJRejNZSmFlMjVTQ05WRFhaRjQzZ0huUklVaTZoVm9OMUxfcVpYNEVQUEp4ampxVXl6dFdxdDQ4M0HSAa4BQVVfeXFMTkdkOHk3Q2J6a1NrRFdIaDBqTkN4djJUcFZpOHA4Uzd5N2VyaDhGYVNhWmgxQlZRdXhaTE1kaVhwaTZiellRcDZ0SkVoT3lVeUpaMlJITTBuN25CR2hfUWx2TnFxektIOE9Kc0lpbWxBNWNlVHRUT3Y4RTJJcEVNdDJad0VvZEJVMGtGcFJEZjJMRlZUSmpQdGxvNnZnbXZxWUlzTHVMd0liSWtoMjdn?oc=5",
+                  "published_at": "Sun, 09 Aug 2026 01:16:00 GMT"
+                },
+                {
+                  "player_name": "Los Andes",
+                  "status": "out",
+                  "headline": "Baja sensible en Los Andes: se confirmó la lesión de Facundo Villarreal - launion.com.ar",
+                  "source": "launion.com.ar",
+                  "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNdkdJRlFIM2ZodEx6N29yY2RkMkFZbE56clVzNFkzZzlSTXFUOFEtY3dveE5YVzlLNDRWVVRZOHRkQWxhS3N6YmhkUVAtRWdTa1pweVI5MjBKZ1d3cTlZQ1RObWxTRzkzcDhNeE40UkJRejNZSmFlMjVTQ05WRFhaRjQzZ0huUklVaTZoVm9OMUxfcVpYNEVQUEp4ampxVXl6dFdxdDQ4M0HSAa4BQVVfeXFMTkdkOHk3Q2J6a1NrRFdIaDBqTkN4djJUcFZpOHA4Uzd5N2VyaDhGYVNhWmgxQlZRdXhaTE1kaVhwaTZiellRcDZ0SkVoT3lVeUpaMlJITTBuN25CR2hfUWx2TnFxektIOE9Kc0lpbWxBNWNlVHRUT3Y4RTJJcEVNdDJad0VvZEJVMGtGcFJEZjJMRlZUSmpQdGxvNnZnbXZxWUlzTHVMd0liSWtoMjdn?oc=5",
+                  "published_at": "Sun, 09 Aug 2026 01:16:00 GMT"
+                },
+                {
+                  "player_name": "Juansito",
+                  "status": "watch",
+                  "headline": "'Juansito' ve la luz seis meses después de su grave lesión: Foyth ha vuelto para ser uno de los refuerzos del Villarreal - El Periódico Mediterráneo",
+                  "source": "El Periódico Mediterráneo",
+                  "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNLXp5VFZseEdkcHdFMG9JMS1hcFRwa1BMcEY4QkV1b1gyaXJlS2JYbTV4alE1Mlg0bjNVN3VPS3pEUVFIa3pHNjNNMWl6RTl0SmNmS2ZyLXcwRVRkY0dDb0pSb0s3Tmw2MnVpWlB4RnUtbjB6OWtrU2ZWRUxoX3BBUzJ2QnlvNDl2dnd3dmRvdFo3NjBkdFQxbWkxNUQwbVExYzRkbVg0Ukd3RVpCYTdPeFJkUnltMU9HcnA5ZW9ackhiaDkyd3R4MUN2VFFRblpBRFQ3dktOV2FaM3RXbmV1ekk2TjNxd9IB6wFBVV95cUxPZk45bi1oZkFQQnd1RXVpMjRONlJvYmxjY1pXMms3WjNNd3lPemE4TkQtZHJQenUtTVdRTjFDWW5MZnFUX3RSWUdXTF9mSTA4SXVwYjE1ZGVqSVlwRFVLYXJvS2V5NEphZDVhRVRITnlGRWdEVm1VSHppYmZUOHdsOUNYcXdrOGZLY0IzanlFMUJNNlhCWTQ3UFB3VXJkRHk5NjlIc3RzbXJ2eU80c2JJdUhna1NocXdzRnM3aWl2NU93aWx0ZDh3dm5WOHFSQ2d2cG1rWHhNTVV5YXZfZW1sbmZTalZQaGtaeFYw?oc=5",
+                  "published_at": "Thu, 06 Aug 2026 04:00:59 GMT"
+                },
+                {
+                  "player_name": "Foyth",
+                  "status": "watch",
+                  "headline": "'Juansito' ve la luz seis meses después de su grave lesión: Foyth ha vuelto para ser uno de los refuerzos del Villarreal - El Periódico Mediterráneo",
+                  "source": "El Periódico Mediterráneo",
+                  "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNLXp5VFZseEdkcHdFMG9JMS1hcFRwa1BMcEY4QkV1b1gyaXJlS2JYbTV4alE1Mlg0bjNVN3VPS3pEUVFIa3pHNjNNMWl6RTl0SmNmS2ZyLXcwRVRkY0dDb0pSb0s3Tmw2MnVpWlB4RnUtbjB6OWtrU2ZWRUxoX3BBUzJ2QnlvNDl2dnd3dmRvdFo3NjBkdFQxbWkxNUQwbVExYzRkbVg0Ukd3RVpCYTdPeFJkUnltMU9HcnA5ZW9ackhiaDkyd3R4MUN2VFFRblpBRFQ3dktOV2FaM3RXbmV1ekk2TjNxd9IB6wFBVV95cUxPZk45bi1oZkFQQnd1RXVpMjRONlJvYmxjY1pXMms3WjNNd3lPemE4TkQtZHJQenUtTVdRTjFDWW5MZnFUX3RSWUdXTF9mSTA4SXVwYjE1ZGVqSVlwRFVLYXJvS2V5NEphZDVhRVRITnlGRWdEVm1VSHppYmZUOHdsOUNYcXdrOGZLY0IzanlFMUJNNlhCWTQ3UFB3VXJkRHk5NjlIc3RzbXJ2eU80c2JJdUhna1NocXdzRnM3aWl2NU93aWx0ZDh3dm5WOHFSQ2d2cG1rWHhNTVV5YXZfZW1sbmZTalZQaGtaeFYw?oc=5",
+                  "published_at": "Thu, 06 Aug 2026 04:00:59 GMT"
+                },
+                {
+                  "player_name": "Juan Foyth",
+                  "status": "out",
+                  "headline": "Juan Foyth reaparece con el Villarreal tras seis meses de baja por lesión - Actualidad Castellón",
+                  "source": "Actualidad Castellón",
+                  "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1LQU5nZDBZd0U3Q0kyaWlsWVg4NzF1bFlfcEkxSlZPeERaTVFLblFTVWlWazJTR1YtYW5TNXNwM3hONV84WHFTWmVfZmZ1RG5MZHFuY0F4cVh6OWwwYXJWQ3B3MC1WZlB5MERZSi1xT2Z5LUVjYlEzYjRtU1dIMmM?oc=5",
+                  "published_at": "Wed, 05 Aug 2026 10:45:39 GMT"
+                }
+              ],
+              "count": 5,
+              "verification_status": "confirmed_absences",
+              "source_items_checked": 5
+            }
           },
-          "context_updated_at": "",
+          "context_updated_at": "2026-08-09T09:08:49.611440+00:00",
           "data_confidence": {
             "nivel": "baja",
-            "score": 5,
+            "score": 30,
             "resumen": "Confianza baja: análisis orientativo; faltan datos clave.",
             "fortalezas": [
-              "viaje"
+              "clima",
+              "viaje",
+              "calendario próximo",
+              "bajas verificadas"
             ],
             "faltan": [
               "cuotas/referencia 1X2",
               "porcentajes de quiniela",
               "liga identificada",
-              "clima",
-              "calendario próximo",
               "clasificacion/forma reciente",
               "H2H",
-              "noticias y bajas verificadas"
+              "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "not_verified",
-              "injury_items": 0,
-              "availability_items": 0,
-              "official_items": 0,
+              "roster_status": "confirmed_absences",
+              "injury_items": 5,
+              "availability_items": 6,
+              "official_items": 4,
               "match_items": 0,
-              "team_items": 0,
-              "verified_teams": 0,
-              "home_roster_status": "not_verified",
-              "away_roster_status": "not_verified",
+              "team_items": 4,
+              "verified_teams": 2,
+              "home_roster_status": "sources_checked_no_confirmed_absence",
+              "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "",
-          "analysis_ready": false
+          "briefing_excerpt": "Confianza baja: análisis orientativo; faltan datos clave. | Sin suficientes datos de mercado para generar insight. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "analysis_ready": true
         },
         {
           "slot": "4.",
@@ -1027,8 +1081,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Real Madrid (4º) | fuera vs Real Sociedad (4º) | casa vs Sevilla (-) | fuera vs Osasuna (9º) | fuera vs Rayo Vallecano (4º)",
-          "future_away": "fuera vs Osasuna (9º) | casa vs Real Betis (4º) | fuera vs Málaga (-) | casa vs Barcelona (9º) | casa vs Athletic Bilbao (3º)",
+          "future_home": "casa vs Real Madrid (4º) | fuera vs Málaga (-) | casa vs Atlético Madrid (3º)",
+          "future_away": "fuera vs Osasuna (9º) | casa vs Sevilla (-) | fuera vs Deportivo de A Coruña (8º)",
           "history_quality": {
             "valid": true,
             "teams": 10,
@@ -1054,7 +1108,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-09T05:01:05.569780+00:00",
+          "context_updated_at": "2026-08-09T08:59:29.149169+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 82,
@@ -1337,8 +1391,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Valencia (7º) | casa vs Athletic Bilbao (3º) | fuera vs Real Sociedad (4º) | fuera vs Getafe (-) | casa vs Málaga (-)",
-          "future_away": "casa vs Levante (2º) | casa vs Getafe (-) | fuera vs Deportivo Alavés (4º) | casa vs Espanyol (10º) | fuera vs Atlético Madrid (3º)",
+          "future_home": "fuera vs Valencia (7º) | fuera vs Elche (7º) | casa vs Deportivo Alavés (4º)",
+          "future_away": "casa vs Levante (2º) | fuera vs Real Betis (4º) | casa vs Racing de Santander (4º)",
           "history_quality": {
             "valid": true,
             "teams": 10,
@@ -1364,7 +1418,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-09T05:01:06.573053+00:00",
+          "context_updated_at": "2026-08-09T08:59:31.312304+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 74,
@@ -1633,7 +1687,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-09T05:10:13.471224+00:00",
+          "context_updated_at": "2026-08-09T09:08:51.500337+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 70,
@@ -1867,9 +1921,9 @@
           },
           "travel_km": 666.2,
           "weather": {
-            "temperature_c": 29.0,
+            "temperature_c": 29.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 13.0
+            "wind_speed_kmh": 14.8
           },
           "referee": {
             "name": "no confirmado",
@@ -1892,7 +1946,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "source_items_checked": 5
             },
             "away": {
               "team": "Celta Vigo",
@@ -1902,7 +1956,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-09T05:02:24.518302+00:00",
+          "context_updated_at": "2026-08-09T09:02:44.036078+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 77,
@@ -1923,10 +1977,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 1,
+              "availability_items": 2,
               "official_items": 2,
               "match_items": 0,
-              "team_items": 3,
+              "team_items": 4,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -2073,9 +2127,9 @@
           },
           "travel_km": 714.0,
           "weather": {
-            "temperature_c": 24.5,
-            "precipitation_probability": 8,
-            "wind_speed_kmh": 8.3
+            "temperature_c": 21.5,
+            "precipitation_probability": 13,
+            "wind_speed_kmh": 9.4
           },
           "referee": {
             "name": "no confirmado",
@@ -2108,7 +2162,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-09T05:02:26.074277+00:00",
+          "context_updated_at": "2026-08-09T09:02:45.428216+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -2342,9 +2396,9 @@
           },
           "travel_km": 662.9,
           "weather": {
-            "temperature_c": 32.4,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 5.6
+            "temperature_c": 34.0,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 7.1
           },
           "referee": {
             "name": "no confirmado",
@@ -2377,7 +2431,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-09T05:10:25.468976+00:00",
+          "context_updated_at": "2026-08-09T09:02:46.675811+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 79,
@@ -2645,7 +2699,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-08-09T05:10:37.472094+00:00",
+          "context_updated_at": "2026-08-09T09:02:47.887282+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 79,
@@ -2873,9 +2927,9 @@
           },
           "travel_km": 504.3,
           "weather": {
-            "temperature_c": 23.6,
-            "precipitation_probability": 17,
-            "wind_speed_kmh": 12.3
+            "temperature_c": 22.3,
+            "precipitation_probability": 31,
+            "wind_speed_kmh": 16.1
           },
           "referee": {
             "name": "no confirmado",
@@ -2925,7 +2979,7 @@
               "source_items_checked": 15
             }
           },
-          "context_updated_at": "2026-08-09T05:02:30.429179+00:00",
+          "context_updated_at": "2026-08-09T09:02:49.143470+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 74,
@@ -2950,7 +3004,7 @@
               "availability_items": 8,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 11,
+              "team_items": 9,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
               "away_roster_status": "confirmed_absences",
@@ -3154,9 +3208,9 @@
           },
           "travel_km": 570.9,
           "weather": {
-            "temperature_c": 24.4,
-            "precipitation_probability": 15,
-            "wind_speed_kmh": 5.6
+            "temperature_c": 26.5,
+            "precipitation_probability": 25,
+            "wind_speed_kmh": 3.6
           },
           "referee": {
             "name": "no confirmado",
@@ -3189,7 +3243,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-09T05:02:32.060402+00:00",
+          "context_updated_at": "2026-08-09T09:02:50.472151+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 74,
@@ -3423,9 +3477,9 @@
           },
           "travel_km": 1740.9,
           "weather": {
-            "temperature_c": 23.7,
+            "temperature_c": 23.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 14.7
+            "wind_speed_kmh": 13.8
           },
           "referee": {
             "name": "no confirmado",
@@ -3516,7 +3570,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-08-09T05:02:33.684269+00:00",
+          "context_updated_at": "2026-08-09T09:02:51.926983+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -3686,9 +3740,9 @@
           },
           "travel_km": 673.8,
           "weather": {
-            "temperature_c": 22.9,
+            "temperature_c": 22.2,
             "precipitation_probability": 11,
-            "wind_speed_kmh": 9.2
+            "wind_speed_kmh": 8.2
           },
           "referee": {
             "name": "no confirmado",
@@ -3721,7 +3775,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-09T05:10:49.028591+00:00",
+          "context_updated_at": "2026-08-09T09:09:19.561044+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 40,
@@ -4038,7 +4092,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-09T05:01:29.235154+00:00",
+          "context_updated_at": "2026-08-09T09:09:21.193236+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 73,
@@ -4253,8 +4307,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Celta Vigo (2º) | casa vs Atlético Madrid (3º) | casa vs Elche (7º) | fuera vs Levante (2º) | casa vs Deportivo Alavés (4º)",
-          "future_away": "casa vs Atlético Madrid (3º) | fuera vs Espanyol (10º) | casa vs Valencia (7º) | fuera vs Deportivo de A Coruña (8º) | casa vs Barcelona (9º)",
+          "future_home": "fuera vs Rayo Vallecano (4º) | fuera vs Valencia (7º)",
+          "future_away": "fuera vs Levante (2º) | fuera vs Real Madrid (4º)",
           "history_quality": {
             "valid": false,
             "teams": 10,
@@ -4280,7 +4334,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-08-09T05:01:31.507804+00:00",
+          "context_updated_at": "2026-08-09T09:00:21.459791+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -4565,8 +4619,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Deportivo de A Coruña (8º) | casa vs Barcelona (9º) | fuera vs Sevilla (-) | fuera vs Deportivo Alavés (4º) | casa vs Real Sociedad (4º)",
-          "future_away": "casa vs Athletic Bilbao (3º) | fuera vs Real Sociedad (4º) | fuera vs Getafe (-) | casa vs Málaga (-) | casa vs Racing de Santander (4º)",
+          "future_home": "fuera vs Racing de Santander (4º) | casa vs Athletic Bilbao (3º)",
+          "future_away": "fuera vs Elche (7º) | casa vs Deportivo Alavés (4º)",
           "history_quality": {
             "valid": true,
             "teams": 10,
@@ -4607,7 +4661,7 @@
               ],
               "count": 3,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 6
+              "source_items_checked": 7
             },
             "away": {
               "team": "Celta Vigo",
@@ -4642,7 +4696,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-09T05:01:37.718505+00:00",
+          "context_updated_at": "2026-08-09T09:00:49.144133+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -4666,7 +4720,7 @@
               "availability_items": 2,
               "official_items": 3,
               "match_items": 3,
-              "team_items": 1,
+              "team_items": 2,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
               "away_roster_status": "confirmed_absences",
@@ -4931,8 +4985,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Real Sociedad (4º) | casa vs Sevilla (-) | fuera vs Osasuna (9º) | fuera vs Rayo Vallecano (4º) | casa vs Elche (7º)",
-          "future_away": "casa vs Málaga (-) | fuera vs Real Betis (4º) | casa vs Rayo Vallecano (4º) | fuera vs Elche (7º) | fuera vs Atlético Madrid (3º)",
+          "future_home": "fuera vs Málaga (-) | casa vs Atlético Madrid (3º)",
+          "future_away": "casa vs Málaga (-) | fuera vs Real Betis (4º) | casa vs Rayo Vallecano (4º) | fuera vs Atlético Madrid (3º) | casa vs Villarreal (9º)",
           "history_quality": {
             "valid": true,
             "teams": 10,
@@ -4953,30 +5007,6 @@
             "away": {
               "team": "Real Madrid",
               "items": [
-                {
-                  "player_name": "Sanción",
-                  "status": "suspended",
-                  "headline": "Sanción confirmada en el Real Madrid hoy: multa histórica para Fede Valverde y Aurélien Tchouaméni - 365Scores",
-                  "source": "365Scores",
-                  "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1jV0FYY3YtbEtYdTVycmJtMmUzbm9QXzRhakF5VjcxeS1jU0RWMFVfZ3NHcVY3ZGtSdHFYY0VlRDgzV0h6aUNrUXBvSnV3dHlxX2tqU042ZU5LX3M4VUFFOExPS0FoYXh5emRfNW00MWV2TjItT2tCZjBkSEF3UQ?oc=5",
-                  "published_at": "Tue, 04 Aug 2026 09:23:48 GMT"
-                },
-                {
-                  "player_name": "Fede Valverde",
-                  "status": "suspended",
-                  "headline": "Sanción confirmada en el Real Madrid hoy: multa histórica para Fede Valverde y Aurélien Tchouaméni - 365Scores",
-                  "source": "365Scores",
-                  "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1jV0FYY3YtbEtYdTVycmJtMmUzbm9QXzRhakF5VjcxeS1jU0RWMFVfZ3NHcVY3ZGtSdHFYY0VlRDgzV0h6aUNrUXBvSnV3dHlxX2tqU042ZU5LX3M4VUFFOExPS0FoYXh5emRfNW00MWV2TjItT2tCZjBkSEF3UQ?oc=5",
-                  "published_at": "Tue, 04 Aug 2026 09:23:48 GMT"
-                },
-                {
-                  "player_name": "Aurélien Tchouaméni",
-                  "status": "suspended",
-                  "headline": "Sanción confirmada en el Real Madrid hoy: multa histórica para Fede Valverde y Aurélien Tchouaméni - 365Scores",
-                  "source": "365Scores",
-                  "link": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1jV0FYY3YtbEtYdTVycmJtMmUzbm9QXzRhakF5VjcxeS1jU0RWMFVfZ3NHcVY3ZGtSdHFYY0VlRDgzV0h6aUNrUXBvSnV3dHlxX2tqU042ZU5LX3M4VUFFOExPS0FoYXh5emRfNW00MWV2TjItT2tCZjBkSEF3UQ?oc=5",
-                  "published_at": "Tue, 04 Aug 2026 09:23:48 GMT"
-                },
                 {
                   "player_name": "Ferencváros",
                   "status": "out",
@@ -5050,12 +5080,12 @@
                   "published_at": "Thu, 30 Jul 2026 07:00:00 GMT"
                 }
               ],
-              "count": 12,
+              "count": 9,
               "verification_status": "confirmed_absences",
               "source_items_checked": 18
             }
           },
-          "context_updated_at": "2026-08-09T05:01:39.750044+00:00",
+          "context_updated_at": "2026-08-09T09:01:44.220222+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -5075,7 +5105,7 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 12,
+              "injury_items": 9,
               "availability_items": 19,
               "official_items": 0,
               "match_items": 0,
@@ -5242,9 +5272,9 @@
           },
           "travel_km": 2.8,
           "weather": {
-            "temperature_c": 28.4,
-            "precipitation_probability": 12,
-            "wind_speed_kmh": 11.3
+            "temperature_c": 30.4,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 15.5
           },
           "referee": {
             "name": "no confirmado",
@@ -5268,8 +5298,8 @@
                 {
                   "player_name": "Christantus Uche",
                   "status": "watch",
-                  "headline": "Christantus Uche, jugador del Getafe, tras conocer su lesión que le dejará fuera toda la temporada: \"No voy a mentir: es duro\" - La Razón",
-                  "source": "La Razón",
+                  "headline": "Christantus Uche, jugador del Getafe, tras conocer su lesión que le dejará fuera toda la temporada: \"No voy a mentir: es duro\" - larazon.es",
+                  "source": "larazon.es",
                   "link": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxOMUlzU0FvQ242NHRocFJyYkVZMmRWa0ttX1VLR3V1VHg2eDlOWnBNdmFnTmVmc0FySmVHNFBfek9pMkJpUU9mcU1GWXppOHRjdGpXUk9RUUVERFBwdVZoZllpZ2JHUU04dkw5SWwxRW5zYUR1UjlkcmNEcnJ3dXl5ZkhpM1pPTEsxUmJkVkFCZzVmWEZLRGxXdHJ5YWU0TXNycGxvQ0MwUHFqbkJrN29rdk05MF85R0JMYUlkU080Vjk3dHNWZjVmblhFbDFTbjBxaWJMWkU2WmJQRU1oU0tGczBrbEhaXzhnVlY1SG9Cd05JbElxTWFLddIBjAJBVV95cUxORHVjeEtaN2JIeEpkNUFmc0NhOHo2SlFkVlRjdk93ZmVySmFTSnp1b1VtSkRVemh6U202MkM2TGlHSGhERkRicGM4S09yY3BIYVF6cmF0Qm14OWRFS2kwSGM4SHFLX2h4LVNkTHc1ckFfY1Y1emFuU2ZKUmdWYXdSaHhmTHFvT21tNjZCWDBwNzU0ZnNUc2RTOUxLTlJpTEVjcWR5TjdHajBKNENBdVBmMnpxTlY2TWZrc0JWUG9IQ1dDS0I5Ujg3T3RBYjVLem56MWZHcTNfNVpTdTFfdU1keElwRHJNaUFveU03dHZkVXZPc1NKMHpnUzVKeGpUbElkaTZkYVNFd0lrSWRY?oc=5",
                   "published_at": "Sat, 08 Aug 2026 16:49:41 GMT"
                 },
@@ -5326,7 +5356,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-09T05:08:26.673873+00:00",
+          "context_updated_at": "2026-08-09T09:07:52.608900+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 29,
@@ -5717,7 +5747,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-08-09T05:01:48.569110+00:00",
+          "context_updated_at": "2026-08-09T09:02:10.006909+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 74,
@@ -5742,7 +5772,7 @@
               "availability_items": 3,
               "official_items": 4,
               "match_items": 0,
-              "team_items": 2,
+              "team_items": 3,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
               "away_roster_status": "confirmed_absences",
@@ -5994,9 +6024,9 @@
           },
           "travel_km": 387.0,
           "weather": {
-            "temperature_c": 23.3,
-            "precipitation_probability": 15,
-            "wind_speed_kmh": 12.2
+            "temperature_c": 22.1,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 11.7
           },
           "referee": {
             "name": "no confirmado",
@@ -6029,7 +6059,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-08-09T05:01:54.493448+00:00",
+          "context_updated_at": "2026-08-09T09:02:12.001847+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 74,
@@ -6225,9 +6255,9 @@
           },
           "travel_km": 811.2,
           "weather": {
-            "temperature_c": 27.2,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 2.2
+            "temperature_c": 26.9,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 2.3
           },
           "referee": {
             "name": "no confirmado",
@@ -6260,7 +6290,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-09T05:09:20.514386+00:00",
+          "context_updated_at": "2026-08-09T09:08:45.345871+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 54,
@@ -6535,9 +6565,9 @@
           },
           "travel_km": 367.3,
           "weather": {
-            "temperature_c": 20.7,
-            "precipitation_probability": 8,
-            "wind_speed_kmh": 7.9
+            "temperature_c": 20.2,
+            "precipitation_probability": 10,
+            "wind_speed_kmh": 6.1
           },
           "referee": {
             "name": "no confirmado",
@@ -7092,9 +7122,9 @@
           },
           "travel_km": 530.3,
           "weather": {
-            "temperature_c": 25.2,
-            "precipitation_probability": 15,
-            "wind_speed_kmh": 2.6
+            "temperature_c": 26.1,
+            "precipitation_probability": 12,
+            "wind_speed_kmh": 3.9
           },
           "referee": {
             "name": "no confirmado",
@@ -7348,9 +7378,9 @@
           },
           "travel_km": 251.4,
           "weather": {
-            "temperature_c": 23.8,
-            "precipitation_probability": 14,
-            "wind_speed_kmh": 6.1
+            "temperature_c": 22.8,
+            "precipitation_probability": 11,
+            "wind_speed_kmh": 4.3
           },
           "referee": {
             "name": "no confirmado",
@@ -7484,8 +7514,8 @@
           },
           "travel_km": 251.1,
           "weather": {
-            "temperature_c": 26.4,
-            "precipitation_probability": 10,
+            "temperature_c": 28.1,
+            "precipitation_probability": 21,
             "wind_speed_kmh": 1.4
           },
           "referee": {
@@ -7514,7 +7544,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-09T05:09:30.473996+00:00",
+          "context_updated_at": "2026-08-09T09:08:46.698842+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 27,
@@ -7601,8 +7631,8 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 18,
-              "reason": "la prensa reciente apunta a rotaciones/descanso",
+              "score": 0,
+              "reason": "",
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
@@ -7614,9 +7644,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 23.6,
-            "precipitation_probability": 17,
-            "wind_speed_kmh": 12.3
+            "temperature_c": 22.3,
+            "precipitation_probability": 31,
+            "wind_speed_kmh": 16.1
           },
           "referee": {
             "name": "no confirmado",
@@ -7634,7 +7664,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "source_items_checked": 2
             },
             "away": {
               "team": "BURGOS",
@@ -7644,7 +7674,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-09T05:09:34.868682+00:00",
+          "context_updated_at": "2026-08-09T09:08:48.041398+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 27,
@@ -7666,10 +7696,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 3,
-              "official_items": 1,
+              "availability_items": 2,
+              "official_items": 0,
               "match_items": 0,
-              "team_items": 4,
+              "team_items": 3,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -7870,9 +7900,9 @@
           },
           "travel_km": 1594.5,
           "weather": {
-            "temperature_c": 20.0,
-            "precipitation_probability": 1,
-            "wind_speed_kmh": 13.2
+            "temperature_c": 19.8,
+            "precipitation_probability": 11,
+            "wind_speed_kmh": 13.3
           },
           "referee": {
             "name": "no confirmado",
@@ -8221,6 +8251,22 @@
               "team": "Villarreal",
               "items": [
                 {
+                  "player_name": "Baja",
+                  "status": "out",
+                  "headline": "Baja sensible en Los Andes: se confirmó la lesión de Facundo Villarreal - launion.com.ar",
+                  "source": "launion.com.ar",
+                  "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNdkdJRlFIM2ZodEx6N29yY2RkMkFZbE56clVzNFkzZzlSTXFUOFEtY3dveE5YVzlLNDRWVVRZOHRkQWxhS3N6YmhkUVAtRWdTa1pweVI5MjBKZ1d3cTlZQ1RObWxTRzkzcDhNeE40UkJRejNZSmFlMjVTQ05WRFhaRjQzZ0huUklVaTZoVm9OMUxfcVpYNEVQUEp4ampxVXl6dFdxdDQ4M0HSAa4BQVVfeXFMTkdkOHk3Q2J6a1NrRFdIaDBqTkN4djJUcFZpOHA4Uzd5N2VyaDhGYVNhWmgxQlZRdXhaTE1kaVhwaTZiellRcDZ0SkVoT3lVeUpaMlJITTBuN25CR2hfUWx2TnFxektIOE9Kc0lpbWxBNWNlVHRUT3Y4RTJJcEVNdDJad0VvZEJVMGtGcFJEZjJMRlZUSmpQdGxvNnZnbXZxWUlzTHVMd0liSWtoMjdn?oc=5",
+                  "published_at": "Sun, 09 Aug 2026 01:16:00 GMT"
+                },
+                {
+                  "player_name": "Los Andes",
+                  "status": "out",
+                  "headline": "Baja sensible en Los Andes: se confirmó la lesión de Facundo Villarreal - launion.com.ar",
+                  "source": "launion.com.ar",
+                  "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNdkdJRlFIM2ZodEx6N29yY2RkMkFZbE56clVzNFkzZzlSTXFUOFEtY3dveE5YVzlLNDRWVVRZOHRkQWxhS3N6YmhkUVAtRWdTa1pweVI5MjBKZ1d3cTlZQ1RObWxTRzkzcDhNeE40UkJRejNZSmFlMjVTQ05WRFhaRjQzZ0huUklVaTZoVm9OMUxfcVpYNEVQUEp4ampxVXl6dFdxdDQ4M0HSAa4BQVVfeXFMTkdkOHk3Q2J6a1NrRFdIaDBqTkN4djJUcFZpOHA4Uzd5N2VyaDhGYVNhWmgxQlZRdXhaTE1kaVhwaTZiellRcDZ0SkVoT3lVeUpaMlJITTBuN25CR2hfUWx2TnFxektIOE9Kc0lpbWxBNWNlVHRUT3Y4RTJJcEVNdDJad0VvZEJVMGtGcFJEZjJMRlZUSmpQdGxvNnZnbXZxWUlzTHVMd0liSWtoMjdn?oc=5",
+                  "published_at": "Sun, 09 Aug 2026 01:16:00 GMT"
+                },
+                {
                   "player_name": "Juansito",
                   "status": "watch",
                   "headline": "'Juansito' ve la luz seis meses después de su grave lesión: Foyth ha vuelto para ser uno de los refuerzos del Villarreal - El Periódico Mediterráneo",
@@ -8245,12 +8291,12 @@
                   "published_at": "Wed, 05 Aug 2026 10:45:39 GMT"
                 }
               ],
-              "count": 3,
+              "count": 5,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 4
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-08-09T05:01:41.940519+00:00",
+          "context_updated_at": "2026-08-09T09:02:07.687002+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -8270,11 +8316,11 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 4,
-              "availability_items": 3,
+              "injury_items": 6,
+              "availability_items": 4,
               "official_items": 2,
               "match_items": 0,
-              "team_items": 5,
+              "team_items": 6,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
               "away_roster_status": "confirmed_absences",
@@ -8326,10 +8372,10 @@
               "gap_to_drop_zone": 0
             },
             "away": {
-              "score": 74.66,
+              "score": 74.02,
               "label": "high",
-              "future_difficulty": 100.0,
-              "hard_window_matches": 1,
+              "future_difficulty": 78.58,
+              "hard_window_matches": 2,
               "gap_to_drop_zone": 0
             }
           },
@@ -8534,16 +8580,16 @@
           },
           "travel_km": 11421.0,
           "weather": {
-            "temperature_c": 26.5,
-            "precipitation_probability": 11,
-            "wind_speed_kmh": 5.0
+            "temperature_c": 28.3,
+            "precipitation_probability": 13,
+            "wind_speed_kmh": 3.4
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Málaga (-) | casa vs Barcelona (9º) | casa vs Athletic Club (3º) | fuera vs Villarreal (9º) | casa vs Sevilla (-)",
-          "future_away": "sin calendario detectado",
+          "future_home": "fuera vs Málaga (-) | casa vs Barcelona (9º) | casa vs Athletic Bilbao (3º) | fuera vs Villarreal (9º) | casa vs Sevilla (-)",
+          "future_away": "casa vs Real Madrid (4º) | fuera vs Villarreal (9º) | casa vs Getafe (-) | fuera vs Deportivo de A Coruña (8º) | casa vs Osasuna (9º)",
           "history_quality": {
             "valid": true,
             "teams": 10,
@@ -8586,7 +8632,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-08-09T05:05:48.687181+00:00",
+          "context_updated_at": "2026-08-09T07:06:01.246787+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 55,
@@ -8860,15 +8906,15 @@
           },
           "travel_km": 398.1,
           "weather": {
-            "temperature_c": 23.3,
-            "precipitation_probability": 15,
-            "wind_speed_kmh": 5.6
+            "temperature_c": 23.0,
+            "precipitation_probability": 7,
+            "wind_speed_kmh": 6.1
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Celta Vigo (2º) | fuera vs Elche (7º) | casa vs Atlético Madrid (3º) | fuera vs Valencia (7º) | casa vs Deportivo La Coruña (8º)",
+          "future_home": "casa vs Celta Vigo (2º) | fuera vs Elche (7º) | casa vs Atlético Madrid (3º) | fuera vs Valencia (7º) | casa vs Deportivo de A Coruña (8º)",
           "future_away": "casa vs Sevilla (-) | fuera vs Osasuna (9º) | fuera vs Rayo Vallecano (4º) | casa vs Elche (7º) | fuera vs Málaga (-)",
           "history_quality": {
             "valid": true,
@@ -8895,7 +8941,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-09T05:05:52.051620+00:00",
+          "context_updated_at": "2026-08-09T09:07:01.360609+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 52,
@@ -9083,16 +9129,16 @@
           },
           "travel_km": 390.3,
           "weather": {
-            "temperature_c": 25.6,
+            "temperature_c": 28.6,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 9.2
+            "wind_speed_kmh": 8.9
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Espanyol (10º) | casa vs Valencia (7º) | fuera vs Deportivo La Coruña (8º) | casa vs Barcelona (9º) | fuera vs Levante (2º)",
-          "future_away": "fuera vs Athletic Club (3º) | fuera vs Real Sociedad (4º) | casa vs Osasuna (9º) | casa vs Real Madrid (4º) | fuera vs Alavés (4º)",
+          "future_home": "fuera vs Espanyol (10º) | casa vs Valencia (7º) | fuera vs Deportivo de A Coruña (8º) | casa vs Barcelona (9º) | fuera vs Levante (2º)",
+          "future_away": "fuera vs Athletic Bilbao (3º) | fuera vs Real Sociedad (4º) | casa vs Osasuna (9º) | casa vs Real Madrid (4º) | fuera vs Deportivo Alavés (4º)",
           "history_quality": {
             "valid": false,
             "teams": 10,
@@ -9107,8 +9153,8 @@
               "team": "SEVILLA",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 3
+              "verification_status": "not_verified",
+              "source_items_checked": 2
             },
             "away": {
               "team": "Atlético Madrid",
@@ -9127,34 +9173,35 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-08-09T05:06:49.386536+00:00",
+          "context_updated_at": "2026-08-09T09:07:16.879731+00:00",
           "data_confidence": {
             "nivel": "baja",
-            "score": 35,
+            "score": 29,
             "resumen": "Confianza baja: análisis orientativo; faltan datos clave.",
             "fortalezas": [
               "liga identificada",
               "clima",
               "viaje",
               "calendario próximo",
-              "bajas verificadas"
+              "una plantilla investigada en fuentes recientes"
             ],
             "faltan": [
               "cuotas/referencia 1X2",
               "porcentajes de quiniela",
               "clasificacion/forma reciente",
               "H2H",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "confirmed_absences",
+              "roster_status": "partial_verification",
               "injury_items": 1,
-              "availability_items": 2,
+              "availability_items": 1,
               "official_items": 1,
               "match_items": 0,
-              "team_items": 5,
-              "verified_teams": 2,
-              "home_roster_status": "sources_checked_no_confirmed_absence",
+              "team_items": 4,
+              "verified_teams": 1,
+              "home_roster_status": "not_verified",
               "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
@@ -9315,9 +9362,9 @@
           },
           "travel_km": 419.9,
           "weather": {
-            "temperature_c": 26.4,
+            "temperature_c": 29.8,
             "precipitation_probability": 13,
-            "wind_speed_kmh": 15.2
+            "wind_speed_kmh": 12.3
           },
           "referee": {
             "name": "no confirmado",
@@ -9523,9 +9570,9 @@
           },
           "travel_km": 0.5,
           "weather": {
-            "temperature_c": 26.5,
-            "precipitation_probability": 11,
-            "wind_speed_kmh": 5.0
+            "temperature_c": 28.3,
+            "precipitation_probability": 13,
+            "wind_speed_kmh": 3.4
           },
           "referee": {
             "name": "no confirmado",
@@ -9543,17 +9590,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 10
+              "source_items_checked": 11
             },
             "away": {
               "team": "VALENCIA",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-08-09T05:07:23.436915+00:00",
+          "context_updated_at": "2026-08-09T09:07:16.895213+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 27,
@@ -9575,10 +9622,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 5,
+              "availability_items": 6,
               "official_items": 4,
               "match_items": 1,
-              "team_items": 7,
+              "team_items": 9,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -9741,16 +9788,16 @@
           },
           "travel_km": 2103.5,
           "weather": {
-            "temperature_c": 20.8,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 2.8
+            "temperature_c": 20.9,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 3.0
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Real Sociedad (4º) | fuera vs Getafe (-) | casa vs Málaga (-) | casa vs Racing de Santander (4º) | fuera vs Elche (7º)",
-          "future_away": "casa vs Atlético Madrid (3º) | casa vs Elche (7º) | fuera vs Levante (2º) | casa vs Deportivo Alavés (4º) | fuera vs Rayo Vallecano (4º)",
+          "future_home": "fuera vs Real Sociedad (4º) | fuera vs Getafe (-) | casa vs Málaga (-) | casa vs Racing Santander (4º) | fuera vs Elche (7º)",
+          "future_away": "casa vs Atlético Madrid (3º) | casa vs Elche (7º) | fuera vs Levante (2º) | casa vs Alavés (4º) | fuera vs Rayo Vallecano (4º)",
           "history_quality": {
             "valid": false,
             "teams": 10,
@@ -9989,16 +10036,16 @@
           },
           "travel_km": 326.2,
           "weather": {
-            "temperature_c": 23.3,
-            "precipitation_probability": 15,
-            "wind_speed_kmh": 12.2
+            "temperature_c": 22.1,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 11.7
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Deportivo Alavés (4º) | casa vs Espanyol (10º) | fuera vs Atlético Madrid (3º) | casa vs Rayo Vallecano (4º) | fuera vs Real Betis (4º)",
-          "future_away": "casa vs Celta Vigo (2º) | casa vs Deportivo de A Coruña (8º) | fuera vs Real Betis (4º) | casa vs Málaga (-) | fuera vs Barcelona (9º)",
+          "future_home": "casa vs Getafe (-) | fuera vs Deportivo Alavés (4º) | casa vs Espanyol (10º) | fuera vs Atlético Madrid (3º) | casa vs Rayo Vallecano (4º)",
+          "future_away": "fuera vs Osasuna (9º) | casa vs Celta Vigo (2º) | casa vs Deportivo de A Coruña (8º) | fuera vs Real Betis (4º) | casa vs Málaga (-)",
           "history_quality": {
             "valid": false,
             "teams": 10,
@@ -10300,9 +10347,9 @@
           },
           "travel_km": 589.2,
           "weather": {
-            "temperature_c": 23.6,
-            "precipitation_probability": 32,
-            "wind_speed_kmh": 11.3
+            "temperature_c": null,
+            "precipitation_probability": null,
+            "wind_speed_kmh": null
           },
           "referee": {
             "name": "no confirmado",
@@ -10560,9 +10607,9 @@
           },
           "travel_km": 585.0,
           "weather": {
-            "temperature_c": 22.8,
+            "temperature_c": 24.9,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 4.3
+            "wind_speed_kmh": 2.9
           },
           "referee": {
             "name": "no confirmado",
@@ -10821,9 +10868,9 @@
           },
           "travel_km": 130.5,
           "weather": {
-            "temperature_c": 31.0,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 6.9
+            "temperature_c": 33.5,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 7.9
           },
           "referee": {
             "name": "no confirmado",
@@ -11012,7 +11059,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-09T05:07:59.276772+00:00",
+          "context_updated_at": "2026-08-09T09:07:44.843889+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 0,
@@ -11048,7 +11095,7 @@
           "slot": "12.",
           "local": "EIBAR (F)",
           "visitante": "ESPANYOL (F)",
-          "league": "Spanish Liga F",
+          "league": "Spanish La Liga 2",
           "league_key": "league_unresolved",
           "league_source": "quiniela-placeholder",
           "kickoff": "2026-08-29T15:00:00Z",
@@ -11109,15 +11156,15 @@
           },
           "travel_km": 430.0,
           "weather": {
-            "temperature_c": 23.8,
-            "precipitation_probability": 14,
-            "wind_speed_kmh": 6.1
+            "temperature_c": 22.8,
+            "precipitation_probability": 11,
+            "wind_speed_kmh": 6.6
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "sin calendario detectado",
+          "future_home": "fuera vs FC Andorra (-) | casa vs Granada (-) | fuera vs Celta Fortuna (-) | fuera vs Eldense (-) | casa vs Las Palmas (-)",
           "future_away": "fuera vs Eibar Women (-)",
           "history_quality": {
             "valid": false,
@@ -11139,7 +11186,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-09T05:08:00.851446+00:00",
+          "context_updated_at": "2026-08-09T09:07:47.059884+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 24,
@@ -11172,7 +11219,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza baja: análisis orientativo; faltan datos clave. | Sin suficientes datos de mercado para generar insight. | contexto competitivo bajo o no calculable | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
+          "briefing_excerpt": "Confianza baja: análisis orientativo; faltan datos clave. | Sin suficientes datos de mercado para generar insight. | contexto competitivo bajo o no calculable | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -11446,10 +11493,10 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 1
+              "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-09T05:08:21.909973+00:00",
+          "context_updated_at": "2026-08-09T09:07:48.415529+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 43,
@@ -11475,7 +11522,7 @@
               "availability_items": 0,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 1,
+              "team_items": 2,
               "verified_teams": 0,
               "home_roster_status": "not_verified",
               "away_roster_status": "not_verified",
@@ -11673,7 +11720,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-09T05:08:23.271111+00:00",
+          "context_updated_at": "2026-08-09T09:07:49.692404+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 15,
@@ -11773,9 +11820,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 27.7,
+            "temperature_c": 27.6,
             "precipitation_probability": 48,
-            "wind_speed_kmh": 19.3
+            "wind_speed_kmh": 20.7
           },
           "referee": {
             "name": "no confirmado",
@@ -11793,17 +11840,26 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 1
+              "source_items_checked": 2
             },
             "away": {
               "team": "RAYO",
-              "items": [],
-              "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 3
+              "items": [
+                {
+                  "player_name": "Sevilla",
+                  "status": "suspended",
+                  "headline": "El TSJM suspende cautelarmente la sanción a Isi y podrá debutar ante el Sevilla - Unión Rayo",
+                  "source": "Unión Rayo",
+                  "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPYmlrWVVxTzBQS2lxYnRXbFVZaHI2Y0t0bmhuS3J4ckh4a3VERkMtOEYxTnVwa0xwR0xNOWU0d1ZfcWt6NU5yNU5PeENaMkRjdlh1eVlJRllManQ3Mm1ERE92N1hyRTlVWHVycHlJbUFLQ2FNMUh5akdIajdtWE9zOWdIWG0yakxyWDNyTlFrOHp1VFFzaHhJN0pqU1pTVkY5M3c?oc=5",
+                  "published_at": "Sat, 08 Aug 2026 13:27:39 GMT"
+                }
+              ],
+              "count": 1,
+              "verification_status": "confirmed_absences",
+              "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-09T05:08:25.661443+00:00",
+          "context_updated_at": "2026-08-09T09:07:51.559770+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 24,
@@ -11825,14 +11881,14 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
-              "injury_items": 0,
-              "availability_items": 2,
+              "injury_items": 1,
+              "availability_items": 3,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 4,
+              "team_items": 6,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
-              "away_roster_status": "sources_checked_no_confirmed_absence",
+              "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
           },
