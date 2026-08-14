@@ -12,6 +12,7 @@ mirar por qué la tabla se ha vuelto a considerar utilizable, no relajarlos.
 
 import unittest
 from datetime import datetime, timezone
+from unittest import mock
 
 import snapshot_worker as worker
 
@@ -461,6 +462,58 @@ class SeasonTransitionNewsTests(unittest.TestCase):
         audit = worker._audit_season_transition_snapshot(snapshot)
         self.assertTrue(audit["ok"])
         self.assertEqual(audit["empty_side_count"], 0)
+
+    def test_lightweight_transition_repair_does_not_run_full_enrichment(self):
+        match = {
+            "local": "Racing de Santander",
+            "visitante": "Villarreal",
+            "league": LALIGA,
+            "kickoff": KICKOFF_J1.isoformat(),
+            "home_team_context": {},
+            "away_team_context": {},
+            "competition_context": {
+                "season_preview": {
+                    "active": True,
+                    "home": {"summary": "ascendido"},
+                    "away": {"summary": "3o en Primera"},
+                }
+            },
+            "focus_ai_briefing": {"partido": "Racing - Villarreal"},
+        }
+        home_payload = {
+            "items": [
+                {
+                    "title": "El Racing de Santander anuncia un fichaje",
+                    "category": "signing",
+                    "fact_status": "confirmed",
+                }
+            ],
+            "coverage": "partial",
+        }
+        away_payload = {
+            "items": [
+                {
+                    "title": "El Villarreal completa su pretemporada",
+                    "category": "preseason",
+                    "fact_status": "reported",
+                }
+            ],
+            "coverage": "partial",
+        }
+        with mock.patch.object(
+            worker,
+            "fetch_season_transition_news",
+            side_effect=[home_payload, away_payload],
+        ) as fetch_news:
+            changed = worker._ensure_season_transition_context(match)
+        self.assertTrue(changed)
+        self.assertEqual(fetch_news.call_count, 2)
+        self.assertEqual(
+            match["competition_context"]["season_transition"]["evidence_count"], 2
+        )
+        self.assertIn(
+            "plantillas_y_transicion_de_temporada", match["focus_ai_briefing"]
+        )
 
     def test_transition_context_keeps_previous_season_and_sourced_facts(self):
         item = {

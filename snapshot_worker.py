@@ -10706,6 +10706,59 @@ def _transition_briefing_side(context: dict) -> dict:
     }
 
 
+def _ensure_season_transition_context(match: dict) -> bool:
+    """Completa solo plantilla/mercado sin repetir el enriquecimiento pesado."""
+    competition = match.setdefault("competition_context", {})
+    existing = competition.get("season_transition") or {}
+    if existing.get("home") and existing.get("away"):
+        return False
+
+    home_team = str(match.get("local", "")).strip()
+    away_team = str(match.get("visitante", "")).strip()
+    if not home_team or not away_team:
+        return False
+
+    home_news = fetch_season_transition_news(home_team)
+    away_news = fetch_season_transition_news(away_team)
+    match.setdefault("home_team_context", {})["season_transition_news"] = home_news
+    match.setdefault("away_team_context", {})["season_transition_news"] = away_news
+
+    season_preview = competition.get("season_preview") or {}
+    if not season_preview and match.get("league"):
+        reliability = competition.get("table_reliability") or {
+            "regime": "preseason",
+            "reason": "clasificacion sin muestra suficiente",
+            "median_played": 0,
+        }
+        season_preview = _season_preview_context(
+            match.get("league", ""),
+            home_team,
+            away_team,
+            _parse_iso_datetime(match.get("kickoff", "")),
+            reliability,
+        )
+        competition["season_preview"] = season_preview
+
+    transition = _build_match_season_transition(
+        home_team,
+        away_team,
+        season_preview,
+        home_news,
+        away_news,
+    )
+    competition["season_transition"] = transition
+    briefing = match.get("focus_ai_briefing")
+    if isinstance(briefing, dict) and briefing:
+        briefing["plantillas_y_transicion_de_temporada"] = {
+            "local": _transition_briefing_side(transition.get("home") or {}),
+            "visitante": _transition_briefing_side(transition.get("away") or {}),
+            "criterios_para_la_ia": transition.get("analysis_priorities") or [],
+        }
+        briefing["calidad_datos"] = _match_data_confidence(match)
+    match["season_transition_updated_at"] = _now_iso()
+    return True
+
+
 def _focus_match_ai_briefing(match: dict) -> dict:
     market_context = match.get("market_context") or {}
     market = market_context.get("normalized_percent", {})
@@ -12368,12 +12421,12 @@ def build_snapshot(raw_matches: list) -> dict:
                 competition_context = match.get("competition_context") or {}
                 home_upcoming = competition_context.get("home_upcoming") or []
                 away_upcoming = competition_context.get("away_upcoming") or []
+                missing_transition = not competition_context.get("season_transition")
                 should_refresh = (
                     _needs_dynamic_league_revalidation(match)
                     or _active_context_refresh_due(match)
                     or
                     not match.get("focus_ai_briefing")
-                    or not competition_context.get("season_transition")
                     or (
                         match.get("league")
                         and match.get("kickoff")
@@ -12383,7 +12436,9 @@ def build_snapshot(raw_matches: list) -> dict:
                         )
                     )
                 )
-                if should_refresh and match.get("league") and match.get("kickoff"):
+                if missing_transition:
+                    _ensure_season_transition_context(match)
+                elif should_refresh and match.get("league") and match.get("kickoff"):
                     _enrich_quiniela_match(match)
         ordered_tracked = []
         seen_keys = set()
@@ -12425,12 +12480,11 @@ def build_snapshot(raw_matches: list) -> dict:
                 if (
                     match.get("league")
                     and match.get("kickoff")
-                    and (
-                        not match.get("focus_ai_briefing")
-                        or not competition_context.get("season_transition")
-                    )
+                    and not match.get("focus_ai_briefing")
                 ):
                     _enrich_quiniela_match(match)
+                elif not competition_context.get("season_transition"):
+                    _ensure_season_transition_context(match)
     quiniela_integrity = _audit_quiniela_integrity(
         quiniela_jornadas,
         _safe_int(_eduardo_current_context().get("temporada")),
