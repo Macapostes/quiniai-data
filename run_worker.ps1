@@ -6,6 +6,8 @@ $python = Join-Path $PSScriptRoot ".venv\Scripts\python.exe"
 $script = Join-Path $PSScriptRoot "snapshot_worker.py"
 $workerStdoutLog = Join-Path $PSScriptRoot "logs\\worker_stdout.log"
 $supervisorLog = Join-Path $PSScriptRoot "logs\\worker_supervisor.log"
+$healthMonitorPython = "C:\Users\mario\Desktop\Bot Trading\.venv\Scripts\python.exe"
+$healthMonitorScript = "C:\Users\mario\Desktop\Bot Trading\tools\desktop_launchers\watch_quiniai_worker.py"
 $restartDelaySeconds = 20
 
 function Write-SupervisorLog([string]$message, [string]$level = "INFO") {
@@ -19,6 +21,23 @@ if (-not (Test-Path $python)) {
 }
 
 Write-SupervisorLog "Supervisor arrancado. Worker path=$script"
+
+function Start-WorkerHealthMonitor {
+    if (-not (Test-Path -LiteralPath $healthMonitorPython) -or -not (Test-Path -LiteralPath $healthMonitorScript)) {
+        Write-SupervisorLog "Monitor de salud no disponible; se mantiene el supervisor básico." "WARN"
+        return
+    }
+    $runningMonitor = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -match 'python' -and ([string]$_.CommandLine) -match 'watch_quiniai_worker\.py' } |
+        Select-Object -First 1
+    if ($runningMonitor) {
+        return
+    }
+    Start-Process -FilePath $healthMonitorPython -WorkingDirectory "C:\Users\mario\Desktop\Bot Trading" -ArgumentList ("-u `"$healthMonitorScript`"") -WindowStyle Hidden
+    Write-SupervisorLog "Monitor de salud de Datos jornada iniciado (umbral: 6 horas)."
+}
+
+Start-WorkerHealthMonitor
 
 while ($true) {
     $alreadyRunning = $null

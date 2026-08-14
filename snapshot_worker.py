@@ -21,6 +21,7 @@ import urllib.parse
 import xml.etree.ElementTree as ET
 import sys
 import subprocess
+import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone, timedelta
 from logging.handlers import RotatingFileHandler
@@ -353,6 +354,49 @@ LEAGUE_RFEF_PDF_PREFIX = {
     "soccer_spain_segunda_division": "2a_division_masculina",
 }
 
+# Regimen de muestra de la clasificacion.
+#
+# Una tabla recien arrancada no informa de nada: con 1-2 jornadas disputadas
+# todos los equipos estan a 0-3 puntos de cualquier linea competitiva, el
+# desempate de _table_snapshot cae en orden alfabetico y cualquier
+# "persigue Europa League a 1 pts" es ruido presentado como hecho verificado.
+# Hasta que hay muestra suficiente no se emiten ni posiciones ni objetivos.
+TABLE_MIN_PLAYED_FOR_POSITIONS = max(
+    1, int(os.getenv("QUINIAI_TABLE_MIN_PLAYED_POSITIONS", "4"))
+)
+TABLE_MIN_PLAYED_FOR_OBJECTIVES = max(
+    TABLE_MIN_PLAYED_FOR_POSITIONS,
+    int(os.getenv("QUINIAI_TABLE_MIN_PLAYED_OBJECTIVES", "10")),
+)
+# Con menos de este recorrido de puntos entre el primero y el ultimo la tabla
+# no separa a nadie, por muchas jornadas que figuren jugadas.
+TABLE_MIN_POINTS_SPREAD = max(0, int(os.getenv("QUINIAI_TABLE_MIN_POINTS_SPREAD", "4")))
+# Fraccion minima de equipos de la liga que deben aparecer en la tabla. Cubre
+# la jornada partida: si solo han jugado los partidos del viernes, el que gano
+# figura lider y el resto ni siquiera esta en la tabla.
+TABLE_MIN_TEAM_COVERAGE = 0.85
+
+LEAGUE_EXPECTED_TEAMS = {
+    "soccer_spain_la_liga": 20,
+    "soccer_spain_segunda_division": 22,
+    "soccer_epl": 20,
+    "soccer_efl_champ": 24,
+    "soccer_norway_eliteserien": 16,
+    "soccer_sweden_allsvenskan": 16,
+    "soccer_sweden_superettan": 16,
+    "sportsdb_4358": 16,
+    "sportsdb_4347": 16,
+}
+
+# Divisiones hermanas, para resolver si un equipo que no estaba en la tabla de
+# la temporada pasada llega ascendido o descendido.
+LEAGUE_TIER_SIBLINGS = {
+    "soccer_spain_la_liga": {"below": "soccer_spain_segunda_division"},
+    "soccer_spain_segunda_division": {"above": "soccer_spain_la_liga"},
+    "soccer_epl": {"below": "soccer_efl_champ"},
+    "soccer_efl_champ": {"above": "soccer_epl"},
+}
+
 TEAM_NAME_ALIASES = {
     # Selecciones nacionales: la quiniela oficial suele publicarlas en español,
     # mientras que las fuentes de calendario/cuotas llegan en inglés.
@@ -671,9 +715,13 @@ TEAM_LOCATION_OVERRIDES = {
     "mirandes": {"query": "Miranda de Ebro, Burgos, Spain"},
     "castellon": {"query": "Castellon de la Plana, Spain"},
     "castellón": {"query": "Castellon de la Plana, Spain"},
-    "alaves": {"query": "Vitoria-Gasteiz, Spain"},
-    "alavés": {"query": "Vitoria-Gasteiz, Spain"},
-    "espanyol": {"query": "Cornella de Llobregat, Barcelona, Spain"},
+    "alaves": {"query": "Vitoria-Gasteiz, Spain", "city": "Vitoria-Gasteiz", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 42.8467, "longitude": -2.6716},
+    "alavés": {"query": "Vitoria-Gasteiz, Spain", "city": "Vitoria-Gasteiz", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 42.8467, "longitude": -2.6716},
+    "espanyol": {"query": "Cornella de Llobregat, Barcelona, Spain", "city": "Cornella de Llobregat", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 41.3475, "longitude": 2.0750},
+    # "betis" a secas resolvia a la iglesia de Betis en Pampanga (Filipinas).
+    "betis": {"query": "Seville, Andalusia, Spain", "city": "Sevilla", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 37.3564, "longitude": -5.9819},
+    "real betis": {"query": "Seville, Andalusia, Spain", "city": "Sevilla", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 37.3564, "longitude": -5.9819},
+    "sevilla": {"query": "Seville, Andalusia, Spain", "city": "Sevilla", "country": "Spain", "country_code": "ES", "timezone": "Europe/Madrid", "latitude": 37.3841, "longitude": -5.9705},
     "coventry city": {"query": "Coventry, England"},
     "portsmouth": {"query": "Portsmouth, Hampshire, England"},
     "queens park rangers": {"query": "Shepherds Bush, London, England"},
@@ -837,6 +885,33 @@ SQUAD_KEYWORDS = [
     "startelvan",
     "lagoppstilling",
     "laguttagning",
+]
+# Mercado de fichajes. En jornada 1 es la pregunta relevante: si la plantilla
+# esta cerrada o el equipo sigue buscando piezas. La ventana sigue abierta
+# varias jornadas, asi que esto tambien informa en jornada 2 y 3.
+MARKET_KEYWORDS = [
+    "fichaje",
+    "fichajes",
+    "fichar",
+    "refuerzo",
+    "refuerzos",
+    "traspaso",
+    "cesion",
+    "cesión",
+    "mercado de fichajes",
+    "cierre de mercado",
+    "ventana de fichajes",
+    "signing",
+    "signings",
+    "transfer",
+    "transfer window",
+    "loan deal",
+    "medical",
+    "overgang",
+    "overganger",
+    "klar for",
+    "värvning",
+    "nyförvärv",
 ]
 MORALE_KEYWORDS = [
     "crisis",
@@ -2519,6 +2594,18 @@ def _monitor_league_label(match: dict) -> str:
     )
 
 
+def _positions_publishable(competition: dict) -> bool:
+    reliability = (competition or {}).get("table_reliability") or {}
+    if reliability:
+        return bool(reliability.get("positions_usable"))
+    # Snapshot antiguo sin el campo: se infiere de las jornadas disputadas.
+    phase = (competition or {}).get("season_context_phase") or {}
+    played = _safe_int(phase.get("played"), None)
+    if played is None:
+        return True
+    return played >= TABLE_MIN_PLAYED_FOR_POSITIONS
+
+
 def _monitor_match_payload(match: dict) -> dict:
     history = match.get("history_context") or {}
     analytics = match.get("analytics_context") or {}
@@ -2550,15 +2637,19 @@ def _monitor_match_payload(match: dict) -> dict:
             or match.get("official_quiniela_percentages")
             or {}
         ),
+        # La posicion solo se publica cuando la tabla tiene muestra: en las
+        # primeras jornadas el puesto lo decide el desempate alfabetico.
         "home_table": {
-            "position": home_table.get("position"),
+            "position": home_table.get("position") if _positions_publishable(competition) else None,
             "points": home_table.get("points"),
             "form": home_recent.get("form", ""),
+            "form_matches": home_recent.get("matches", 0),
         },
         "away_table": {
-            "position": away_table.get("position"),
+            "position": away_table.get("position") if _positions_publishable(competition) else None,
             "points": away_table.get("points"),
             "form": away_recent.get("form", ""),
+            "form_matches": away_recent.get("matches", 0),
         },
         "pressure": {
             "home": analytics.get("home_pressure_index", {}),
@@ -2581,6 +2672,8 @@ def _monitor_match_payload(match: dict) -> dict:
             "direct_rivalry_index": analytics.get("direct_rivalry_index", 0),
             "home_rotation_context": competition.get("home_rotation_context", {}),
             "away_rotation_context": competition.get("away_rotation_context", {}),
+            "table_reliability": competition.get("table_reliability", {}),
+            "season_preview": competition.get("season_preview", {}),
         },
         "travel_km": _safe_float((match.get("travel_context") or {}).get("distance_km")),
         "weather": {
@@ -4035,6 +4128,14 @@ def _git_push_monitor(git_exe: str, repo_root: Path) -> subprocess.CompletedProc
 
 
 def _git_publish_monitor(repo_paths: list[str]) -> bool:
+    """Publica el monitor sin tocar el arbol de trabajo del recopilador.
+
+    El recopilador conserva caches, ajustes y cambios locales que no tienen por
+    que estar confirmados. Hacer ``rebase`` en ese arbol bloqueaba la subida
+    del monitor cuando GitHub habia avanzado (por ejemplo, al actualizar las
+    cuotas). Se crea un worktree temporal desde la rama remota, se copian solo
+    los ficheros publicos y se publica desde ahi.
+    """
     repo_root = Path(__file__).resolve().parent
     git_candidates = [
         os.getenv("QUINIAI_GIT_EXE", "").strip(),
@@ -4060,55 +4161,74 @@ def _git_publish_monitor(repo_paths: list[str]) -> bool:
             return False
     except Exception:
         return False
-    for rel_path in repo_paths:
-        subprocess.run(
-            [git_exe, "-C", str(repo_root), "add", "--", rel_path],
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            env=GIT_NONINTERACTIVE_ENV,
-            timeout=12,
-        )
-    porcelain = subprocess.run(
-        [git_exe, "-C", str(repo_root), "status", "--porcelain"],
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        env=GIT_NONINTERACTIVE_ENV,
-        timeout=12,
-    )
-    if not (porcelain.stdout or "").strip():
+    fetch = _git_run(git_exe, repo_root, ["fetch", "origin", MONITOR_BRANCH], timeout=45)
+    if fetch.returncode != 0:
+        LOGGER.warning("monitor_git_publish_fetch_failed stderr=%s", (fetch.stderr or "").strip())
         return False
-    subprocess.run(
-        [
+
+    upstream = f"origin/{MONITOR_BRANCH}"
+    with tempfile.TemporaryDirectory(prefix="quiniai-monitor-publish-") as temp_dir:
+        worktree_root = Path(temp_dir) / "repo"
+        added_worktree = _git_run(
             git_exe,
-            "-C",
-            str(repo_root),
-            "-c",
-            "user.name=QuiniAIWorker",
-            "-c",
-            "user.email=worker@quiniai.local",
-            "commit",
-            "-m",
-            "Update monitor snapshot",
-        ],
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        env=GIT_NONINTERACTIVE_ENV,
-        timeout=20,
-    )
-    _git_sync_monitor_branch(git_exe, repo_root)
-    pushed = _git_push_monitor(git_exe, repo_root)
-    if pushed.returncode != 0 and "fetch first" in (pushed.stderr or "").lower():
-        LOGGER.info("monitor_git_publish_retry_after_rejected_push")
-        if _git_sync_monitor_branch(git_exe, repo_root):
-            pushed = _git_push_monitor(git_exe, repo_root)
-    if pushed.returncode != 0:
-        LOGGER.warning("monitor_git_publish_push_failed stderr=%s", (pushed.stderr or "").strip())
-        return False
-    LOGGER.info("monitor_git_publish_ok branch=%s", MONITOR_BRANCH)
-    return True
+            repo_root,
+            ["worktree", "add", "--detach", str(worktree_root), upstream],
+            timeout=60,
+        )
+        if added_worktree.returncode != 0:
+            LOGGER.warning(
+                "monitor_git_publish_worktree_failed stderr=%s",
+                (added_worktree.stderr or "").strip(),
+            )
+            return False
+        try:
+            for rel_path in repo_paths:
+                source = repo_root / rel_path
+                destination = worktree_root / rel_path
+                if not source.is_file():
+                    LOGGER.warning("monitor_git_publish_missing_source path=%s", source)
+                    return False
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, destination)
+
+            added = _git_run(git_exe, worktree_root, ["add", "--", *repo_paths], timeout=20)
+            if added.returncode != 0:
+                LOGGER.warning("monitor_git_publish_add_failed stderr=%s", (added.stderr or "").strip())
+                return False
+            changed = _git_run(git_exe, worktree_root, ["diff", "--cached", "--quiet"], timeout=20)
+            if changed.returncode == 0:
+                LOGGER.info("monitor_git_publish_no_changes branch=%s", MONITOR_BRANCH)
+                return True
+            if changed.returncode != 1:
+                LOGGER.warning("monitor_git_publish_diff_failed stderr=%s", (changed.stderr or "").strip())
+                return False
+            committed = _git_run(
+                git_exe,
+                worktree_root,
+                [
+                    "-c",
+                    "user.name=QuiniAIWorker",
+                    "-c",
+                    "user.email=worker@quiniai.local",
+                    "commit",
+                    "-m",
+                    "Update monitor snapshot",
+                ],
+                timeout=30,
+            )
+            if committed.returncode != 0:
+                LOGGER.warning("monitor_git_publish_commit_failed stderr=%s", (committed.stderr or "").strip())
+                return False
+            pushed = _git_push_monitor(git_exe, worktree_root)
+            if pushed.returncode != 0:
+                LOGGER.warning("monitor_git_publish_push_failed stderr=%s", (pushed.stderr or "").strip())
+                return False
+            LOGGER.info("monitor_git_publish_ok branch=%s", MONITOR_BRANCH)
+            return True
+        finally:
+            removed = _git_run(git_exe, repo_root, ["worktree", "remove", "--force", str(worktree_root)], timeout=45)
+            if removed.returncode != 0:
+                LOGGER.warning("monitor_git_publish_worktree_cleanup_failed stderr=%s", (removed.stderr or "").strip())
 
 
 def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
@@ -4276,6 +4396,118 @@ def _looks_like_known_team_entity(candidate: str) -> bool:
     return False
 
 
+# Caja envolvente por pais, para comprobar que unas coordenadas son
+# compatibles con el pais que las acompana.
+#
+# El perfil de equipo toma las coordenadas de Wikipedia y el pais del
+# geocodificador, y nadie comprobaba que concordasen: BETIS resolvio al
+# articulo "Betis Church" (Guagua, Pampanga, Filipinas) quedandose con sus
+# coordenadas y con country_code "ES" del geocodificador, y el viaje
+# Valencia-Sevilla salio a 11.421 km. Lo mismo con ALAVES (F) -> "Alaverdi,
+# Armenia". La comprobacion de pais que ya existia validaba un campo que
+# nunca estuvo mal.
+#
+# Los rangos incluyen territorios insulares (Canarias y Baleares en ES,
+# Azores y Madeira en PT).
+COUNTRY_BOUNDING_BOXES = {
+    "ES": (27.4, 43.9, -18.3, 4.4),
+    "PT": (32.3, 42.2, -31.4, -6.1),
+    "GB": (49.8, 61.0, -8.7, 1.9),
+    "IE": (51.3, 55.5, -10.6, -5.9),
+    "FR": (41.3, 51.2, -5.2, 9.6),
+    "IT": (35.4, 47.1, 6.6, 18.6),
+    "DE": (47.2, 55.1, 5.8, 15.1),
+    "NL": (50.7, 53.6, 3.3, 7.3),
+    "BE": (49.4, 51.6, 2.5, 6.5),
+    "CH": (45.8, 47.9, 5.9, 10.6),
+    "AT": (46.3, 49.1, 9.5, 17.2),
+    "NO": (57.9, 71.3, 4.0, 31.2),
+    "SE": (55.2, 69.1, 10.8, 24.2),
+    "DK": (54.5, 57.8, 8.0, 15.2),
+    "FI": (59.7, 70.1, 19.0, 31.6),
+    "PL": (49.0, 54.9, 14.1, 24.2),
+    "CZ": (48.5, 51.1, 12.0, 18.9),
+    "GR": (34.7, 41.8, 19.3, 29.7),
+    "TR": (35.8, 42.2, 25.6, 44.9),
+    "US": (24.4, 49.4, -125.0, -66.9),
+    "MX": (14.5, 32.8, -118.5, -86.7),
+    "AR": (-55.1, -21.7, -73.6, -53.6),
+    "BR": (-33.8, 5.3, -74.0, -34.8),
+    "JP": (24.0, 45.6, 122.9, 153.9),
+    "AU": (-43.7, -10.0, 112.9, 153.7),
+}
+
+# Distancia maxima creible dentro de un pais, para un partido de liga
+# domestica. Generosa a proposito: solo tiene que cazar lo imposible.
+COUNTRY_MAX_DOMESTIC_TRIP_KM = {
+    "ES": 2200,   # peninsula <-> Canarias ronda los 1.800 km
+    "PT": 1600,   # continente <-> Azores
+    "GB": 1100,
+    "IE": 600,
+    "FR": 1300,
+    "IT": 1400,
+    "DE": 900,
+    "NL": 400,
+    "BE": 350,
+    "CH": 400,
+    "AT": 700,
+    "NO": 2000,
+    "SE": 1700,
+    "DK": 500,
+    "FI": 1300,
+    "PL": 900,
+    "CZ": 600,
+    "GR": 1200,
+    "TR": 1800,
+}
+DEFAULT_MAX_DOMESTIC_TRIP_KM = 3000
+
+
+def _coordinates_match_country(latitude, longitude, country_code) -> bool | None:
+    """True/False si se puede comprobar, None si no hay caja para ese pais."""
+    box = COUNTRY_BOUNDING_BOXES.get(str(country_code or "").strip().upper())
+    if not box:
+        return None
+    lat = _safe_float(latitude)
+    lon = _safe_float(longitude)
+    if lat is None or lon is None:
+        return None
+    lat_min, lat_max, lon_min, lon_max = box
+    return lat_min <= lat <= lat_max and lon_min <= lon <= lon_max
+
+
+def _profile_coordinates_are_consistent(profile: dict) -> bool:
+    """Un perfil con coordenadas fuera de su propio pais no vale."""
+    if not isinstance(profile, dict):
+        return True
+    country = profile.get("country_code") or profile.get("country_hint")
+    verdict = _coordinates_match_country(
+        profile.get("latitude"), profile.get("longitude"), country
+    )
+    return verdict is not False
+
+
+def _drop_inconsistent_coordinates(profile: dict, team_name: str = "") -> dict:
+    """Borra coordenadas incompatibles con el pais declarado del perfil.
+
+    No se corrigen a ojo: se eliminan para que el resto de la cadena vuelva a
+    resolverlas, y si no lo consigue el partido se queda sin distancia de
+    viaje. Un dato ausente es recuperable; uno inventado llega al PDF.
+    """
+    if _profile_coordinates_are_consistent(profile):
+        return profile
+    cleaned = dict(profile or {})
+    for field in ("latitude", "longitude", "city", "timezone"):
+        cleaned.pop(field, None)
+    cleaned["coordinates_rejected"] = True
+    cleaned["coordinates_rejected_reason"] = (
+        f"coordenadas ({profile.get('latitude')}, {profile.get('longitude')}) "
+        f"fuera de {profile.get('country_code') or profile.get('country_hint') or '?'}"
+        + (f" para {team_name}" if team_name else "")
+    )
+    return cleaned
+
+
 def _guess_country_hint(team_name: str, fallback: str | None = None) -> str | None:
     if fallback:
         return fallback
@@ -4294,11 +4526,36 @@ def _guess_country_hint(team_name: str, fallback: str | None = None) -> str | No
     return None
 
 
+def _strip_gender_suffix(team_name: str) -> str:
+    """Quita el sufijo de categoria que anade la quiniela oficial.
+
+    "ALAVES (F)" y "VALENCIA (F)" son el equipo femenino del mismo club y
+    juegan en la misma ciudad. Para localizar, el sufijo sobra; para
+    identificar la categoria NO se usa esta funcion.
+    """
+    return re.sub(
+        r"\s*\((?:f|fem|femenino|femenina|w|women)\)\s*$",
+        "",
+        str(team_name or "").strip(),
+        flags=re.IGNORECASE,
+    ).strip()
+
+
 def _team_location_override(team_name: str) -> dict:
-    normalized = _normalize_ascii(str(team_name or "").strip()).lower()
-    canonical_normalized = _normalize_team_name(_canonical_team_name(team_name))
-    for key in [canonical_normalized, normalized]:
-        if key and key in TEAM_LOCATION_OVERRIDES:
+    raw = str(team_name or "").strip()
+    without_gender = _strip_gender_suffix(raw)
+    keys = []
+    for candidate in (raw, without_gender):
+        if not candidate:
+            continue
+        for key in (
+            _normalize_team_name(_canonical_team_name(candidate)),
+            _normalize_ascii(candidate).lower(),
+        ):
+            if key and key not in keys:
+                keys.append(key)
+    for key in keys:
+        if key in TEAM_LOCATION_OVERRIDES:
             return TEAM_LOCATION_OVERRIDES.get(key, {})
     return {}
 
@@ -4528,13 +4785,31 @@ def _geocode_team_profile_candidates(
     return {}, candidates[0] if candidates else ""
 
 
+def _wikipedia_page_is_a_football_entity(wiki_data: dict) -> bool:
+    """¿El artículo va de fútbol, o hemos caído en otra cosa?"""
+    text = f"{(wiki_data or {}).get('title', '')} {(wiki_data or {}).get('summary', '')}".lower()
+    if not text.strip():
+        return False
+    return bool(
+        re.search(
+            r"\b(football|soccer|f\.?\s?c\.?|c\.?\s?f\.?|futbol|fútbol|"
+            r"balompi[eé]|club deportivo|sporting club|sports club)\b",
+            text,
+        )
+    )
+
+
 def _repair_profile_location(
     team_name: str,
     profile: dict,
     country_hint: str | None = None,
     *extra_hints: str,
 ) -> dict:
-    repaired = _apply_location_override_fields(profile or {}, team_name)
+    # Antes de nada, tirar coordenadas incoherentes que vengan de la caché:
+    # así el resto de la función vuelve a resolverlas de cero.
+    repaired = _apply_location_override_fields(
+        _drop_inconsistent_coordinates(profile or {}, team_name), team_name
+    )
     expected_country_code = str(country_hint or "").strip().upper()
     actual_country_code = str(repaired.get("country_code") or "").strip().upper()
     if expected_country_code and actual_country_code != expected_country_code:
@@ -4571,7 +4846,9 @@ def _repair_profile_location(
         repaired["country_code"] = geocoded.get("country_code", "")
     if not str(repaired.get("timezone", "")).strip() and geocoded.get("timezone"):
         repaired["timezone"] = geocoded.get("timezone", "")
-    return _apply_location_override_fields(repaired, team_name)
+    return _drop_inconsistent_coordinates(
+        _apply_location_override_fields(repaired, team_name), team_name
+    )
 
 
 def _sportsdb_location_hints(team_api: dict, sportsdb_event: dict | None = None) -> list[str]:
@@ -4620,7 +4897,9 @@ def _sportsdb_location_profile(team_name: str, team_api: dict, sportsdb_event: d
             "longitude": geocoded.get("longitude"),
             "cache_version": TEAM_PROFILE_CACHE_VERSION,
         }
-        return _apply_location_override_fields(profile, team_name)
+        return _drop_inconsistent_coordinates(
+            _apply_location_override_fields(profile, team_name), team_name
+        )
     return {}
 
 
@@ -4644,6 +4923,8 @@ def fetch_team_profile(team_name: str, country_hint: str | None = None) -> dict:
         and cached.get("longitude") is not None
         and cached_is_national_profile
         and cached_country_matches
+        # Una caché envenenada seguiría sirviendo Filipinas para siempre.
+        and _profile_coordinates_are_consistent(cached)
     ):
         return _apply_location_override_fields(cached, team_name)
 
@@ -4658,8 +4939,20 @@ def fetch_team_profile(team_name: str, country_hint: str | None = None) -> dict:
         wiki_data.get("title", ""),
     )
 
+    # Las coordenadas de Wikipedia tienen prioridad, pero solo si el artículo
+    # es de un club de fútbol y cae dentro del país del equipo. Buscar
+    # "BETIS" devolvía "Betis Church" y "ALAVES (F)" devolvía "Alaverdi,
+    # Armenia": artículos reales, coordenadas reales, equipo equivocado.
     latitude = wiki_data.get("latitude")
     longitude = wiki_data.get("longitude")
+    if latitude is not None and longitude is not None:
+        reference_country = (
+            geocoded.get("country_code") or resolved_country_hint or ""
+        )
+        if not _wikipedia_page_is_a_football_entity(wiki_data):
+            latitude = longitude = None
+        elif _coordinates_match_country(latitude, longitude, reference_country) is False:
+            latitude = longitude = None
     if latitude is None or longitude is None:
         latitude = geocoded.get("latitude")
         longitude = geocoded.get("longitude")
@@ -4680,6 +4973,7 @@ def fetch_team_profile(team_name: str, country_hint: str | None = None) -> dict:
         "cache_version": TEAM_PROFILE_CACHE_VERSION,
     }
     profile = _apply_location_override_fields(profile, team_name)
+    profile = _drop_inconsistent_coordinates(profile, team_name)
     _cache_set(TEAM_PROFILE_CACHE, team_name, profile)
     return profile
 
@@ -5200,6 +5494,7 @@ def _summarize_news_signals(items: list) -> dict:
         "press_count": 0,
         "squad_count": 0,
         "morale_count": 0,
+        "market_count": 0,
     }
     for item in items:
         haystack = f"{item.get('title', '')} {item.get('source', '')}".lower()
@@ -5219,6 +5514,8 @@ def _summarize_news_signals(items: list) -> dict:
             signals["squad_count"] += 1
         if any(keyword in haystack for keyword in MORALE_KEYWORDS):
             signals["morale_count"] += 1
+        if any(keyword in haystack for keyword in MARKET_KEYWORDS):
+            signals["market_count"] += 1
     return signals
 
 
@@ -6697,6 +6994,42 @@ def _fetch_sportsdb_league_history(league_key: str, league_id: str) -> list[dict
     return combined_rows
 
 
+def _row_division_code(row: dict) -> str:
+    """Codigo de division de una fila de football-data.
+
+    csv.DictReader conserva el BOM en la cabecera, y segun como se haya
+    decodificado el fichero llega como U+FEFF o como los tres bytes crudos
+    (0xEF 0xBB 0xBF) leidos en latin-1. Se ignora cualquier basura delante.
+    """
+    for key, value in (row or {}).items():
+        name = re.sub(r"^[^A-Za-z]+", "", str(key)).strip().lower()
+        if name == "div":
+            return str(value or "").strip().upper()
+    return ""
+
+
+def _rows_matching_division(rows: list[dict], league_code: str) -> list[dict]:
+    """Descarta filas que no pertenecen a la division pedida.
+
+    football-data ha llegado a servir contenido de otra liga bajo la URL de
+    una temporada aun no publicada (P1 portugues bajo mmz4281/2627/SP1.csv).
+    Fiarse de la URL hace que el resolutor de nombres empareje LEVANTE con
+    Gil Vicente y atribuya a un equipo el historial de otro: el pool de
+    candidatos tiene que contener solo clubes de la liga correcta.
+    """
+    expected = str(league_code or "").strip().upper()
+    if not expected:
+        return list(rows or [])
+    filtered = []
+    for row in rows or []:
+        division = _row_division_code(row)
+        # Sin columna Div no se puede verificar; se acepta (fuentes propias).
+        if division and division != expected:
+            continue
+        filtered.append(row)
+    return filtered
+
+
 def fetch_league_history(league_key: str) -> list[dict]:
     league_code = LEAGUE_FOOTBALL_DATA_CODES.get(league_key)
     if league_code:
@@ -6715,9 +7048,12 @@ def fetch_league_history(league_key: str) -> list[dict]:
                     parsed_rows = list(csv.DictReader(io.StringIO(csv_text)))
             except Exception:
                 parsed_rows = []
+            parsed_rows = _rows_matching_division(parsed_rows, league_code)
             _cache_set(HISTORY_CACHE, cache_key, parsed_rows)
             combined_rows.extend(parsed_rows)
-        return combined_rows
+        # Tambien sobre lo cacheado: neutraliza caches ya contaminadas sin
+        # obligar a borrar el fichero a mano.
+        return _rows_matching_division(combined_rows, league_code)
     new_league_code = LEAGUE_FOOTBALL_DATA_NEW_CODES.get(league_key)
     if new_league_code:
         cache_key = f"football-data-new:{league_key}:{new_league_code}"
@@ -7027,6 +7363,15 @@ def _same_future_fixture(left: dict, right: dict) -> bool:
 def _pressure_index(team_row: dict, relegation: dict, future_difficulty: dict) -> dict:
     if not team_row:
         return {}
+    # La presion se calcula sobre puesto y distancia al descenso. Si la tabla
+    # todavia no es fiable, _relegation_context lo marca y aqui no hay nada
+    # que medir: mejor no emitir indice que emitir uno inventado.
+    if isinstance(relegation, dict) and relegation.get("available") is False:
+        return {
+            "available": False,
+            "sample_regime": relegation.get("sample_regime"),
+            "reason": relegation.get("reason", ""),
+        }
     position = int(team_row.get("position", 0) or 0)
     points = int(team_row.get("points", 0) or 0)
     gap_to_drop = relegation.get("gap_to_drop_zone")
@@ -7113,14 +7458,25 @@ def _table_snapshot(rows: list[dict]) -> dict:
     return positions
 
 
-def _table_quality_snapshot(table: dict, home_team: str, away_team: str) -> dict:
+def _table_quality_snapshot(
+    table: dict,
+    home_team: str,
+    away_team: str,
+    league_key: str = "",
+) -> dict:
     played_values = sorted(
         int(row.get("played", 0) or 0)
         for row in table.values()
         if int(row.get("played", 0) or 0) > 0
     )
     if not played_values:
-        return {"valid": False, "reason": "tabla vacia"}
+        return {
+            "valid": False,
+            "reason": "tabla vacia",
+            "sample_regime": "preseason",
+            "positions_usable": False,
+            "objectives_usable": False,
+        }
     middle = len(played_values) // 2
     if len(played_values) % 2:
         median_played = float(played_values[middle])
@@ -7134,6 +7490,7 @@ def _table_quality_snapshot(table: dict, home_team: str, away_team: str) -> dict
         and home_played >= minimum_expected
         and away_played >= minimum_expected
     )
+    reliability = _table_reliability(table, league_key=league_key)
     return {
         "valid": valid,
         "teams": len(table),
@@ -7142,6 +7499,13 @@ def _table_quality_snapshot(table: dict, home_team: str, away_team: str) -> dict
         "home_played": home_played,
         "away_played": away_played,
         "reason": "" if valid else "muestra de tabla incompleta para uno o ambos equipos",
+        # `valid` solo mira si ambos equipos han jugado lo mismo que el resto;
+        # da por buena una tabla de una jornada. El regimen dice si esa tabla
+        # significa algo.
+        "sample_regime": reliability.get("regime"),
+        "positions_usable": reliability.get("positions_usable"),
+        "objectives_usable": reliability.get("objectives_usable"),
+        "sample_reason": reliability.get("reason", ""),
     }
 
 
@@ -7500,6 +7864,15 @@ def _relegation_context(league_key: str, table_snapshot: dict, team_name: str) -
     team_row = table_snapshot.get(team_name) or {}
     if not team_row:
         return {}
+    # Sin muestra, todo el mundo esta a 0 puntos del descenso y sale con
+    # urgencia alta. Es exactamente el ruido que no debe llegar al modelo.
+    reliability = _table_reliability(table_snapshot, league_key)
+    if not reliability.get("objectives_usable"):
+        return {
+            "available": False,
+            "sample_regime": reliability.get("regime"),
+            "reason": reliability.get("reason", ""),
+        }
     start_position = LEAGUE_RELEGATION_START.get(league_key)
     ordered = sorted(table_snapshot.values(), key=lambda item: item.get("position", 999))
     drop_row = next((row for row in ordered if row.get("position") == start_position), {})
@@ -7529,16 +7902,127 @@ def _ordered_table_rows(table_snapshot: dict) -> list[dict]:
     )
 
 
-def _league_total_rounds(table_snapshot: dict) -> int | None:
-    teams = len(table_snapshot or {})
+def _league_total_rounds(table_snapshot: dict, expected_teams: int | None = None) -> int | None:
+    teams = int(expected_teams or 0) or len(table_snapshot or {})
     if teams < 2:
         return None
     return max(1, (teams - 1) * 2)
 
 
-def _season_context_phase(kickoff_dt: datetime | None, table_snapshot: dict, team_row: dict) -> dict:
+def _expected_league_teams(league_key: str, table_snapshot: dict | None = None) -> int | None:
+    configured = LEAGUE_EXPECTED_TEAMS.get(_canonical_league_key(league_key))
+    if configured:
+        return int(configured)
+    relegation_start = LEAGUE_RELEGATION_START.get(_canonical_league_key(league_key))
+    if relegation_start:
+        # La linea de descenso siempre deja al menos dos plazas por debajo.
+        return int(relegation_start) + 2
+    teams = len(table_snapshot or {})
+    return teams or None
+
+
+def _matchday_count_label(count: float) -> str:
+    return f"{count:g} jornada" + ("s" if count != 1 else "")
+
+
+def _table_reliability(
+    table_snapshot: dict,
+    league_key: str = "",
+    expected_teams: int | None = None,
+) -> dict:
+    """Decide que se puede afirmar a partir de una clasificacion.
+
+    Devuelve tres regimenes:
+      - ``preseason``: la tabla no dice nada (arranque de liga o tabla partida).
+        No se emiten ni posiciones ni objetivos.
+      - ``early_sample``: la posicion ya es un hecho, pero las distancias en
+        puntos siguen siendo ruido. Posiciones si, narrativa de objetivos no.
+      - ``normal``: regimen completo.
+    """
+    rows = _ordered_table_rows(table_snapshot or {})
+    expected = expected_teams or _expected_league_teams(league_key, table_snapshot)
+    base = {
+        "regime": "preseason",
+        "positions_usable": False,
+        "objectives_usable": False,
+        "teams_ranked": len(rows),
+        "expected_teams": expected,
+        "median_played": 0.0,
+        "min_played": 0,
+        "points_spread": 0,
+        "reason": "",
+    }
+    if len(rows) < 6:
+        base["reason"] = "tabla incompleta o inexistente"
+        return base
+
+    played_values = sorted(int(_safe_int(row.get("played"), 0) or 0) for row in rows)
+    middle = len(played_values) // 2
+    if len(played_values) % 2:
+        median_played = float(played_values[middle])
+    else:
+        median_played = (played_values[middle - 1] + played_values[middle]) / 2.0
+    points_values = [int(_safe_int(row.get("points"), 0) or 0) for row in rows]
+    points_spread = max(points_values) - min(points_values)
+    coverage = (len(rows) / float(expected)) if expected else 1.0
+
+    base.update(
+        {
+            "median_played": round(median_played, 2),
+            "min_played": played_values[0],
+            "points_spread": points_spread,
+        }
+    )
+
+    if expected and coverage < TABLE_MIN_TEAM_COVERAGE:
+        base["reason"] = (
+            f"jornada partida: solo {len(rows)} de {expected} equipos figuran en la tabla"
+        )
+        return base
+    if median_played < TABLE_MIN_PLAYED_FOR_POSITIONS:
+        base["reason"] = (
+            f"arranque de temporada: {_matchday_count_label(median_played)} disputada"
+            + ("s" if median_played != 1 else "")
+        )
+        return base
+    if points_spread < TABLE_MIN_POINTS_SPREAD:
+        base["reason"] = (
+            f"la tabla no separa a nadie: {points_spread} pts entre el primero y el ultimo"
+        )
+        return base
+    if median_played < TABLE_MIN_PLAYED_FOR_OBJECTIVES:
+        base.update(
+            {
+                "regime": "early_sample",
+                "positions_usable": True,
+                "objectives_usable": False,
+                "reason": (
+                    f"muestra corta: {_matchday_count_label(median_played)}, las "
+                    "distancias en puntos todavia no son senal"
+                ),
+            }
+        )
+        return base
+
+    base.update(
+        {
+            "regime": "normal",
+            "positions_usable": True,
+            "objectives_usable": True,
+            "reason": "",
+        }
+    )
+    return base
+
+
+def _season_context_phase(
+    kickoff_dt: datetime | None,
+    table_snapshot: dict,
+    team_row: dict,
+    expected_teams: int | None = None,
+) -> dict:
     played = _safe_int(team_row.get("played"), None) if team_row else None
-    total_rounds = _league_total_rounds(table_snapshot)
+    total_rounds = _league_total_rounds(table_snapshot, expected_teams)
     progress = None
     source = ""
     if played is not None and total_rounds:
@@ -7788,12 +8272,30 @@ def _team_objective_context(
     table_snapshot: dict,
     team_name: str,
     kickoff_dt: datetime | None,
+    expected_teams: int | None = None,
 ) -> dict:
     team_row = table_snapshot.get(team_name) or {}
     if not team_row:
         return {}
+    # Segunda barrera, para las llamadas directas (tests y usos futuros) que no
+    # pasan por _season_competitive_context.
+    reliability = _table_reliability(
+        table_snapshot,
+        league_key=league_key,
+        expected_teams=expected_teams,
+    )
+    if not reliability.get("objectives_usable"):
+        return {
+            "season_context_phase": _season_context_phase(
+                kickoff_dt, table_snapshot, team_row, reliability.get("expected_teams")
+            ),
+            "objective_candidates": [],
+            "table_reliability": reliability,
+        }
     ordered_rows = _ordered_table_rows(table_snapshot)
-    phase = _season_context_phase(kickoff_dt, table_snapshot, team_row)
+    phase = _season_context_phase(
+        kickoff_dt, table_snapshot, team_row, reliability.get("expected_teams")
+    )
     phase_key = phase.get("key", "")
     competitive_lines = _competitive_lines_for_league(league_key, table_snapshot)
     candidates = [
@@ -7907,17 +8409,265 @@ def _competitive_stakes_label(home_objective: dict, away_objective: dict, rivalr
     return "; ".join(pieces[:2]) or "contexto competitivo bajo o no calculable"
 
 
+def _previous_season_code(league_key: str, kickoff_dt: datetime | None) -> str:
+    current = kickoff_dt or datetime.now(timezone.utc)
+    if _canonical_league_key(league_key) in CALENDAR_YEAR_LEAGUES:
+        year = current.year - 1
+        return f"{year % 100:02d}{(year + 1) % 100:02d}"
+    start_year = (current.year if current.month >= 7 else current.year - 1) - 1
+    return f"{start_year % 100:02d}{(start_year + 1) % 100:02d}"
+
+
+def _season_code_label(season_code: str) -> str:
+    code = str(season_code or "").strip()
+    if len(code) != 4 or not code.isdigit():
+        return code
+    return f"{code[:2]}/{code[2:]}"
+
+
+def _final_table_for_season(league_key: str, season_code: str) -> dict:
+    """Clasificacion final de una temporada cerrada, cacheada por liga."""
+    if not league_key or not season_code:
+        return {}
+    cache_key = f"final-table:{_canonical_league_key(league_key)}:{season_code}"
+    cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
+    if cached is not None:
+        return cached
+    try:
+        rows = _season_rows(fetch_league_history(league_key), season_code)
+        table = _table_snapshot(rows) if rows else {}
+    except Exception:
+        table = {}
+    _cache_set(HISTORY_CACHE, cache_key, table)
+    return table
+
+
+def _lookup_table_row(table: dict, team_name: str) -> dict:
+    if not table or not team_name:
+        return {}
+    direct = table.get(team_name)
+    if direct:
+        return direct
+    best_name = ""
+    best_score = 0.0
+    for candidate in table:
+        score = _team_similarity_score(team_name, candidate)
+        if score > best_score:
+            best_name, best_score = candidate, score
+    if best_name and best_score >= 0.80:
+        return table.get(best_name) or {}
+    return {}
+
+
+def _team_season_preview(
+    league_key: str,
+    team_name: str,
+    own_final_table: dict,
+    season_code: str,
+) -> dict:
+    """Que se sabe de un equipo cuando la clasificacion actual no dice nada.
+
+    La temporada pasada y el hecho de llegar ascendido o descendido son, en
+    jornada 1, la mejor informacion disponible: no son un sustituto pobre de
+    la clasificacion, son directamente el dato relevante.
+    """
+    label_season = _season_code_label(season_code)
+    preview = {
+        "team": team_name,
+        "status": "desconocido",
+        "last_season_code": season_code,
+        "summary": "",
+    }
+    row = _lookup_table_row(own_final_table, team_name)
+    if row:
+        position = _safe_int(row.get("position"), None)
+        points = _safe_int(row.get("points"), None)
+        played = _safe_int(row.get("played"), None)
+        preview.update(
+            {
+                "status": "continuidad",
+                "last_season_league": _league_display_name(league_key),
+                "last_season_position": position,
+                "last_season_points": points,
+                "last_season_played": played,
+                "last_season_goal_diff": _safe_int(row.get("goal_diff"), None),
+                "summary": (
+                    f"{position}o con {points} pts en "
+                    f"{_league_display_name(league_key)} {label_season}"
+                    if position is not None and points is not None
+                    else ""
+                ),
+            }
+        )
+        return preview
+
+    siblings = LEAGUE_TIER_SIBLINGS.get(_canonical_league_key(league_key)) or {}
+    for direction, status in (("below", "ascendido"), ("above", "descendido")):
+        sibling_key = siblings.get(direction)
+        if not sibling_key:
+            continue
+        sibling_table = _final_table_for_season(sibling_key, season_code)
+        sibling_row = _lookup_table_row(sibling_table, team_name)
+        if not sibling_row:
+            continue
+        position = _safe_int(sibling_row.get("position"), None)
+        points = _safe_int(sibling_row.get("points"), None)
+        preview.update(
+            {
+                "status": status,
+                "last_season_league": _league_display_name(sibling_key),
+                "last_season_position": position,
+                "last_season_points": points,
+                "last_season_played": _safe_int(sibling_row.get("played"), None),
+                "last_season_goal_diff": _safe_int(sibling_row.get("goal_diff"), None),
+                "summary": (
+                    f"{status}: {position}o con {points} pts en "
+                    f"{_league_display_name(sibling_key)} {label_season}"
+                    if position is not None and points is not None
+                    else f"{status} desde {_league_display_name(sibling_key)}"
+                ),
+            }
+        )
+        return preview
+
+    preview["summary"] = f"sin registro en {label_season}"
+    return preview
+
+
+def _transfer_window_state(kickoff_dt: datetime | None) -> dict:
+    """Estado aproximado de la ventana de fichajes.
+
+    Es un hecho de calendario, no una afirmacion sobre ningun club: dice que
+    el mercado sigue abierto, no que a un equipo le falten piezas. Quien
+    aporta eso es el contador de noticias de mercado del propio equipo.
+    """
+    current = kickoff_dt or datetime.now(timezone.utc)
+    if current.month in {7, 8}:
+        return {
+            "open": True,
+            "phase": "verano",
+            "note": (
+                "ventana de fichajes de verano abierta (aprox. julio-agosto): "
+                "las plantillas pueden no estar cerradas"
+            ),
+        }
+    if current.month == 1:
+        return {
+            "open": True,
+            "phase": "invierno",
+            "note": "ventana de fichajes de invierno abierta (enero)",
+        }
+    return {"open": False, "phase": "cerrado", "note": ""}
+
+
+def _season_preview_context(
+    league_key: str,
+    home_team: str,
+    away_team: str,
+    kickoff_dt: datetime | None,
+    reliability: dict,
+) -> dict:
+    """Contexto sustitutivo cuando la clasificacion no es utilizable."""
+    season_code = _previous_season_code(league_key, kickoff_dt)
+    try:
+        own_final_table = _final_table_for_season(league_key, season_code)
+    except Exception:
+        own_final_table = {}
+    home = _team_season_preview(league_key, home_team, own_final_table, season_code)
+    away = _team_season_preview(league_key, away_team, own_final_table, season_code)
+
+    headline_parts = []
+    for side, preview in (("local", home), ("visitante", away)):
+        summary = str(preview.get("summary") or "").strip()
+        if summary:
+            headline_parts.append(f"{side} {summary}")
+    newcomers = [
+        preview.get("team")
+        for preview in (home, away)
+        if preview.get("status") in {"ascendido", "descendido"}
+    ]
+    return {
+        "active": True,
+        "regime": reliability.get("regime", "preseason"),
+        "reason": reliability.get("reason", ""),
+        "matchdays_played": reliability.get("median_played", 0),
+        "reference_season": season_code,
+        "reference_season_label": _season_code_label(season_code),
+        "home": home,
+        "away": away,
+        "has_newcomer": bool(newcomers),
+        "headline": "; ".join(headline_parts),
+        "transfer_window": _transfer_window_state(kickoff_dt),
+        "guidance": (
+            "Sin clasificacion util. Apoyate en cuotas, cierre de plantilla, "
+            "cambios de entrenador, historico del enfrentamiento y factor campo."
+        ),
+    }
+
+
 def _season_competitive_context(
     league_key: str,
     table_snapshot: dict,
     home_team: str,
     away_team: str,
     kickoff_dt: datetime | None,
+    expected_teams: int | None = None,
 ) -> dict:
-    home_objective = _team_objective_context(league_key, table_snapshot, home_team, kickoff_dt)
-    away_objective = _team_objective_context(league_key, table_snapshot, away_team, kickoff_dt)
+    reliability = _table_reliability(
+        table_snapshot,
+        league_key=league_key,
+        expected_teams=expected_teams,
+    )
+    expected = reliability.get("expected_teams")
     home_row = table_snapshot.get(home_team) or {}
     away_row = table_snapshot.get(away_team) or {}
+
+    # Puerta unica: con la tabla sin muestra no se emite ningun objetivo, ni
+    # duelo directo, ni etiqueta de contexto competitivo. Los tres call sites
+    # de esta funcion quedan cubiertos aqui.
+    if not reliability.get("objectives_usable"):
+        phase = _season_context_phase(
+            kickoff_dt,
+            table_snapshot,
+            home_row or away_row,
+            expected,
+        )
+        preview = _season_preview_context(
+            league_key,
+            home_team,
+            away_team,
+            kickoff_dt,
+            reliability,
+        )
+        matchdays = float(reliability.get("median_played") or 0)
+        if reliability.get("regime") == "early_sample":
+            label = (
+                f"muestra corta ({_matchday_count_label(matchdays)}): la posicion es "
+                "un hecho, las distancias en puntos todavia no son senal; "
+                "no hay objetivo competitivo que perseguir"
+            )
+        else:
+            label = (
+                "sin clasificacion util: "
+                f"{reliability.get('reason') or 'sin muestra'}. "
+                "No hay ni lider, ni descenso, ni puestos europeos que perseguir"
+            )
+        return {
+            "season_context_phase": phase,
+            "home_objective": {},
+            "away_objective": {},
+            "direct_rivalry": {"is_direct_rivalry": False, "direct_rivalry_index": 0},
+            "competitive_stakes_label": label,
+            "table_reliability": reliability,
+            "season_preview": preview,
+        }
+
+    home_objective = _team_objective_context(
+        league_key, table_snapshot, home_team, kickoff_dt, expected
+    )
+    away_objective = _team_objective_context(
+        league_key, table_snapshot, away_team, kickoff_dt, expected
+    )
     rivalry = _direct_rivalry_context(home_objective, away_objective, home_row, away_row)
     phase = home_objective.get("season_context_phase") or away_objective.get("season_context_phase") or {}
     label = _competitive_stakes_label(home_objective, away_objective, rivalry)
@@ -7927,6 +8677,8 @@ def _season_competitive_context(
         "away_objective": away_objective,
         "direct_rivalry": rivalry,
         "competitive_stakes_label": label,
+        "table_reliability": reliability,
+        "season_preview": {"active": False},
     }
 
 
@@ -8039,6 +8791,58 @@ def _haversine_km(lat1, lon1, lat2, lon2) -> float | None:
     )
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     return round(earth_radius_km * c, 1)
+
+
+def _build_travel_context(
+    home_profile: dict,
+    away_profile: dict,
+    league_key: str = "",
+    league_country_label: str = "",
+) -> dict:
+    """Contexto de viaje con techo de plausibilidad.
+
+    Última barrera: aunque una coordenada mala se cuele, un partido de liga
+    doméstica no puede tener un viaje de 11.421 km. Si la distancia es
+    imposible no se publica ninguna. Preferimos un dato ausente a uno falso
+    que acabe escrito en el PDF del usuario como "viaje 11421 km".
+    """
+    home_profile = home_profile or {}
+    away_profile = away_profile or {}
+    distance_km = _haversine_km(
+        home_profile.get("latitude"),
+        home_profile.get("longitude"),
+        away_profile.get("latitude"),
+        away_profile.get("longitude"),
+    )
+    home_code = str(home_profile.get("country_code") or "").strip().upper()
+    away_code = str(away_profile.get("country_code") or "").strip().upper()
+    international = bool(home_code and away_code and home_code != away_code)
+
+    rejected_reason = ""
+    if distance_km is not None and not international:
+        country = (
+            home_code
+            or away_code
+            or str(LEAGUE_COUNTRY_HINTS.get(_canonical_league_key(league_key)) or "").upper()
+        )
+        ceiling = COUNTRY_MAX_DOMESTIC_TRIP_KM.get(country, DEFAULT_MAX_DOMESTIC_TRIP_KM)
+        if distance_km > ceiling:
+            rejected_reason = (
+                f"{distance_km:g} km es imposible dentro de {country or 'el pais'} "
+                f"(maximo creible {ceiling} km): coordenadas no fiables"
+            )
+            distance_km = None
+
+    context = {
+        "distance_km": distance_km,
+        "distance_bucket": _distance_bucket(distance_km),
+        "home_country": home_profile.get("country", "") or league_country_label,
+        "away_country": away_profile.get("country", "") or league_country_label,
+        "international_trip": international,
+    }
+    if rejected_reason:
+        context["distance_rejected_reason"] = rejected_reason
+    return context
 
 
 def _distance_bucket(distance_km: float | None) -> str:
@@ -8380,6 +9184,9 @@ def _referee_analysis_summary(referee_analysis: dict) -> str:
 
 
 def _competitive_context_line(team_name: str, table: dict, relegation: dict, objective: dict | None = None) -> str:
+    if isinstance(relegation, dict) and relegation.get("available") is False:
+        reason = str(relegation.get("reason") or "clasificacion sin muestra suficiente")
+        return f"{team_name}: sin lectura de clasificacion ({reason})."
     position = table.get("position", "-")
     points = table.get("points", "-")
     gap_to_drop = relegation.get("gap_to_drop_zone")
@@ -8523,24 +9330,14 @@ def _enrich_quiniela_match(match: dict) -> None:
     _cache_set(TEAM_PROFILE_CACHE, match["local"], home_profile)
     _cache_set(TEAM_PROFILE_CACHE, match["visitante"], away_profile)
 
-    travel_distance_km = _haversine_km(
-        home_profile.get("latitude"),
-        home_profile.get("longitude"),
-        away_profile.get("latitude"),
-        away_profile.get("longitude"),
-    )
     league_country_label = COUNTRY_LABELS.get(league_country_hint or "", "")
-    match["travel_context"] = {
-        "distance_km": travel_distance_km,
-        "distance_bucket": _distance_bucket(travel_distance_km),
-        "home_country": home_profile.get("country", "") or league_country_label,
-        "away_country": away_profile.get("country", "") or league_country_label,
-        "international_trip": bool(
-            home_profile.get("country_code")
-            and away_profile.get("country_code")
-            and home_profile.get("country_code") != away_profile.get("country_code")
-        ),
-    }
+    match["travel_context"] = _build_travel_context(
+        home_profile,
+        away_profile,
+        match.get("league", ""),
+        league_country_label,
+    )
+    travel_distance_km = match["travel_context"].get("distance_km")
     weather = fetch_weather_context(venue_profile, match.get("kickoff", ""))
     match["weather_context"] = weather
     match["match_signals"]["weather_risk"] = _weather_risk(weather)
@@ -8636,6 +9433,12 @@ def _enrich_quiniela_match(match: dict) -> None:
     competition_context["direct_rivalry"] = season_competitive_context.get("direct_rivalry", {})
     competition_context["competitive_stakes_label"] = season_competitive_context.get(
         "competitive_stakes_label", ""
+    )
+    competition_context["table_reliability"] = season_competitive_context.get(
+        "table_reliability", {}
+    )
+    competition_context["season_preview"] = season_competitive_context.get(
+        "season_preview", {}
     )
     competition_context["home_rotation_context"] = _rotation_context_from_upcoming(
         match["local"],
@@ -8834,6 +9637,11 @@ def _describe_form(form: str) -> str:
     total = wins + form.count("D") + losses
     if total == 0:
         return "sin datos de forma reciente"
+    # Uno o dos partidos no son una dinamica. En jornada 1 la "racha" es el
+    # unico partido jugado, y describirla como trayectoria es inventar.
+    if total < 3:
+        plural = "s" if total > 1 else ""
+        return f"muestra insuficiente ({total} partido{plural} de la temporada)"
     if wins >= 3:
         return "Buena dinámica reciente"
     if losses >= 3:
@@ -10227,12 +11035,8 @@ def _bootstrap_quiniela_placeholder(
         ((match.get("away_team_context") or {}).get("focus_news") or {}).get("signals", {}),
     )
 
-    travel_distance_km = _haversine_km(
-        home_profile.get("latitude"),
-        home_profile.get("longitude"),
-        away_profile.get("latitude"),
-        away_profile.get("longitude"),
-    )
+    travel_context = _build_travel_context(home_profile, away_profile, league_key)
+    travel_distance_km = travel_context.get("distance_km")
     weather = fetch_weather_context(home_profile, match.get("kickoff", ""))
     home_fatigue_index = _fatigue_index(home_rest_days, home_recent_matches, 0.0)
     away_fatigue_index = _fatigue_index(away_rest_days, away_recent_matches, travel_distance_km)
@@ -10252,17 +11056,7 @@ def _bootstrap_quiniela_placeholder(
             match.get("official_quiniela_percentages") or {}
         ).copy()
         market_context["source"] = "lae_official"
-    match["travel_context"] = {
-        "distance_km": travel_distance_km,
-        "distance_bucket": _distance_bucket(travel_distance_km),
-        "home_country": home_profile.get("country", ""),
-        "away_country": away_profile.get("country", ""),
-        "international_trip": bool(
-            home_profile.get("country_code")
-            and away_profile.get("country_code")
-            and home_profile.get("country_code") != away_profile.get("country_code")
-        ),
-    }
+    match["travel_context"] = travel_context
     match["weather_context"] = weather
     match["history_context"] = {
         "supported": bool(league_history),
@@ -10271,6 +11065,7 @@ def _bootstrap_quiniela_placeholder(
             current_table_snapshot,
             home_resolved_name,
             away_resolved_name,
+            league_key,
         ),
         "home": home_history,
         "away": away_history,
@@ -10285,6 +11080,8 @@ def _bootstrap_quiniela_placeholder(
         "away_objective": season_competitive_context.get("away_objective", {}),
         "direct_rivalry": season_competitive_context.get("direct_rivalry", {}),
         "competitive_stakes_label": season_competitive_context.get("competitive_stakes_label", ""),
+        "table_reliability": season_competitive_context.get("table_reliability", {}),
+        "season_preview": season_competitive_context.get("season_preview", {}),
         "home_rotation_context": home_rotation_context,
         "away_rotation_context": away_rotation_context,
         "home_upcoming": home_upcoming,
@@ -10676,12 +11473,8 @@ def build_snapshot(raw_matches: list) -> dict:
             away_news.get("signals", {}),
         )
 
-        travel_distance_km = _haversine_km(
-            home_profile.get("latitude"),
-            home_profile.get("longitude"),
-            away_profile.get("latitude"),
-            away_profile.get("longitude"),
-        )
+        travel_context = _build_travel_context(home_profile, away_profile, league)
+        travel_distance_km = travel_context.get("distance_km")
         weather = fetch_weather_context(home_profile, kickoff)
         home_fatigue_index = _fatigue_index(home_rest_days, home_recent_matches, 0.0)
         away_fatigue_index = _fatigue_index(away_rest_days, away_recent_matches, travel_distance_km)
@@ -10702,17 +11495,7 @@ def build_snapshot(raw_matches: list) -> dict:
                 "bookmaker": bookmaker,
                 "odds": odds_block,
                 "market_context": _odds_probabilities(odds_block),
-                "travel_context": {
-                    "distance_km": travel_distance_km,
-                    "distance_bucket": _distance_bucket(travel_distance_km),
-                    "home_country": home_profile.get("country", ""),
-                    "away_country": away_profile.get("country", ""),
-                    "international_trip": bool(
-                        home_profile.get("country_code")
-                        and away_profile.get("country_code")
-                        and home_profile.get("country_code") != away_profile.get("country_code")
-                    ),
-                },
+                "travel_context": travel_context,
                 "weather_context": weather,
                 "history_context": {
                     "supported": bool(league_history),
@@ -10721,6 +11504,7 @@ def build_snapshot(raw_matches: list) -> dict:
                         current_table_snapshot,
                         home_resolved_name,
                         away_resolved_name,
+                        league,
                     ),
                     "home": home_history,
                     "away": away_history,
@@ -10735,6 +11519,8 @@ def build_snapshot(raw_matches: list) -> dict:
                     "away_objective": season_competitive_context.get("away_objective", {}),
                     "direct_rivalry": season_competitive_context.get("direct_rivalry", {}),
                     "competitive_stakes_label": season_competitive_context.get("competitive_stakes_label", ""),
+                    "table_reliability": season_competitive_context.get("table_reliability", {}),
+                    "season_preview": season_competitive_context.get("season_preview", {}),
                     "home_rotation_context": home_rotation_context,
                     "away_rotation_context": away_rotation_context,
                     "home_upcoming": home_upcoming,
