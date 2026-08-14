@@ -319,6 +319,21 @@ class TravelDistanceTests(unittest.TestCase):
 
 
 class SeasonTransitionNewsTests(unittest.TestCase):
+    def test_public_monitor_keeps_transition_coverage_counters(self):
+        payload = worker._build_monitor_status_payload(
+            {
+                "coverage": {
+                    "focus_matches": 15,
+                    "focus_season_transition_covered": 15,
+                    "focus_season_transition_evidence": 416,
+                    "focus_resolved_leagues": 15,
+                }
+            }
+        )
+        self.assertEqual(payload["coverage"]["focus_season_transition_covered"], 15)
+        self.assertEqual(payload["coverage"]["focus_season_transition_evidence"], 416)
+        self.assertEqual(payload["coverage"]["focus_resolved_leagues"], 15)
+
     def test_transfer_and_preseason_are_predictive_signals(self):
         self.assertEqual(
             worker._season_transition_category(

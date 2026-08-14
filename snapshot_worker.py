@@ -4096,6 +4096,17 @@ def _build_monitor_status_payload(status_payload: dict) -> dict:
             "fresh_headlines": coverage.get("fresh_headlines"),
             "structured_focus_matches": coverage.get("structured_focus_matches"),
             "structured_referees": coverage.get("structured_referees"),
+            "focus_valid_tables": coverage.get("focus_valid_tables"),
+            "focus_rosters_checked": coverage.get("focus_rosters_checked"),
+            "focus_rosters_checked_partial": coverage.get("focus_rosters_checked_partial"),
+            "focus_referees_confirmed": coverage.get("focus_referees_confirmed"),
+            "focus_season_transition_covered": coverage.get(
+                "focus_season_transition_covered"
+            ),
+            "focus_season_transition_evidence": coverage.get(
+                "focus_season_transition_evidence"
+            ),
+            "focus_resolved_leagues": coverage.get("focus_resolved_leagues"),
         },
         "structured_db_summary": {
             "teams": structured.get("teams"),
