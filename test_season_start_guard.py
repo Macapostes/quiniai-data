@@ -142,6 +142,16 @@ class SeasonStartGuardTests(unittest.TestCase):
         )
         self.assertEqual(phase["total_rounds"], 38)
 
+    def test_sportsdb_can_replace_an_unresolved_spanish_league(self):
+        match = {"league": "league_unresolved", "league_source": "quiniela-placeholder"}
+        worker._apply_dynamic_league_metadata(
+            match,
+            {"idLeague": "4335", "strLeague": "Spanish La Liga"},
+        )
+        self.assertEqual(match["league"], LALIGA)
+        self.assertEqual(match["league_name"], "LaLiga")
+        self.assertEqual(match["league_source"], "TheSportsDB")
+
 
 class FormSampleTests(unittest.TestCase):
     def test_a_single_match_is_not_a_streak(self):
@@ -305,6 +315,80 @@ class TravelDistanceTests(unittest.TestCase):
         contexto = worker._build_travel_context(self.LEVANTE, {}, "soccer_spain_la_liga")
         self.assertIsNone(contexto["distance_km"])
         self.assertEqual(contexto["distance_bucket"], "unknown")
+
+
+class SeasonTransitionNewsTests(unittest.TestCase):
+    def test_transfer_and_preseason_are_predictive_signals(self):
+        self.assertEqual(
+            worker._season_transition_category(
+                "El Racing de Santander confirma el fichaje de un delantero"
+            ),
+            "signing",
+        )
+        self.assertEqual(
+            worker._season_transition_category(
+                "El Villarreal completa su pretemporada con un amistoso exigente"
+            ),
+            "preseason",
+        )
+
+    def test_departure_is_not_misclassified_as_a_signing(self):
+        self.assertEqual(
+            worker._season_transition_category(
+                "El Racing confirma la salida de su capitan tras ser traspasado"
+            ),
+            "departure",
+        )
+
+    def test_confirmed_transfer_is_separated_from_a_rumour(self):
+        self.assertEqual(
+            worker._season_transition_fact_status(
+                "El CE Sabadell anuncia el fichaje de Yanis Rahmani"
+            ),
+            "confirmed",
+        )
+        self.assertEqual(
+            worker._season_transition_fact_status(
+                "El Barcelona quiere el fichaje de un delantero del Villarreal"
+            ),
+            "rumour",
+        )
+
+    def test_racing_abbreviation_uses_the_full_news_identity(self):
+        score = worker._team_relevance_score(
+            "El Racing de Santander anuncia un nuevo refuerzo", "RACING S."
+        )
+        self.assertGreaterEqual(score, 0.9)
+
+    def test_transition_context_keeps_previous_season_and_sourced_facts(self):
+        item = {
+            "title": "El Racing de Santander confirma un fichaje internacional",
+            "source": "Cadena SER",
+            "published_at": "2026-08-10T10:00:00+00:00",
+            "link": "https://example.test/racing",
+            "category": "signing",
+            "fact_status": "confirmed",
+            "evidence_quality": "high",
+        }
+        context = worker._build_team_season_transition(
+            "Racing de Santander",
+            {
+                "status": "ascendido",
+                "last_season_league": "Segunda Division",
+                "last_season_position": 2,
+                "last_season_points": 77,
+                "summary": "ascendido: 2o con 77 pts en Segunda Division 25/26",
+            },
+            {"items": [item], "coverage": "partial", "lookback_days": 120},
+        )
+        briefing = worker._transition_briefing_side(context)
+        self.assertIn("temporada anterior", context["summary"])
+        self.assertEqual(briefing["temporada_anterior"]["situacion"], "ascendido")
+        self.assertEqual(briefing["altas_y_refuerzos"][0]["fuente"], "Cadena SER")
+
+    def test_no_news_does_not_claim_the_squad_is_unchanged(self):
+        context = worker._build_team_season_transition("Equipo", {}, {"items": []})
+        self.assertIn("no significa", context["summary"])
 
 
 if __name__ == "__main__":

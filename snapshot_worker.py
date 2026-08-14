@@ -90,6 +90,14 @@ HISTORY_CACHE_TTL_SECONDS = int(
 )
 TEAM_NEWS_MAX_AGE_DAYS = int(os.getenv("QUINIAI_TEAM_NEWS_MAX_AGE_DAYS", "10"))
 MATCH_NEWS_MAX_AGE_DAYS = int(os.getenv("QUINIAI_MATCH_NEWS_MAX_AGE_DAYS", "7"))
+SEASON_TRANSITION_NEWS_MAX_AGE_DAYS = max(
+    30,
+    int(os.getenv("QUINIAI_SEASON_TRANSITION_NEWS_MAX_AGE_DAYS", "120")),
+)
+SEASON_TRANSITION_NEWS_ITEMS = max(
+    6,
+    int(os.getenv("QUINIAI_SEASON_TRANSITION_NEWS_ITEMS", "14")),
+)
 COMPETITION_NEWS_MAX_AGE_DAYS = int(
     os.getenv("QUINIAI_COMPETITION_NEWS_MAX_AGE_DAYS", "14")
 )
@@ -489,6 +497,14 @@ TEAM_NAME_ALIASES = {
     "at madrid": "Atlético Madrid",
     "ath club": "Athletic Bilbao",
     "ath bilbao": "Athletic Bilbao",
+    "racing s": "Racing de Santander",
+    "racing santander": "Racing de Santander",
+    "sporting gijon": "Sporting de Gijon",
+    "sporting gijÃ³n": "Sporting de Gijon",
+    "sabadell fc": "CE Sabadell",
+    "celta fortuna": "Celta Fortuna",
+    "cadiz": "Cadiz CF",
+    "cadiz cf": "Cadiz CF",
     "r betis": "Real Betis",
     "real betis": "Real Betis",
     "r zaragoza": "Real Zaragoza",
@@ -670,6 +686,31 @@ TEAM_NEWS_QUERY_HINTS = {
     "wrexham": ['"Wrexham AFC"', '"Wrexham" football'],
     "real oviedo": ['"Real Oviedo"', '"Oviedo" futbol'],
     "elche cf": ['"Elche CF"', '"Elche" futbol'],
+    "alaves": ['"Deportivo Alaves"', '"Alaves" futbol'],
+    "getafe": ['"Getafe CF"', '"Getafe" futbol'],
+    "rayo vallecano": ['"Rayo Vallecano"', '"Rayo" futbol'],
+    "racing s": ['"Racing de Santander"', '"Real Racing Club" Santander'],
+    "racing de santander": ['"Racing de Santander"', '"Real Racing Club" Santander'],
+    "villarreal": ['"Villarreal CF"', '"Villarreal" futbol'],
+    "celta vigo": ['"RC Celta"', '"Celta de Vigo"'],
+    "ca osasuna": ['"CA Osasuna"', '"Osasuna" futbol'],
+    "andorra cf": ['"FC Andorra" futbol', '"Andorra CF" futbol'],
+    "ad ceuta fc": ['"AD Ceuta" futbol', '"Ceuta FC" futbol'],
+    "cadiz": ['"Cadiz CF"', '"Cadiz" futbol'],
+    "cadiz cf": ['"Cadiz CF"', '"Cadiz" futbol'],
+    "celta fortuna": ['"Celta Fortuna"', '"Celta B" futbol'],
+    "granada cf": ['"Granada CF"', '"Granada" futbol'],
+    "sd eibar": ['"SD Eibar"', '"Eibar" futbol'],
+    "tenerife": ['"CD Tenerife"', '"Tenerife" futbol'],
+    "burgos cf": ['"Burgos CF"', '"Burgos" futbol'],
+    "cordoba": ['"Cordoba CF"', '"Cordoba" futbol'],
+    "leganes": ['"CD Leganes"', '"Leganes" futbol'],
+    "las palmas": ['"UD Las Palmas"', '"Las Palmas" futbol'],
+    "albacete": ['"Albacete Balompie"', '"Albacete" futbol'],
+    "sporting gijon": ['"Sporting de Gijon"', '"Real Sporting" Gijon'],
+    "sabadell fc": ['"CE Sabadell"', '"Sabadell" futbol'],
+    "deportivo la coruna": ['"Deportivo de La Coruna"', '"RC Deportivo"'],
+    "real valladolid cf": ['"Real Valladolid"', '"Valladolid" futbol'],
 }
 
 TEAM_LOCAL_MEDIA_HINTS = {
@@ -912,6 +953,64 @@ MARKET_KEYWORDS = [
     "klar for",
     "värvning",
     "nyförvärv",
+]
+DEPARTURE_KEYWORDS = [
+    "salida",
+    "salidas",
+    "traspasado",
+    "traspasada",
+    "vendido",
+    "vendida",
+    "rescinde",
+    "rescision",
+    "fin de contrato",
+    "deja el club",
+    "abandona el club",
+    "departure",
+    "departures",
+    "leaves",
+    "left the club",
+    "sold",
+    "loaned out",
+]
+COACH_CHANGE_KEYWORDS = [
+    "nuevo entrenador",
+    "nuevo tecnico",
+    "nuevo técnico",
+    "cambio de entrenador",
+    "destituido",
+    "destituye",
+    "cesado",
+    "renueva al entrenador",
+    "new coach",
+    "new manager",
+    "appointed manager",
+    "sacked",
+]
+PRESEASON_KEYWORDS = [
+    "pretemporada",
+    "pre-season",
+    "preseason",
+    "amistoso",
+    "amistosos",
+    "friendly",
+    "friendlies",
+    "gira de verano",
+    "stage de pretemporada",
+]
+PROMOTION_HISTORY_KEYWORDS = [
+    "ascenso",
+    "ascendido",
+    "ascendida",
+    "campeon de segunda",
+    "campeón de segunda",
+    "playoff de ascenso",
+    "promoted",
+    "promotion",
+    "relegado",
+    "relegada",
+    "descendido",
+    "descendida",
 ]
 MORALE_KEYWORDS = [
     "crisis",
@@ -1631,7 +1730,7 @@ def _headline_recent_enough(item: dict, max_age_days: int) -> bool:
 
 def _team_relevance_score(title: str, team_name: str) -> float:
     title_norm = _normalize_team_name(title)
-    team_norm = _normalize_team_name(team_name)
+    team_norm = _normalize_team_name(_canonical_team_name(team_name))
     if not title_norm or not team_norm:
         return 0.0
     title_tokens = set(title_norm.split())
@@ -1795,6 +1894,13 @@ def _looks_like_hard_signal_news(title: str, source: str = "") -> bool:
         "banned",
         "sanctioned",
     ]
+    hard_tokens.extend(
+        MARKET_KEYWORDS
+        + DEPARTURE_KEYWORDS
+        + COACH_CHANGE_KEYWORDS
+        + PRESEASON_KEYWORDS
+        + PROMOTION_HISTORY_KEYWORDS
+    )
     return _contains_any(lowered, hard_tokens)
 
 
@@ -1903,7 +2009,127 @@ def _signal_strength_score(title: str, source: str = "") -> float:
         score += 1.7
     if _contains_any(haystack, MORALE_KEYWORDS):
         score += 1.8
+    if _contains_any(haystack, MARKET_KEYWORDS + DEPARTURE_KEYWORDS):
+        score += 2.5
+    if _contains_any(haystack, COACH_CHANGE_KEYWORDS):
+        score += 2.7
+    if _contains_any(haystack, PRESEASON_KEYWORDS):
+        score += 1.3
+    if _contains_any(haystack, PROMOTION_HISTORY_KEYWORDS):
+        score += 1.7
     return round(score, 2)
+
+
+def _season_transition_category(title: str, source: str = "") -> str:
+    """Clasifica hechos que sustituyen a la tabla al inicio de temporada."""
+    haystack = f"{title} {source}"
+    normalized = _normalize_ascii(haystack).lower()
+    if "plantilla" in normalized and any(
+        token in normalized for token in ["fichaje", "bajas", "figuras", "claves"]
+    ):
+        return "squad"
+    if _contains_injury_signal(title) or _contains_any(haystack, DISCIPLINE_KEYWORDS):
+        return "availability"
+    if _contains_any(haystack, DEPARTURE_KEYWORDS):
+        return "departure"
+    if _contains_any(haystack, COACH_CHANGE_KEYWORDS):
+        return "coach"
+    if _contains_any(haystack, MARKET_KEYWORDS):
+        return "signing"
+    if _contains_any(haystack, PRESEASON_KEYWORDS):
+        return "preseason"
+    if _contains_any(haystack, PROMOTION_HISTORY_KEYWORDS):
+        return "promotion_history"
+    if _contains_any(haystack, SQUAD_KEYWORDS):
+        return "squad"
+    if _contains_any(haystack, MORALE_KEYWORDS):
+        return "morale"
+    return ""
+
+
+def _season_transition_fact_status(title: str, source: str = "") -> str:
+    normalized = _normalize_ascii(f"{title} {source}").lower()
+    rumor_tokens = [
+        "quiere fichar",
+        "quiere el fichaje",
+        "interes por",
+        "interesa al",
+        "interesa en",
+        "muestra interes",
+        "esta interesado",
+        "podria fichar",
+        "podria salir",
+        "alternativa al fichaje",
+        "cerca de fichar",
+        "negocia",
+        "pretende",
+        "opcion para",
+        "objetivo de",
+        "rumor",
+        "would like to sign",
+        "linked with",
+        "could join",
+        "in talks",
+    ]
+    confirmed_tokens = [
+        "confirma",
+        "confirmado",
+        "anuncia",
+        "oficial",
+        "firma por",
+        "ya es del",
+        "ya es nuevo jugador",
+        "presenta a",
+        "completa el fichaje",
+        "acuerdo por",
+        "signs for",
+        "has signed",
+        "joins",
+        "completed the signing",
+    ]
+    if any(token in normalized for token in rumor_tokens):
+        return "rumour"
+    if any(token in normalized for token in confirmed_tokens):
+        return "confirmed"
+    return "reported"
+
+
+def _passes_season_transition_quality(item: dict, team_name: str) -> bool:
+    title = str(item.get("title", "")).strip()
+    source = str(item.get("source", "")).strip()
+    domain = _safe_url_host(str(item.get("link", "")).strip())
+    if not title or not _season_transition_category(title, source):
+        return False
+    if _is_low_signal_source(source) or (domain and domain in LOW_TRUST_NEWS_DOMAINS):
+        return False
+    if _is_generic_preview_title(title) or _is_non_match_noise_title(title) or _contains_any(
+        f"{title} {source}", NON_PREDICTIVE_NOISE_KEYWORDS
+    ):
+        return False
+    if _requires_football_context(team_name) and not _has_football_context(title, source):
+        return False
+    if _team_relevance_score(title, team_name) <= 0:
+        return False
+    # Directorios y agregadores solo se aceptan cuando el titular contiene un
+    # hecho fuerte (alta, salida, baja, entrenador, ascenso o pretemporada).
+    if _is_low_information_source(source) and not _looks_like_hard_signal_news(title, source):
+        return False
+    return _is_high_trust_source(source) or _looks_like_hard_signal_news(title, source)
+
+
+def _annotate_season_transition_item(item: dict) -> dict:
+    enriched = dict(item)
+    source = str(enriched.get("source", "")).strip()
+    enriched["category"] = _season_transition_category(
+        str(enriched.get("title", "")), source
+    )
+    enriched["fact_status"] = _season_transition_fact_status(
+        str(enriched.get("title", "")), source
+    )
+    enriched["evidence_quality"] = (
+        "high" if source.lower() == "web oficial" or _is_high_trust_source(source) else "medium"
+    )
+    return enriched
 
 
 def _team_query_terms(team_name: str) -> str:
@@ -2473,6 +2699,13 @@ def _briefing_excerpt_from_dict(briefing: dict) -> str:
     stakes = (briefing.get("contexto_deportivo") or {}).get("contexto_competitivo", "")
     if stakes:
         parts.append(stakes)
+    transition = briefing.get("plantillas_y_transicion_de_temporada") or {}
+    home_transition = str((transition.get("local") or {}).get("resumen", "")).strip()
+    away_transition = str((transition.get("visitante") or {}).get("resumen", "")).strip()
+    if home_transition:
+        parts.append(f"Local: {home_transition}")
+    if away_transition:
+        parts.append(f"Visitante: {away_transition}")
     rotation = (briefing.get("contexto_deportivo") or {}).get("riesgo_rotacion_competitiva", "")
     if rotation and "Sin senal fuerte" not in rotation:
         parts.append(rotation)
@@ -2674,6 +2907,7 @@ def _monitor_match_payload(match: dict) -> dict:
             "away_rotation_context": competition.get("away_rotation_context", {}),
             "table_reliability": competition.get("table_reliability", {}),
             "season_preview": competition.get("season_preview", {}),
+            "season_transition": competition.get("season_transition", {}),
         },
         "travel_km": _safe_float((match.get("travel_context") or {}).get("distance_km")),
         "weather": {
@@ -3653,6 +3887,12 @@ def _build_monitor_web_html() -> str:
       const competitive = match.competitive_context || {};
       const homeObjective = competitive.home_objective || {};
       const awayObjective = competitive.away_objective || {};
+      const reliability = competitive.table_reliability || {};
+      const transition = competitive.season_transition || {};
+      const homeTransition = transition.home || {};
+      const awayTransition = transition.away || {};
+      const tableUsable = reliability.positions_usable !== false;
+      const objectivesUsable = reliability.objectives_usable !== false;
       const homeRotation = competitive.home_rotation_context || {};
       const awayRotation = competitive.away_rotation_context || {};
       const rotationLine = [homeRotation.reason ? `local ${homeRotation.reason} (${homeRotation.risk})` : "", awayRotation.reason ? `visitante ${awayRotation.reason} (${awayRotation.risk})` : ""].filter(Boolean).join(" | ");
@@ -3670,8 +3910,10 @@ def _build_monitor_web_html() -> str:
             </div>
           </div>
           <div class="line"><strong>Mercado base:</strong> 1=${fmtPct(market["1"])} · X=${fmtPct(market["X"])} · 2=${fmtPct(market["2"])} | <strong>LAE/Loterias:</strong> 1=${fmtPct(official["1"])} · X=${fmtPct(official["X"])} · 2=${fmtPct(official["2"])}</div>
-          <div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>
-          <div class="line"><strong>Objetivo:</strong> ${escapeHtml(homeObjective.summary || "-")} [MW ${competitive.home_must_win_index ?? 0}, NP ${competitive.home_must_not_lose_index ?? 0}] | ${escapeHtml(awayObjective.summary || "-")} [MW ${competitive.away_must_win_index ?? 0}, NP ${competitive.away_must_not_lose_index ?? 0}]</div>
+          ${tableUsable ? `<div class="line"><strong>Tabla:</strong> ${escapeHtml(match.local)} ${homeTable.position ?? "-"}º (${homeTable.points ?? "-"} pts, ${escapeHtml(homeTable.form || "-")}) | ${escapeHtml(match.visitante)} ${awayTable.position ?? "-"}º (${awayTable.points ?? "-"} pts, ${escapeHtml(awayTable.form || "-")})</div>` : `<div class="line"><strong>Base de jornada 1:</strong> se omite la tabla sin muestra y se usa temporada anterior, plantilla, entrenador, bajas y pretemporada.</div>`}
+          ${objectivesUsable ? `<div class="line"><strong>Objetivo:</strong> ${escapeHtml(homeObjective.summary || "-")} [MW ${competitive.home_must_win_index ?? 0}, NP ${competitive.home_must_not_lose_index ?? 0}] | ${escapeHtml(awayObjective.summary || "-")} [MW ${competitive.away_must_win_index ?? 0}, NP ${competitive.away_must_not_lose_index ?? 0}]</div>` : ""}
+          <div class="line"><strong>Plantilla/mercado ${escapeHtml(match.local)}:</strong> ${escapeHtml(homeTransition.summary || "sin hechos verificados todavia")}</div>
+          <div class="line"><strong>Plantilla/mercado ${escapeHtml(match.visitante)}:</strong> ${escapeHtml(awayTransition.summary || "sin hechos verificados todavia")}</div>
           <div class="line"><strong>Contexto competitivo:</strong> ${escapeHtml(competitive.competitive_stakes_label || "-")} | duelo directo ${competitive.direct_rivalry_index ?? 0}/100</div>
           ${rotationLine ? `<div class="line"><strong>Rotacion probable:</strong> ${escapeHtml(rotationLine)}</div>` : ""}
           <div class="line"><strong>Presion/Fatiga:</strong> local ${fmtNum(homePressure.score,2)} (${escapeHtml(homePressure.label || "-")}) y visitante ${fmtNum(awayPressure.score,2)} (${escapeHtml(awayPressure.label || "-")}) | fatiga ${fmtNum(homeFatigue.score,2)} / ${fmtNum(awayFatigue.score,2)}</div>
@@ -3721,6 +3963,8 @@ def _build_monitor_web_html() -> str:
         chip(`Weather ${coverage.weather_matches || 0}`),
         chip(`Travel ${coverage.travel_matches || 0}`),
         chip(`History ${coverage.history_matches || 0}`),
+        chip(`Plantillas ${coverage.focus_season_transition_covered || 0}/${coverage.focus_matches || 0}`),
+        chip(`Evidencias verano ${coverage.focus_season_transition_evidence || 0}`),
         chip(`Referees ${coverage.structured_referees || 0}`),
         chip(`Slots ${integrity.checked_slots || 0}`),
         chip(`Fallos ${integrity.mismatch_count || 0}`, integrity.ok ? "ok" : "bad"),
@@ -5495,6 +5739,10 @@ def _summarize_news_signals(items: list) -> dict:
         "squad_count": 0,
         "morale_count": 0,
         "market_count": 0,
+        "departure_count": 0,
+        "coach_change_count": 0,
+        "preseason_count": 0,
+        "promotion_history_count": 0,
     }
     for item in items:
         haystack = f"{item.get('title', '')} {item.get('source', '')}".lower()
@@ -5516,6 +5764,14 @@ def _summarize_news_signals(items: list) -> dict:
             signals["morale_count"] += 1
         if any(keyword in haystack for keyword in MARKET_KEYWORDS):
             signals["market_count"] += 1
+        if _contains_any(haystack, DEPARTURE_KEYWORDS):
+            signals["departure_count"] += 1
+        if _contains_any(haystack, COACH_CHANGE_KEYWORDS):
+            signals["coach_change_count"] += 1
+        if _contains_any(haystack, PRESEASON_KEYWORDS):
+            signals["preseason_count"] += 1
+        if _contains_any(haystack, PROMOTION_HISTORY_KEYWORDS):
+            signals["promotion_history_count"] += 1
     return signals
 
 
@@ -5584,7 +5840,7 @@ def fetch_team_news(team_name: str) -> dict:
 
 
 def fetch_focus_team_news(team_name: str) -> dict:
-    cache_key = f"v10:focus:{team_name}"
+    cache_key = f"v11:focus:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -5620,8 +5876,79 @@ def fetch_focus_team_news(team_name: str) -> dict:
     return payload
 
 
+def fetch_season_transition_news(team_name: str) -> dict:
+    """Recoge hechos de verano/arranque con una ventana mayor que las bajas.
+
+    Un fichaje de junio sigue siendo relevante en la jornada 1 aunque ya no
+    aparezca en una busqueda limitada a diez dias. Este bloque no interpreta
+    si el jugador es bueno: conserva titular, fuente y fecha para que el motor
+    avanzado pueda valorar el impacto sin inventarlo.
+    """
+    cache_key = f"v3:season-transition:{team_name}"
+    cached = _cache_get(TEAM_NEWS_CACHE, cache_key, 24 * 3600)
+    if cached:
+        return cached
+    team_query = _team_query_terms(team_name)
+    queries = [
+        (
+            f'{team_query} fichaje OR fichajes OR refuerzo OR traspaso OR cesion '
+            'OR salida OR signing OR transfer OR loan OR departure'
+        ),
+        (
+            f'{team_query} pretemporada OR amistoso OR nuevo entrenador OR plantilla '
+            'OR ascenso OR ascendido OR descendido OR promoted OR preseason'
+        ),
+    ]
+    items = []
+    try:
+        for query in queries:
+            items.extend(
+                _query_news_with_relevance(
+                    query,
+                    lambda title, current_team=team_name: _team_relevance_score(title, current_team),
+                    SEASON_TRANSITION_NEWS_ITEMS * 2,
+                    SEASON_TRANSITION_NEWS_MAX_AGE_DAYS,
+                )
+            )
+        filtered = [
+            _annotate_season_transition_item(item)
+            for item in items
+            if _passes_season_transition_quality(item, team_name)
+        ]
+        items = _clean_news_items(
+            filtered,
+            SEASON_TRANSITION_NEWS_MAX_AGE_DAYS,
+            SEASON_TRANSITION_NEWS_ITEMS,
+        )
+    except Exception as exc:
+        LOGGER.warning("season_transition_news_failed team=%s error=%s", team_name, exc)
+        items = []
+    counts = {
+        category: sum(1 for item in items if item.get("category") == category)
+        for category in [
+            "signing",
+            "departure",
+            "coach",
+            "availability",
+            "preseason",
+            "promotion_history",
+            "squad",
+            "morale",
+        ]
+    }
+    payload = {
+        "items": items,
+        "category_counts": counts,
+        "query_count": len(queries),
+        "lookback_days": SEASON_TRANSITION_NEWS_MAX_AGE_DAYS,
+        "coverage": "rich" if len(items) >= 5 else ("partial" if items else "none"),
+    }
+    _cache_set(TEAM_NEWS_CACHE, cache_key, payload)
+    return payload
+
+
 def fetch_local_media_news(team_name: str) -> dict:
-    cache_key = f"v10:media:{team_name}"
+    cache_key = f"v11:media:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -6123,6 +6450,7 @@ def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
     }
     league_name_aliases = {
         "spanish laliga": "soccer_spain_la_liga",
+        "spanish la liga": "soccer_spain_la_liga",
         "laliga": "soccer_spain_la_liga",
         "la liga": "soccer_spain_la_liga",
         "spanish segunda division": "soccer_spain_segunda_division",
@@ -6200,7 +6528,11 @@ def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
         league_id = expected_league_id
     elif not league_id and expected_league_id:
         league_id = expected_league_id
-    if league_key and (not current_league or current_league.startswith("sportsdb_")):
+    if league_key and (
+        not current_league
+        or current_league == "league_unresolved"
+        or current_league.startswith("sportsdb_")
+    ):
         match["league"] = league_key
     effective_league = str(match.get("league", "")).strip()
     match["league_name"] = _league_display_name(effective_league, league_name)
@@ -6209,7 +6541,9 @@ def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
     if match.get("league") and str(match.get("league", "")).startswith("sportsdb_"):
         match["dynamic_league"] = True
         match["league_source"] = "TheSportsDB"
-    elif effective_league and not match.get("league_source"):
+    elif effective_league and (
+        not match.get("league_source") or current_league == "league_unresolved"
+    ):
         match["league_source"] = "TheSportsDB" if league_name and not metadata_conflicts else "league-key"
 
 
@@ -8605,6 +8939,118 @@ def _season_preview_context(
     }
 
 
+def _build_team_season_transition(
+    team_name: str,
+    previous_season: dict,
+    news_payload: dict,
+) -> dict:
+    """Combina rendimiento previo y hechos recientes sin rellenar huecos."""
+    items = list((news_payload or {}).get("items") or [])
+    grouped = {
+        category: [item for item in items if item.get("category") == category][:5]
+        for category in [
+            "signing",
+            "departure",
+            "coach",
+            "availability",
+            "preseason",
+            "promotion_history",
+            "squad",
+            "morale",
+        ]
+    }
+    confirmed_signings = [
+        item for item in grouped["signing"] if item.get("fact_status") == "confirmed"
+    ]
+    reported_signings = [
+        item for item in grouped["signing"] if item.get("fact_status") != "confirmed"
+    ]
+    confirmed_departures = [
+        item for item in grouped["departure"] if item.get("fact_status") == "confirmed"
+    ]
+    reported_departures = [
+        item for item in grouped["departure"] if item.get("fact_status") != "confirmed"
+    ]
+    facts = []
+    previous_summary = str((previous_season or {}).get("summary") or "").strip()
+    if previous_summary:
+        facts.append(f"temporada anterior: {previous_summary}")
+    if confirmed_signings:
+        facts.append(f"{len(confirmed_signings)} altas/refuerzos confirmados")
+    if reported_signings:
+        facts.append(f"{len(reported_signings)} posibles altas u operaciones")
+    if confirmed_departures:
+        facts.append(f"{len(confirmed_departures)} salidas confirmadas")
+    if reported_departures:
+        facts.append(f"{len(reported_departures)} posibles salidas")
+    labels = {
+        "coach": "cambios de entrenador",
+        "availability": "bajas/disponibilidad",
+        "preseason": "señales de pretemporada",
+        "promotion_history": "señales de ascenso/descenso",
+        "squad": "noticias de plantilla",
+        "morale": "señales de vestuario",
+    }
+    for category, label in labels.items():
+        count = len(grouped[category])
+        if count:
+            facts.append(f"{count} {label}")
+    evidence_count = len(items)
+    return {
+        "team": team_name,
+        "previous_season": previous_season or {},
+        "coverage": (news_payload or {}).get("coverage", "none"),
+        "lookback_days": (news_payload or {}).get(
+            "lookback_days", SEASON_TRANSITION_NEWS_MAX_AGE_DAYS
+        ),
+        "evidence_count": evidence_count,
+        "signings": confirmed_signings,
+        "transfer_reports": reported_signings,
+        "departures": confirmed_departures,
+        "departure_reports": reported_departures,
+        "coach_changes": grouped["coach"],
+        "availability": grouped["availability"],
+        "preseason": grouped["preseason"],
+        "promotion_history": grouped["promotion_history"],
+        "squad_news": grouped["squad"],
+        "morale": grouped["morale"],
+        "all_evidence": items[:SEASON_TRANSITION_NEWS_ITEMS],
+        "summary": "; ".join(facts)
+        if facts
+        else (
+            "sin hechos recientes verificados en las fuentes consultadas; "
+            "esto no significa que la plantilla no haya cambiado"
+        ),
+    }
+
+
+def _build_match_season_transition(
+    home_team: str,
+    away_team: str,
+    season_preview: dict,
+    home_news: dict,
+    away_news: dict,
+) -> dict:
+    home = _build_team_season_transition(
+        home_team, (season_preview or {}).get("home") or {}, home_news
+    )
+    away = _build_team_season_transition(
+        away_team, (season_preview or {}).get("away") or {}, away_news
+    )
+    return {
+        "active": bool((season_preview or {}).get("active")),
+        "home": home,
+        "away": away,
+        "evidence_count": home.get("evidence_count", 0) + away.get("evidence_count", 0),
+        "analysis_priorities": [
+            "Usar la temporada anterior como base cuando la tabla actual no tenga muestra.",
+            "Valorar altas, salidas, entrenador, bajas y pretemporada por titular, fuente y fecha.",
+            "No convertir ausencia de noticias en plantilla completa ni en estabilidad confirmada.",
+            "Usar cuotas como prior, no como sustituto del contexto deportivo.",
+        ],
+    }
+
+
 def _season_competitive_context(
     league_key: str,
     table_snapshot: dict,
@@ -9215,10 +9661,14 @@ def _enrich_quiniela_match(match: dict) -> None:
     referee_news_items = fetch_match_referee_news(match["local"], match["visitante"])
     home_focus_news = fetch_focus_team_news(match["local"])
     away_focus_news = fetch_focus_team_news(match["visitante"])
+    home_transition_news = fetch_season_transition_news(match["local"])
+    away_transition_news = fetch_season_transition_news(match["visitante"])
     home_media_news = fetch_local_media_news(match["local"])
     away_media_news = fetch_local_media_news(match["visitante"])
     match["home_team_context"]["focus_news"] = home_focus_news
     match["away_team_context"]["focus_news"] = away_focus_news
+    match["home_team_context"]["season_transition_news"] = home_transition_news
+    match["away_team_context"]["season_transition_news"] = away_transition_news
     match["home_team_context"]["media_news"] = home_media_news
     match["away_team_context"]["media_news"] = away_media_news
 
@@ -9439,6 +9889,13 @@ def _enrich_quiniela_match(match: dict) -> None:
     )
     competition_context["season_preview"] = season_competitive_context.get(
         "season_preview", {}
+    )
+    competition_context["season_transition"] = _build_match_season_transition(
+        match["local"],
+        match["visitante"],
+        competition_context.get("season_preview") or {},
+        home_transition_news,
+        away_transition_news,
     )
     competition_context["home_rotation_context"] = _rotation_context_from_upcoming(
         match["local"],
@@ -9878,7 +10335,7 @@ def _has_nonempty_percentages(values: dict) -> bool:
 
 def _news_signal_count(team_context: dict) -> int:
     total = 0
-    for bucket in ("focus_news", "media_news"):
+    for bucket in ("focus_news", "media_news", "season_transition_news"):
         section = team_context.get(bucket) or {}
         total += len(section.get("items") or [])
         signals = section.get("signals") or {}
@@ -9908,8 +10365,11 @@ def _qualitative_context_status(match: dict) -> dict:
     match_items = list(((match.get("match_news_context") or {}).get("items")) or [])
     team_items = []
     for context in (home_context, away_context):
-        for bucket in ("focus_news", "media_news"):
+        for bucket in ("focus_news", "media_news", "season_transition_news"):
             team_items.extend(list(((context.get(bucket) or {}).get("items")) or []))
+    transition_items = [
+        item for item in team_items if str(item.get("category", "")).strip()
+    ]
     availability_items = [
         item
         for item in official_items + match_items + team_items
@@ -9935,6 +10395,7 @@ def _qualitative_context_status(match: dict) -> dict:
         "official_items": len(official_items),
         "match_items": len(match_items),
         "team_items": len(team_items),
+        "season_transition_items": len(transition_items),
         "verified_teams": verified_teams,
         "home_roster_status": home_status,
         "away_roster_status": away_status,
@@ -10004,7 +10465,27 @@ def _match_data_confidence(match: dict) -> dict:
     home_recent = ((history.get("home") or {}).get("recent_all") or {}).get("form")
     away_recent = ((history.get("away") or {}).get("recent_all") or {}).get("form")
     table_quality = history.get("table_quality") or {}
-    if home_recent and away_recent and table_quality.get("valid"):
+    season_preview = competition.get("season_preview") or {}
+    season_transition = competition.get("season_transition") or {}
+    transition_evidence = _safe_int(season_transition.get("evidence_count"), 0) or 0
+    previous_home = ((season_transition.get("home") or {}).get("previous_season") or {})
+    previous_away = ((season_transition.get("away") or {}).get("previous_season") or {})
+    if season_preview.get("active"):
+        if previous_home.get("summary") and previous_away.get("summary"):
+            score += 12
+            strengths.append("temporada anterior de ambos equipos")
+        else:
+            missing.append("temporada anterior completa de ambos equipos")
+        if transition_evidence >= 6:
+            score += 14
+            strengths.append("mercado, plantilla y pretemporada investigados")
+        elif transition_evidence:
+            score += 7
+            strengths.append("contexto parcial de plantilla/pretemporada")
+            missing.append("mas fuentes sobre altas, salidas y pretemporada")
+        else:
+            missing.append("altas, salidas, entrenador y pretemporada verificadas")
+    elif home_recent and away_recent and table_quality.get("valid"):
         score += 20
         strengths.append("clasificacion y forma verificadas")
     elif home_recent and away_recent:
@@ -10064,6 +10545,50 @@ def _match_data_confidence(match: dict) -> dict:
     }
 
 
+def _transition_briefing_side(context: dict) -> dict:
+    def compact(items: list[dict]) -> list[dict]:
+        return [
+            {
+                "titular": item.get("title", ""),
+                "fuente": item.get("source", ""),
+                "fecha": item.get("published_at", ""),
+                "calidad": item.get("evidence_quality", ""),
+                "estado_hecho": item.get("fact_status", "reported"),
+                "enlace": item.get("link", ""),
+            }
+            for item in (items or [])[:4]
+        ]
+
+    previous = context.get("previous_season") or {}
+    return {
+        "resumen": context.get("summary", ""),
+        "temporada_anterior": {
+            "situacion": previous.get("status", ""),
+            "liga": previous.get("last_season_league", ""),
+            "puesto": previous.get("last_season_position"),
+            "puntos": previous.get("last_season_points"),
+            "resumen": previous.get("summary", ""),
+        },
+        "altas_y_refuerzos": compact(context.get("signings") or []),
+        "operaciones_y_rumores_no_confirmados": compact(
+            context.get("transfer_reports") or []
+        ),
+        "salidas": compact(context.get("departures") or []),
+        "posibles_salidas_no_confirmadas": compact(
+            context.get("departure_reports") or []
+        ),
+        "entrenador": compact(context.get("coach_changes") or []),
+        "bajas_y_disponibilidad": compact(context.get("availability") or []),
+        "pretemporada": compact(context.get("preseason") or []),
+        "ascenso_descenso": compact(context.get("promotion_history") or []),
+        "plantilla_y_vestuario": compact(
+            list(context.get("squad_news") or []) + list(context.get("morale") or [])
+        ),
+        "cobertura": context.get("coverage", "none"),
+        "evidencias": context.get("evidence_count", 0),
+    }
+
+
 def _focus_match_ai_briefing(match: dict) -> dict:
     market_context = match.get("market_context") or {}
     market = market_context.get("normalized_percent", {})
@@ -10105,6 +10630,7 @@ def _focus_match_ai_briefing(match: dict) -> dict:
     away_future_difficulty = competition.get("away_future_difficulty") or {}
     home_fatigue = analytics.get("home_fatigue_index") or {}
     away_fatigue = analytics.get("away_fatigue_index") or {}
+    season_transition = competition.get("season_transition") or {}
 
     quiniela_pct: dict = match.get("official_quiniela_percentages") or {}
     if not _has_nonempty_percentages(quiniela_pct):
@@ -10210,6 +10736,14 @@ def _focus_match_ai_briefing(match: dict) -> dict:
                 away, away_future_difficulty, away_relegation, away_table, away_objective
             ),
             "h2h_resumen": h2h_text,
+        },
+        "plantillas_y_transicion_de_temporada": {
+            "local": _transition_briefing_side(season_transition.get("home") or {}),
+            "visitante": _transition_briefing_side(season_transition.get("away") or {}),
+            "criterios_para_la_ia": season_transition.get("analysis_priorities") or [
+                "Usar hechos con fuente y fecha; no rellenar huecos con suposiciones.",
+                "En jornada 1 priorizar plantilla, entrenador, bajas, pretemporada y temporada anterior.",
+            ],
         },
         "contexto_competitivo_avanzado": {
             "season_context_phase": season_phase,
@@ -10849,6 +11383,12 @@ def _bootstrap_quiniela_placeholder(
     match["away_team_context"].setdefault("media_news", {"items": [], "signals": {}})
     match["home_team_context"].setdefault("official_site", {"website": "", "items": []})
     match["away_team_context"].setdefault("official_site", {"website": "", "items": []})
+    match["home_team_context"].setdefault(
+        "season_transition_news", {"items": [], "coverage": "none"}
+    )
+    match["away_team_context"].setdefault(
+        "season_transition_news", {"items": [], "coverage": "none"}
+    )
 
     home_team_api = fetch_the_sportsdb_team(home_team, league_country_hint)
     away_team_api = fetch_the_sportsdb_team(away_team, league_country_hint)
@@ -11569,6 +12109,7 @@ def build_snapshot(raw_matches: list) -> dict:
                     "focus_news": {"items": [], "signals": {}},
                     "media_news": {"items": [], "signals": {}},
                     "official_site": {"website": "", "items": []},
+                    "season_transition_news": {"items": [], "coverage": "none"},
                 },
                 "away_team_context": {
                     "profile": away_profile,
@@ -11578,6 +12119,7 @@ def build_snapshot(raw_matches: list) -> dict:
                     "focus_news": {"items": [], "signals": {}},
                     "media_news": {"items": [], "signals": {}},
                     "official_site": {"website": "", "items": []},
+                    "season_transition_news": {"items": [], "coverage": "none"},
                 },
                 "match_news_context": {"items": [], "signals": {}},
                 "competition_headlines": competition_headlines.get(
@@ -11874,6 +12416,26 @@ def build_snapshot(raw_matches: list) -> dict:
             1
             for match in quiniela_focus_matches
             if _qualitative_context_status(match).get("referee_confirmed")
+        ),
+        "focus_season_transition_covered": sum(
+            1
+            for match in quiniela_focus_matches
+            if _safe_int(
+                ((match.get("competition_context") or {}).get("season_transition") or {}).get(
+                    "evidence_count"
+                ),
+                0,
+            )
+        ),
+        "focus_season_transition_evidence": sum(
+            _safe_int(
+                ((match.get("competition_context") or {}).get("season_transition") or {}).get(
+                    "evidence_count"
+                ),
+                0,
+            )
+            or 0
+            for match in quiniela_focus_matches
         ),
         "focus_resolved_leagues": sum(
             1
