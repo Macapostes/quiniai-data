@@ -10608,6 +10608,60 @@ def _match_data_confidence(match: dict) -> dict:
     }
 
 
+def _audit_season_transition_snapshot(snapshot: dict) -> dict:
+    """Impide publicar contexto de verano cruzado entre clubes.
+
+    La ausencia honesta de noticias no es un error si existe una base de la
+    temporada anterior. Si una evidencia deja de pasar el mismo filtro que la
+    selecciono, o un lado carece de ambas cosas, el snapshot queda rechazado.
+    """
+    focus_matches = list((snapshot or {}).get("quiniela_focus_matches") or [])
+    invalid_evidence = []
+    empty_sides = []
+    checked_evidence = 0
+    for match in focus_matches:
+        match_label = f"{match.get('local', '')} - {match.get('visitante', '')}".strip(" -")
+        transition = ((match.get("competition_context") or {}).get("season_transition") or {})
+        for side, team_name in (
+            ("home", str(match.get("local", "")).strip()),
+            ("away", str(match.get("visitante", "")).strip()),
+        ):
+            side_context = transition.get(side) or {}
+            previous_summary = str(
+                ((side_context.get("previous_season") or {}).get("summary") or "")
+            ).strip()
+            evidence = list(side_context.get("all_evidence") or [])
+            if not previous_summary and not evidence:
+                empty_sides.append(
+                    {"match": match_label, "side": side, "team": team_name}
+                )
+            for item in evidence:
+                checked_evidence += 1
+                title = str(item.get("title", "")).strip()
+                score = _team_relevance_score(title, team_name)
+                opponent_only = _is_opponent_only_transition_title(title, team_name)
+                if score <= 0 or opponent_only:
+                    invalid_evidence.append(
+                        {
+                            "match": match_label,
+                            "side": side,
+                            "team": team_name,
+                            "title": title,
+                            "relevance_score": score,
+                            "opponent_only": opponent_only,
+                        }
+                    )
+    return {
+        "ok": bool(focus_matches) and not invalid_evidence and not empty_sides,
+        "focus_matches": len(focus_matches),
+        "checked_evidence": checked_evidence,
+        "invalid_evidence_count": len(invalid_evidence),
+        "empty_side_count": len(empty_sides),
+        "invalid_evidence": invalid_evidence[:20],
+        "empty_sides": empty_sides[:20],
+    }
+
+
 def _transition_briefing_side(context: dict) -> dict:
     def compact(items: list[dict]) -> list[dict]:
         return [
@@ -12367,7 +12421,15 @@ def build_snapshot(raw_matches: list) -> dict:
                     or not competition_context.get("away_upcoming")
                 ):
                     _bootstrap_quiniela_placeholder(match, raw_matches, team_contexts, histories)
-                if match.get("league") and match.get("kickoff") and not match.get("focus_ai_briefing"):
+                competition_context = match.get("competition_context") or {}
+                if (
+                    match.get("league")
+                    and match.get("kickoff")
+                    and (
+                        not match.get("focus_ai_briefing")
+                        or not competition_context.get("season_transition")
+                    )
+                ):
                     _enrich_quiniela_match(match)
     quiniela_integrity = _audit_quiniela_integrity(
         quiniela_jornadas,
@@ -12551,6 +12613,7 @@ def build_snapshot(raw_matches: list) -> dict:
             "notes": "Se resuelven enlaces de Google News RSS cuando incluyen url/q, se filtra ruido y se prioriza prensa fiable.",
         },
     }
+    snapshot["season_transition_audit"] = _audit_season_transition_snapshot(snapshot)
     _flush_caches()
     return snapshot
 
@@ -12589,6 +12652,21 @@ def run_once(print_summary: bool = False) -> dict:
     started_at = time.time()
     _log_cycle_event("info", "cycle_started", poll_seconds=POLL_SECONDS)
     snapshot = fetch_snapshot()
+    transition_audit = snapshot.get("season_transition_audit") or {}
+    if not transition_audit.get("ok"):
+        _log_cycle_event(
+            "error",
+            "season_transition_audit_failed",
+            invalid_evidence_count=transition_audit.get("invalid_evidence_count", 0),
+            empty_side_count=transition_audit.get("empty_side_count", 0),
+            invalid_evidence=transition_audit.get("invalid_evidence", [])[:6],
+            empty_sides=transition_audit.get("empty_sides", [])[:6],
+        )
+        raise RuntimeError(
+            "Snapshot rechazado por la auditoria de contexto de plantillas: "
+            f"evidencias invalidas={transition_audit.get('invalid_evidence_count', 0)}, "
+            f"lados sin contexto={transition_audit.get('empty_side_count', 0)}"
+        )
     save_local_snapshot(snapshot)
     upload_snapshot(snapshot)
     _save_last_sync_ts()
@@ -12704,6 +12782,11 @@ def run_forever() -> None:
 
 
 if __name__ == "__main__":
+    if "--audit-current" in sys.argv:
+        current_snapshot = _load_cache(SNAPSHOT_OUTPUT_PATH)
+        current_audit = _audit_season_transition_snapshot(current_snapshot)
+        print(json.dumps(current_audit, ensure_ascii=False, indent=2))
+        raise SystemExit(0 if current_audit.get("ok") else 2)
     if "--once" in sys.argv and _request_manual_refresh_if_locked():
         raise SystemExit(0)
     _acquire_worker_lock()

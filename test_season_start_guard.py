@@ -408,6 +408,60 @@ class SeasonTransitionNewsTests(unittest.TestCase):
         self.assertFalse(worker._passes_season_transition_quality(social_item, "CADIZ"))
         self.assertFalse(worker._passes_season_transition_quality(live_item, "CADIZ"))
 
+    def test_snapshot_audit_rejects_cross_team_evidence(self):
+        snapshot = {
+            "quiniela_focus_matches": [
+                {
+                    "local": "Real Racing Club de Santander",
+                    "visitante": "Villarreal",
+                    "competition_context": {
+                        "season_transition": {
+                            "home": {
+                                "previous_season": {"summary": "ascendido"},
+                                "all_evidence": [
+                                    {"title": "El Cadiz anuncia cuatro fichajes"}
+                                ],
+                            },
+                            "away": {
+                                "previous_season": {"summary": "3o en Primera"},
+                                "all_evidence": [],
+                            },
+                        }
+                    },
+                }
+            ]
+        }
+        audit = worker._audit_season_transition_snapshot(snapshot)
+        self.assertFalse(audit["ok"])
+        self.assertEqual(audit["invalid_evidence_count"], 1)
+
+    def test_snapshot_audit_accepts_previous_season_or_relevant_evidence(self):
+        snapshot = {
+            "quiniela_focus_matches": [
+                {
+                    "local": "Real Racing Club de Santander",
+                    "visitante": "Villarreal",
+                    "competition_context": {
+                        "season_transition": {
+                            "home": {
+                                "previous_season": {"summary": "ascendido"},
+                                "all_evidence": [],
+                            },
+                            "away": {
+                                "previous_season": {},
+                                "all_evidence": [
+                                    {"title": "El Villarreal anuncia un nuevo fichaje"}
+                                ],
+                            },
+                        }
+                    },
+                }
+            ]
+        }
+        audit = worker._audit_season_transition_snapshot(snapshot)
+        self.assertTrue(audit["ok"])
+        self.assertEqual(audit["empty_side_count"], 0)
+
     def test_transition_context_keeps_previous_season_and_sourced_facts(self):
         item = {
             "title": "El Racing de Santander confirma un fichaje internacional",
