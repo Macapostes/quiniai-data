@@ -499,6 +499,7 @@ TEAM_NAME_ALIASES = {
     "ath bilbao": "Athletic Bilbao",
     "racing s": "Racing de Santander",
     "racing santander": "Racing de Santander",
+    "real racing club de santander": "Racing de Santander",
     "sporting gijon": "Sporting de Gijon",
     "sporting gijÃ³n": "Sporting de Gijon",
     "sabadell fc": "CE Sabadell",
@@ -691,6 +692,7 @@ TEAM_NEWS_QUERY_HINTS = {
     "rayo vallecano": ['"Rayo Vallecano"', '"Rayo" futbol'],
     "racing s": ['"Racing de Santander"', '"Real Racing Club" Santander'],
     "racing de santander": ['"Racing de Santander"', '"Real Racing Club" Santander'],
+    "real racing club de santander": ['"Racing de Santander"', '"Real Racing Club" Santander'],
     "villarreal": ['"Villarreal CF"', '"Villarreal" futbol'],
     "celta vigo": ['"RC Celta"', '"Celta de Vigo"'],
     "ca osasuna": ['"CA Osasuna"', '"Osasuna" futbol'],
@@ -1733,13 +1735,42 @@ def _team_relevance_score(title: str, team_name: str) -> float:
     team_norm = _normalize_team_name(_canonical_team_name(team_name))
     if not title_norm or not team_norm:
         return 0.0
-    title_tokens = set(title_norm.split())
-    team_tokens = set(team_norm.split())
+    stop_tokens = {
+        "a",
+        "al",
+        "and",
+        "club",
+        "de",
+        "del",
+        "el",
+        "la",
+        "las",
+        "los",
+        "the",
+        "y",
+    }
+    ambiguous_tokens = {
+        "athletic",
+        "city",
+        "deportivo",
+        "racing",
+        "real",
+        "sporting",
+        "united",
+    }
+    title_tokens = {token for token in title_norm.split() if token not in stop_tokens}
+    team_tokens = {token for token in team_norm.split() if token not in stop_tokens}
     if not title_tokens or not team_tokens:
         return 0.0
-    overlap = len(title_tokens & team_tokens)
-    if overlap == 0:
+    overlap_tokens = title_tokens & team_tokens
+    if not overlap_tokens:
         return 0.0
+    distinctive_team_tokens = team_tokens - ambiguous_tokens
+    if distinctive_team_tokens and not (overlap_tokens & distinctive_team_tokens):
+        # "Racing", "Sporting" o "Deportivo" sin Santander/Gijon/Coruna es
+        # demasiado ambiguo para atribuir una noticia a la plantilla correcta.
+        return 0.0
+    overlap = len(overlap_tokens)
     return max(overlap / len(team_tokens), _team_similarity_score(title, team_name))
 
 
@@ -2094,11 +2125,36 @@ def _season_transition_fact_status(title: str, source: str = "") -> str:
     return "reported"
 
 
+def _is_opponent_only_transition_title(title: str, team_name: str) -> bool:
+    """Detecta cuando el club solo aparece como rival, no como protagonista."""
+    title_norm = _normalize_team_name(title)
+    team_norm = _normalize_team_name(_canonical_team_name(team_name))
+    if not title_norm or not team_norm:
+        return False
+    opponent_phrases = (
+        f"rival del {team_norm}",
+        f"rival de {team_norm}",
+        f"rival para el {team_norm}",
+        f"antes de medirse al {team_norm}",
+        f"antes de medirse con el {team_norm}",
+        f"antes de enfrentarse al {team_norm}",
+        f"antes de visitar al {team_norm}",
+    )
+    return any(phrase in title_norm for phrase in opponent_phrases)
+
+
 def _passes_season_transition_quality(item: dict, team_name: str) -> bool:
     title = str(item.get("title", "")).strip()
     source = str(item.get("source", "")).strip()
     domain = _safe_url_host(str(item.get("link", "")).strip())
     if not title or not _season_transition_category(title, source):
+        return False
+    normalized_title = _normalize_ascii(title).lower()
+    if _is_opponent_only_transition_title(title, team_name):
+        return False
+    if title.count("#") >= 2:
+        return False
+    if re.search(r"^(directo|en directo)(\s|\||:)", normalized_title):
         return False
     if _is_low_signal_source(source) or (domain and domain in LOW_TRUST_NEWS_DOMAINS):
         return False
@@ -4615,6 +4671,13 @@ def _team_similarity_score(left: str, right: str) -> float:
     right_norm = _normalize_team_name(_canonical_team_name(right))
     if not left_norm or not right_norm:
         return 0.0
+    reserve_markers = {"b", "castilla", "fortuna", "fabril", "mestalla", "promesas"}
+    left_reserve = set(left_norm.split()) & reserve_markers
+    right_reserve = set(right_norm.split()) & reserve_markers
+    if bool(left_reserve) != bool(right_reserve):
+        # Un filial no puede heredar la tabla, noticias o calendario del primer
+        # equipo solo porque ambos compartan la raiz del nombre (p. ej. Celta).
+        return 0.0
     if left_norm == right_norm:
         return 1.0
     if left_norm in right_norm or right_norm in left_norm:
@@ -5808,7 +5871,7 @@ def _query_news_with_relevance(
 
 
 def fetch_team_news(team_name: str) -> dict:
-    cache_key = f"v10:team:{team_name}"
+    cache_key = f"v11:team:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -5840,7 +5903,7 @@ def fetch_team_news(team_name: str) -> dict:
 
 
 def fetch_focus_team_news(team_name: str) -> dict:
-    cache_key = f"v11:focus:{team_name}"
+    cache_key = f"v12:focus:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -5884,7 +5947,7 @@ def fetch_season_transition_news(team_name: str) -> dict:
     si el jugador es bueno: conserva titular, fuente y fecha para que el motor
     avanzado pueda valorar el impacto sin inventarlo.
     """
-    cache_key = f"v3:season-transition:{team_name}"
+    cache_key = f"v5:season-transition:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, 24 * 3600)
     if cached:
         return cached
@@ -5948,7 +6011,7 @@ def fetch_season_transition_news(team_name: str) -> dict:
 
 
 def fetch_local_media_news(team_name: str) -> dict:
-    cache_key = f"v11:media:{team_name}"
+    cache_key = f"v12:media:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -6004,7 +6067,7 @@ def fetch_local_media_news(team_name: str) -> dict:
 
 
 def fetch_match_news(home_team: str, away_team: str) -> dict:
-    cache_key = f"v10:{home_team}__{away_team}"
+    cache_key = f"v11:{home_team}__{away_team}"
     cached = _cache_get(MATCH_NEWS_CACHE, cache_key, MATCH_NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -12256,6 +12319,7 @@ def build_snapshot(raw_matches: list) -> dict:
                     or _active_context_refresh_due(match)
                     or
                     not match.get("focus_ai_briefing")
+                    or not competition_context.get("season_transition")
                     or (
                         match.get("league")
                         and match.get("kickoff")

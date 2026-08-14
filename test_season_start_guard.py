@@ -360,6 +360,54 @@ class SeasonTransitionNewsTests(unittest.TestCase):
         )
         self.assertGreaterEqual(score, 0.9)
 
+    def test_cadiz_transfer_is_not_attributed_to_racing(self):
+        score = worker._team_relevance_score(
+            "El Cadiz CF anuncia cuatro fichajes para la nueva temporada",
+            "Real Racing Club de Santander",
+        )
+        self.assertEqual(score, 0.0)
+
+    def test_ambiguous_racing_name_needs_santander(self):
+        score = worker._team_relevance_score(
+            "Racing Club confirma el fichaje de un delantero argentino",
+            "Real Racing Club de Santander",
+        )
+        self.assertEqual(score, 0.0)
+
+    def test_reserve_team_is_not_confused_with_first_team(self):
+        self.assertEqual(worker._team_similarity_score("Celta Fortuna", "Celta"), 0.0)
+        self.assertEqual(worker._lookup_table_row({"Celta": {"position": 6}}, "Celta Fortuna"), {})
+
+    def test_opponent_coach_news_is_not_assigned_to_the_team(self):
+        cadiz_item = {
+            "title": "El Oviedo, proximo rival del Cadiz CF, tiene nuevo entrenador",
+            "source": "Diario de Cadiz",
+            "link": "https://example.test/oviedo",
+        }
+        celta_item = {
+            "title": "Celades, nuevo entrenador del Cadiz antes de medirse al Celta Fortuna",
+            "source": "Diario AS",
+            "link": "https://example.test/cadiz",
+        }
+        self.assertFalse(worker._passes_season_transition_quality(cadiz_item, "CADIZ"))
+        self.assertFalse(
+            worker._passes_season_transition_quality(celta_item, "CELTA FORTUNA")
+        )
+
+    def test_social_hashtag_and_live_broadcast_are_not_squad_evidence(self):
+        social_item = {
+            "title": "Sacando los prohibidos #laliga #futbol #fichajes",
+            "source": "Cadiz Club de Futbol",
+            "link": "https://example.test/social",
+        }
+        live_item = {
+            "title": "DIRECTO | Amistoso de pretemporada: Tenerife-Cadiz CF",
+            "source": "Cadiz Club de Futbol",
+            "link": "https://example.test/live",
+        }
+        self.assertFalse(worker._passes_season_transition_quality(social_item, "CADIZ"))
+        self.assertFalse(worker._passes_season_transition_quality(live_item, "CADIZ"))
+
     def test_transition_context_keeps_previous_season_and_sourced_facts(self):
         item = {
             "title": "El Racing de Santander confirma un fichaje internacional",
