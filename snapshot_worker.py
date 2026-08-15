@@ -6516,6 +6516,11 @@ def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
     league_id_map = {
         "4335": "soccer_spain_la_liga",
         "4396": "soccer_spain_segunda_division",
+        # TheSportsDB expone la Segunda 26/27 con el id 4400. Si no lo
+        # normalizamos, el backend recibe ``sportsdb_4400`` y aplica la
+        # política fail-closed de categoría desconocida, ocultando incluso la
+        # forma de equipos inequívocos como el Cádiz.
+        "4400": "soccer_spain_segunda_division",
         "4328": "soccer_epl",
         "4329": "soccer_efl_champ",
         "4358": "soccer_norway_eliteserien",
@@ -6530,6 +6535,8 @@ def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
         "spanish segunda division": "soccer_spain_segunda_division",
         "segunda division": "soccer_spain_segunda_division",
         "laliga2": "soccer_spain_segunda_division",
+        "spanish la liga 2": "soccer_spain_segunda_division",
+        "la liga 2": "soccer_spain_segunda_division",
         "english premier league": "soccer_epl",
         "premier league": "soccer_epl",
         "english league championship": "soccer_efl_champ",
