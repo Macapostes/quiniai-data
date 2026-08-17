@@ -13,3 +13,11 @@ worker.log
 Estado/
 *.bak-*
 *.disabled
+
+# Basura de macOS: reaparece en cada carpeta que se abra en Finder.
+.DS_Store
+
+# Scripts sueltos de depuración: no son tests aunque alguno se llame así.
+# Viven aquí para que no los recoja pytest ni un barrido de test_*.py, y para
+# que `git status` sólo enseñe cambios de verdad.
+scratch/
