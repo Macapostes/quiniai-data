@@ -1,37 +1,37 @@
 {
-  "generated_at": "2026-08-23T09:35:03.403945+00:00",
-  "snapshot_generated_at": "2026-08-23T09:35:00.347771+00:00",
+  "generated_at": "2026-08-23T13:40:32.506989+00:00",
+  "snapshot_generated_at": "2026-08-23T13:40:29.066723+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
   "coverage": {
-    "monitored_matches": 108,
+    "monitored_matches": 111,
     "focus_matches": 15,
     "tracked_quiniela_matches": 60,
     "quiniela_jornadas": 4,
     "quiniela_current_jornada": 3,
     "quiniela_latest_available_jornada": 4,
-    "weather_matches": 103,
-    "travel_matches": 102,
-    "history_matches": 71,
+    "weather_matches": 104,
+    "travel_matches": 101,
+    "history_matches": 65,
     "sources_total": 12,
     "sources_ok": 12,
     "fresh_headlines": 13,
     "structured_focus_matches": 60,
-    "structured_referees": 16,
+    "structured_referees": 15,
     "focus_valid_tables": 13,
     "focus_rosters_checked": 8,
     "focus_rosters_checked_partial": 3,
-    "focus_referees_confirmed": 1,
+    "focus_referees_confirmed": 0,
     "focus_season_transition_covered": 13,
     "focus_season_transition_evidence": 338,
     "focus_resolved_leagues": 15
   },
   "structured_db_summary": {
-    "teams": 153,
-    "matches": 129,
-    "referees": 16,
-    "last_pruned_at": "2026-08-23T09:35:00.332782+00:00"
+    "teams": 142,
+    "matches": 119,
+    "referees": 15,
+    "last_pruned_at": "2026-08-23T13:40:29.051622+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -39,24 +39,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-08-22T11:06:15.349525+00:00",
-      "finished_at": "2026-08-22T11:35:30.318510+00:00",
-      "ok": true,
-      "duration_seconds": 1754.97,
-      "monitored_matches": 108,
-      "tracked_matches": 60,
-      "current_jornada": 2
-    },
-    {
-      "started_at": "2026-08-22T13:06:16.363637+00:00",
-      "finished_at": "2026-08-22T13:33:41.998220+00:00",
-      "ok": true,
-      "duration_seconds": 1645.63,
-      "monitored_matches": 100,
-      "tracked_matches": 60,
-      "current_jornada": 2
-    },
     {
       "started_at": "2026-08-22T15:06:17.715966+00:00",
       "finished_at": "2026-08-22T15:31:42.500743+00:00",
@@ -146,6 +128,24 @@
       "monitored_matches": 108,
       "tracked_matches": 60,
       "current_jornada": 3
+    },
+    {
+      "started_at": "2026-08-23T11:06:28.200276+00:00",
+      "finished_at": "2026-08-23T11:24:52.461214+00:00",
+      "ok": true,
+      "duration_seconds": 1104.26,
+      "monitored_matches": 111,
+      "tracked_matches": 60,
+      "current_jornada": 3
+    },
+    {
+      "started_at": "2026-08-23T13:06:29.234362+00:00",
+      "finished_at": "2026-08-23T13:40:32.506172+00:00",
+      "ok": true,
+      "duration_seconds": 2043.27,
+      "monitored_matches": 111,
+      "tracked_matches": 60,
+      "current_jornada": 3
     }
   ],
   "public_jornadas": [
@@ -168,14 +168,14 @@
           "kickoff": "2026-08-29T15:00:00Z",
           "bookmaker": "Betclic (FR)",
           "odds": {
-            "1": 2.87,
-            "X": 3.45,
-            "2": 2.22
+            "1": 2.9,
+            "X": 3.35,
+            "2": 2.13
           },
           "normalized_percent": {
-            "1": 32.0,
-            "X": 26.62,
-            "2": 41.37
+            "1": 30.99,
+            "X": 26.82,
+            "2": 42.19
           },
           "official_percent": {},
           "home_table": {
@@ -786,7 +786,7 @@
             "wind_speed_kmh": 11.0
           },
           "referee": {
-            "name": "Mundo Deportivo",
+            "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs Málaga (11º) | casa vs Barcelona (6º) | casa vs Athletic Bilbao (10º) | fuera vs Villarreal (6º) | casa vs Sevilla (4º)",
@@ -834,13 +834,13 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 21
+              "source_items_checked": 17
             }
           },
-          "context_updated_at": "2026-08-23T09:11:58.916766+00:00",
+          "context_updated_at": "2026-08-23T13:13:27.180286+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 96,
+            "score": 91,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -851,23 +851,24 @@
               "temporada anterior de ambos equipos"
             ],
             "faltan": [
-              "porcentajes de quiniela"
+              "porcentajes de quiniela",
+              "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 2,
               "availability_items": 27,
-              "official_items": 8,
+              "official_items": 4,
               "match_items": 7,
               "team_items": 44,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "confirmed_absences",
-              "referee_confirmed": true
+              "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (41.4%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 18o con 42 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas; 1 noticias de plantilla | Visitante: temporada anterior: 14o con 43 pts en LaLiga 25/26; 3 altas/refuerzos confirmados; 2 posibles altas u operaciones; 1 posibles salidas; 1 señales de pretemporada; 2 noticias de plantilla | Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El local descansó 13 días vs 9 días del visitante. Ligera ventaja física para el local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (42.2%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 18o con 42 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas; 1 noticias de plantilla | Visitante: temporada anterior: 14o con 43 pts en LaLiga 25/26; 3 altas/refuerzos confirmados; 2 posibles altas u operaciones; 1 posibles salidas; 1 señales de pretemporada; 2 noticias de plantilla | Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El local descansó 13 días vs 9 días del visitante. Ligera ventaja física para el local.",
           "analysis_ready": true
         },
         {
@@ -1615,14 +1616,14 @@
           "kickoff": "2026-08-29T19:30:00Z",
           "bookmaker": "Betclic (FR)",
           "odds": {
-            "1": 3.45,
-            "X": 3.33,
-            "2": 1.93
+            "1": 3.23,
+            "X": 3.27,
+            "2": 1.95
           },
           "normalized_percent": {
-            "1": 26.15,
-            "X": 27.1,
-            "2": 46.75
+            "1": 27.44,
+            "X": 27.11,
+            "2": 45.45
           },
           "official_percent": {},
           "home_table": {
@@ -2269,8 +2270,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Espanyol (2º) | casa vs Valencia (10º) | fuera vs Deportivo de A Coruña (7º) | casa vs Barcelona (6º) | fuera vs Levante (13º)",
-          "future_away": "fuera vs Athletic Bilbao (10º) | fuera vs Real Sociedad (3º) | casa vs Osasuna (7º) | casa vs Real Madrid (3º) | fuera vs Deportivo Alavés (1º)",
+          "future_home": "fuera vs Levante (13º) | fuera vs Real Madrid (3º) | casa vs Osasuna (7º)",
+          "future_away": "fuera vs Deportivo Alavés (1º) | fuera vs Espanyol (2º) | casa vs Deportivo de A Coruña (7º)",
           "history_quality": {
             "valid": true,
             "teams": 13,
@@ -2290,7 +2291,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 8
+              "source_items_checked": 10
             },
             "away": {
               "team": "Atlético Madrid",
@@ -2306,10 +2307,10 @@
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 22
+              "source_items_checked": 23
             }
           },
-          "context_updated_at": "2026-08-23T09:11:59.245075+00:00",
+          "context_updated_at": "2026-08-23T13:13:37.359991+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 86,
@@ -2330,10 +2331,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 1,
-              "availability_items": 19,
+              "availability_items": 21,
               "official_items": 4,
-              "match_items": 1,
-              "team_items": 51,
+              "match_items": 2,
+              "team_items": 54,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -2341,7 +2342,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (46.8%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 15o con 43 pts en LaLiga 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 5 posibles salidas; 2 noticias de plantilla | Visitante: temporada anterior: 4o con 69 pts en LaLiga 25/26; 5 posibles altas u operaciones; 4 posibles salidas | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El local descansó 14 días vs 10 días del visitante. Ligera ventaja física para el local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (45.5%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 15o con 43 pts en LaLiga 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 5 posibles salidas; 2 noticias de plantilla | Visitante: temporada anterior: 4o con 69 pts en LaLiga 25/26; 5 posibles altas u operaciones; 4 posibles salidas | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El local descansó 14 días vs 10 días del visitante. Ligera ventaja física para el local.",
           "analysis_ready": true
         },
         {
@@ -3163,14 +3164,14 @@
           "kickoff": "2026-08-30T17:30:00Z",
           "bookmaker": "1xBet",
           "odds": {
-            "1": 2.73,
-            "X": 3.3,
-            "2": 2.89
+            "1": 2.86,
+            "X": 3.29,
+            "2": 2.77
           },
           "normalized_percent": {
-            "1": 36.08,
-            "X": 29.84,
-            "2": 34.08
+            "1": 34.46,
+            "X": 29.96,
+            "2": 35.58
           },
           "official_percent": {},
           "home_table": {
@@ -3816,7 +3817,7 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 3
+              "source_items_checked": 7
             },
             "away": {
               "team": "Valencia",
@@ -3826,7 +3827,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-08-23T09:12:02.391038+00:00",
+          "context_updated_at": "2026-08-23T13:26:46.472171+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -3849,7 +3850,7 @@
               "roster_status": "partial_verification",
               "injury_items": 0,
               "availability_items": 7,
-              "official_items": 2,
+              "official_items": 6,
               "match_items": 0,
               "team_items": 33,
               "season_transition_items": 26,
@@ -3859,7 +3860,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (36.1%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 4 posibles altas u operaciones; 1 salidas confirmadas; 1 posibles salidas; 1 cambios de entrenador; 4 señales de pretemporada; 1 señales de ascenso/descenso | Visitante: temporada anterior: 8o con 50 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 salidas confirmadas; 1 posibles salidas; 1 noticias de plantilla; 1 señales de vestuario | Calendario futuro con 4 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 15 días vs 13 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (35.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 4 posibles altas u operaciones; 1 salidas confirmadas; 1 posibles salidas; 1 cambios de entrenador; 4 señales de pretemporada; 1 señales de ascenso/descenso | Visitante: temporada anterior: 8o con 50 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 salidas confirmadas; 1 posibles salidas; 1 noticias de plantilla; 1 señales de vestuario | Calendario futuro con 4 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 15 días vs 13 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         },
         {
@@ -3872,14 +3873,14 @@
           "kickoff": "2026-08-30T19:30:00Z",
           "bookmaker": "1xBet",
           "odds": {
-            "1": 2.43,
-            "X": 3.42,
-            "2": 3.21
+            "1": 2.46,
+            "X": 3.44,
+            "2": 3.15
           },
           "normalized_percent": {
-            "1": 40.53,
-            "X": 28.79,
-            "2": 30.68
+            "1": 40.06,
+            "X": 28.65,
+            "2": 31.29
           },
           "official_percent": {},
           "home_table": {
@@ -4377,7 +4378,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-23T09:12:05.205566+00:00",
+          "context_updated_at": "2026-08-23T13:26:47.987431+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -4408,7 +4409,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (40.5%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 7o con 51 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 salidas confirmadas; 1 noticias de plantilla | Visitante: temporada anterior: 8o con 50 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 posibles salidas; 2 cambios de entrenador | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (15 vs 15 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (40.1%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 7o con 51 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 salidas confirmadas; 1 noticias de plantilla | Visitante: temporada anterior: 8o con 50 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 posibles salidas; 2 cambios de entrenador | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (15 vs 15 días).",
           "analysis_ready": true
         },
         {
@@ -5006,9 +5007,9 @@
           },
           "travel_km": 326.2,
           "weather": {
-            "temperature_c": 32.4,
-            "precipitation_probability": 20,
-            "wind_speed_kmh": 22.2
+            "temperature_c": 31.1,
+            "precipitation_probability": 15,
+            "wind_speed_kmh": 28.9
           },
           "referee": {
             "name": "no confirmado",
@@ -6474,7 +6475,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs Almería (2º) | casa vs Las Palmas (6º) | casa vs Girona (8º) | fuera vs Tenerife (3º) | casa vs Leganés (9º)",
-          "future_away": "casa vs FC Andorra (1º) | casa vs Real Oviedo (13º) | fuera vs Ceuta (22º) | casa vs Córdoba (16º) | fuera vs Las Palmas (6º)",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -7509,8 +7510,8 @@
           "slot": "12.",
           "local": "EIBAR (F)",
           "visitante": "ESPANYOL (F)",
-          "league": "Spanish La Liga 2",
-          "league_key": "sportsdb_4400",
+          "league": "Spanish Liga F",
+          "league_key": "sportsdb_5106",
           "league_source": "TheSportsDB",
           "kickoff": "2026-08-29T15:00:00Z",
           "bookmaker": "",
@@ -7915,8 +7916,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs FC Andorra (-) | casa vs Granada (-) | fuera vs Celta Fortuna (-) | fuera vs Eldense (-) | casa vs Las Palmas (-)",
-          "future_away": "sin calendario detectado",
+          "future_home": "sin calendario detectado",
+          "future_away": "casa vs Badalona Women (-) | fuera vs Athletic Club Women (-) | casa vs Madrid CFF (-) | fuera vs Deportivo de La Coruña Women (-) | casa vs Alavés Gloriosas (-)",
           "history_quality": {
             "valid": false,
             "reason": "tabla vacia",
@@ -8603,9 +8604,9 @@
           },
           "travel_km": 421.8,
           "weather": {
-            "temperature_c": 17.9,
+            "temperature_c": 17.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 10.3
+            "wind_speed_kmh": 9.3
           },
           "referee": {
             "name": "no confirmado",
@@ -9594,9 +9595,9 @@
           },
           "travel_km": 0.0,
           "weather": {
-            "temperature_c": 24.9,
+            "temperature_c": 25.1,
             "precipitation_probability": 30,
-            "wind_speed_kmh": 19.3
+            "wind_speed_kmh": 19.5
           },
           "referee": {
             "name": "no confirmado",
@@ -10287,7 +10288,7 @@
               "source_items_checked": 22
             }
           },
-          "context_updated_at": "2026-08-23T09:20:58.758872+00:00",
+          "context_updated_at": "2026-08-23T13:26:52.653077+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -11043,7 +11044,7 @@
               "source_items_checked": 16
             }
           },
-          "context_updated_at": "2026-08-23T09:21:15.216198+00:00",
+          "context_updated_at": "2026-08-23T13:26:53.619267+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -11804,10 +11805,10 @@
               ],
               "count": 3,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 25
+              "source_items_checked": 29
             }
           },
-          "context_updated_at": "2026-08-23T09:21:29.021687+00:00",
+          "context_updated_at": "2026-08-23T13:27:19.140296+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -11830,7 +11831,7 @@
               "roster_status": "confirmed_absences",
               "injury_items": 5,
               "availability_items": 31,
-              "official_items": 3,
+              "official_items": 7,
               "match_items": 8,
               "team_items": 55,
               "season_transition_items": 28,
@@ -12482,7 +12483,7 @@
             "wind_speed_kmh": 4.8
           },
           "referee": {
-            "name": "Mundo Deportivo",
+            "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs Sevilla (4º) | fuera vs Deportivo Alavés (1º) | casa vs Real Sociedad (3º) | fuera vs Racing de Santander (5º) | casa vs Athletic Bilbao (10º)",
@@ -12554,14 +12555,14 @@
               ],
               "count": 5,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 17
+              "source_items_checked": 19
             }
           },
-          "context_updated_at": "2026-08-23T09:21:31.339852+00:00",
+          "context_updated_at": "2026-08-23T13:27:21.842784+00:00",
           "data_confidence": {
-            "nivel": "alta",
-            "score": 71,
-            "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
+            "nivel": "media",
+            "score": 66,
+            "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
               "liga identificada",
               "clima",
@@ -12572,23 +12573,24 @@
             ],
             "faltan": [
               "cuotas/referencia 1X2",
-              "porcentajes de quiniela"
+              "porcentajes de quiniela",
+              "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 5,
-              "availability_items": 18,
+              "availability_items": 22,
               "official_items": 6,
               "match_items": 6,
-              "team_items": 37,
+              "team_items": 39,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "confirmed_absences",
-              "referee_confirmed": true
+              "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 8o con 50 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 salidas confirmadas; 2 posibles salidas; 1 noticias de plantilla; 1 señales de vestuario | Visitante: temporada anterior: 3o con 72 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 2 señales de pretemporada | Calendario futuro con 5 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (21 vs 20 días).",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 8o con 50 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 salidas confirmadas; 2 posibles salidas; 1 noticias de plantilla; 1 señales de vestuario | Visitante: temporada anterior: 3o con 72 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 2 señales de pretemporada | Calendario futuro con 5 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (21 vs 20 días).",
           "analysis_ready": true
         },
         {
@@ -13225,7 +13227,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 7
+              "source_items_checked": 6
             },
             "away": {
               "team": "CA Osasuna",
@@ -13235,7 +13237,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-08-23T09:21:33.564576+00:00",
+          "context_updated_at": "2026-08-23T13:27:23.468223+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 55,
@@ -13261,7 +13263,7 @@
               "availability_items": 4,
               "official_items": 8,
               "match_items": 0,
-              "team_items": 31,
+              "team_items": 30,
               "season_transition_items": 28,
               "verified_teams": 1,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -13942,35 +13944,11 @@
                   "source": "101TV",
                   "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQV0hfc1g2UVREZE14ZGtXemMwM0E4Y2N6N21sdFJsdFZTemRGY0wtRGlVdG1EdGp5M3F0a0E1Z3FlNm1OWThTd0p1Z1BzNmVoLXM0VHNOc3pQR1BJLTc1SUZKaDg0S2JaSTdrak5oVURTZ2JOMms0b3JoY1lLNjN3WjFyUnE2ZzF3MUxaV1RxUGtvLUlZTFA2RXBPWQ?oc=5",
                   "published_at": "Mon, 17 Aug 2026 12:21:00 GMT"
-                },
-                {
-                  "player_name": "Consecuencias",
-                  "status": "out",
-                  "headline": "Consecuencias del Málaga - Fulham: Niño, baja para el Metropolitano - MARCA",
-                  "source": "MARCA",
-                  "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPa29XTnNSQ2dOOWgxbTRycEQ2MGc4QnlhcU5RNVlHSXpQYURNUkM3TWVKdl8wTDRhRURPRFZfekxubWtoT2RVem1HNnZ0ZWphSm4tMXRMcWVyUmJmT2ZQd21KUmU3NHdPbC1DcVVTZFFQbVBDMjZMYUhoSVd5Zk5qUXF3MFU2WDlnM2tSUGIwTXV6eDE0ZGhaRzFNeXdXcTdZdHY4ZTJn0gGmAUFVX3lxTE5zSE1wME14bU5RSXBLUEtVNEZZdG5QbF9RcE1RQ1pRa1BmZ2k5MWdtRHVNQkk5RlFGaUNCRnBPczQ1eG1KY3NOWDY1VF93Q24zYWFXWkdtUURkNEpGem1GQk5mR2lPTHA4dmpDTnNPbGQwdldzTUxuOWhEeW4yVjdUTUxsaWRYR2dJOEpFZ0pBOHNtLVVONC1fTHNyWUxralJMbm56Y3c?oc=5",
-                  "published_at": "Thu, 13 Aug 2026 07:00:00 GMT"
-                },
-                {
-                  "player_name": "Fulham",
-                  "status": "out",
-                  "headline": "Consecuencias del Málaga - Fulham: Niño, baja para el Metropolitano - MARCA",
-                  "source": "MARCA",
-                  "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPa29XTnNSQ2dOOWgxbTRycEQ2MGc4QnlhcU5RNVlHSXpQYURNUkM3TWVKdl8wTDRhRURPRFZfekxubWtoT2RVem1HNnZ0ZWphSm4tMXRMcWVyUmJmT2ZQd21KUmU3NHdPbC1DcVVTZFFQbVBDMjZMYUhoSVd5Zk5qUXF3MFU2WDlnM2tSUGIwTXV6eDE0ZGhaRzFNeXdXcTdZdHY4ZTJn0gGmAUFVX3lxTE5zSE1wME14bU5RSXBLUEtVNEZZdG5QbF9RcE1RQ1pRa1BmZ2k5MWdtRHVNQkk5RlFGaUNCRnBPczQ1eG1KY3NOWDY1VF93Q24zYWFXWkdtUURkNEpGem1GQk5mR2lPTHA4dmpDTnNPbGQwdldzTUxuOWhEeW4yVjdUTUxsaWRYR2dJOEpFZ0pBOHNtLVVONC1fTHNyWUxralJMbm56Y3c?oc=5",
-                  "published_at": "Thu, 13 Aug 2026 07:00:00 GMT"
-                },
-                {
-                  "player_name": "Niño",
-                  "status": "out",
-                  "headline": "Consecuencias del Málaga - Fulham: Niño, baja para el Metropolitano - MARCA",
-                  "source": "MARCA",
-                  "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPa29XTnNSQ2dOOWgxbTRycEQ2MGc4QnlhcU5RNVlHSXpQYURNUkM3TWVKdl8wTDRhRURPRFZfekxubWtoT2RVem1HNnZ0ZWphSm4tMXRMcWVyUmJmT2ZQd21KUmU3NHdPbC1DcVVTZFFQbVBDMjZMYUhoSVd5Zk5qUXF3MFU2WDlnM2tSUGIwTXV6eDE0ZGhaRzFNeXdXcTdZdHY4ZTJn0gGmAUFVX3lxTE5zSE1wME14bU5RSXBLUEtVNEZZdG5QbF9RcE1RQ1pRa1BmZ2k5MWdtRHVNQkk5RlFGaUNCRnBPczQ1eG1KY3NOWDY1VF93Q24zYWFXWkdtUURkNEpGem1GQk5mR2lPTHA4dmpDTnNPbGQwdldzTUxuOWhEeW4yVjdUTUxsaWRYR2dJOEpFZ0pBOHNtLVVONC1fTHNyWUxralJMbm56Y3c?oc=5",
-                  "published_at": "Thu, 13 Aug 2026 07:00:00 GMT"
                 }
               ],
-              "count": 8,
+              "count": 5,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 28
+              "source_items_checked": 26
             },
             "away": {
               "team": "LEVANTE",
@@ -13980,7 +13958,7 @@
               "source_items_checked": 18
             }
           },
-          "context_updated_at": "2026-08-23T09:21:34.048243+00:00",
+          "context_updated_at": "2026-08-23T13:27:27.396765+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -14001,11 +13979,11 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 8,
-              "availability_items": 30,
+              "injury_items": 5,
+              "availability_items": 28,
               "official_items": 5,
               "match_items": 8,
-              "team_items": 51,
+              "team_items": 49,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -14739,17 +14717,17 @@
               ],
               "count": 3,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 15
+              "source_items_checked": 14
             },
             "away": {
               "team": "SEVILLA",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 12
+              "source_items_checked": 13
             }
           },
-          "context_updated_at": "2026-08-23T09:21:56.500975+00:00",
+          "context_updated_at": "2026-08-23T13:27:27.779053+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -14770,10 +14748,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 3,
-              "availability_items": 24,
+              "availability_items": 25,
               "official_items": 0,
-              "match_items": 5,
-              "team_items": 48,
+              "match_items": 4,
+              "team_items": 49,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -15289,7 +15267,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-23T09:22:00.070118+00:00",
+          "context_updated_at": "2026-08-23T13:27:29.209917+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 54,
@@ -15387,7 +15365,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 0,
+              "score": 8,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -16029,17 +16007,17 @@
               ],
               "count": 5,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 11
+              "source_items_checked": 15
             },
             "away": {
               "team": "GIRONA",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 1
+              "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-08-23T09:24:41.973275+00:00",
+          "context_updated_at": "2026-08-23T13:30:40.492251+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -16061,10 +16039,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 5,
-              "availability_items": 13,
+              "availability_items": 17,
               "official_items": 0,
-              "match_items": 1,
-              "team_items": 40,
+              "match_items": 2,
+              "team_items": 45,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -16694,8 +16672,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Córdoba (16º) | casa vs Celta Fortuna (11º) | fuera vs Mallorca (4º) | casa vs Burgos (5º) | casa vs Leganés (9º)",
-          "future_away": "casa vs Las Palmas (6º) | casa vs Girona (8º) | fuera vs Tenerife (3º) | casa vs Leganés (9º) | casa vs Sporting de Gijón (15º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -16715,39 +16693,40 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 9
+              "source_items_checked": 8
             },
             "away": {
               "team": "Cadiz CF",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 5
+              "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-23T09:24:55.177250+00:00",
+          "context_updated_at": "2026-08-23T13:30:42.375396+00:00",
           "data_confidence": {
             "nivel": "media",
-            "score": 63,
+            "score": 53,
             "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
               "temporada anterior de ambos equipos",
-              "mercado, plantilla y pretemporada investigados"
+              "mercado, plantilla y pretemporada investigados",
+              "H2H"
             ],
             "faltan": [
               "cuotas/referencia 1X2",
               "porcentajes de quiniela",
+              "calendario próximo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 7,
-              "official_items": 5,
+              "availability_items": 4,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 35,
               "season_transition_items": 28,
@@ -16757,7 +16736,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 3o con 74 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 posibles salidas | Visitante: temporada anterior: 18o con 43 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 3 cambios de entrenador; 2 señales de pretemporada | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 21 días vs 19 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 3o con 74 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 posibles salidas | Visitante: temporada anterior: 18o con 43 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 3 cambios de entrenador; 2 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 21 días vs 19 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         },
         {
@@ -17420,7 +17399,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "sin calendario detectado",
-          "future_away": "fuera vs Sevilla Women (4º) | casa vs Atlético Madrid Femenino (3º) | fuera vs Alavés Gloriosas (1º) | fuera vs Logroño United (13º) | casa vs Real Madrid Femenino (3º)",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 13,
@@ -17437,35 +17416,10 @@
           "availability": {
             "home": {
               "team": "SEVILLA (F)",
-              "items": [
-                {
-                  "player_name": "Barcelona",
-                  "status": "out",
-                  "headline": "FC Barcelona club badge What's on this weekend? Find out what's happening at Barça with this long list of activities in the coming days Feature Published date 21 Aug 26",
-                  "source": "Web oficial",
-                  "link": "https://www.fcbarcelona.com/en/tickets/weekend-plans-barcelona?btm_source=WebBarca&btm_medium=HeroBanner&btm_campaign=WeekendBlaugrana_ORG_TKT_WEB_WebBarca_IMG_WW_EN",
-                  "published_at": ""
-                },
-                {
-                  "player_name": "What",
-                  "status": "out",
-                  "headline": "FC Barcelona club badge What's on this weekend? Find out what's happening at Barça with this long list of activities in the coming days Feature Published date 21 Aug 26",
-                  "source": "Web oficial",
-                  "link": "https://www.fcbarcelona.com/en/tickets/weekend-plans-barcelona?btm_source=WebBarca&btm_medium=HeroBanner&btm_campaign=WeekendBlaugrana_ORG_TKT_WEB_WebBarca_IMG_WW_EN",
-                  "published_at": ""
-                },
-                {
-                  "player_name": "Find",
-                  "status": "out",
-                  "headline": "FC Barcelona club badge What's on this weekend? Find out what's happening at Barça with this long list of activities in the coming days Feature Published date 21 Aug 26",
-                  "source": "Web oficial",
-                  "link": "https://www.fcbarcelona.com/en/tickets/weekend-plans-barcelona?btm_source=WebBarca&btm_medium=HeroBanner&btm_campaign=WeekendBlaugrana_ORG_TKT_WEB_WebBarca_IMG_WW_EN",
-                  "published_at": ""
-                }
-              ],
-              "count": 3,
-              "verification_status": "confirmed_absences",
-              "source_items_checked": 13
+              "items": [],
+              "count": 0,
+              "verification_status": "sources_checked_no_confirmed_absence",
+              "source_items_checked": 9
             },
             "away": {
               "team": "BARCELONA (F)",
@@ -17485,65 +17439,42 @@
                   "source": "DAZN",
                   "link": "https://news.google.com/rss/articles/CBMigAJBVV95cUxObzlKSnlZVVJ6V0pEVi01STBQX1VtZEdWQzNPUmktdlJ2Ymh0MDFhT1NNS194VUJCTFZhUG0zellhN2t1OXdFb3ByTnJLOXB1QXd2cHVqT1M5bG1CUFlvUUc0cTJ4VzlnTFhhQnp1SlpnRV80bFB6MEU5WUkxUWpBZEQ5WnlPaWVQOG5QQVNUeWg1YVljNEZlQml4Mjg1T2YwaERabm41UG5PRjNDU2Z5SF9JOEtQVFFBMzQxa1lYbkJhODJLR3BkV29LLWkwc21PbGhVSjJtUnp6eXhMbnBfeVZZZGwzYWxUbEczLTFHeVgxS2ZSNGlCWmJmX3dxSk5a?oc=5",
                   "published_at": "Sun, 16 Aug 2026 16:44:56 GMT"
-                },
-                {
-                  "player_name": "What",
-                  "status": "out",
-                  "headline": "FC Barcelona club badge What's on this weekend? Find out what's happening at Barça with this long list of activities in the coming days Feature Published date 21 Aug 26",
-                  "source": "Web oficial",
-                  "link": "https://www.fcbarcelona.com/en/tickets/weekend-plans-barcelona?btm_source=WebBarca&btm_medium=HeroBanner&btm_campaign=WeekendBlaugrana_ORG_TKT_WEB_WebBarca_IMG_WW_EN",
-                  "published_at": ""
-                },
-                {
-                  "player_name": "Find",
-                  "status": "out",
-                  "headline": "FC Barcelona club badge What's on this weekend? Find out what's happening at Barça with this long list of activities in the coming days Feature Published date 21 Aug 26",
-                  "source": "Web oficial",
-                  "link": "https://www.fcbarcelona.com/en/tickets/weekend-plans-barcelona?btm_source=WebBarca&btm_medium=HeroBanner&btm_campaign=WeekendBlaugrana_ORG_TKT_WEB_WebBarca_IMG_WW_EN",
-                  "published_at": ""
-                },
-                {
-                  "player_name": "Feature Published",
-                  "status": "out",
-                  "headline": "FC Barcelona club badge What's on this weekend? Find out what's happening at Barça with this long list of activities in the coming days Feature Published date 21 Aug 26",
-                  "source": "Web oficial",
-                  "link": "https://www.fcbarcelona.com/en/tickets/weekend-plans-barcelona?btm_source=WebBarca&btm_medium=HeroBanner&btm_campaign=WeekendBlaugrana_ORG_TKT_WEB_WebBarca_IMG_WW_EN",
-                  "published_at": ""
                 }
               ],
-              "count": 5,
+              "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 11
+              "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-08-23T09:25:12.924667+00:00",
+          "context_updated_at": "2026-08-23T13:30:44.294132+00:00",
           "data_confidence": {
             "nivel": "media",
-            "score": 66,
+            "score": 56,
             "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
               "temporada anterior de ambos equipos",
-              "mercado, plantilla y pretemporada investigados"
+              "mercado, plantilla y pretemporada investigados",
+              "H2H"
             ],
             "faltan": [
               "cuotas/referencia 1X2",
               "porcentajes de quiniela",
+              "calendario próximo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 8,
-              "availability_items": 16,
-              "official_items": 8,
+              "injury_items": 2,
+              "availability_items": 12,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 42,
               "season_transition_items": 28,
               "verified_teams": 2,
-              "home_roster_status": "confirmed_absences",
+              "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
@@ -17755,7 +17686,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-08-23T09:27:15.590603+00:00",
+          "context_updated_at": "2026-08-23T13:33:31.016282+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 22,
@@ -18233,7 +18164,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-08-23T09:27:24.884632+00:00",
+          "context_updated_at": "2026-08-23T13:33:32.771519+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -18475,7 +18406,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-08-23T09:30:19.839745+00:00",
+          "context_updated_at": "2026-08-23T13:36:46.480406+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 37,
@@ -19164,7 +19095,7 @@
               "source_items_checked": 27
             }
           },
-          "context_updated_at": "2026-08-23T09:30:33.547723+00:00",
+          "context_updated_at": "2026-08-23T13:36:47.041884+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -19225,9 +19156,9 @@
             "2": 5.6
           },
           "normalized_percent": {
-            "1": 56.09,
-            "X": 26.58,
-            "2": 17.33
+            "1": 70.0,
+            "X": 20.0,
+            "2": 10.0
           },
           "official_percent": {
             "1": 70.0,
@@ -19823,9 +19754,9 @@
             "2": 2.95
           },
           "normalized_percent": {
-            "1": 38.52,
-            "X": 29.49,
-            "2": 31.99
+            "1": 43.0,
+            "X": 32.0,
+            "2": 25.0
           },
           "official_percent": {
             "1": 43.0,
@@ -20513,9 +20444,9 @@
             "2": 1.46
           },
           "normalized_percent": {
-            "1": 12.5,
-            "X": 20.74,
-            "2": 66.76
+            "1": 6.0,
+            "X": 9.0,
+            "2": 85.0
           },
           "official_percent": {
             "1": 6.0,
@@ -21161,7 +21092,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs Real Sociedad (3º)",
-          "future_away": "casa vs Real Sociedad (3º)",
+          "future_away": "casa vs Málaga (11º) | fuera vs Real Betis (1º) | casa vs Rayo Vallecano (9º) | fuera vs Elche (8º) | fuera vs Atlético Madrid (3º)",
           "history_quality": {
             "valid": true,
             "teams": 13,
@@ -21324,14 +21255,14 @@
           "kickoff": "2026-08-23T17:30:00Z",
           "bookmaker": "Coolbet",
           "odds": {
-            "1": 2.2,
-            "X": 3.0,
-            "2": 4.1
+            "1": 2.28,
+            "X": 2.95,
+            "2": 3.95
           },
           "normalized_percent": {
-            "1": 44.05,
-            "X": 32.31,
-            "2": 23.64
+            "1": 42.55,
+            "X": 32.89,
+            "2": 24.56
           },
           "official_percent": {
             "1": 53.0,
@@ -21939,8 +21870,8 @@
             "name": "Juan Martínez",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Osasuna (7º) | casa vs Celta Vigo (12º) | casa vs Deportivo de A Coruña (7º) | fuera vs Real Betis (1º) | casa vs Málaga (11º)",
-          "future_away": "casa vs Elche (8º) | fuera vs Rayo Vallecano (9º) | casa vs Deportivo Alavés (1º) | fuera vs Barcelona (6º) | fuera vs Celta Vigo (12º)",
+          "future_home": "fuera vs Barcelona (6º) | casa vs Rayo Vallecano (9º) | fuera vs Athletic Bilbao (10º)",
+          "future_away": "casa vs Valencia (10º) | fuera vs Osasuna (7º) | casa vs Espanyol (2º)",
           "history_quality": {
             "valid": true,
             "teams": 13,
@@ -21960,17 +21891,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 14
+              "source_items_checked": 13
             },
             "away": {
               "team": "Real Racing Club de Santander",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 11
+              "source_items_checked": 10
             }
           },
-          "context_updated_at": "2026-08-23T09:11:11.165078+00:00",
+          "context_updated_at": "2026-08-23T13:12:32.530999+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 98,
@@ -21989,9 +21920,9 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 8,
+              "availability_items": 7,
               "official_items": 8,
-              "match_items": 3,
+              "match_items": 2,
               "team_items": 38,
               "season_transition_items": 28,
               "verified_teams": 2,
@@ -22000,7 +21931,7 @@
               "referee_confirmed": true
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (44.0%), pero el público de la quiniela lo sobrevalora aún más (53.0%). Hay valor matemático en buscar la sorpresa o el empate. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 7o con 51 pts en LaLiga 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 señales de pretemporada; 1 noticias de plantilla | Visitante: temporada anterior: ascendido: 1o con 82 pts en Segunda Division 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas; 1 noticias de plantilla | local: Getafe tiene UEFA Conference League Qualifying vs Partizan Belgrade en 3.8 dias (riesgo medium) | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (42.5%), pero el público de la quiniela lo sobrevalora aún más (53.0%). Hay valor matemático en buscar la sorpresa o el empate. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 7o con 51 pts en LaLiga 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 señales de pretemporada; 1 noticias de plantilla | Visitante: temporada anterior: ascendido: 1o con 82 pts en Segunda Division 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas; 1 noticias de plantilla | local: Getafe tiene UEFA Conference League Qualifying vs Partizan Belgrade en 3.8 dias (riesgo medium) | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -22013,14 +21944,14 @@
           "kickoff": "2026-08-23T19:30:00Z",
           "bookmaker": "Coolbet",
           "odds": {
-            "1": 8.5,
-            "X": 5.8,
-            "2": 1.35
+            "1": 8.0,
+            "X": 5.55,
+            "2": 1.38
           },
           "normalized_percent": {
-            "1": 11.41,
-            "X": 16.73,
-            "2": 71.86
+            "1": 12.14,
+            "X": 17.5,
+            "2": 70.37
           },
           "official_percent": {
             "1": 5.0,
@@ -22636,8 +22567,8 @@
             "name": "Alejandro Quintero",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Racing de Santander (5º) | casa vs Real Sociedad (3º) | fuera vs Athletic Bilbao (10º) | casa vs Real Madrid (3º) | fuera vs Espanyol (2º)",
-          "future_away": "casa vs Rayo Vallecano (9º) | fuera vs Valencia (10º) | fuera vs Levante (13º) | casa vs Racing de Santander (5º) | fuera vs Sevilla (4º)",
+          "future_home": "fuera vs Racing Santander (5º) | casa vs Real Sociedad (3º) | fuera vs Athletic Club (10º) | casa vs Real Madrid (3º) | fuera vs Espanyol (2º)",
+          "future_away": "casa vs Athletic Club (10º) | casa vs Rayo Vallecano (9º) | fuera vs Valencia (10º) | fuera vs Levante (13º) | casa vs Racing Santander (5º)",
           "history_quality": {
             "valid": true,
             "teams": 13,
@@ -22708,7 +22639,7 @@
               "source_items_checked": 13
             }
           },
-          "context_updated_at": "2026-08-23T09:11:28.538865+00:00",
+          "context_updated_at": "2026-08-23T13:12:34.443552+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -22736,7 +22667,7 @@
               "referee_confirmed": true
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (71.9%), pero el público de la quiniela lo sobrevalora aún más (88.0%). Hay valor matemático en buscar la sorpresa o el empate. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 13o con 43 pts en LaLiga 25/26; 5 posibles altas u operaciones; 2 señales de pretemporada; 1 noticias de plantilla | Visitante: temporada anterior: 3o con 72 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 2 señales de pretemporada | Calendario futuro con 4 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (70.4%), pero el público de la quiniela lo sobrevalora aún más (88.0%). Hay valor matemático en buscar la sorpresa o el empate. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 13o con 43 pts en LaLiga 25/26; 5 posibles altas u operaciones; 2 señales de pretemporada; 1 noticias de plantilla | Visitante: temporada anterior: 3o con 72 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 2 señales de pretemporada | Calendario futuro con 4 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -23356,16 +23287,16 @@
           },
           "travel_km": 387.0,
           "weather": {
-            "temperature_c": 32.4,
-            "precipitation_probability": 20,
-            "wind_speed_kmh": 22.2
+            "temperature_c": 31.1,
+            "precipitation_probability": 15,
+            "wind_speed_kmh": 28.9
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Getafe (12º) | fuera vs Deportivo Alavés (1º) | casa vs Espanyol (2º) | fuera vs Atlético Madrid (3º) | casa vs Rayo Vallecano (9º)",
-          "future_away": "casa vs Real Betis (1º) | fuera vs Málaga (11º) | casa vs Barcelona (6º) | casa vs Athletic Bilbao (10º) | fuera vs Villarreal (6º)",
+          "future_home": "fuera vs Celta Vigo (12º) | casa vs Getafe (12º) | fuera vs Alavés (1º) | casa vs Espanyol (2º) | fuera vs Atlético Madrid (3º)",
+          "future_away": "casa vs Real Betis (1º) | fuera vs Málaga (11º) | casa vs Barcelona (6º) | casa vs Athletic Club (10º) | fuera vs Villarreal (6º)",
           "history_quality": {
             "valid": true,
             "teams": 13,
@@ -23385,17 +23316,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 6
+              "source_items_checked": 7
             },
             "away": {
               "team": "Levante",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 12
+              "source_items_checked": 13
             }
           },
-          "context_updated_at": "2026-08-23T09:11:42.419379+00:00",
+          "context_updated_at": "2026-08-23T13:12:41.695302+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 93,
@@ -23415,9 +23346,9 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 10,
+              "availability_items": 11,
               "official_items": 8,
-              "match_items": 2,
+              "match_items": 3,
               "team_items": 34,
               "season_transition_items": 28,
               "verified_teams": 2,
@@ -23439,14 +23370,14 @@
           "kickoff": "2026-08-24T19:30:00Z",
           "bookmaker": "Betclic (FR)",
           "odds": {
-            "1": 2.45,
-            "X": 3.0,
-            "2": 3.05
+            "1": 2.52,
+            "X": 3.02,
+            "2": 3.02
           },
           "normalized_percent": {
-            "1": 38.17,
-            "X": 31.17,
-            "2": 30.66
+            "1": 37.47,
+            "X": 31.27,
+            "2": 31.27
           },
           "official_percent": {
             "1": 41.0,
@@ -24063,8 +23994,8 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Real Madrid (3º) | casa vs Levante (13º) | fuera vs Celta Vigo (12º) | casa vs Villarreal (6º) | fuera vs Getafe (12º)",
-          "future_away": "casa vs Valencia (10º) | fuera vs Villarreal (6º) | fuera vs Getafe (12º) | casa vs Sevilla (4º) | casa vs Real Betis (1º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "casa vs Valencia (10º)",
           "history_quality": {
             "valid": true,
             "teams": 13,
@@ -24125,7 +24056,7 @@
               ],
               "count": 5,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 18
+              "source_items_checked": 17
             },
             "away": {
               "team": "Deportivo La Coruña",
@@ -24135,7 +24066,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-08-23T09:11:55.678900+00:00",
+          "context_updated_at": "2026-08-23T13:12:42.966503+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 90,
@@ -24157,7 +24088,7 @@
               "roster_status": "partial_verification",
               "injury_items": 5,
               "availability_items": 13,
-              "official_items": 1,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 46,
               "season_transition_items": 26,
@@ -24167,7 +24098,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (38.2%) y el publico de Loterias lo refleja de forma similar (41.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: ascendido: 4o con 73 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 posibles salidas; 1 noticias de plantilla | Visitante: temporada anterior: sin registro en 25/26; 4 posibles altas u operaciones; 1 salidas confirmadas; 1 posibles salidas; 1 cambios de entrenador; 4 señales de pretemporada; 1 señales de ascenso/descenso | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 7 días vs 5 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (37.5%) y el publico de Loterias lo refleja de forma similar (41.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: ascendido: 4o con 73 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 posibles salidas; 1 noticias de plantilla | Visitante: temporada anterior: sin registro en 25/26; 4 posibles altas u operaciones; 1 salidas confirmadas; 1 posibles salidas; 1 cambios de entrenador; 4 señales de pretemporada; 1 señales de ascenso/descenso | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 7 días vs 5 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         },
         {
@@ -24185,9 +24116,9 @@
             "2": 4.6
           },
           "normalized_percent": {
-            "1": 50.47,
-            "X": 29.78,
-            "2": 19.75
+            "1": 57.0,
+            "X": 28.0,
+            "2": 15.0
           },
           "official_percent": {
             "1": 57.0,
@@ -24859,8 +24790,8 @@
             "name": "Gorka Etayo",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Albacete (17º)",
-          "future_away": "casa vs Eldense (21º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -24893,7 +24824,7 @@
           "context_updated_at": "2026-08-23T09:12:14.684535+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 98,
+            "score": 88,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -24901,9 +24832,10 @@
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo"
+              "temporada anterior de ambos equipos"
             ],
             "faltan": [
+              "calendario próximo",
               "H2H"
             ],
             "cobertura_cualitativa": {
@@ -24938,9 +24870,9 @@
             "2": 2.38
           },
           "normalized_percent": {
-            "1": 32.23,
-            "X": 29.16,
-            "2": 38.6
+            "1": 19.0,
+            "X": 24.0,
+            "2": 57.0
           },
           "official_percent": {
             "1": 19.0,
@@ -25602,8 +25534,8 @@
             "name": "Pablo Morales",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Mallorca (4º)",
-          "future_away": "fuera vs Girona (8º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -25662,7 +25594,7 @@
           "context_updated_at": "2026-08-23T09:12:26.288328+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 100,
+            "score": 96,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -25670,9 +25602,11 @@
               "liga identificada",
               "clima",
               "viaje",
+              "temporada anterior de ambos equipos"
+            ],
+            "faltan": [
               "calendario próximo"
             ],
-            "faltan": [],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 3,
@@ -25705,9 +25639,9 @@
             "2": 3.25
           },
           "normalized_percent": {
-            "1": 42.26,
-            "X": 29.79,
-            "2": 27.95
+            "1": 28.0,
+            "X": 31.0,
+            "2": 41.0
           },
           "official_percent": {
             "1": 28.0,
@@ -26349,8 +26283,8 @@
             "name": "Daniel Palencia",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Leganés (9º)",
-          "future_away": "casa vs Real Valladolid (20º) | fuera vs Almería (2º) | casa vs Las Palmas (6º) | casa vs Girona (8º) | fuera vs Tenerife (3º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -26383,7 +26317,7 @@
           "context_updated_at": "2026-08-23T09:12:48.931904+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 100,
+            "score": 93,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -26391,9 +26325,11 @@
               "liga identificada",
               "clima",
               "viaje",
+              "temporada anterior de ambos equipos"
+            ],
+            "faltan": [
               "calendario próximo"
             ],
-            "faltan": [],
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
@@ -26421,14 +26357,14 @@
           "kickoff": "2026-08-23T15:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 2.24,
-            "X": 2.91,
-            "2": 3.83
+            "1": 2.17,
+            "X": 2.98,
+            "2": 4.21
           },
           "normalized_percent": {
-            "1": 42.47,
-            "X": 32.69,
-            "2": 24.84
+            "1": 44.57,
+            "X": 32.46,
+            "2": 22.97
           },
           "official_percent": {
             "1": 51.0,
@@ -27119,8 +27055,8 @@
             "name": "Juan Manuel Gordillo",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs FC Andorra (1º) | casa vs Granada (12º) | fuera vs Celta Fortuna (11º) | fuera vs Eldense (21º) | casa vs Las Palmas (6º)",
-          "future_away": "fuera vs Cádiz (10º) | casa vs FC Andorra (1º) | casa vs Real Oviedo (13º) | fuera vs Ceuta (22º) | casa vs Córdoba (16º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -27140,20 +27076,20 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 7
+              "source_items_checked": 4
             },
             "away": {
               "team": "Real Valladolid CF",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "verification_status": "not_verified",
+              "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-23T09:13:02.600800+00:00",
+          "context_updated_at": "2026-08-23T13:13:51.042087+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 100,
+            "score": 90,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -27161,24 +27097,27 @@
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo"
+              "temporada anterior de ambos equipos"
             ],
-            "faltan": [],
+            "faltan": [
+              "calendario próximo",
+              "bajas/convocatorias del otro equipo"
+            ],
             "cobertura_cualitativa": {
-              "roster_status": "sources_checked_no_confirmed_absence",
+              "roster_status": "partial_verification",
               "injury_items": 0,
               "availability_items": 9,
-              "official_items": 6,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 37,
               "season_transition_items": 28,
-              "verified_teams": 2,
+              "verified_teams": 1,
               "home_roster_status": "sources_checked_no_confirmed_absence",
-              "away_roster_status": "sources_checked_no_confirmed_absence",
+              "away_roster_status": "not_verified",
               "referee_confirmed": true
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (42.5%), pero el público de la quiniela lo sobrevalora aún más (51.0%). Hay valor matemático en buscar la sorpresa o el empate. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 8o con 67 pts en Segunda Division 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 posibles salidas; 2 cambios de entrenador; 1 bajas/disponibilidad; 5 señales de pretemporada | Visitante: temporada anterior: 17o con 46 pts en Segunda Division 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 5 posibles salidas; 1 señales de pretemporada | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (44.6%) y el publico de Loterias lo refleja de forma similar (51.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 8o con 67 pts en Segunda Division 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 posibles salidas; 2 cambios de entrenador; 1 bajas/disponibilidad; 5 señales de pretemporada | Visitante: temporada anterior: 17o con 46 pts en Segunda Division 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 5 posibles salidas; 1 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
           "analysis_ready": true
         },
         {
@@ -27191,14 +27130,14 @@
           "kickoff": "2026-08-23T17:00:00Z",
           "bookmaker": "Betsson",
           "odds": {
-            "1": 1.52,
-            "X": 3.95,
-            "2": 5.3
+            "1": 1.62,
+            "X": 3.55,
+            "2": 5.1
           },
           "normalized_percent": {
-            "1": 59.82,
-            "X": 23.02,
-            "2": 17.16
+            "1": 56.37,
+            "X": 25.72,
+            "2": 17.91
           },
           "official_percent": {
             "1": 76.0,
@@ -27863,15 +27802,15 @@
           "travel_km": 302.7,
           "weather": {
             "temperature_c": 28.9,
-            "precipitation_probability": 30,
-            "wind_speed_kmh": 24.5
+            "precipitation_probability": 45,
+            "wind_speed_kmh": 19.4
           },
           "referee": {
             "name": "Carlos Castell",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Celta Fortuna (11º) | casa vs Albacete (17º) | fuera vs Girona (8º) | casa vs Tenerife (3º) | fuera vs Leganés (9º)",
-          "future_away": "casa vs Almería (2º) | casa vs Córdoba (16º) | fuera vs Mallorca (4º) | casa vs Real Oviedo (13º) | fuera vs Celta Fortuna (11º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -27890,8 +27829,8 @@
               "team": "CD Castellón",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 8
+              "verification_status": "not_verified",
+              "source_items_checked": 5
             },
             "away": {
               "team": "Sabadell FC",
@@ -27910,10 +27849,10 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-08-23T09:13:27.063362+00:00",
+          "context_updated_at": "2026-08-23T13:14:01.005473+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 100,
+            "score": 85,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -27921,26 +27860,28 @@
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo"
+              "temporada anterior de ambos equipos"
             ],
             "faltan": [
-              "H2H"
+              "calendario próximo",
+              "H2H",
+              "bajas/convocatorias del otro equipo"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "confirmed_absences",
+              "roster_status": "partial_verification",
               "injury_items": 1,
-              "availability_items": 9,
-              "official_items": 3,
+              "availability_items": 8,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 40,
               "season_transition_items": 28,
-              "verified_teams": 2,
-              "home_roster_status": "sources_checked_no_confirmed_absence",
+              "verified_teams": 1,
+              "home_roster_status": "not_verified",
               "away_roster_status": "confirmed_absences",
               "referee_confirmed": true
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (59.8%), pero el público de la quiniela lo sobrevalora aún más (76.0%). Hay valor matemático en buscar la sorpresa o el empate. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 6o con 72 pts en Segunda Division 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 cambios de entrenador; 1 bajas/disponibilidad; 5 señales de pretemporada; 1 señales de ascenso/descenso | Visitante: temporada anterior: sin registro en 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 bajas/disponibilidad; 5 señales de pretemporada | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El local descansó 9 días vs 6 días del visitante. Ligera ventaja física para el local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (56.4%), pero el público de la quiniela lo sobrevalora aún más (76.0%). Hay valor matemático en buscar la sorpresa o el empate. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 6o con 72 pts en Segunda Division 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 cambios de entrenador; 1 bajas/disponibilidad; 5 señales de pretemporada; 1 señales de ascenso/descenso | Visitante: temporada anterior: sin registro en 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 bajas/disponibilidad; 5 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). El local descansó 9 días vs 6 días del visitante. Ligera ventaja física para el local.",
           "analysis_ready": true
         },
         {
@@ -27953,14 +27894,14 @@
           "kickoff": "2026-08-23T17:00:00Z",
           "bookmaker": "Winamax (FR)",
           "odds": {
-            "1": 2.3,
+            "1": 2.1,
             "X": 2.9,
-            "2": 2.9
+            "2": 3.3
           },
           "normalized_percent": {
-            "1": 38.67,
-            "X": 30.67,
-            "2": 30.67
+            "1": 42.36,
+            "X": 30.68,
+            "2": 26.96
           },
           "official_percent": {
             "1": 47.0,
@@ -28641,8 +28582,8 @@
             "name": "Gonzalo Romero",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Tenerife (3º) | casa vs Girona (8º) | casa vs Eldense (21º) | fuera vs FC Andorra (1º) | fuera vs Real Oviedo (13º)",
-          "future_away": "casa vs Real Sociedad B (18º) | fuera vs Real Oviedo (13º) | casa vs Ceuta (22º) | fuera vs Las Palmas (6º) | casa vs Eldense (21º)",
+          "future_home": "sin calendario detectado",
+          "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -28669,13 +28610,13 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 4
+              "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-08-23T09:13:15.707209+00:00",
+          "context_updated_at": "2026-08-23T13:13:53.787833+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 100,
+            "score": 90,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -28683,16 +28624,17 @@
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo"
+              "temporada anterior de ambos equipos"
             ],
             "faltan": [
+              "calendario próximo",
               "bajas/convocatorias del otro equipo"
             ],
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 0,
               "availability_items": 1,
-              "official_items": 3,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 30,
               "season_transition_items": 28,
@@ -28702,7 +28644,7 @@
               "referee_confirmed": true
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (38.7%), pero el público de la quiniela lo sobrevalora aún más (47.0%). Hay valor matemático en buscar la sorpresa o el empate. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 9o con 61 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 3 cambios de entrenador; 2 señales de pretemporada; 1 señales de vestuario | Visitante: temporada anterior: 7o con 72 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 posibles salidas; 1 cambios de entrenador; 4 señales de pretemporada; 1 noticias de plantilla | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (42.4%) y el publico de Loterias lo refleja de forma similar (47.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 9o con 61 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 3 cambios de entrenador; 2 señales de pretemporada; 1 señales de vestuario | Visitante: temporada anterior: 7o con 72 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 posibles salidas; 1 cambios de entrenador; 4 señales de pretemporada; 1 noticias de plantilla | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (6 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -28715,14 +28657,14 @@
           "kickoff": "2026-08-23T19:30:00Z",
           "bookmaker": "Winamax (FR)",
           "odds": {
-            "1": 2.9,
-            "X": 3.1,
-            "2": 2.1
+            "1": 2.55,
+            "X": 3.15,
+            "2": 2.45
           },
           "normalized_percent": {
-            "1": 30.15,
-            "X": 28.21,
-            "2": 41.64
+            "1": 35.08,
+            "X": 28.4,
+            "2": 36.52
           },
           "official_percent": {
             "1": 30.0,
@@ -29337,9 +29279,9 @@
           },
           "travel_km": 1629.7,
           "weather": {
-            "temperature_c": 14.0,
+            "temperature_c": 13.8,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 8.4
+            "wind_speed_kmh": 8.3
           },
           "referee": {
             "name": "Alejandro Morilla",
@@ -29366,17 +29308,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 8
+              "source_items_checked": 11
             },
             "away": {
               "team": "Almería",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 13
+              "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-08-23T09:13:31.791968+00:00",
+          "context_updated_at": "2026-08-23T13:14:09.141929+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -29393,10 +29335,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 7,
-              "official_items": 0,
-              "match_items": 8,
-              "team_items": 33,
+              "availability_items": 9,
+              "official_items": 3,
+              "match_items": 9,
+              "team_items": 35,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -29404,7 +29346,7 @@
               "referee_confirmed": true
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (41.6%) y el publico de Loterias lo refleja de forma similar (41.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 5 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 5 señales de pretemporada | Visitante: temporada anterior: 3o con 74 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 posibles salidas | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (36.5%) y el publico de Loterias lo refleja de forma similar (41.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 5 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 5 señales de pretemporada | Visitante: temporada anterior: 3o con 74 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 posibles salidas | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -29417,14 +29359,14 @@
           "kickoff": "2026-08-23T15:00:00Z",
           "bookmaker": "Betclic (FR)",
           "odds": {
-            "1": 1.85,
-            "X": 3.65,
-            "2": 4.1
+            "1": 1.81,
+            "X": 3.88,
+            "2": 4.2
           },
           "normalized_percent": {
-            "1": 51.07,
-            "X": 25.89,
-            "2": 23.04
+            "1": 52.7,
+            "X": 24.59,
+            "2": 22.71
           },
           "official_percent": {},
           "home_table": {
@@ -30063,16 +30005,16 @@
           },
           "travel_km": 310.6,
           "weather": {
-            "temperature_c": 31.1,
+            "temperature_c": 30.9,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 13.8
+            "wind_speed_kmh": 12.6
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Sevilla (4º) | fuera vs Athletic Bilbao (10º) | fuera vs Real Sociedad (3º) | casa vs Osasuna (7º) | casa vs Real Madrid (3º)",
-          "future_away": "fuera vs Deportivo Alavés (1º) | casa vs Deportivo de A Coruña (7º) | casa vs Real Betis (1º) | fuera vs Málaga (11º) | casa vs Levante (13º)",
+          "future_home": "fuera vs Sevilla (4º) | fuera vs Athletic Club (10º) | fuera vs Real Sociedad (3º) | casa vs Osasuna (7º) | casa vs Real Madrid (3º)",
+          "future_away": "fuera vs Alavés (1º) | casa vs Deportivo (7º) | casa vs Real Betis (1º) | fuera vs Málaga (11º) | casa vs Levante (13º)",
           "history_quality": {
             "valid": true,
             "teams": 13,
@@ -30128,7 +30070,7 @@
               "source_items_checked": 19
             }
           },
-          "context_updated_at": "2026-08-23T09:10:36.812755+00:00",
+          "context_updated_at": "2026-08-23T13:12:25.658651+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 86,
@@ -30160,7 +30102,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (51.1%). | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 4o con 69 pts en LaLiga 25/26; 5 posibles altas u operaciones; 4 posibles salidas | Visitante: temporada anterior: 3o con 72 pts en LaLiga 25/26; 5 posibles altas u operaciones; 3 posibles salidas; 3 señales de pretemporada; 1 noticias de plantilla | Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 7 días vs 4 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (52.7%). | sin clasificacion util: jornada partida: solo 13 de 20 equipos figuran en la tabla. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 4o con 69 pts en LaLiga 25/26; 5 posibles altas u operaciones; 4 posibles salidas | Visitante: temporada anterior: 3o con 72 pts en LaLiga 25/26; 5 posibles altas u operaciones; 3 posibles salidas; 3 señales de pretemporada; 1 noticias de plantilla | Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 7 días vs 4 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         }
       ]
