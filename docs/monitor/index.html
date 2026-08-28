@@ -32,41 +32,11 @@
     .line{margin-top:8px;font-size:13px;line-height:1.5}
     .line strong{color:var(--accent)}
     .brief{white-space:pre-wrap;font-size:12px;line-height:1.45;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
-    .pestanas{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-    .pestanas button{font:inherit;font-size:14px;font-weight:700;padding:9px 18px;border-radius:999px;
-      border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer}
-    .pestanas button:hover{color:var(--text)}
-    .pestanas button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#04121f}
-    .wrap.ancho{max-width:1460px}
-    .marco-panel{border:1px solid var(--border);border-radius:18px;overflow:hidden;
-      background:var(--panel);box-shadow:0 20px 60px rgba(0,0,0,.28)}
-    .marco-panel iframe{display:block;width:100%;height:calc(100vh - 150px);min-height:560px;border:0}
-    .nota-panel{color:var(--muted);font-size:12px;line-height:1.5;margin:10px 2px 0}
-    .nota-panel a{color:var(--accent)}
     @media (max-width:640px){.v{font-size:24px}table{font-size:12px}.match-title{font-size:15px}}
   </style>
 </head>
 <body>
-  <div class="wrap" id="wrap">
-    <div class="pestanas" role="tablist">
-      <button id="tab-monitor" role="tab" aria-selected="true">Monitor</button>
-      <button id="tab-usuarios" role="tab" aria-selected="false">Usuarios de QuiniAI</button>
-    </div>
-
-    <section id="vista-usuarios" hidden>
-      <div class="marco-panel">
-        <iframe id="marco-usuarios" title="Panel de usuarios de QuiniAI"
-                loading="lazy" referrerpolicy="no-referrer"></iframe>
-      </div>
-      <p class="nota-panel">
-        El panel se sirve desde el backend, no desde esta pagina: la clave de
-        administracion viaja solo a Railway y nunca pasa por GitHub Pages.
-        Si prefieres verlo en su propia pestana,
-        <a id="enlace-panel" target="_blank" rel="noopener">abrelo aqui</a>.
-      </p>
-    </section>
-
-    <div id="vista-monitor">
+  <div class="wrap">
     <div class="hero">
       <div class="top">
         <div>
@@ -100,37 +70,8 @@
         <div id="jornadas"></div>
       </div>
     </div>
-    </div>
   </div>
   <script>
-    // Pestanas: Monitor / Usuarios. El panel se sirve desde el backend, asi que
-    // dentro del iframe sus llamadas son del mismo origen que la API: ni CORS,
-    // ni la clave de administracion pasando por GitHub Pages.
-    const PANEL_USUARIOS =
-      "https://quiniela-backend-production-cb1a.up.railway.app/admin/panel";
-    (function pestanas(){
-      const bMonitor = document.getElementById("tab-monitor");
-      const bUsuarios = document.getElementById("tab-usuarios");
-      const vMonitor = document.getElementById("vista-monitor");
-      const vUsuarios = document.getElementById("vista-usuarios");
-      const marco = document.getElementById("marco-usuarios");
-      const wrap = document.getElementById("wrap");
-      document.getElementById("enlace-panel").href = PANEL_USUARIOS;
-      function mostrar(cual){
-        const usuarios = cual === "usuarios";
-        vUsuarios.hidden = !usuarios;
-        vMonitor.hidden = usuarios;
-        wrap.classList.toggle("ancho", usuarios);
-        bUsuarios.setAttribute("aria-selected", String(usuarios));
-        bMonitor.setAttribute("aria-selected", String(!usuarios));
-        if (usuarios && !marco.src) marco.src = PANEL_USUARIOS;
-        history.replaceState(null, "", usuarios ? "#usuarios" : "#monitor");
-      }
-      bMonitor.onclick = () => mostrar("monitor");
-      bUsuarios.onclick = () => mostrar("usuarios");
-      if (location.hash === "#usuarios") mostrar("usuarios");
-    })();
-
     const fmtMadrid = (iso) => {
       if (!iso) return "-";
       try {
