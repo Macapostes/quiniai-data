@@ -127,8 +127,14 @@ MONITOR_BRANCH = os.getenv("QUINIAI_MONITOR_BRANCH", "main").strip() or "main"
 MONITOR_PUBLISH_ENABLED = (
     os.getenv("QUINIAI_MONITOR_PUBLISH", "1").strip().lower() not in {"0", "false", "no"}
 )
+# La pagina del monitor NO es un dato: es una interfaz que se edita a mano y
+# cambia cada pocos meses. Cuando el worker la regeneraba en cada pasada, un
+# proceso vivo con la plantilla vieja en memoria revertia cualquier cambio
+# publicado -paso dos veces el 28/08/2026-. El worker publica datos; la pagina
+# es un fichero normal del repositorio. Poner esto a 1 devuelve el
+# comportamiento anterior, con esa trampa incluida.
 MONITOR_PUBLISH_INDEX = (
-    os.getenv("QUINIAI_MONITOR_PUBLISH_INDEX", "1").strip().lower() in {"1", "true", "yes"}
+    os.getenv("QUINIAI_MONITOR_PUBLISH_INDEX", "0").strip().lower() in {"1", "true", "yes"}
 )
 MONITOR_GITHUB_TOKEN = os.getenv("QUINIAI_GITHUB_TOKEN", "").strip()
 GIT_NONINTERACTIVE_ENV = os.environ.copy()
@@ -4647,7 +4653,8 @@ def write_status_files(snapshot: dict | None = None, error: str = "") -> None:
     html = _build_status_html(status_payload)
     _write_text_file(STATUS_HTML_PATH, html)
     _write_text_file(APP_STATUS_HTML_PATH, html)
-    _write_text_file(MONITOR_INDEX_PATH, _build_monitor_web_html())
+    if MONITOR_PUBLISH_INDEX:
+        _write_text_file(MONITOR_INDEX_PATH, _build_monitor_web_html())
     publish_monitor_site()
 
 
