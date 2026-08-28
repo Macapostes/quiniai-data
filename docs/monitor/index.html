@@ -32,13 +32,21 @@
     .line{margin-top:8px;font-size:13px;line-height:1.5}
     .line strong{color:var(--accent)}
     .brief{white-space:pre-wrap;font-size:12px;line-height:1.45;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .pestanas{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+    .pestanas button{font:inherit;font-size:14px;font-weight:700;padding:9px 18px;border-radius:999px;
+      border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer}
+    .pestanas button:hover{color:var(--text)}
+    .pestanas button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#04121f}
+    .wrap.ancho{max-width:1460px}
+    .marco-panel{border:1px solid var(--border);border-radius:18px;overflow:hidden;
+      background:var(--panel);box-shadow:0 20px 60px rgba(0,0,0,.28)}
+    .marco-panel iframe{display:block;width:100%;height:calc(100vh - 150px);min-height:560px;border:0}
+    .nota-panel{color:var(--muted);font-size:12px;line-height:1.5;margin:10px 2px 0}
+    .nota-panel a{color:var(--accent)}
     @media (max-width:640px){.v{font-size:24px}table{font-size:12px}.match-title{font-size:15px}}
   </style>
 </head>
 <body>
-<<<<<<< Updated upstream
-  <div class="wrap">
-=======
   <div class="wrap" id="wrap">
     <div class="pestanas" role="tablist">
       <button id="tab-monitor" role="tab" aria-selected="true">Monitor</button>
@@ -59,7 +67,6 @@
     </section>
 
     <div id="vista-monitor">
->>>>>>> Stashed changes
     <div class="hero">
       <div class="top">
         <div>
@@ -93,10 +100,9 @@
         <div id="jornadas"></div>
       </div>
     </div>
+    </div>
   </div>
   <script>
-<<<<<<< Updated upstream
-=======
     // Pestanas: Monitor / Usuarios. El panel se sirve desde el backend, asi que
     // dentro del iframe sus llamadas son del mismo origen que la API: ni CORS,
     // ni la clave de administracion pasando por GitHub Pages.
@@ -125,7 +131,6 @@
       if (location.hash === "#usuarios") mostrar("usuarios");
     })();
 
->>>>>>> Stashed changes
     const fmtMadrid = (iso) => {
       if (!iso) return "-";
       try {
