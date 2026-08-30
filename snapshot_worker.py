@@ -7652,18 +7652,46 @@ def _sportsdb_event_to_history_row(event: dict, season: str) -> dict:
     }
 
 
+def _etiquetas_de_temporada(season: str) -> list[str]:
+    """Las dos formas en que el proveedor nombra una temporada.
+
+    Las ligas nordicas van por ano natural ("2026") y las europeas a caballo
+    entre dos ("2026-2027"). El worker nacio con las nordicas y solo probaba la
+    primera, asi que para la Liga F -y para cualquier liga europea que entre por
+    esta via- la respuesta era siempre cero eventos y el partido se quedaba sin
+    clasificacion, sin racha y sin H2H.
+    """
+    year = re.search(r"\d{4}", str(season or ""))
+    if not year:
+        return [str(season or "")]
+    inicio = int(year.group(0))
+    return [f"{inicio}-{inicio + 1}", str(inicio)]
+
+
 def _fetch_sportsdb_league_history(league_key: str, league_id: str) -> list[dict]:
     combined_rows: list[dict] = []
     for season in _sportsdb_recent_seasons():
-        cache_key = f"sportsdb_history:v3:{league_key}:{league_id}:{season}"
+        cache_key = f"sportsdb_history:v4:{league_key}:{league_id}:{season}"
         cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
         if cached:
             combined_rows.extend(cached)
             continue
         rows: list[dict] = []
+        # Se prueba la primera ronda con cada forma y se sigue solo con la que
+        # responde: probar las dos en las sesenta rondas serian cientos de
+        # peticiones para nada.
+        etiqueta_buena = ""
+        for etiqueta in _etiquetas_de_temporada(season):
+            if fetch_the_sportsdb_round_events(league_id, etiqueta, 1):
+                etiqueta_buena = etiqueta
+                break
+        if not etiqueta_buena:
+            # Sin datos en ninguna forma no se cachea el vacio: puede ser un
+            # limite de peticiones y dejaria la liga muda hasta que caduque.
+            continue
         empty_rounds = 0
         for round_value in range(1, 61):
-            events = fetch_the_sportsdb_round_events(league_id, season, round_value)
+            events = fetch_the_sportsdb_round_events(league_id, etiqueta_buena, round_value)
             if not events:
                 empty_rounds += 1
                 if empty_rounds >= 4 and rows:
@@ -7674,7 +7702,8 @@ def _fetch_sportsdb_league_history(league_key: str, league_id: str) -> list[dict
                 row = _sportsdb_event_to_history_row(event, season)
                 if row.get("HomeTeam") and row.get("AwayTeam") and row.get("Date"):
                     rows.append(row)
-        _cache_set(HISTORY_CACHE, cache_key, rows)
+        if rows:
+            _cache_set(HISTORY_CACHE, cache_key, rows)
         combined_rows.extend(rows)
     return combined_rows
 
@@ -7806,11 +7835,22 @@ def _season_rows(rows: list[dict], season_code: str) -> list[dict]:
     return seasonal
 
 
-def _resolve_csv_team_name(team_name: str, rows: list[dict]) -> str:
-    # Un cruce femenino no puede resolverse contra la ficha del primer equipo.
-    # El umbral de parecido es 0.33, asi que "R.MADRID (F)" encajaba con
-    # "Real Madrid" sin despeinarse y se llevaba su tabla, su forma y su H2H.
-    categoria = _categoria_por_nombre(team_name)
+def _resolve_csv_team_name(
+    team_name: str,
+    rows: list[dict],
+    filas_de_su_categoria: bool = False,
+    umbral: float = 0.33,
+    exacto: bool = False,
+) -> str:
+    """Encuentra al equipo dentro de un historico.
+
+    `filas_de_su_categoria` lo pone quien sabe de que liga salen las filas. Si
+    la liga ya esta verificada -solo se carga historico femenino para un cruce
+    femenino-, filtrar ademas por el nombre sobra y hace daño: en la Liga F
+    juegan el Madrid CFF, el Logroño United o el Alaves Gloriosas, que no llevan
+    ninguna marca en el nombre y se quedarian fuera de su propia tabla.
+    """
+    categoria = None if filas_de_su_categoria else _categoria_por_nombre(team_name)
     options = sorted(
         {
             str(row.get("HomeTeam", "")).strip()
@@ -7829,8 +7869,37 @@ def _resolve_csv_team_name(team_name: str, rows: list[dict]) -> str:
         options = [op for op in options if not _parece_femenino(op)]
     if not options:
         return team_name
-    best = max(options, key=lambda candidate: _team_similarity_score(team_name, candidate))
-    return best if _team_similarity_score(team_name, best) >= 0.33 else team_name
+
+    if exacto:
+        # Cuando el nombre pedido y el historico salen del MISMO proveedor no hay
+        # nada que adivinar: o esta tal cual, o no esta. Parecerse no basta,
+        # porque "Real Madrid" y "Real Sociedad" comparten palabra y el
+        # comparador por solapamiento los da por el mismo equipo.
+        pedido_norm = _normalize_team_name(team_name)
+        for candidato in options:
+            if _normalize_team_name(candidato) == pedido_norm:
+                return candidato
+        return team_name
+
+    # La palabra de categoria se quita en los DOS lados. Si no, la comparten
+    # todos y lo inflan todo: "Real Madrid Femenino" contra "Granada Femenino"
+    # puntuaba 0.72 solo por ese "Femenino" comun.
+    pedido = {team_name, _sin_marca_femenina(team_name)}
+
+    def parecido(candidato: str) -> float:
+        candidatos = {candidato, _sin_marca_femenina(candidato)}
+        return max(
+            _team_similarity_score(p, c)
+            for p in pedido if p
+            for c in candidatos if c
+        )
+
+    best = max(options, key=parecido)
+    # Por debajo del umbral se devuelve el nombre original y el partido se queda
+    # sin historico. Es lo correcto: antes, no encontrar al equipo significaba
+    # devolver OTRO club -"Real Madrid Femenino" acababa siendo la Real Sociedad-
+    # y ese dato falso llegaba al informe como si fuera suyo.
+    return best if parecido(best) >= umbral else team_name
 
 
 def _points_from_result(result: str, home: bool) -> int:
@@ -8253,6 +8322,9 @@ def _team_history_context(
     team_name: str,
     kickoff_dt: datetime | None,
     season_code: str | None = None,
+    filas_de_su_categoria: bool = False,
+    umbral: float = 0.33,
+    exacto: bool = False,
 ) -> dict:
     if not rows:
         return {}
@@ -8260,7 +8332,7 @@ def _team_history_context(
     filtered = _completed_rows_before_kickoff(_season_rows(rows, effective_season_code), kickoff_dt)
     if not filtered:
         return {}
-    resolved = _resolve_csv_team_name(team_name, filtered)
+    resolved = _resolve_csv_team_name(team_name, filtered, filas_de_su_categoria, umbral, exacto)
     table = _table_snapshot(filtered)
     recent_all = _recent_form_metrics(filtered, resolved, 5)
     recent_home = _recent_form_metrics([row for row in filtered if row.get("HomeTeam") == resolved], resolved, 5)
@@ -11933,8 +12005,29 @@ def _bootstrap_quiniela_placeholder(
     completed_history = _completed_rows_before_kickoff(season_history, kickoff_dt)
     all_completed_history = _completed_rows_before_kickoff(league_history, kickoff_dt)
     current_table_snapshot = _table_snapshot(completed_history)
-    home_history = _team_history_context(league_history, home_team, kickoff_dt, season_code)
-    away_history = _team_history_context(league_history, away_team, kickoff_dt, season_code)
+    # En un cruce femenino el historico sale del mismo proveedor que resolvio la
+    # ficha, asi que el nombre exacto ya lo tenemos: buscarlo por parecido
+    # confundia "R.MADRID (F)" con la Real Sociedad y "AT.MADRID (F)" con el
+    # Athletic. Para el resto se mantiene la busqueda de siempre, porque ahi el
+    # historico viene de otra fuente con otros nombres.
+    nombre_hist_local = home_team
+    nombre_hist_visitante = away_team
+    if categoria == "female":
+        nombre_hist_local = str((home_team_api or {}).get("strTeam") or "").strip() or home_team
+        nombre_hist_visitante = str((away_team_api or {}).get("strTeam") or "").strip() or away_team
+
+    # En femenino el nombre viene exacto del proveedor, asi que se exige una
+    # coincidencia buena de verdad: media docena de clubes comparten la palabra
+    # "Femenino" y con el umbral flojo de siempre cualquiera valia.
+    exacto_hist = categoria == "female"
+    home_history = _team_history_context(
+        league_history, nombre_hist_local, kickoff_dt, season_code,
+        filas_de_su_categoria=True, exacto=exacto_hist,
+    )
+    away_history = _team_history_context(
+        league_history, nombre_hist_visitante, kickoff_dt, season_code,
+        filas_de_su_categoria=True, exacto=exacto_hist,
+    )
     home_resolved_name = home_history.get("resolved_name", home_team)
     away_resolved_name = away_history.get("resolved_name", away_team)
     h2h_history = _head_to_head_metrics(
@@ -12375,8 +12468,14 @@ def build_snapshot(raw_matches: list) -> dict:
             kickoff_dt or datetime.now(timezone.utc),
         )
         season_history = _season_rows(league_history, season_code)
-        home_history = _team_history_context(league_history, home_team, kickoff_dt, season_code)
-        away_history = _team_history_context(league_history, away_team, kickoff_dt, season_code)
+        home_history = _team_history_context(
+            league_history, home_team, kickoff_dt, season_code,
+            filas_de_su_categoria=True,
+        )
+        away_history = _team_history_context(
+            league_history, away_team, kickoff_dt, season_code,
+            filas_de_su_categoria=True,
+        )
         completed_history = _completed_rows_before_kickoff(season_history, kickoff_dt)
         all_completed_history = _completed_rows_before_kickoff(league_history, kickoff_dt)
         current_table_snapshot = _table_snapshot(completed_history)

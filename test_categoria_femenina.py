@@ -164,3 +164,53 @@ class ResolucionDeEquipoFemeninoTests(unittest.TestCase):
         fuente = inspect.getsource(worker.fetch_the_sportsdb_team)
         self.assertIn("if teams:", fuente)
         self.assertIn("break", fuente)
+
+
+class HistoricoFemeninoTests(unittest.TestCase):
+    """El historico de la Liga F tiene que llegar, y ser del equipo correcto."""
+
+    FILAS = [
+        {"HomeTeam": "Real Madrid Femenino", "AwayTeam": "Eibar Women"},
+        {"HomeTeam": "Real Sociedad Femenino", "AwayTeam": "Granada Femenino"},
+        {"HomeTeam": "Madrid CFF", "AwayTeam": "Barcelona Femení"},
+    ]
+
+    def test_se_prueban_las_dos_formas_de_nombrar_la_temporada(self):
+        # El worker nacio con ligas nordicas, de ano natural, y solo probaba
+        # "2026". Las europeas usan "2026-2027" y por eso la Liga F devolvia
+        # cero eventos siempre.
+        self.assertEqual(worker._etiquetas_de_temporada("2026"), ["2026-2027", "2026"])
+
+    def test_con_nombre_exacto_no_se_acepta_un_club_parecido(self):
+        # "Real Madrid" y "Real Sociedad" comparten palabra: el comparador por
+        # solapamiento los daba por el mismo equipo y el informe recibia la
+        # clasificacion de otro club.
+        self.assertEqual(
+            worker._resolve_csv_team_name(
+                "Atlético Madrid Femenino", self.FILAS,
+                filas_de_su_categoria=True, exacto=True,
+            ),
+            "Atlético Madrid Femenino",  # no esta: se devuelve tal cual, sin historico
+        )
+        self.assertEqual(
+            worker._resolve_csv_team_name(
+                "Real Madrid Femenino", self.FILAS,
+                filas_de_su_categoria=True, exacto=True,
+            ),
+            "Real Madrid Femenino",
+        )
+
+    def test_en_una_tabla_de_su_categoria_no_se_filtra_por_nombre(self):
+        # En la Liga F juegan el Madrid CFF o el Logrono United, que no llevan
+        # marca femenina en el nombre: filtrarlos los dejaria fuera de su tabla.
+        resuelto = worker._resolve_csv_team_name(
+            "Madrid CFF", self.FILAS, filas_de_su_categoria=True, exacto=True
+        )
+        self.assertEqual(resuelto, "Madrid CFF")
+
+    def test_un_historico_vacio_no_se_cachea(self):
+        import inspect
+
+        fuente = inspect.getsource(worker._fetch_sportsdb_league_history)
+        self.assertIn("if rows:", fuente)
+        self.assertIn("if not etiqueta_buena", fuente)
