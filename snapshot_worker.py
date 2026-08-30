@@ -2419,14 +2419,29 @@ def _contains_injury_signal(text: str) -> bool:
     )
 
 
-def _is_non_first_team_news(item: dict) -> bool:
+def _is_non_first_team_news(item: dict, categoria: str | None = None) -> bool:
+    """Descarta lo que no es del equipo que juega este partido.
+
+    Este filtro nacio dando por hecho que la quiniela es siempre masculina, asi
+    que tiraba las noticias femeninas como ruido. Desde que la Liga F entra en
+    el boleto eso se invierte: en un cruce femenino, las noticias del primer
+    equipo masculino son el ruido, y las femeninas lo unico que sirve.
+    """
     title = _normalize_ascii(str(item.get("title", ""))).lower()
     link = _normalize_ascii(str(item.get("link", ""))).lower()
-    category_tokens = [
+    texto = f"{title} {link}"
+    cantera_tokens = ["u19", "u-19", "u21", "u-21", "academy", "ungdom"]
+    genero_tokens = [
         "dam:", "damer", "damlag", "kvinner", "kvinnelag", "women", "women's",
-        "femenino", "femenina", "u19", "u-19", "u21", "u-21", "academy", "ungdom",
+        "femenino", "femenina",
     ]
-    if any(token in f"{title} {link}" for token in category_tokens):
+    if any(token in texto for token in cantera_tokens):
+        return True
+    if categoria == "female":
+        # Sin marca femenina no hay forma de saber que la noticia es de este
+        # equipo y no del primer equipo: se descarta por seguridad.
+        return not _parece_femenino(texto)
+    if any(token in texto for token in genero_tokens):
         return True
     if str(item.get("source", "")).strip().lower() != "web oficial" or not link.startswith("http"):
         return False
@@ -2451,6 +2466,7 @@ def _is_non_first_team_news(item: dict) -> bool:
 
 
 def _build_injury_entities(team_name: str, items: list[dict]) -> list[dict]:
+    categoria = _categoria_por_nombre(team_name)
     entities = []
     ignored_title_tokens = [
         "clasificacion",
@@ -2488,7 +2504,14 @@ def _build_injury_entities(team_name: str, items: list[dict]) -> list[dict]:
         if not _contains_injury_signal(title):
             continue
         normalized_title = _normalize_ascii(title).lower()
-        if any(token in normalized_title for token in ignored_title_tokens) or _is_non_first_team_news(item):
+        tokens_a_ignorar = (
+            [t for t in ignored_title_tokens if t not in {"women", "femenin", "dam:", "damer", "damlag", "kvinner"}]
+            if categoria == "female"
+            else ignored_title_tokens
+        )
+        if any(token in normalized_title for token in tokens_a_ignorar) or _is_non_first_team_news(
+            item, categoria
+        ):
             continue
         source_tokens = {
             token
@@ -4910,6 +4933,49 @@ def _guess_country_hint(team_name: str, fallback: str | None = None) -> str | No
     return None
 
 
+_SUFIJO_CATEGORIA_RE = re.compile(r"\(\s*([mf])\s*\)", re.IGNORECASE)
+_MARCA_FEMENINA_FINAL_RE = re.compile(r"\s(w|fem|femenino|femenina|women)\.?$", re.IGNORECASE)
+_PISTAS_FEMENINAS = (
+    "femenin", "femenil", "women", "woman", "female", "damer", "damlag",
+    "kvinner", "frauen", "feminin", "liga f", "wsl", "nwsl",
+)
+
+
+def _categoria_por_nombre(nombre: str) -> str | None:
+    """Categoria que la quiniela oficial sella en el nombre del equipo.
+
+    La LAE escribe "R.MADRID (F)" y "BADALONA W.". Es la unica fuente fiable
+    que hay por partido: los proveedores externos no distinguen, y buscar
+    "R.MADRID (F)" en TheSportsDB devuelve el primer equipo masculino.
+    """
+    texto = str(nombre or "").strip()
+    if not texto:
+        return None
+    marca = _SUFIJO_CATEGORIA_RE.search(texto)
+    if marca:
+        return "female" if marca.group(1).lower() == "f" else "male"
+    if _MARCA_FEMENINA_FINAL_RE.search(texto):
+        return "female"
+    return None
+
+
+def _parece_femenino(*textos: object) -> bool:
+    """True si el texto de un proveedor se identifica como femenino."""
+    plano = _normalize_ascii(" ".join(str(t or "") for t in textos)).lower()
+    if _SUFIJO_CATEGORIA_RE.search(plano) and "(f)" in plano.replace(" ", ""):
+        return True
+    return any(pista in plano for pista in _PISTAS_FEMENINAS)
+
+
+def _categoria_del_partido(match: dict) -> str | None:
+    """Categoria del cruce, mirando los dos equipos del boleto."""
+    for lado in ("local", "visitante"):
+        categoria = _categoria_por_nombre(match.get(lado, ""))
+        if categoria:
+            return categoria
+    return None
+
+
 def _strip_gender_suffix(team_name: str) -> str:
     """Quita el sufijo de categoria que anade la quiniela oficial.
 
@@ -6693,6 +6759,33 @@ def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
     ):
         match["league_source"] = "TheSportsDB" if league_name and not metadata_conflicts else "league-key"
 
+    # Sin liga femenina confirmada no se deja una liga masculina puesta: de ahi
+    # sale fetch_league_history, y con ella la tabla, la racha y el H2H del
+    # primer equipo, que es exactamente lo que acababa en el informe de la IA.
+    if _categoria_del_partido(match) == "female" and not _parece_femenino(
+        match.get("league", ""), match.get("league_name", "")
+    ):
+        descartada = str(match.get("league", "")).strip()
+        if descartada and descartada != "league_unresolved":
+            print(
+                f"[categoria] {match.get('local', '')} vs {match.get('visitante', '')}: "
+                f"liga {descartada!r} no es femenina; se deja sin resolver"
+            )
+            match["league_descartada"] = descartada
+        match["league"] = "league_unresolved"
+        match["league_name"] = "Liga femenina no resuelta"
+        match["dynamic_league"] = True
+        match["league_source"] = "categoria-no-confirmada"
+
+
+def _ficha_es_femenina(ficha: dict) -> bool:
+    return _parece_femenino(
+        (ficha or {}).get("strTeam", ""),
+        (ficha or {}).get("strTeamAlternate", ""),
+        (ficha or {}).get("strLeague", ""),
+        (ficha or {}).get("strGender", ""),
+    )
+
 
 def _event_team_api_if_better(
     team_name: str,
@@ -7603,6 +7696,10 @@ def _season_rows(rows: list[dict], season_code: str) -> list[dict]:
 
 
 def _resolve_csv_team_name(team_name: str, rows: list[dict]) -> str:
+    # Un cruce femenino no puede resolverse contra la ficha del primer equipo.
+    # El umbral de parecido es 0.33, asi que "R.MADRID (F)" encajaba con
+    # "Real Madrid" sin despeinarse y se llevaba su tabla, su forma y su H2H.
+    categoria = _categoria_por_nombre(team_name)
     options = sorted(
         {
             str(row.get("HomeTeam", "")).strip()
@@ -7615,6 +7712,10 @@ def _resolve_csv_team_name(team_name: str, rows: list[dict]) -> str:
             if str(row.get("AwayTeam", "")).strip()
         }
     )
+    if categoria == "female":
+        options = [op for op in options if _parece_femenino(op)]
+    elif categoria == "male":
+        options = [op for op in options if not _parece_femenino(op)]
     if not options:
         return team_name
     best = max(options, key=lambda candidate: _team_similarity_score(team_name, candidate))
@@ -11644,8 +11745,33 @@ def _bootstrap_quiniela_placeholder(
         "season_transition_news", {"items": [], "coverage": "none"}
     )
 
+    # La categoria la manda el boleto, no el proveedor. Buscar "R.MADRID (F)" en
+    # TheSportsDB devuelve tranquilamente el primer equipo masculino, con su liga
+    # y su clasificacion detras. Si la quiniela dice femenino, todo lo que venga
+    # resuelto como masculino se descarta: mejor un partido sin contexto que un
+    # partido con el contexto de otro equipo.
+    categoria = _categoria_del_partido(match)
+    if categoria:
+        match["gender"] = categoria
+
     home_team_api = fetch_the_sportsdb_team(home_team, league_country_hint)
     away_team_api = fetch_the_sportsdb_team(away_team, league_country_hint)
+
+    if categoria == "female":
+        descartes = []
+        if home_team_api and not _ficha_es_femenina(home_team_api):
+            descartes.append(f"local={home_team_api.get('strTeam', '') or home_team}")
+            home_team_api = {}
+        if away_team_api and not _ficha_es_femenina(away_team_api):
+            descartes.append(f"visitante={away_team_api.get('strTeam', '') or away_team}")
+            away_team_api = {}
+        if descartes:
+            print(
+                f"[categoria] {home_team} vs {away_team}: ficha masculina "
+                f"descartada ({', '.join(descartes)})"
+            )
+            match["gender_mismatch"] = descartes
+
     inferred_league = match.get("league", "") or _dynamic_league_key_from_sportsdb(home_team_api, away_team_api)
     kickoff = str(match.get("kickoff", "")).strip()
     sportsdb_event = _resolve_sportsdb_event(home_team, away_team, kickoff, home_team_api, away_team_api) or {}
