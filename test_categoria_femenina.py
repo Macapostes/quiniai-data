@@ -117,3 +117,50 @@ class NoticiasTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ResolucionDeEquipoFemeninoTests(unittest.TestCase):
+    """Encontrar al equipo femenino, no solo rechazar al masculino.
+
+    Antes se resolvia 1 de 8: el sufijo "(F)" rompia la busqueda en el
+    diccionario de alias, y el filtro de categoria del proveedor solo entendia
+    " women"/" ladies"/" dam ", que el nombre de la quiniela nunca lleva.
+    """
+
+    def test_el_sufijo_no_rompe_el_diccionario_de_alias(self):
+        # "R.MADRID" esta en la tabla; "R.MADRID (F)" normalizaba a
+        # "r madrid f", no encontraba nada y devolvia el nombre crudo, asi que
+        # se consultaba "R.MADRID Femenino", que no existe en ningun proveedor.
+        self.assertEqual(worker._canonical_team_name("R.MADRID (F)"), "Real Madrid")
+        self.assertEqual(worker._canonical_team_name("AT.MADRID (F)"), "Atlético Madrid")
+        self.assertEqual(worker._canonical_team_name("ATH.CLUB (F)"), "Athletic Bilbao")
+        # Y el masculino sigue igual.
+        self.assertEqual(worker._canonical_team_name("R.MADRID"), "Real Madrid")
+
+    def test_la_marca_de_categoria_se_quita_para_comparar(self):
+        # Sin esto, "Barcelona Femeni" no se parecia lo bastante a "Barcelona".
+        self.assertEqual(worker._sin_marca_femenina("Real Madrid Femenino"), "Real Madrid")
+        self.assertEqual(worker._sin_marca_femenina("Sevilla Women"), "Sevilla")
+        self.assertEqual(worker._sin_marca_femenina("Barcelona Femení"), "Barcelona")
+        self.assertEqual(worker._sin_marca_femenina("Espanyol Femení"), "Espanyol")
+
+    def test_se_reconocen_las_tres_formas_del_sufijo(self):
+        # El proveedor usa las tres y hacen falta todas: Femenino (Real Madrid),
+        # Femeni en catalan (Barcelona, Espanyol) y Women (Sevilla, Eibar).
+        for nombre in ("Real Madrid Femenino", "Barcelona Femení", "Sevilla Women"):
+            self.assertTrue(worker._parece_femenino(nombre), nombre)
+
+    def test_un_fallo_de_red_no_se_cachea_como_equipo_inexistente(self):
+        # Un 429 dejaba al equipo ilocalizable una semana entera.
+        import inspect
+
+        fuente = inspect.getsource(worker.fetch_the_sportsdb_team)
+        self.assertIn("alguna_respuesta", fuente)
+        self.assertLess(fuente.index("if not alguna_respuesta"), fuente.index("_cache_set"))
+
+    def test_las_consultas_paran_en_cuanto_hay_candidatos(self):
+        import inspect
+
+        fuente = inspect.getsource(worker.fetch_the_sportsdb_team)
+        self.assertIn("if teams:", fuente)
+        self.assertIn("break", fuente)

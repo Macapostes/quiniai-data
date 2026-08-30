@@ -4763,7 +4763,19 @@ def _normalize_team_name(value: str) -> str:
 
 def _canonical_team_name(value: str) -> str:
     normalized = _normalize_team_name(value)
-    return TEAM_NAME_ALIASES.get(normalized, value)
+    if normalized in TEAM_NAME_ALIASES:
+        return TEAM_NAME_ALIASES[normalized]
+    # El sufijo de categoria rompia la busqueda en el diccionario: "R.MADRID"
+    # esta y resuelve a "Real Madrid", pero "R.MADRID (F)" normalizaba a
+    # "r madrid f" y devolvia el nombre crudo. De ahi salian consultas como
+    # "R.MADRID Femenino", que ningun proveedor entiende. La categoria no se
+    # pierde: se lee del nombre original, no de aqui.
+    sin_categoria = _strip_gender_suffix(value)
+    if sin_categoria and sin_categoria != value:
+        alias = TEAM_NAME_ALIASES.get(_normalize_team_name(sin_categoria))
+        if alias:
+            return alias
+    return value
 
 
 def _team_similarity_score(left: str, right: str) -> float:
@@ -4936,7 +4948,9 @@ def _guess_country_hint(team_name: str, fallback: str | None = None) -> str | No
 _SUFIJO_CATEGORIA_RE = re.compile(r"\(\s*([mf])\s*\)", re.IGNORECASE)
 _MARCA_FEMENINA_FINAL_RE = re.compile(r"\s(w|fem|femenino|femenina|women)\.?$", re.IGNORECASE)
 _PISTAS_FEMENINAS = (
-    "femenin", "femenil", "women", "woman", "female", "damer", "damlag",
+    # "femeni" cubre tambien el catalan -Barcelona Femeni, Espanyol Femeni-,
+    # que es como los nombra el proveedor y no lleva la n final.
+    "femeni", "femenil", "women", "woman", "female", "damer", "damlag",
     "kvinner", "frauen", "feminin", "liga f", "wsl", "nwsl",
 )
 
@@ -4974,6 +4988,28 @@ def _categoria_del_partido(match: dict) -> str | None:
         if categoria:
             return categoria
     return None
+
+
+_MARCAS_FEMENINAS_RE = re.compile(
+    r"\b(femenin[oa]|femenines|femeni|femenil|women'?s?|ladies"
+    r"|damer|damlag|kvinner|feminine|feminin|frauen)\b",
+    re.IGNORECASE,
+)
+
+
+def _sin_marca_femenina(nombre: str) -> str:
+    """El nombre del club, sin la palabra que marca la categoria.
+
+    "Real Madrid Femenino" y "R.MADRID (F)" son el mismo club: para medir
+    parecido hay que compararlos sin la marca, o el parecido se hunde por una
+    palabra de mas y el candidato correcto se descarta.
+    """
+    # Sin quitar acentos, "Femeni" no casa con "Femeni" del catalan y el
+    # candidato correcto se descarta por parecido. Solo se usa para comparar,
+    # asi que perder los acentos aqui no tiene coste.
+    texto = _normalize_ascii(_strip_gender_suffix(str(nombre or "")))
+    texto = _MARCAS_FEMENINAS_RE.sub(" ", texto)
+    return re.sub(r"\s+", " ", texto).strip()
 
 
 def _strip_gender_suffix(team_name: str) -> str:
@@ -6448,6 +6484,24 @@ def fetch_match_referee_news(home_team: str, away_team: str) -> list[dict]:
     return items
 
 
+_SPORTSDB_ULTIMA_PETICION = 0.0
+_SPORTSDB_PAUSA_SEGUNDOS = float(os.getenv("QUINIAI_SPORTSDB_PAUSA", "0.5") or 0.5)
+
+
+def _frenar_sportsdb() -> None:
+    """Espacia las consultas al proveedor.
+
+    Con la cache fria hay que resolver una veintena de equipos y cada uno puede
+    probar varias formas del nombre. Sin freno eso son decenas de peticiones en
+    segundos y el proveedor responde 429 a todo lo demas de la jornada.
+    """
+    global _SPORTSDB_ULTIMA_PETICION
+    espera = _SPORTSDB_PAUSA_SEGUNDOS - (time.monotonic() - _SPORTSDB_ULTIMA_PETICION)
+    if espera > 0:
+        time.sleep(espera)
+    _SPORTSDB_ULTIMA_PETICION = time.monotonic()
+
+
 def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> dict:
     resolved_country_hint = _guess_country_hint(team_name, country_hint)
     cache_key = f"team:{resolved_country_hint or 'any'}:{team_name}"
@@ -6455,22 +6509,54 @@ def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> 
     if cached:
         return cached
     canonical_team_name = _canonical_team_name(team_name)
+    categoria_pedida = _categoria_por_nombre(team_name)
+    # TheSportsDB no conoce el "(F)" de la quiniela: buscando "R.MADRID (F)" o
+    # "Real Madrid" devuelve el primer equipo masculino y nunca el femenino. Hay
+    # que preguntarle por el nombre que si usa.
+    consultas_base = [canonical_team_name, team_name]
+    if categoria_pedida == "female":
+        club = _sin_marca_femenina(canonical_team_name) or _sin_marca_femenina(team_name)
+        if club:
+            # La LAE escribe en mayusculas y el proveedor guarda los nombres en
+            # capitalizacion normal; "BARCELONA Femeni" no devuelve nada y
+            # "Barcelona Femeni" si. Y hacen falta las dos formas del sufijo:
+            # el Barcelona y el Espanyol figuran como "Femeni", no "Femenino".
+            if club.isupper():
+                club = club.title()
+            consultas_base = [
+                f"{club} Femenino",
+                f"{club} Femeni",
+                f"{club} Women",
+                club,
+            ] + consultas_base
     queries = []
-    for query in [canonical_team_name, team_name]:
+    for query in consultas_base:
         query = str(query or "").strip()
         if query and query.casefold() not in {item.casefold() for item in queries}:
             queries.append(query)
     teams = []
+    alguna_respuesta = False
     for query in queries:
         try:
+            _frenar_sportsdb()
             data = _request_json(
                 THESPORTSDB_SEARCH_TEAM_URL,
                 params={"t": query},
                 timeout=20,
             )
-        except Exception:
+            alguna_respuesta = True
+        except Exception as exc:
+            # Un 429 o un timeout no significan "este equipo no existe". Si se
+            # cachea como vacio, el equipo queda ilocalizable una semana.
+            print(f"[sportsdb] consulta {query!r} fallida: {exc}")
             data = {}
         teams.extend((data or {}).get("teams") or [])
+        if teams:
+            # Con candidatos ya no hace falta seguir preguntando: cada consulta
+            # de mas acerca el limite del proveedor.
+            break
+    if not alguna_respuesta:
+        return {}
     payload = {}
     if teams:
         best_score = -1.0
@@ -6483,17 +6569,42 @@ def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> 
             expected_country = COUNTRY_LABELS.get(resolved_country_hint or "", "")
             if expected_country and candidate_country and candidate_country.casefold() != expected_country.casefold():
                 continue
-            gender_haystack = _normalize_ascii(f"{candidate_name} {candidate_alt}").lower()
-            requested_haystack = _normalize_ascii(f"{team_name} {canonical_team_name}").lower()
-            if any(token in gender_haystack for token in [" women", " ladies", " dam "]) and not any(
-                token in requested_haystack for token in [" women", " ladies", " dam "]
-            ):
+            candidato_femenino = _parece_femenino(
+                candidate_name,
+                candidate_alt,
+                candidate.get("strLeague", ""),
+                candidate.get("strGender", ""),
+            )
+            if categoria_pedida == "female":
+                # Pedimos un equipo femenino: el masculino no vale, por muy bien
+                # que puntue de parecido.
+                if not candidato_femenino:
+                    continue
+            elif candidato_femenino:
+                # Antes se comparaba contra " women"/" ladies"/" dam ", que el
+                # nombre de la quiniela nunca lleva. Ahora basta con no haber
+                # pedido categoria femenina.
                 continue
+            # El parecido se mide sin la marca de categoria en ninguno de los dos
+            # lados: "R.MADRID (F)" contra "Real Madrid Femenino" es el mismo club.
+            nombres_pedidos = {team_name, canonical_team_name}
+            if categoria_pedida == "female":
+                nombres_pedidos |= {
+                    _sin_marca_femenina(team_name),
+                    _sin_marca_femenina(canonical_team_name),
+                }
+            nombres_candidatos = {candidate_name, candidate_alt}
+            if candidato_femenino:
+                nombres_candidatos |= {
+                    _sin_marca_femenina(candidate_name),
+                    _sin_marca_femenina(candidate_alt),
+                }
             score = max(
-                _team_similarity_score(team_name, candidate_name),
-                _team_similarity_score(team_name, candidate_alt),
-                _team_similarity_score(canonical_team_name, candidate_name),
-                _team_similarity_score(canonical_team_name, candidate_alt),
+                _team_similarity_score(pedido, candidato)
+                for pedido in nombres_pedidos
+                if pedido
+                for candidato in nombres_candidatos
+                if candidato
             )
             if score < 0.6:
                 continue
