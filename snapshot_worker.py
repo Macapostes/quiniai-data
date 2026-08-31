@@ -85,8 +85,11 @@ MONITOR_PUBLISH_MIN_SECONDS = int(os.getenv("QUINIAI_MONITOR_PUBLISH_MIN_SECONDS
 WEATHER_CACHE_TTL_SECONDS = int(
     os.getenv("QUINIAI_WEATHER_CACHE_TTL_SECONDS", "21600")
 )
+# 24h, no 12: los resultados de futbol cambian una vez por jornada, no dos veces
+# al dia. Refrescar cada 12h no aporta datos nuevos y duplica la presion sobre
+# el limite del proveedor, que es justo lo que dejaba la Liga F sin historico.
 HISTORY_CACHE_TTL_SECONDS = int(
-    os.getenv("QUINIAI_HISTORY_CACHE_TTL_SECONDS", "43200")
+    os.getenv("QUINIAI_HISTORY_CACHE_TTL_SECONDS", "86400")
 )
 TEAM_NEWS_MAX_AGE_DAYS = int(os.getenv("QUINIAI_TEAM_NEWS_MAX_AGE_DAYS", "10"))
 MATCH_NEWS_MAX_AGE_DAYS = int(os.getenv("QUINIAI_MATCH_NEWS_MAX_AGE_DAYS", "7"))
@@ -7747,10 +7750,19 @@ def _fetch_sportsdb_league_history(league_key: str, league_id: str) -> list[dict
                         if row.get("HomeTeam") and row.get("AwayTeam") and row.get("Date"):
                             rows.append(row)
 
-        # Un vacio no se cachea: puede ser un limite de peticiones y dejaria la
-        # liga muda hasta que caducase la entrada.
         if rows:
             _cache_set(HISTORY_CACHE, cache_key, rows)
+        else:
+            # Si esta vez no se ha podido traer -casi siempre por el limite del
+            # proveedor-, se sirve lo ultimo bueno aunque haya caducado. Un dato
+            # de ayer vale muchisimo mas que ninguno, y asi basta con acertar UNA
+            # vez para que la liga no vuelva a quedarse muda.
+            rows = _cache_get(HISTORY_CACHE, cache_key) or []
+            if rows:
+                print(
+                    f"[historico] {league_key}: sirviendo copia anterior "
+                    f"({len(rows)} filas) porque el proveedor no ha respondido"
+                )
         combined_rows.extend(rows)
     return combined_rows
 

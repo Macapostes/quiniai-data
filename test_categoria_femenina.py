@@ -227,3 +227,28 @@ class HistoricoFemeninoTests(unittest.TestCase):
             fuente.index("_eventos_de_temporada_completa"),
             fuente.index("fetch_the_sportsdb_round_events"),
         )
+
+
+class ResistenciaDelHistoricoTests(unittest.TestCase):
+    """Basta con acertar una vez: despues no se vuelve a quedar sin datos."""
+
+    def test_si_el_proveedor_falla_se_sirve_la_copia_anterior(self):
+        import inspect
+
+        fuente = inspect.getsource(worker._fetch_sportsdb_league_history)
+        # Sin TTL, _cache_get devuelve el dato aunque haya caducado.
+        self.assertIn("_cache_get(HISTORY_CACHE, cache_key) or []", fuente)
+        # Y el respaldo va DESPUES de intentar traerlo fresco, no en su lugar.
+        self.assertLess(
+            fuente.index("_cache_set(HISTORY_CACHE, cache_key, rows)"),
+            fuente.index("_cache_get(HISTORY_CACHE, cache_key) or []"),
+        )
+
+    def test_el_historico_no_caduca_dos_veces_al_dia(self):
+        # Los resultados cambian una vez por jornada: refrescar cada 12h no
+        # traia nada nuevo y duplicaba la presion sobre el limite del proveedor.
+        self.assertGreaterEqual(worker.HISTORY_CACHE_TTL_SECONDS, 86400)
+
+    def test_la_clave_del_proveedor_es_configurable(self):
+        # Para pasar a una clave propia basta con el .env, sin tocar codigo.
+        self.assertIn("/" + worker.THESPORTSDB_KEY + "/", worker.THESPORTSDB_EVENTS_SEASON_URL)
