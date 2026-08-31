@@ -4003,7 +4003,11 @@ def _build_monitor_web_html() -> str:
         wrap.classList.toggle("ancho", usuarios);
         bUsuarios.setAttribute("aria-selected", String(usuarios));
         bMonitor.setAttribute("aria-selected", String(!usuarios));
-        if (usuarios && !marco.src) marco.src = PANEL_USUARIOS;
+        // Con un parametro distinto cada vez, el navegador no puede servir una
+        // copia guardada del panel: paso, y se veia el de hace dias sin que
+        // nada indicase que la version era vieja.
+        if (usuarios && !marco.src)
+          marco.src = PANEL_USUARIOS + "?v=" + Date.now();
         history.replaceState(null, "", usuarios ? "#usuarios" : "#monitor");
       }
       bMonitor.onclick = () => mostrar("monitor");
