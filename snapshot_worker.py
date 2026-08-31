@@ -108,10 +108,16 @@ OPEN_METEO_GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search"
 OPEN_METEO_FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
 NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search"
 FOOTBALL_DATA_BASE_URL = "https://www.football-data.co.uk/mmz4281"
-THESPORTSDB_SEARCH_TEAM_URL = "https://www.thesportsdb.com/api/v1/json/123/searchteams.php"
-THESPORTSDB_EVENTS_NEXT_URL = "https://www.thesportsdb.com/api/v1/json/123/eventsnext.php"
-THESPORTSDB_EVENTS_ROUND_URL = "https://www.thesportsdb.com/api/v1/json/123/eventsround.php"
-THESPORTSDB_EVENTS_SEASON_URL = "https://www.thesportsdb.com/api/v1/json/123/eventsseason.php"
+# La "123" es la clave publica de TheSportsDB: la comparte todo el que usa la
+# API gratis, y por eso el worker se come miles de errores 429 y se queda sin
+# historico. Con una clave propia solo hay que poner QUINIAI_SPORTSDB_KEY en el
+# .env; no hace falta tocar el codigo ni desplegar nada.
+THESPORTSDB_KEY = os.getenv("QUINIAI_SPORTSDB_KEY", "").strip() or "123"
+_THESPORTSDB_BASE = f"https://www.thesportsdb.com/api/v1/json/{THESPORTSDB_KEY}"
+THESPORTSDB_SEARCH_TEAM_URL = f"{_THESPORTSDB_BASE}/searchteams.php"
+THESPORTSDB_EVENTS_NEXT_URL = f"{_THESPORTSDB_BASE}/eventsnext.php"
+THESPORTSDB_EVENTS_ROUND_URL = f"{_THESPORTSDB_BASE}/eventsround.php"
+THESPORTSDB_EVENTS_SEASON_URL = f"{_THESPORTSDB_BASE}/eventsseason.php"
 BBC_FOOTBALL_RSS_URL = "https://feeds.bbci.co.uk/sport/football/rss.xml"
 GUARDIAN_FOOTBALL_RSS_URL = "https://feeds.theguardian.com/theguardian/football/rss"
 EDUARDO_QUINIELA_PORCENTAJES_URL = "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes"
