@@ -3930,7 +3930,7 @@ def _build_monitor_web_html() -> str:
   <div class="wrap" id="wrap">
     <div class="pestanas" role="tablist">
       <button id="tab-monitor" role="tab" aria-selected="true">Monitor</button>
-      <button id="tab-usuarios" role="tab" aria-selected="false">Usuarios de QuiniAI</button>
+      <button id="tab-usuarios" role="tab" aria-selected="false">Actividad y usuarios</button>
     </div>
 
     <section id="vista-usuarios" hidden>
