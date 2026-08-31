@@ -213,4 +213,17 @@ class HistoricoFemeninoTests(unittest.TestCase):
 
         fuente = inspect.getsource(worker._fetch_sportsdb_league_history)
         self.assertIn("if rows:", fuente)
-        self.assertIn("if not etiqueta_buena", fuente)
+        self.assertNotIn("_cache_set(HISTORY_CACHE, cache_key, [])", fuente)
+
+    def test_la_temporada_se_pide_entera_no_ronda_a_ronda(self):
+        """Ronda a ronda son hasta 180 peticiones por liga y la clave publica no
+        aguanta: el ciclo se comia miles de 429 y la liga quedaba sin datos."""
+        import inspect
+
+        fuente = inspect.getsource(worker._fetch_sportsdb_league_history)
+        self.assertIn("_eventos_de_temporada_completa", fuente)
+        # El recorrido por rondas queda solo como respaldo, detras del vacio.
+        self.assertLess(
+            fuente.index("_eventos_de_temporada_completa"),
+            fuente.index("fetch_the_sportsdb_round_events"),
+        )

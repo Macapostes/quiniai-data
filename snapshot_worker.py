@@ -111,6 +111,7 @@ FOOTBALL_DATA_BASE_URL = "https://www.football-data.co.uk/mmz4281"
 THESPORTSDB_SEARCH_TEAM_URL = "https://www.thesportsdb.com/api/v1/json/123/searchteams.php"
 THESPORTSDB_EVENTS_NEXT_URL = "https://www.thesportsdb.com/api/v1/json/123/eventsnext.php"
 THESPORTSDB_EVENTS_ROUND_URL = "https://www.thesportsdb.com/api/v1/json/123/eventsround.php"
+THESPORTSDB_EVENTS_SEASON_URL = "https://www.thesportsdb.com/api/v1/json/123/eventsseason.php"
 BBC_FOOTBALL_RSS_URL = "https://feeds.bbci.co.uk/sport/football/rss.xml"
 GUARDIAN_FOOTBALL_RSS_URL = "https://feeds.theguardian.com/theguardian/football/rss"
 EDUARDO_QUINIELA_PORCENTAJES_URL = "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes"
@@ -7668,45 +7669,84 @@ def _etiquetas_de_temporada(season: str) -> list[str]:
     return [f"{inicio}-{inicio + 1}", str(inicio)]
 
 
+def _eventos_de_temporada_completa(league_id: str, etiqueta: str) -> list[dict]:
+    """La temporada entera en UNA peticion, en vez de ronda por ronda.
+
+    Ir ronda a ronda son hasta 60 peticiones por temporada y 180 por liga; con
+    la clave publica eso es un 429 detras de otro y la liga se queda sin
+    historico. Este endpoint devuelve lo mismo de una vez.
+    """
+    cache_key = f"sportsdb_season_events:v1:{league_id}:{etiqueta}"
+    cacheado = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
+    if cacheado:
+        return cacheado
+    try:
+        _frenar_sportsdb()
+        data = _request_json(
+            THESPORTSDB_EVENTS_SEASON_URL,
+            params={"id": league_id, "s": etiqueta},
+            timeout=25,
+        )
+    except Exception as exc:
+        print(f"[sportsdb] temporada {etiqueta} de la liga {league_id} no disponible: {exc}")
+        return []
+    eventos = [e for e in ((data or {}).get("events") or []) if isinstance(e, dict)]
+    if eventos:
+        _cache_set(HISTORY_CACHE, cache_key, eventos)
+    return eventos
+
+
 def _fetch_sportsdb_league_history(league_key: str, league_id: str) -> list[dict]:
     combined_rows: list[dict] = []
     for season in _sportsdb_recent_seasons():
-        cache_key = f"sportsdb_history:v4:{league_key}:{league_id}:{season}"
+        cache_key = f"sportsdb_history:v5:{league_key}:{league_id}:{season}"
         cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
         if cached:
             combined_rows.extend(cached)
             continue
+
         rows: list[dict] = []
-        # Se prueba la primera ronda con cada forma y se sigue solo con la que
-        # responde: probar las dos en las sesenta rondas serian cientos de
-        # peticiones para nada.
-        etiqueta_buena = ""
         for etiqueta in _etiquetas_de_temporada(season):
-            if fetch_the_sportsdb_round_events(league_id, etiqueta, 1):
-                etiqueta_buena = etiqueta
-                break
-        if not etiqueta_buena:
-            # Sin datos en ninguna forma no se cachea el vacio: puede ser un
-            # limite de peticiones y dejaria la liga muda hasta que caduque.
-            continue
-        empty_rounds = 0
-        for round_value in range(1, 61):
-            events = fetch_the_sportsdb_round_events(league_id, etiqueta_buena, round_value)
-            if not events:
-                empty_rounds += 1
-                if empty_rounds >= 4 and rows:
-                    break
+            eventos = _eventos_de_temporada_completa(league_id, etiqueta)
+            if not eventos:
                 continue
-            empty_rounds = 0
-            for event in events:
+            for event in eventos:
                 row = _sportsdb_event_to_history_row(event, season)
                 if row.get("HomeTeam") and row.get("AwayTeam") and row.get("Date"):
                     rows.append(row)
+            if rows:
+                break
+
+        if not rows:
+            # Respaldo ronda a ronda, solo si la temporada completa no responde.
+            etiqueta_buena = ""
+            for etiqueta in _etiquetas_de_temporada(season):
+                if fetch_the_sportsdb_round_events(league_id, etiqueta, 1):
+                    etiqueta_buena = etiqueta
+                    break
+            if etiqueta_buena:
+                empty_rounds = 0
+                for round_value in range(1, 61):
+                    events = fetch_the_sportsdb_round_events(
+                        league_id, etiqueta_buena, round_value
+                    )
+                    if not events:
+                        empty_rounds += 1
+                        if empty_rounds >= 4 and rows:
+                            break
+                        continue
+                    empty_rounds = 0
+                    for event in events:
+                        row = _sportsdb_event_to_history_row(event, season)
+                        if row.get("HomeTeam") and row.get("AwayTeam") and row.get("Date"):
+                            rows.append(row)
+
+        # Un vacio no se cachea: puede ser un limite de peticiones y dejaria la
+        # liga muda hasta que caducase la entrada.
         if rows:
             _cache_set(HISTORY_CACHE, cache_key, rows)
         combined_rows.extend(rows)
     return combined_rows
-
 
 def _row_division_code(row: dict) -> str:
     """Codigo de division de una fila de football-data.
