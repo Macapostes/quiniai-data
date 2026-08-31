@@ -6497,6 +6497,11 @@ def fetch_match_referee_news(home_team: str, away_team: str) -> list[dict]:
 _SPORTSDB_ULTIMA_PETICION = 0.0
 _SPORTSDB_PAUSA_SEGUNDOS = float(os.getenv("QUINIAI_SPORTSDB_PAUSA", "0.5") or 0.5)
 
+# El limite de la clave publica es por minuto, no diario: esperando se abre.
+# Tres intentos separados llegan al minuto largo, que es lo que suele hacer
+# falta. No se reintenta nada que no sea un 429.
+_ESPERAS_REINTENTO_TEMPORADA = (20.0, 45.0, 0.0)
+
 
 def _frenar_sportsdb() -> None:
     """Espacia las consultas al proveedor.
@@ -7689,16 +7694,35 @@ def _eventos_de_temporada_completa(league_id: str, etiqueta: str) -> list[dict]:
     cacheado = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
     if cacheado:
         return cacheado
-    try:
-        _frenar_sportsdb()
-        data = _request_json(
-            THESPORTSDB_EVENTS_SEASON_URL,
-            params={"id": league_id, "s": etiqueta},
-            timeout=25,
-        )
-    except Exception as exc:
-        print(f"[sportsdb] temporada {etiqueta} de la liga {league_id} no disponible: {exc}")
-        return []
+    # Esta peticion es UNA, y desbloquea la liga entera: la clasificacion, la
+    # racha y el H2H de todos sus partidos. Cuando toca, el ciclo ya se ha
+    # gastado el cupo en las consultas de equipo y le responden 429, asi que la
+    # liga se queda muda hasta el dia siguiente. Insistir un par de veces cuesta
+    # tres peticiones y basta con acertar UNA para que quede cacheada.
+    data = None
+    for intento, espera in enumerate(_ESPERAS_REINTENTO_TEMPORADA, start=1):
+        try:
+            _frenar_sportsdb()
+            data = _request_json(
+                THESPORTSDB_EVENTS_SEASON_URL,
+                params={"id": league_id, "s": etiqueta},
+                timeout=25,
+            )
+            break
+        except Exception as exc:
+            limitado = "429" in str(exc) or "Too Many" in str(exc)
+            ultimo = intento >= len(_ESPERAS_REINTENTO_TEMPORADA)
+            if not limitado or ultimo:
+                print(
+                    f"[sportsdb] temporada {etiqueta} de la liga {league_id} "
+                    f"no disponible: {exc}"
+                )
+                return []
+            print(
+                f"[sportsdb] temporada {etiqueta} de la liga {league_id}: "
+                f"limite alcanzado, reintento {intento} en {espera:.0f}s"
+            )
+            time.sleep(espera)
     eventos = [e for e in ((data or {}).get("events") or []) if isinstance(e, dict)]
     if eventos:
         _cache_set(HISTORY_CACHE, cache_key, eventos)
@@ -7821,7 +7845,15 @@ def fetch_league_history(league_key: str) -> list[dict]:
             except Exception:
                 parsed_rows = []
             parsed_rows = _rows_matching_division(parsed_rows, league_code)
-            _cache_set(HISTORY_CACHE, cache_key, parsed_rows)
+            if parsed_rows:
+                _cache_set(HISTORY_CACHE, cache_key, parsed_rows)
+            else:
+                # Guardar el vacio convierte un fallo de un momento -un corte,
+                # un limite- en 24 horas sin historico, porque los ciclos
+                # siguientes leen el vacio de la cache y ni lo intentan. Si hay
+                # copia anterior se sirve aunque haya caducado: un dato de ayer
+                # vale muchisimo mas que ninguno.
+                parsed_rows = _cache_get(HISTORY_CACHE, cache_key) or []
             combined_rows.extend(parsed_rows)
         # Tambien sobre lo cacheado: neutraliza caches ya contaminadas sin
         # obligar a borrar el fichero a mano.
@@ -7837,9 +7869,13 @@ def fetch_league_history(league_key: str) -> list[dict]:
             parsed_rows = _parse_football_data_new_rows(csv_text)
         except Exception:
             parsed_rows = []
-        _cache_set(HISTORY_CACHE, cache_key, parsed_rows)
         if parsed_rows:
+            _cache_set(HISTORY_CACHE, cache_key, parsed_rows)
             return parsed_rows
+        # Igual que arriba: el vacio no se cachea, y si hay copia vieja, sirve.
+        anterior = _cache_get(HISTORY_CACHE, cache_key) or []
+        if anterior:
+            return anterior
     sportsdb_league_id = _sportsdb_league_id_for_key(league_key)
     if sportsdb_league_id:
         return _fetch_sportsdb_league_history(league_key, sportsdb_league_id)
