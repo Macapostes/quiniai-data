@@ -12108,23 +12108,36 @@ def _bootstrap_quiniela_placeholder(
     # confundia "R.MADRID (F)" con la Real Sociedad y "AT.MADRID (F)" con el
     # Athletic. Para el resto se mantiene la busqueda de siempre, porque ahi el
     # historico viene de otra fuente con otros nombres.
+    #
+    # OJO: si TheSportsDB no encontro ficha femenina (home_team_api vacio),
+    # el nombre cae al nombre LAE ("SEVILLA (F)"). En ese caso NO se puede usar
+    # exacto=True porque "SEVILLA (F)" nunca coincide con "Sevilla Women": hay
+    # que usar el comparador fuzzy que ya sabe quitar la marca femenina.
+    # exacto solo aplica cuando TENEMOS el nombre oficial del proveedor.
     nombre_hist_local = home_team
     nombre_hist_visitante = away_team
+    tiene_api_local = bool(str((home_team_api or {}).get("strTeam") or "").strip())
+    tiene_api_visitante = bool(str((away_team_api or {}).get("strTeam") or "").strip())
     if categoria == "female":
-        nombre_hist_local = str((home_team_api or {}).get("strTeam") or "").strip() or home_team
-        nombre_hist_visitante = str((away_team_api or {}).get("strTeam") or "").strip() or away_team
+        if tiene_api_local:
+            nombre_hist_local = str(home_team_api["strTeam"]).strip()
+        if tiene_api_visitante:
+            nombre_hist_visitante = str(away_team_api["strTeam"]).strip()
 
-    # En femenino el nombre viene exacto del proveedor, asi que se exige una
-    # coincidencia buena de verdad: media docena de clubes comparten la palabra
-    # "Femenino" y con el umbral flojo de siempre cualquiera valia.
-    exacto_hist = categoria == "female"
+    # exacto=True solo cuando el nombre viene del proveedor (coincidencia garantizada).
+    # Si cayo al nombre LAE usamos fuzzy con umbral alto para evitar falsos positivos
+    # pero permitir que "SEVILLA (F)" encuentre a "Sevilla Women".
     home_history = _team_history_context(
         league_history, nombre_hist_local, kickoff_dt, season_code,
-        filas_de_su_categoria=True, exacto=exacto_hist,
+        filas_de_su_categoria=True,
+        exacto=(categoria == "female" and tiene_api_local),
+        umbral=0.6 if (categoria == "female" and not tiene_api_local) else 0.33,
     )
     away_history = _team_history_context(
         league_history, nombre_hist_visitante, kickoff_dt, season_code,
-        filas_de_su_categoria=True, exacto=exacto_hist,
+        filas_de_su_categoria=True,
+        exacto=(categoria == "female" and tiene_api_visitante),
+        umbral=0.6 if (categoria == "female" and not tiene_api_visitante) else 0.33,
     )
     home_resolved_name = home_history.get("resolved_name", home_team)
     away_resolved_name = away_history.get("resolved_name", away_team)
