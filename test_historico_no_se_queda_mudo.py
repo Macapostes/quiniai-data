@@ -87,5 +87,43 @@ class LigaFResuelveTests(unittest.TestCase):
         self.assertNotEqual(calidad.get("reason"), "tabla vacia")
 
 
+class LaPodaNoBorraLoQueAcabaDeGuardarTests(unittest.TestCase):
+    """La causa de raiz de toda la historia de la Liga F.
+
+    La poda mira el ultimo trozo de la clave y lo compara con los codigos de
+    temporada ("2627"). Pero las claves de TheSportsDB acaban en como lo llama
+    el proveedor: el ano de inicio ("2026") o la etiqueta ("2026-2027"). Ninguno
+    coincidia, asi que el historico se borraba entero en CADA guardado: no
+    llegaba a persistir nunca, cada ciclo lo volvia a pedir desde cero, y el
+    proveedor respondia 429. De ahi que el partido femenino no tuviera ni
+    clasificacion ni H2H por mucho que se arreglara todo lo demas.
+    """
+
+    def _podar(self, claves):
+        for k in claves:
+            w.HISTORY_CACHE[k] = {"fetched_at": w._now_iso(), "data": [1]}
+        w._prune_history_cache()
+        return {k for k in claves if k in w.HISTORY_CACHE}
+
+    def test_sobreviven_las_tres_formas_de_nombrar_la_temporada(self):
+        temporada = sorted(w._sportsdb_recent_seasons())[-1]      # "2026"
+        etiqueta = w._etiquetas_de_temporada(temporada)[0]        # "2026-2027"
+        codigo = sorted(w._recent_season_codes(w.HISTORY_SEASONS_BACK))[-1]  # "2627"
+        claves = [
+            f"sportsdb_history:v5:sportsdb_5106:5106:{temporada}",
+            f"sportsdb_season_events:v1:5106:{etiqueta}",
+            f"soccer_spain_la_liga:{codigo}",
+        ]
+        self.assertEqual(self._podar(claves), set(claves))
+
+    def test_las_temporadas_viejas_si_se_borran(self):
+        """La poda tiene que seguir sirviendo para algo."""
+        claves = [
+            "sportsdb_season_events:v1:5106:2019-2020",
+            "soccer_spain_la_liga:2021",
+        ]
+        self.assertEqual(self._podar(claves), set())
+
+
 if __name__ == "__main__":
     unittest.main()

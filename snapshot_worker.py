@@ -1293,8 +1293,29 @@ def _prune_ttl_cache(
         cache.pop(key, None)
 
 
+def _temporadas_que_se_conservan() -> set[str]:
+    """Las temporadas vigentes, en TODAS las formas en que se nombran.
+
+    La poda mira el ultimo trozo de la clave, y no todas las claves lo escriben
+    igual: las de football-data acaban en el codigo de siempre ("2627"), pero
+    las de TheSportsDB acaban en como lo llama el proveedor -el ano de inicio
+    ("2026") o la etiqueta completa ("2026-2027")-. Comparando solo contra los
+    codigos, esas dos ultimas no coincidian con nada y se borraban enteras en
+    cada guardado.
+
+    El efecto era el que trajo de cabeza a la Liga F: el historico no llegaba
+    nunca a persistir, cada ciclo lo volvia a pedir desde cero y el proveedor
+    respondia 429, asi que el partido se quedaba sin clasificacion ni H2H.
+    """
+    permitidas = set(_recent_season_codes(HISTORY_SEASONS_BACK))
+    permitidas |= set(_sportsdb_recent_seasons())
+    for temporada in list(permitidas):
+        permitidas |= set(_etiquetas_de_temporada(temporada))
+    return permitidas
+
+
 def _prune_history_cache() -> None:
-    allowed_seasons = set(_recent_season_codes(HISTORY_SEASONS_BACK))
+    allowed_seasons = _temporadas_que_se_conservan()
     for key in list(HISTORY_CACHE.keys()):
         season_code = str(key).rsplit(":", 1)[-1]
         if season_code not in allowed_seasons:
