@@ -139,6 +139,14 @@ class UnaClaveNumericaSigueSiendoLaLigaTests(unittest.TestCase):
         self.assertEqual(w._sportsdb_league_id_for_key("sportsdb_5106"), "5106")
         self.assertEqual(w._sportsdb_league_id_for_key("5106"), "5106")
 
+    def test_las_dos_formas_son_la_misma_liga(self):
+        """Si no se unifican, cada una se trae su propio historico y lo cachea
+        aparte: el doble de peticiones al proveedor -lo que dejaba la liga sin
+        datos- y dos copias que pueden estar en distinto estado."""
+        self.assertEqual(
+            w._canonical_league_key("5106"), w._canonical_league_key("sportsdb_5106")
+        )
+
     def test_las_claves_normales_no_se_confunden_con_un_id(self):
         for clave in ("soccer_spain_la_liga", "league_unresolved", "", "sportsdb_"):
             with self.subTest(clave):

@@ -279,6 +279,13 @@ def _canonical_league_key(value: object) -> str:
     raw = str(value or "").strip()
     if not raw:
         return ""
+    # "5106" y "sportsdb_5106" son la misma liga. Segun por donde entre el
+    # partido llega escrita de una forma o de otra, y sin unificarlas cada una
+    # se trae su propio historico y lo cachea aparte: el doble de peticiones al
+    # proveedor -que es justo lo que dejaba la liga sin datos- y dos copias que
+    # pueden estar en distinto estado. Paso con SEVILLA (F) - BARCELONA (F).
+    if raw.isdigit():
+        raw = f"sportsdb_{raw}"
     return LEAGUE_KEY_ALIASES.get(raw, raw)
 
 
