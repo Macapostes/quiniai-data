@@ -7645,6 +7645,13 @@ def _sportsdb_league_id_for_key(league_key: str) -> str:
         suffix = key.split("_", 1)[1].strip()
         if suffix.isdigit():
             return suffix
+    # Una clave puramente numerica solo puede ser un id del proveedor: las demas
+    # son slugs ("soccer_spain_la_liga"). Sin esto, el partido al que la liga le
+    # llega como "5106" en vez de "sportsdb_5106" se queda sin historico -y con
+    # el, sin clasificacion ni H2H- mientras los de al lado, identicos, si lo
+    # tienen. Paso con SEVILLA (F) - BARCELONA (F) en la jornada 4.
+    if key.isdigit():
+        return key
     return ""
 
 

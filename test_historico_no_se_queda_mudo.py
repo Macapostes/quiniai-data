@@ -125,5 +125,25 @@ class LaPodaNoBorraLoQueAcabaDeGuardarTests(unittest.TestCase):
         self.assertEqual(self._podar(claves), set())
 
 
+class UnaClaveNumericaSigueSiendoLaLigaTests(unittest.TestCase):
+    """Tres partidos de Liga F traian clasificacion y el cuarto no.
+
+    La diferencia estaba en como le habia quedado escrita la liga: a tres les
+    llego "sportsdb_5106" y al cuarto "5106" a secas, puesta por el camino que
+    infiere la liga del boleto. Sin el prefijo no se resolvia el id, asi que se
+    quedaba sin historico -y con el, sin tabla ni H2H- mientras los de al lado,
+    identicos, si lo tenian.
+    """
+
+    def test_con_prefijo_y_sin_el_dan_la_misma_liga(self):
+        self.assertEqual(w._sportsdb_league_id_for_key("sportsdb_5106"), "5106")
+        self.assertEqual(w._sportsdb_league_id_for_key("5106"), "5106")
+
+    def test_las_claves_normales_no_se_confunden_con_un_id(self):
+        for clave in ("soccer_spain_la_liga", "league_unresolved", "", "sportsdb_"):
+            with self.subTest(clave):
+                self.assertEqual(w._sportsdb_league_id_for_key(clave), "")
+
+
 if __name__ == "__main__":
     unittest.main()
