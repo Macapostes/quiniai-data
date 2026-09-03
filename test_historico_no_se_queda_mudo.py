@@ -153,5 +153,24 @@ class UnaClaveNumericaSigueSiendoLaLigaTests(unittest.TestCase):
                 self.assertEqual(w._sportsdb_league_id_for_key(clave), "")
 
 
+class ElRespaldoFemeninoEscribeLaClaveCanonicaTests(unittest.TestCase):
+    """Cuando la liga no se resuelve y los nombres parecen femeninos, el worker
+    la infiere. Escribiendola "5106" a secas, ese partido no compartia historico
+    con los otros de su misma liga: se lo traia aparte, y se quedaba sin H2H
+    mientras los de al lado si lo tenian."""
+
+    def test_infiere_la_liga_en_su_forma_canonica(self):
+        import inspect
+
+        fuente = inspect.getsource(w)
+        self.assertIn('league_key = _canonical_league_key("5106")', fuente)
+        self.assertNotIn('league_key = "5106"', fuente)
+
+    def test_y_esa_forma_es_la_que_resuelve_el_historico(self):
+        clave = w._canonical_league_key("5106")
+        self.assertEqual(clave, "sportsdb_5106")
+        self.assertEqual(w._sportsdb_league_id_for_key(clave), "5106")
+
+
 if __name__ == "__main__":
     unittest.main()

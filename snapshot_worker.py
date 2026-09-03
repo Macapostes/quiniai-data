@@ -12598,7 +12598,11 @@ def _bootstrap_quiniela_placeholder(
         away_lower = away_team.lower()
         is_female = any(x in home_lower or x in away_lower for x in ["(f)", "women", "femenino", "femení", "femeni"])
         if is_female:
-            league_key = "5106"
+            # En su forma canonica: escrito "5106" a secas, este partido no
+            # comparte historico con los otros de su misma liga -se lo trae
+            # aparte y lo cachea aparte-, y se quedaba sin H2H mientras los de
+            # al lado si lo tenian.
+            league_key = _canonical_league_key("5106")
             match["league"] = league_key
             match["league_name"] = "Liga Femenina"
             match["dynamic_league"] = False
