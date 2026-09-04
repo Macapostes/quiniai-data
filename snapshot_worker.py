@@ -2508,7 +2508,326 @@ def _is_non_first_team_news(item: dict, categoria: str | None = None) -> bool:
     return any(token in categories for token in ["damer", "damlag", "kvinner", "women", "femenin", "ungdom"])
 
 
-def _build_injury_entities(team_name: str, items: list[dict]) -> list[dict]:
+# ---------------------------------------------------------------------------
+# Bajas: de quien es el nombre que sale en un titular
+#
+# _extract_person_candidates es una regex de "una a tres palabras que empiezan
+# por mayuscula", asi que de un titular saca personas, pero tambien clubes,
+# ciudades, competiciones y palabras inglesas sueltas. Antes se filtraba solo
+# por la FORMA del candidato, y por ahi se colaron al PDF de la jornada 4:
+#
+#   "Malaga-Levante: bajas ... incluyendo a Mourinho y Lamine Yamal Injury"
+#   "La Real Sociedad B tiene bajas verificables (Oskarsson, Celta, Matarazzo)"
+#
+# Mourinho y Matarazzo son entrenadores ajenos al partido, Lamine Yamal es del
+# Barcelona, "Injury" es una palabra del titular y "Celta" es un club. Ninguna
+# comprobacion de forma iba a parar a los dos primeros: son nombres de persona
+# perfectamente validos.
+# ---------------------------------------------------------------------------
+
+_CLUBES_CONOCIDOS = frozenset({
+    'a madrid', 'aalesund', 'aalesunds', 'aalesunds fk', 'aberdeen', 'ac milan', 'ad ceuta',
+    'ad ceuta fc', 'aek atenas', 'aek athens', 'aik', 'aik fotboll', 'airdrieonians',
+    'ajax', 'alaves', 'albania', 'alemania', 'algeria', 'almere', 'almere city', 'almeria',
+    'amberes', 'anderlecht', 'angers', 'antalyaspor', 'antwerp', 'arabia saudi',
+    'arabia saudita', 'argelia', 'argentina', 'aris', 'aris thessaloniki', 'arsenal',
+    'as monaco', 'as roma', 'aston villa', 'at madrid', 'atalanta', 'ath bilbao',
+    'ath club', 'athletic', 'athletic bilbao', 'athletic club', 'athletic de bilbao',
+    'atl madrid', 'atletico', 'atletico de madrid', 'atletico madrid', 'augsburg',
+    'augsburgo', 'australia', 'austria', 'austria viena', 'austria wien', 'auxerre',
+    'az alkmaar', 'b dortmund', 'b leverkusen', 'b munich', 'bala town', 'barcelona',
+    'basaksehir', 'basel', 'basilea', 'bate borisov', 'bayer leverkus', 'bayer leverkusen',
+    'bayer munich', 'bayern munich', 'belgica', 'belgium', 'benfica', 'besiktas', 'betis',
+    'bk hacken', 'blackburn', 'blackburn rovers', 'boavista', 'bochum', 'bod glimt', 'bodo',
+    'bodo glimt', 'bodoglimt', 'bohemian', 'bohemians', 'bolivia', 'bologna', 'bolonia',
+    'bordeaux', 'borussia dortmund', 'borussia m', 'borussia monchengladbach', 'bosnia',
+    'bosnia and herzegovina', 'bosnia y herzegovina', 'bournemouth', 'braga', 'brann',
+    'brasil', 'brazil', 'bremen', 'brentford', 'brest', 'brighton', 'brommapojkarna',
+    'brujas', 'bsc young boys', 'burdeos', 'burnley', 'c leonesa', 'ca osasuna', 'cadiz',
+    'cadiz cf', 'cagliari', 'cambuur', 'cameroon', 'camerun', 'canada', 'cardiff',
+    'cardiff city', 'castellon', 'ce sabadell', 'celta', 'celta b', 'celta fortuna',
+    'celta vigo', 'celtic', 'ceuta', 'chelsea', 'chile', 'clermont', 'clermont foot',
+    'club atletico osasuna', 'club brugge', 'club brujas', 'cologne', 'colombia', 'colonia',
+    'como', 'connah quay', 'connah s quay', 'connah s quay nomads', 'copenhague', 'corea',
+    'corea del sur', 'costa de marfil', 'coventry', 'coventry city', 'croacia', 'croatia',
+    'crvena zvezda', 'crystal palace', 'cultural leonesa', 'czech republic', 'darmstadt',
+    'denmark', 'dep coruna', 'dep la coruna', 'deportivo alaves', 'deportivo la coruna',
+    'derby', 'derby county', 'dinamarca', 'dinamo zagreb', 'dortmund', 'dundalk', 'dundee',
+    'dundee united', 'dundee utd', 'dunfermline', 'dunfermline athletic', 'ecuador', 'eeuu',
+    'egipto', 'egypt', 'eintracht f', 'eintracht francfort', 'eintracht frankfurt', 'elche',
+    'elche cf', 'emmen', 'empoli', 'england', 'escocia', 'eslovaquia', 'eslovenia',
+    'espana', 'espanol', 'espanyol', 'estados unidos', 'estrasburgo', 'estrella roja',
+    'eupen', 'everton', 'excelsior', 'falkirk', 'famalicao', 'fc barcelona', 'fc basle',
+    'fc copenhagen', 'fc emmen', 'fc inter turku', 'fc koln', 'fc lugano', 'fc midtjylland',
+    'fc porto', 'fc twente', 'fc winterthur', 'fc zurich', 'fenerbahce', 'ferencvaros',
+    'feyenoord', 'finland', 'finlandia', 'fiorentina', 'fk austria wien', 'fk haugesund',
+    'france', 'francia', 'frankfurt', 'fredrikstad', 'fredrikstad fk', 'freiburg',
+    'friburgo', 'frosinone', 'fulham', 'galatasaray', 'gales', 'gante', 'genk', 'genoa',
+    'gent', 'germany', 'getafe', 'girona', 'glentoran', 'go ahead eagles', 'granada',
+    'grasshopper', 'grecia', 'greece', 'groningen', 'hacken', 'hajduk split',
+    'hamarkameratene', 'hamburger sv', 'hamburgo', 'hamilton', 'hamilton academical',
+    'hamkan', 'hannover', 'hannover 96', 'hanover', 'haugesund', 'havre',
+    'heart of midlothian', 'hearts', 'heerenveen', 'heidenheim', 'hellas verona', 'hertha',
+    'hertha berlin', 'hertha bsc', 'hibernian', 'hibs', 'hoffenheim', 'holanda', 'hsv',
+    'hull', 'hull city', 'hungary', 'hungria', 'ict', 'if brommapojkarna', 'ik start',
+    'inglaterra', 'inter', 'inter milan', 'inter turku', 'inverness', 'inverness ct',
+    'ipswich', 'ipswich town', 'iran', 'irlanda', 'irlanda del norte',
+    'istanbul basaksehir', 'italia', 'italy', 'ivory coast', 'japan', 'japon', 'juventus',
+    'kaa gent', 'kasimpasa', 'kfum', 'kfum oslo', 'kilmarnock', 'kobenhavn', 'koln',
+    'konyaspor', 'kv mechelen', 'kv oostende', 'lask', 'lazio', 'le havre', 'lecce',
+    'lech poznan', 'leeds', 'leeds united', 'leganes', 'legia varsovia', 'legia warsaw',
+    'leicestein', 'leicester', 'leicester city', 'leipzig', 'lens', 'levante', 'leverkusen',
+    'lille', 'lillestr m', 'lillestrom', 'linfield', 'liverpool', 'livingston', 'lorient',
+    'ludogorets', 'lugano', 'luton', 'luton town', 'lyon', 'maccabi haifa',
+    'maccabi tel aviv', 'macedonia', 'macedonia del norte', 'mainz', 'mainz 05', 'mainz05',
+    'mallorca', 'malmo', 'malmo ff', 'man city', 'man united', 'man utd', 'manchester city',
+    'manchester united', 'marruecos', 'marseille', 'marsella', 'mechelen', 'metz', 'mexico',
+    'middlesbrough', 'midtjylland', 'milan', 'millwall', 'mirandes', 'molde', 'monaco',
+    'monchengladbach', 'montpellier', 'monza', 'morocco', 'motherwell', 'nantes', 'napoles',
+    'napoli', 'nec', 'nec nijmegen', 'netherlands', 'newcastle', 'newcastle united', 'nice',
+    'nigeria', 'niza', 'north macedonia', 'northern ireland', 'noruega', 'norway',
+    'norwich', 'norwich city', 'nott m forest', 'nottingham', 'nottingham forest',
+    'nottm forest', 'odds bk', 'olimpique lyon', 'olimpique marsella', 'olimpique niza',
+    'olympiakos', 'olympique lyon', 'olympique marsella', 'oporto', 'orgryte', 'orgryte is',
+    'osasuna', 'ostende', 'oviedo', 'p s g', 'paises bajos', 'panathinaikos', 'paok',
+    'paok salonika', 'paraguay', 'paris saint germain', 'paris sg', 'parma', 'partick',
+    'partick thistle', 'pec zwolle', 'peru', 'poland', 'polonia', 'porto', 'portsmouth',
+    'portugal', 'psg', 'psv', 'psv eindhoven', 'qarabag', 'qpr', 'queen of the south',
+    'queens park', 'queens park rangers', 'quenn of the south', 'quenns park', 'r betis',
+    'r madrid', 'r oviedo', 'r sociedad', 'r sociedad b', 'r zaragoza',
+    'racing de santander', 'racing s', 'racing santander', 'raith rovers', 'rangers',
+    'rapid viena', 'rapid vienna', 'rapid wien', 'rayo', 'rayo v', 'rayo vallecano',
+    'rb leipzig', 'rb salzburg', 'rcd espanyol', 'real betis', 'real madrid', 'real oviedo',
+    'real racing club de santander', 'real sociedad', 'real sociedad b', 'real sociedad ii',
+    'real valladolid', 'real zaragoza', 'red bull salzburg', 'red star belgrade', 'reims',
+    'rennes', 'rep checa', 'rep irlanda', 'republic of ireland', 'republica checa',
+    'rkc waalwijk', 'roma', 'romania', 'rosenborg', 'rosenborg bk', 'ross county',
+    'royal antwerp', 'rumania', 's lisboa', 'sabadell fc', 'saint etienne', 'salernitana',
+    'salzburgo', 'sampdoria', 'sandefjord', 'sarpsborg', 'sarpsborg 08', 'sassuolo',
+    'saudi arabia', 'sc heerenveen', 'schalke', 'schalke 04', 'scotland', 'senegal',
+    'serbia', 'servette', 'sevilla', 'shakhtar', 'shakhtar d', 'shakhtar donetsk',
+    'shamrock rovers', 'sheffield united', 'sheffield utd', 'sheffield wed',
+    'sheffield wednesday', 'shelbourne', 'sheriff', 'sheriff tiraspol', 'sk brann',
+    'sl benfica', 'slavia praga', 'slavia prague', 'slovakia', 'slovenia', 'south korea',
+    'southampton', 'southamton', 'spain', 'sparta', 'sparta praga', 'sparta prague',
+    'sparta rotterdam', 'sporting clube', 'sporting cp', 'sporting de gijon',
+    'sporting de portugal', 'sporting gija3n', 'sporting gijon', 'sporting port', 'spurs',
+    'st etienne', 'st gallen', 'st gilloise', 'st johnstone', 'st mirren', 'stab k',
+    'stabak', 'stade brestois 29', 'standard', 'standard liege', 'standard lieja', 'start',
+    'stoke', 'stoke city', 'str mmen', 'strasbourg', 'strommen', 'sturm graz', 'stuttgart',
+    'suecia', 'suiza', 'sunderland', 'swans', 'swansea', 'swansea city', 'sweden',
+    'switzerland', 'the new saints', 'torino', 'tottenham', 'tottenham hotspur', 'toulouse',
+    'trabzonspor', 'troms', 'tromso', 'turkey', 'turquia', 'twente', 'ucrania', 'udinese',
+    'ukraine', 'union berlin', 'union saint gilloise', 'union sg', 'united states',
+    'uruguay', 'usa', 'utrecht', 'vaasan palloseura', 'valencia', 'valerenga', 'valladolid',
+    'vasteras', 'vasteras sk', 'venezia', 'venezuela', 'verona', 'viking', 'viktoria plzen',
+    'villareal', 'villarreal', 'vitesse', 'vitoria guimaraes', 'vitoria sc', 'vps',
+    'vps vaasa', 'waalwijk', 'wales', 'watford', 'werder bremen', 'west brom',
+    'west bromwich albion', 'west ham', 'west ham united', 'westerlo', 'winterthur',
+    'wolfsburg', 'wolfsburgo', 'wolverhampton', 'wolverhampton wanderers', 'wolves',
+    'young boys', 'zenit', 'zurich', 'zwolle',
+})
+
+# Los equipos de la jornada en curso, que se van conociendo al construir el
+# snapshot. Es la fuente que se mantiene sola: al catalogo de arriba le faltan
+# clubes -Malaga y Eibar no estan en ninguna de las dos tablas de alias-, y
+# cualquiera que juegue esta jornada es un club por definicion.
+_CLUBES_DE_LA_JORNADA: set[str] = set()
+
+# Palabras que por si solas ya nombran a un club ("sporting", "sabadell"). La
+# regex pega trozos de titular al nombre y salian "Real Sporting" o "Sabadell"
+# como si fueran personas. Se excluyen las genericas, que aparecen en decenas
+# de nombres y no identifican a nadie.
+_PALABRAS_GENERICAS_DE_CLUB = frozenset({
+    "real", "club", "futbol", "atletico", "athletic", "union", "unione",
+    "sportiva", "calcio", "deportivo", "deportiva", "cultural", "racing",
+    "united", "city", "town", "county", "rovers", "albion", "wanderers",
+})
+_PALABRAS_DE_CLUB = frozenset({
+    palabra
+    for nombre in _CLUBES_CONOCIDOS
+    for palabra in nombre.split()
+    if len(palabra) >= 5 and palabra not in _PALABRAS_GENERICAS_DE_CLUB
+})
+
+# Palabras de titular que la regex pega al nombre: "Lamine Yamal Injury".
+_PALABRAS_DE_TITULAR = frozenset({
+    "injury", "injured", "injuries", "out", "doubt", "doubtful", "return",
+    "returns", "fitness", "lesion", "lesionado", "lesionada", "baja", "bajas",
+    "fichaje", "fichajes", "sancion", "sancionado", "sanciones", "duda", "dudas",
+    "alta", "suspension", "suspendido",
+    # Sacadas de los titulares que se seguian colando en el feed real, no de
+    # una lista imaginada: convocatorias, partes medicos y restos de cabecera.
+    "convocatoria", "convocatorias", "comunicado", "noticias", "noticia",
+    "ultima", "ultimo", "confirmado", "confirmada", "parte", "medico",
+    "delantero", "centrocampista", "defensa", "portero", "calentamiento",
+    "entrenamiento", "pretemporada", "amistoso", "trofeo", "copa", "liga",
+    "champions", "prision", "find", "watch", "update", "club", "executive",
+    "siete", "hace", "belgian", "spanish", "french", "english", "german",
+    "published", "city",
+})
+
+# Un candidato que empieza por determinante no es el nombre de nadie: sale de
+# la mayuscula inicial de la frase ("El Malaga pierde a...").
+_DETERMINANTES = frozenset({
+    "el", "la", "los", "las", "un", "una", "unos", "unas", "su", "sus",
+    "este", "esta", "estos", "estas", "the",
+})
+
+# Contexto que delata a un entrenador. No basta con la forma del nombre:
+# "Matarazzo" es tan valido como el de cualquier jugador.
+_PALABRAS_DE_ENTRENADOR = (
+    "entrenador", "entrenadora", "tecnico", "tecnica", "mister", "banquillo",
+    "coach", "manager", "seleccionador", "preparador",
+)
+
+
+def _norm_persona(value: object) -> str:
+    """Sin acentos, sin puntuacion y en minusculas, para poder comparar."""
+    texto = _normalize_ascii(str(value or ""))
+    texto = re.sub(r"[^A-Za-z0-9 ]", " ", texto)
+    return re.sub(r"\s+", " ", texto).strip().lower()
+
+
+def _recordar_clubes_de_la_jornada(*nombres: object) -> None:
+    for nombre in nombres:
+        limpio = _norm_persona(nombre)
+        if len(limpio) >= 3:
+            _CLUBES_DE_LA_JORNADA.add(limpio)
+
+
+def _es_nombre_de_club(candidate: object) -> bool:
+    """`True` si el candidato es un club y no una persona.
+
+    Por pertenencia exacta a un catalogo, no por parecido: el filtro anterior
+    usaba similitud >= 0.92 contra 75 nombres, y "celta" contra "celta vigo" se
+    queda en 0.71, asi que un club entero pasaba por jugador.
+    """
+    limpio = _norm_persona(candidate)
+    if not limpio:
+        return False
+    if limpio in _CLUBES_CONOCIDOS or limpio in _CLUBES_DE_LA_JORNADA:
+        return True
+    # Tambien si el club esta en una de las palabras: la regex pega trozos de
+    # titular al nombre y salian cosas como "Calentamiento Valencia" o "Celta
+    # Suspension Xhekaj".
+    partes = limpio.split()
+    if len(partes) > 1:
+        return any(
+            p in _CLUBES_CONOCIDOS or p in _CLUBES_DE_LA_JORNADA or p in _PALABRAS_DE_CLUB
+            for p in partes
+            if len(p) >= 5
+        )
+    return limpio in _PALABRAS_DE_CLUB
+
+
+def _titular_menciona_equipo(headline: object, team_name: object) -> bool:
+    """`True` si el titular habla del equipo al que se le va a atribuir la baja.
+
+    Es la comprobacion que faltaba, y la que mata los dos casos peores. Las
+    demas miran el candidato aislado; esta mira su PROCEDENCIA: si el titular
+    del que sale el nombre ni siquiera nombra al equipo, la baja no es suya.
+
+    Deliberadamente estricto: un titular que llame al equipo solo por su apodo
+    -"el Submarino Amarillo", "el conjunto ilicitano"- se descarta. Perder una
+    baja real cuesta un parrafo; publicar una inventada cuesta la credibilidad
+    del informe entero.
+    """
+    titular = _norm_persona(headline)
+    if not titular:
+        return False
+    tokens = {t for t in _norm_persona(team_name).split() if len(t) > 3}
+    tokens |= {
+        t
+        for t in _norm_persona(_canonical_team_name(str(team_name or ""))).split()
+        if len(t) > 3
+    }
+    if not tokens:
+        # Sin ningun token largo con el que comparar no hay forma de verificar.
+        # Descartar por sistema seria peor que dejar pasar.
+        return True
+    return any(t in titular for t in tokens)
+
+
+def _el_titular_es_de_otro_equipo(headline: object, team_name: object) -> bool:
+    """`True` si el titular trata de otro club, aunque nombre al nuestro.
+
+    Comprobar que el titular menciona al equipo no basta. "Convocatoria del
+    Real Madrid contra el Malaga: Mourinho deja fuera a..." nombra al Malaga,
+    asi que pasaba la comprobacion de procedencia, pero la noticia es del Real
+    Madrid y sus nombres no son bajas del Malaga. Es el mismo error que se
+    publico, por otra puerta.
+
+    Regla: si otro club conocido aparece ANTES que el nuestro, los nombres del
+    titular son suyos.
+    """
+    titular = _norm_persona(headline)
+    if not titular:
+        return False
+    nuestros = [
+        t for t in _norm_persona(team_name).split() if len(t) > 3
+    ] + [
+        t for t in _norm_persona(_canonical_team_name(str(team_name or ""))).split() if len(t) > 3
+    ]
+    # Por el nombre completo primero: buscando "real" a secas, un titular sobre
+    # el Real Madrid daba por encontrada a la Real Sociedad en la misma
+    # posicion, y entonces ningun otro club aparecia "antes".
+    completos = [
+        n for n in (
+            _norm_persona(team_name),
+            _norm_persona(_canonical_team_name(str(team_name or ""))),
+        ) if n and n in titular
+    ]
+    if completos:
+        nuestra = min(titular.index(n) for n in completos)
+    else:
+        posiciones = [titular.index(t) for t in nuestros if t in titular]
+        if not posiciones:
+            return False
+        nuestra = min(posiciones)
+    # Comparar por identidad, no por solapamiento de palabras: "Real Madrid" y
+    # "Real Sociedad" comparten "real", y descartando por eso el Real Madrid
+    # dejaba de contar como "otro equipo" en un titular de la Real Sociedad.
+    nuestro_norm = {
+        _norm_persona(team_name),
+        _norm_persona(_canonical_team_name(str(team_name or ""))),
+    }
+    for club in _CLUBES_CONOCIDOS | _CLUBES_DE_LA_JORNADA:
+        if len(club) < 5 or club in nuestro_norm:
+            continue
+        # Un club que contenga entero el nombre del nuestro es el mismo equipo
+        # escrito mas largo ("celta" dentro de "celta vigo"), no otro.
+        if any(n and (n in club or club in n) for n in nuestro_norm):
+            continue
+        pos = titular.find(club)
+        if 0 <= pos < nuestra:
+            return True
+    return False
+
+
+def _parece_resto_de_titular(candidate: object) -> bool:
+    partes = _norm_persona(candidate).split()
+    if not partes:
+        return True
+    if partes[0] in _DETERMINANTES:
+        return True
+    return any(p in _PALABRAS_DE_TITULAR for p in partes)
+
+
+def _parece_entrenador(headline: object, candidate: object) -> bool:
+    """El nombre aparece pegado a una palabra de entrenador en el titular."""
+    titular = _norm_persona(headline)
+    nombre = _norm_persona(candidate)
+    if not titular or not nombre or nombre not in titular:
+        return False
+    inicio = titular.index(nombre)
+    ventana = titular[max(0, inicio - 45):inicio + len(nombre) + 45]
+    return any(p in ventana for p in _PALABRAS_DE_ENTRENADOR)
+
+
+def _build_injury_entities(
+    team_name: str, items: list[dict], rival: str = ""
+) -> list[dict]:
     categoria = _categoria_por_nombre(team_name)
     entities = []
     ignored_title_tokens = [
@@ -2556,6 +2875,13 @@ def _build_injury_entities(team_name: str, items: list[dict]) -> list[dict]:
             item, categoria
         ):
             continue
+        # La procedencia, antes que nada: si el titular no nombra al equipo, no
+        # hay nombre suyo que sacar de ahi. Es lo que dejaba pasar a Mourinho y
+        # a Lamine Yamal, que venian de titulares de otros equipos.
+        if not _titular_menciona_equipo(title, team_name):
+            continue
+        if _el_titular_es_de_otro_equipo(title, team_name):
+            continue
         source_tokens = {
             token
             for token in re.findall(r"[a-z]+", _normalize_ascii(source_name).lower())
@@ -2570,7 +2896,13 @@ def _build_injury_entities(team_name: str, items: list[dict]) -> list[dict]:
             ]
             if _team_similarity_score(candidate, team_name) >= 0.6:
                 continue
-            if _looks_like_known_team_entity(candidate):
+            if _looks_like_known_team_entity(candidate) or _es_nombre_de_club(candidate):
+                continue
+            if rival and _team_similarity_score(candidate, rival) >= 0.6:
+                continue
+            if _parece_resto_de_titular(candidate):
+                continue
+            if _parece_entrenador(title, candidate):
                 continue
             normalized_candidate = _normalize_ascii(candidate).lower().strip()
             if normalized_candidate in ignored_people:
@@ -11062,8 +11394,15 @@ def _enrich_quiniela_match(match: dict) -> None:
 
     home_availability_items = _availability_source_items(match["home_team_context"])
     away_availability_items = _availability_source_items(match["away_team_context"])
-    home_injuries = _build_injury_entities(match["local"], home_availability_items)
-    away_injuries = _build_injury_entities(match["visitante"], away_availability_items)
+    # Los dos del partido pasan al catalogo de clubes: al de alias le faltan
+    # equipos -Malaga y Eibar no estan-, y quien juega esta jornada es un club.
+    _recordar_clubes_de_la_jornada(match["local"], match["visitante"])
+    home_injuries = _build_injury_entities(
+        match["local"], home_availability_items, rival=match["visitante"]
+    )
+    away_injuries = _build_injury_entities(
+        match["visitante"], away_availability_items, rival=match["local"]
+    )
 
     def _availability_status(items: list[dict], injuries: list[dict]) -> str:
         if injuries:
