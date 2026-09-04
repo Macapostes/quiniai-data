@@ -2682,6 +2682,80 @@ _PALABRAS_DE_ENTRENADOR = (
 )
 
 
+# Plantillas, para lo que ninguna heuristica de texto puede resolver: si el
+# nombre es de un jugador de OTRO equipo. Es lo que quedaba tras las cinco
+# capas de texto -"Bernardo Silva" y "Camavinga" saliendo como bajas del Inter
+# de Milan, siendo del Real Madrid-, y no hay forma de verlo mirando el nombre.
+#
+# Se usa SOLO en negativo. Las plantillas que devuelve el proveedor vienen
+# incompletas -diez jugadores del Real Madrid en vez de veinticinco- asi que
+# exigir que el nombre este en la nuestra tiraria las bajas de los que faltan,
+# que es justo el fallo que no queremos. Descartar por estar en la de otro es
+# seguro: si sobra un nombre, no se pierde ninguno.
+_INDICE_DE_JUGADORES: dict[str, set[str]] = {}
+_PLANTILLAS_PEDIDAS: set[str] = set()
+_PLANTILLA_TTL_SEGUNDOS = int(
+    os.getenv("QUINIAI_PLANTILLA_TTL", str(7 * 24 * 3600)) or 7 * 24 * 3600
+)
+
+
+def _plantilla_de_equipo(team_name: str) -> list[str]:
+    """Los jugadores que el proveedor conoce de un equipo. Cacheada una semana:
+    una plantilla solo cambia en mercado."""
+    clave = f"plantilla:v1:{_norm_persona(team_name)}"
+    cacheada = _cache_get(THESPORTSDB_CACHE, clave, _PLANTILLA_TTL_SEGUNDOS)
+    if cacheada is not None:
+        return list(cacheada)
+    ficha = fetch_the_sportsdb_team(team_name) or {}
+    id_equipo = str(ficha.get("idTeam") or "").strip()
+    if not id_equipo:
+        return []
+    try:
+        _frenar_sportsdb()
+        datos = _request_json(
+            "https://www.thesportsdb.com/api/v1/json/%s/lookup_all_players.php" % THESPORTSDB_KEY,
+            params={"id": id_equipo},
+            timeout=25,
+        )
+    except Exception as exc:
+        # Falla abierto a proposito: sin plantilla no se descarta a nadie.
+        print(f"[plantilla] {team_name}: no disponible ({exc})")
+        return []
+    jugadores = [
+        str(j.get("strPlayer") or "").strip()
+        for j in ((datos or {}).get("player") or [])
+        if isinstance(j, dict) and str(j.get("strPlayer") or "").strip()
+    ]
+    if jugadores:
+        _cache_set(THESPORTSDB_CACHE, clave, jugadores)
+    return jugadores
+
+
+def _registrar_plantilla(team_name: str) -> None:
+    equipo = _norm_persona(team_name)
+    if not equipo or equipo in _PLANTILLAS_PEDIDAS:
+        return
+    _PLANTILLAS_PEDIDAS.add(equipo)
+    for jugador in _plantilla_de_equipo(team_name):
+        nombre = _norm_persona(jugador)
+        if len(nombre) >= 4:
+            _INDICE_DE_JUGADORES.setdefault(nombre, set()).add(equipo)
+        # Tambien por el apellido solo: la prensa escribe "Tchouameni", no
+        # "Aurelien Tchouameni".
+        partes = nombre.split()
+        if len(partes) > 1 and len(partes[-1]) >= 5:
+            _INDICE_DE_JUGADORES.setdefault(partes[-1], set()).add(equipo)
+
+
+def _es_jugador_de_otro_equipo(candidate: object, team_name: object) -> bool:
+    """`True` si el nombre es de un jugador conocido, y de otro equipo."""
+    nombre = _norm_persona(candidate)
+    equipos = _INDICE_DE_JUGADORES.get(nombre)
+    if not equipos:
+        return False
+    return _norm_persona(team_name) not in equipos
+
+
 def _norm_persona(value: object) -> str:
     """Sin acentos, sin puntuacion y en minusculas, para poder comparar."""
     texto = _normalize_ascii(str(value or ""))
@@ -2903,6 +2977,8 @@ def _build_injury_entities(
             if _parece_resto_de_titular(candidate):
                 continue
             if _parece_entrenador(title, candidate):
+                continue
+            if _es_jugador_de_otro_equipo(candidate, team_name):
                 continue
             normalized_candidate = _normalize_ascii(candidate).lower().strip()
             if normalized_candidate in ignored_people:
@@ -11397,6 +11473,9 @@ def _enrich_quiniela_match(match: dict) -> None:
     # Los dos del partido pasan al catalogo de clubes: al de alias le faltan
     # equipos -Malaga y Eibar no estan-, y quien juega esta jornada es un club.
     _recordar_clubes_de_la_jornada(match["local"], match["visitante"])
+    # Y sus plantillas, una vez por equipo y cacheadas una semana.
+    _registrar_plantilla(match["local"])
+    _registrar_plantilla(match["visitante"])
     home_injuries = _build_injury_entities(
         match["local"], home_availability_items, rival=match["visitante"]
     )

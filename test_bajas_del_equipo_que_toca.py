@@ -154,6 +154,48 @@ comprobar(
 )
 
 
+# --- Plantillas: lo que ninguna heuristica de texto resuelve ----------------
+#
+# Tras las cinco capas de texto seguian saliendo "Bernardo Silva" y "Camavinga"
+# como bajas del Inter de Milan. Son del Real Madrid, y no hay forma de verlo
+# mirando el nombre: son nombres de persona validos, en un titular que habla
+# del partido. Solo la plantilla lo dice.
+#
+# Se indexa a mano para no depender de la red en el test.
+w._INDICE_DE_JUGADORES.clear()
+w._INDICE_DE_JUGADORES.update({
+    "bernardo silva": {"real madrid"},
+    "tchouameni": {"real madrid"},
+    "gavi": {"barcelona"},
+})
+
+comprobar(
+    w._es_jugador_de_otro_equipo("Bernardo Silva", "Inter Milan"),
+    "Bernardo Silva es del Real Madrid, no baja del Inter",
+)
+comprobar(
+    not w._es_jugador_de_otro_equipo("Bernardo Silva", "Real Madrid"),
+    "para el Real Madrid, Bernardo Silva si es suyo",
+)
+comprobar(
+    not _bajas("Inter Milan", "Bernardo Silva, baja por sancion para recibir al Inter Milan"),
+    "sigue atribuyendose Bernardo Silva al Inter",
+)
+
+# Y lo que NO puede pasar: un nombre desconocido no se descarta nunca. Las
+# plantillas del proveedor vienen incompletas -diez jugadores de veinticinco-,
+# asi que usarlas como lista blanca tiraria las bajas de los que faltan.
+comprobar(
+    not w._es_jugador_de_otro_equipo("Oskarsson", "Real Sociedad B"),
+    "un nombre que no esta en ninguna plantilla no se puede descartar",
+)
+comprobar(
+    "Oskarsson" in _bajas("Real Sociedad B", "El Real Sociedad B pierde a Oskarsson por lesion"),
+    "la baja legitima tiene que seguir pasando con el indice cargado",
+)
+w._INDICE_DE_JUGADORES.clear()
+
+
 if FALLOS:
     print("FALLOS:")
     for f in FALLOS:
