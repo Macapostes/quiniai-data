@@ -31,10 +31,19 @@ from zoneinfo import ZoneInfo
 import requests
 from dotenv import load_dotenv
 
+# stdout Y stderr. Sin lo segundo, un traceback con un nombre como "Jagiellonia
+# Bialystok" revienta al escribirse en cp1252 y el worker muere justo mientras
+# intenta informar del error que lo mata. Y con errors='replace' un caracter
+# raro se ve mal, pero nunca tumba el ciclo.
 if hasattr(sys.stdout, 'reconfigure'):
-    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 elif hasattr(sys.stdout, 'buffer'):
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+elif hasattr(sys.stderr, 'buffer'):
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 RUNTIME_SITE_PACKAGES = (
     Path.home()
@@ -126,6 +135,32 @@ THESPORTSDB_SEARCH_TEAM_URL = f"{_THESPORTSDB_BASE}/searchteams.php"
 THESPORTSDB_EVENTS_NEXT_URL = f"{_THESPORTSDB_BASE}/eventsnext.php"
 THESPORTSDB_EVENTS_ROUND_URL = f"{_THESPORTSDB_BASE}/eventsround.php"
 THESPORTSDB_EVENTS_SEASON_URL = f"{_THESPORTSDB_BASE}/eventsseason.php"
+
+# Cuantas peticiones ha rechazado TheSportsDB en el ciclo en curso. Sirve para
+# distinguir dos cosas que la auditoria de contexto confundia: que un equipo no
+# tenga contexto porque de verdad no lo hay, y que no lo tenga porque el
+# proveedor esta caido. Lo primero es un dato malo y debe frenar la publicacion;
+# lo segundo es una averia ajena, y frenar por ella deja la jornada entera sin
+# publicar, que es peor que publicarla con menos contexto.
+_SPORTSDB_FALLOS_CICLO = 0
+# Un rechazo suelto es ruido normal. A partir de tres seguidos ya no es ruido:
+# el proveedor no esta respondiendo.
+SPORTSDB_FALLOS_PARA_DEGRADADO = 3
+
+
+def _marcar_fallo_sportsdb() -> None:
+    global _SPORTSDB_FALLOS_CICLO
+    _SPORTSDB_FALLOS_CICLO += 1
+
+
+def _reiniciar_fallos_sportsdb() -> None:
+    """Se llama al empezar cada ciclo: el estado del proveedor no se hereda."""
+    global _SPORTSDB_FALLOS_CICLO
+    _SPORTSDB_FALLOS_CICLO = 0
+
+
+def _sportsdb_degradado() -> bool:
+    return _SPORTSDB_FALLOS_CICLO >= SPORTSDB_FALLOS_PARA_DEGRADADO
 BBC_FOOTBALL_RSS_URL = "https://feeds.bbci.co.uk/sport/football/rss.xml"
 GUARDIAN_FOOTBALL_RSS_URL = "https://feeds.theguardian.com/theguardian/football/rss"
 EDUARDO_QUINIELA_PORCENTAJES_URL = "https://www.eduardolosilla.es/quiniela/ayudas/porcentajes"
@@ -1651,6 +1686,13 @@ def _season_tag_for(date_value: datetime | None = None) -> str:
 
 def _request_json(url: str, params: dict | None = None, timeout: int = 30) -> dict | list:
     response = requests.get(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
+    # Se anota aqui, antes de levantar, porque este es el unico punto por el que
+    # pasan todas las llamadas al proveedor. Solo cuentan el 429 y los 5xx: un
+    # 404 significa que ese equipo no existe, no que la API este caida.
+    if url.startswith(_THESPORTSDB_BASE) and (
+        response.status_code == 429 or response.status_code >= 500
+    ):
+        _marcar_fallo_sportsdb()
     response.raise_for_status()
     if not response.encoding or response.encoding.lower() in {"iso-8859-1", "latin-1"}:
         response.encoding = "utf-8"
@@ -12043,8 +12085,29 @@ def _audit_season_transition_snapshot(snapshot: dict) -> dict:
                             "opponent_only": opponent_only,
                         }
                     )
+    # Una evidencia contaminada es un dato malo y frena siempre: publicar
+    # contexto del equipo de al lado es peor que no publicar.
+    #
+    # Un lado sin contexto es una ausencia, y la ausencia solo es culpa nuestra
+    # si el proveedor estaba respondiendo. Si estaba caido, frenar por eso deja
+    # a todo el mundo sin jornada por una averia ajena que no podemos arreglar
+    # esperando. En ese caso se publica marcado como degradado, para que quien
+    # lo lea sepa que va con menos contexto del normal.
+    proveedor_degradado = _sportsdb_degradado()
+    degradado = bool(empty_sides) and proveedor_degradado
     return {
-        "ok": bool(focus_matches) and not invalid_evidence and not empty_sides,
+        "ok": bool(focus_matches)
+        and not invalid_evidence
+        and (not empty_sides or proveedor_degradado),
+        "degraded": degradado,
+        "degraded_reason": (
+            "TheSportsDB no respondio durante el ciclo "
+            f"({_SPORTSDB_FALLOS_CICLO} peticiones rechazadas); "
+            "se publica con menos contexto de plantillas"
+            if degradado
+            else ""
+        ),
+        "provider_failures": _SPORTSDB_FALLOS_CICLO,
         "focus_matches": len(focus_matches),
         "checked_evidence": checked_evidence,
         "invalid_evidence_count": len(invalid_evidence),
@@ -14183,8 +14246,21 @@ def upload_snapshot(snapshot: dict) -> None:
 def run_once(print_summary: bool = False) -> dict:
     started_at = time.time()
     _log_cycle_event("info", "cycle_started", poll_seconds=POLL_SECONDS)
+    _reiniciar_fallos_sportsdb()
     snapshot = fetch_snapshot()
     transition_audit = snapshot.get("season_transition_audit") or {}
+    if transition_audit.get("degraded"):
+        # No frena el ciclo, pero tiene que quedar escrito: si esto se repite
+        # dia tras dia, el arreglo es poner QUINIAI_SPORTSDB_KEY en el .env, no
+        # seguir publicando a medias.
+        _log_cycle_event(
+            "warning",
+            "season_transition_audit_degraded",
+            reason=transition_audit.get("degraded_reason", ""),
+            provider_failures=transition_audit.get("provider_failures", 0),
+            empty_side_count=transition_audit.get("empty_side_count", 0),
+            empty_sides=transition_audit.get("empty_sides", [])[:6],
+        )
     if not transition_audit.get("ok"):
         _log_cycle_event(
             "error",
