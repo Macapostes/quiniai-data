@@ -7300,7 +7300,11 @@ def fetch_the_sportsdb_next_event(team_id: str) -> dict:
     cached = _cache_get(THESPORTSDB_CACHE, f"next_event:{team_id}", 6 * 3600)
     if cached:
         return cached
+    vieja = _cache_get(THESPORTSDB_CACHE, f"next_event:{team_id}", SPORTSDB_TTL_MAXIMA)
+    if not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+        return vieja or {}
     try:
+        _frenar_sportsdb()
         data = _request_json(
             THESPORTSDB_EVENTS_NEXT_URL,
             params={"id": team_id},
@@ -7320,7 +7324,11 @@ def fetch_the_sportsdb_next_events(team_id: str) -> list[dict]:
     cached = _cache_get(THESPORTSDB_CACHE, f"next_events:v2:{team_id}", 3 * 3600)
     if cached:
         return list(cached)
+    vieja = _cache_get(THESPORTSDB_CACHE, f"next_events:v2:{team_id}", SPORTSDB_TTL_MAXIMA)
+    if not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+        return list(vieja or [])
     try:
+        _frenar_sportsdb()
         data = _request_json(
             THESPORTSDB_EVENTS_NEXT_URL,
             params={"id": team_id},
@@ -7342,14 +7350,18 @@ def fetch_the_sportsdb_round_events(league_id: str, season: str, round_value: ob
     cached = _cache_get(THESPORTSDB_CACHE, cache_key, 12 * 3600)
     if cached:
         return list(cached)
+    vieja = _cache_get(THESPORTSDB_CACHE, cache_key, SPORTSDB_TTL_MAXIMA)
+    if not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+        return list(vieja or [])
     try:
+        _frenar_sportsdb()
         data = _request_json(
             THESPORTSDB_EVENTS_ROUND_URL,
             params={"id": league_id, "r": round_text, "s": season},
             timeout=25,
         )
     except Exception:
-        return []
+        return list(vieja or [])
     events = (data or {}).get("events") or []
     _cache_set(THESPORTSDB_CACHE, cache_key, events)
     return events

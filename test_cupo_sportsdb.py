@@ -139,5 +139,42 @@ class NoCachearElVacioTests(unittest.TestCase):
         self.assertNotIn("_cache_set", tras_el_corte.split("return []")[0])
 
 
+class NingunaLlamadaSeSaltaElCupoTests(unittest.TestCase):
+    """El cupo no vale de nada si hay puertas traseras.
+
+    Al medir el primer ciclo con cupo salieron 519 peticiones rechazadas cuando
+    el tope era 40: tres funciones -eventsnext dos veces y eventsround- pedian
+    sin pasar por el freno. Este test recorre el fuente y no deja que vuelva a
+    colarse ninguna.
+    """
+
+    def test_toda_llamada_a_thesportsdb_pasa_por_el_freno(self):
+        from pathlib import Path
+
+        lineas = Path(sw.__file__).read_text(encoding="utf-8").splitlines()
+        marcadores = (
+            "THESPORTSDB_EVENTS_NEXT_URL,",
+            "THESPORTSDB_EVENTS_ROUND_URL,",
+            "THESPORTSDB_EVENTS_SEASON_URL,",
+            "THESPORTSDB_SEARCH_TEAM_URL,",
+            "lookup_all_players",
+        )
+        sin_freno = []
+        for i, linea in enumerate(lineas):
+            if not any(m in linea for m in marcadores):
+                continue
+            # El bloque de constantes de arriba no son llamadas.
+            if linea.strip().startswith(("THESPORTSDB_", "#")):
+                continue
+            previas = lineas[max(0, i - 10) : i]
+            if not any("_frenar_sportsdb()" in p for p in previas):
+                sin_freno.append(f"linea {i + 1}: {linea.strip()[:70]}")
+        self.assertEqual(
+            sin_freno,
+            [],
+            "Estas llamadas piden a TheSportsDB sin gastar cupo: " + str(sin_freno),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
