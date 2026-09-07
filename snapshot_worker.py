@@ -4828,6 +4828,21 @@ def _github_monitor_upsert_many(files: list[tuple[str, str]]) -> bool:
     headers = _monitor_github_headers()
     if not headers or not MONITOR_REPO:
         return False
+    if "Authorization" not in headers:
+        # Escribir por la API exige autenticacion. Si no hay credencial -ni
+        # QUINIAI_GITHUB_TOKEN ni nada en el gestor de credenciales de git- esto
+        # solo puede devolver 404, asi que se sale sin gastar peticiones.
+        #
+        # Se avisa UNA vez y como informacion, no como aviso: publicar por git
+        # push es una via de pleno derecho, no una averia. Antes esto soltaba un
+        # WARNING en cada ciclo y parecia que algo iba mal.
+        MONITOR_GITHUB_API_DISABLED = True
+        LOGGER.info(
+            "monitor_github_api_sin_credencial repo=%s; se publica por git push. "
+            "Para usar la API, pon QUINIAI_GITHUB_TOKEN en el .env",
+            MONITOR_REPO,
+        )
+        return False
     state_files = (MONITOR_PUBLISH_STATE or {}).setdefault("files", {})
     changed_files: list[tuple[str, str, str]] = []
     for repo_path, content in files:
@@ -4851,9 +4866,13 @@ def _github_monitor_upsert_many(files: list[tuple[str, str]]) -> bool:
         try:
             ref_response = requests.get(ref_url, headers=headers, timeout=25)
             if ref_response.status_code == 404:
+                # Llegar aqui ya implica que hay token: sin el se sale antes.
+                # Un 404 con token es token caducado o sin permiso sobre el
+                # repo, y eso si conviene mirarlo.
                 MONITOR_GITHUB_API_DISABLED = True
                 LOGGER.warning(
-                    "monitor_github_api_disabled repo=%s branch=%s status=404; using_git_fallback",
+                    "monitor_github_api_token_invalido repo=%s branch=%s status=404 "
+                    "(caducado o sin permisos); se sigue publicando por git push",
                     MONITOR_REPO,
                     MONITOR_BRANCH,
                 )
@@ -4916,7 +4935,8 @@ def _github_monitor_upsert_many(files: list[tuple[str, str]]) -> bool:
             if update_response.status_code == 404:
                 MONITOR_GITHUB_API_DISABLED = True
                 LOGGER.warning(
-                    "monitor_github_api_write_disabled repo=%s branch=%s status=404; using_git_fallback",
+                    "monitor_github_api_token_sin_escritura repo=%s branch=%s status=404 "
+                    "(el token no puede escribir en el repo); se sigue publicando por git push",
                     MONITOR_REPO,
                     MONITOR_BRANCH,
                 )

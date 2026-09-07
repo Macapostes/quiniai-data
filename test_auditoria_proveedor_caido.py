@@ -202,3 +202,72 @@ class SalidaDeTextoTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PublicacionSinCredencialTests(unittest.TestCase):
+    """Sin credencial no hay averia, hay una via sin configurar.
+
+    Escribir por la API de GitHub exige autenticacion: sin ella devuelve 404
+    siempre. Antes eso soltaba un WARNING en cada ciclo y parecia que algo iba
+    mal, cuando publicar por git push es una via de pleno derecho.
+
+    Ojo con el matiz que se me escapo al principio: la credencial no sale solo
+    de QUINIAI_GITHUB_TOKEN, tambien puede venir del gestor de credenciales de
+    git. Por eso se mira la cabecera Authorization ya construida, y no la
+    variable de entorno: mirar la variable desactivaba una via que si funciona.
+    """
+
+    def setUp(self):
+        self._disabled = sw.MONITOR_GITHUB_API_DISABLED
+        sw.MONITOR_GITHUB_API_DISABLED = False
+
+    def tearDown(self):
+        sw.MONITOR_GITHUB_API_DISABLED = self._disabled
+
+    def _sin_credencial(self):
+        from unittest.mock import patch
+        return patch.object(
+            sw, "_monitor_github_headers", return_value={"Accept": "application/vnd.github+json"}
+        )
+
+    def test_sin_credencial_ni_se_intenta_la_api(self):
+        """Gastar peticiones que solo pueden devolver 404 es ruido puro."""
+        from unittest.mock import patch
+        import requests
+
+        with self._sin_credencial(), patch.object(requests, "get") as get, patch.object(
+            requests, "patch"
+        ) as patch_req:
+            resultado = sw._github_monitor_upsert_many([("docs/monitor/x.json", "{}")])
+        self.assertFalse(resultado)
+        get.assert_not_called()
+        patch_req.assert_not_called()
+
+    def test_se_avisa_una_sola_vez(self):
+        with self._sin_credencial():
+            sw._github_monitor_upsert_many([("docs/monitor/x.json", "{}")])
+        self.assertTrue(
+            sw.MONITOR_GITHUB_API_DISABLED,
+            "hay que marcarlo para no repetir el aviso en cada ciclo",
+        )
+
+    def test_con_credencial_del_gestor_de_git_si_se_intenta(self):
+        """El fallo que casi cuelo: si la credencial viene del gestor de git y
+        no del .env, la API sigue siendo valida y no hay que desactivarla."""
+        from unittest.mock import patch, Mock
+        import requests
+
+        respuesta = Mock(status_code=404)
+        with patch.object(
+            sw, "_monitor_github_headers", return_value={"Authorization": "Basic x"}
+        ), patch.object(requests, "get", return_value=respuesta) as get:
+            sw._github_monitor_upsert_many([("docs/monitor/y.json", "{}")])
+        get.assert_called()
+
+    def test_el_aviso_sin_credencial_no_es_un_warning(self):
+        """Un WARNING recurrente por algo normal tapa los problemas de verdad."""
+        import inspect
+        fuente = inspect.getsource(sw._github_monitor_upsert_many)
+        trozo = fuente[: fuente.index("ref_path")]
+        self.assertIn("LOGGER.info", trozo)
+        self.assertNotIn("LOGGER.warning", trozo)
