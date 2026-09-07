@@ -171,7 +171,12 @@ QUINIELA_ROOT_URL = EDUARDO_QUINIELA_PORCENTAJES_URL
 QUINIELA_HISTORY_JORNADAS = max(2, min(5, int(os.getenv("QUINIAI_QUINIELA_HISTORY_JORNADAS", "3"))))
 MONITOR_PUBLIC_JORNADAS = max(2, min(3, int(os.getenv("QUINIAI_MONITOR_PUBLIC_JORNADAS", "3"))))
 GENERIC_CACHE_MAX_AGE_SECONDS = int(os.getenv("QUINIAI_GENERIC_CACHE_MAX_AGE_SECONDS", str(14 * 24 * 3600)))
-GENERIC_CACHE_MAX_ENTRIES = max(100, int(os.getenv("QUINIAI_GENERIC_CACHE_MAX_ENTRIES", "500")))
+# El tope estaba en 500 y la cache de TheSportsDB tenia exactamente 500
+# entradas: estaba llena y expulsando fichas que despues habia que volver a
+# pedir, gastando el cupo compartido en recuperar lo que ya habiamos tenido.
+# Con 177 equipos, sus variantes de nombre, plantillas y eventos de liga, 500 se
+# queda corto. A 1500 el fichero ronda los 7 MB, que no es problema.
+GENERIC_CACHE_MAX_ENTRIES = max(100, int(os.getenv("QUINIAI_GENERIC_CACHE_MAX_ENTRIES", "1500")))
 MONITOR_REPO = os.getenv("QUINIAI_MONITOR_REPO", "Macapostes/quiniai-data").strip()
 MONITOR_BRANCH = os.getenv("QUINIAI_MONITOR_BRANCH", "main").strip() or "main"
 MONITOR_PUBLISH_ENABLED = (
@@ -2751,6 +2756,11 @@ def _plantilla_de_equipo(team_name: str) -> list[str]:
     ficha = fetch_the_sportsdb_team(team_name) or {}
     id_equipo = str(ficha.get("idTeam") or "").strip()
     if not id_equipo:
+        return []
+    if not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+        # Sin cupo no se pide la plantilla, pero TAMPOCO se cachea el vacio: si
+        # se guardara, el equipo se quedaria sin jugadores hasta que caducase.
+        # Devolver vacio sin guardar deja que el proximo ciclo lo reintente.
         return []
     try:
         _frenar_sportsdb()
@@ -7011,13 +7021,72 @@ _SPORTSDB_PAUSA_SEGUNDOS = float(os.getenv("QUINIAI_SPORTSDB_PAUSA", "0.5") or 0
 _ESPERAS_REINTENTO_TEMPORADA = (20.0, 45.0, 0.0)
 
 
+# Cuantas peticiones a TheSportsDB se permiten en UN ciclo.
+#
+# El limite de la clave publica es de unas 30 peticiones por minuto y es
+# COMPARTIDO con todo el que use la API gratis: no es un cupo nuestro. Medido el
+# 7 de septiembre de 2026, veinte peticiones seguidas pasan y a partir de la
+# treintena empiezan los 429.
+#
+# Antes el worker vaciaba ese presupuesto comun en cada ciclo (1.063 peticiones
+# rechazadas en uno solo) y se quedaba sin datos el resto del dia. Con un cupo
+# por ciclo, las doce vueltas diarias reparten unas 480 peticiones, que sobran
+# para refrescarlo todo, y ningun ciclo se come lo de los demas.
+#
+# Lo que se pide aqui -clasificacion, racha, enfrentamientos, plantillas- cambia
+# como mucho una vez por jornada. Pedirlo cada dos horas era desperdicio.
+SPORTSDB_MAX_PETICIONES_CICLO = max(
+    1, int(os.getenv("QUINIAI_SPORTSDB_MAX_CICLO", "40") or 40)
+)
+_SPORTSDB_PETICIONES_CICLO = 0
+
+# Dos ventanas, no una:
+#   FRESCA  - dentro de esto la copia guardada se usa sin preguntar nada.
+#   MAXIMA  - mas alla de esto el dato es demasiado viejo y se descarta.
+# Entre las dos se sirve lo guardado igualmente, y solo se refresca si queda
+# cupo. Antes habia una sola ventana de 7 dias: al cumplirse, el equipo
+# desaparecia aunque tuvieramos su ficha de hacia ocho dias. Y las 500 entradas
+# caducaban el mismo dia, porque se escribieron todas en el mismo refresco.
+SPORTSDB_TTL_FRESCA = max(
+    3600, int(os.getenv("QUINIAI_SPORTSDB_TTL_FRESCA", str(24 * 3600)) or 24 * 3600)
+)
+# 13 dias y no mas: la purga generica borra a los 14, asi que una ventana mayor
+# seria mentira -el dato ya no estaria ahi para servirlo-.
+SPORTSDB_TTL_MAXIMA = max(
+    SPORTSDB_TTL_FRESCA,
+    int(os.getenv("QUINIAI_SPORTSDB_TTL_MAXIMA", str(13 * 24 * 3600)) or 13 * 24 * 3600),
+)
+
+
+# No todas las peticiones valen lo mismo. La de eventos de temporada es UNA y
+# desbloquea la clasificacion, la racha y el H2H de una liga entera; la de un
+# equipo suelto resuelve un equipo. Sin reserva pasaba justo lo que avisa el
+# comentario de _eventos_de_temporada_completa: el ciclo se gastaba el cupo
+# resolviendo nombres y la liga se quedaba muda.
+SPORTSDB_RESERVA_LIGAS = max(
+    1, int(os.getenv("QUINIAI_SPORTSDB_RESERVA_LIGAS", "8") or 8)
+)
+
+
+def _sportsdb_hay_cupo(reserva: int = 0) -> bool:
+    """Queda cupo en este ciclo? `reserva` deja sitio para lo prioritario."""
+    return _SPORTSDB_PETICIONES_CICLO < (SPORTSDB_MAX_PETICIONES_CICLO - reserva)
+
+
+def _reiniciar_cupo_sportsdb() -> None:
+    global _SPORTSDB_PETICIONES_CICLO
+    _SPORTSDB_PETICIONES_CICLO = 0
+
+
 def _frenar_sportsdb() -> None:
-    """Espacia las consultas al proveedor.
+    """Espacia las consultas al proveedor y consume cupo del ciclo.
 
     Con la cache fria hay que resolver una veintena de equipos y cada uno puede
     probar varias formas del nombre. Sin freno eso son decenas de peticiones en
     segundos y el proveedor responde 429 a todo lo demas de la jornada.
     """
+    global _SPORTSDB_PETICIONES_CICLO
+    _SPORTSDB_PETICIONES_CICLO += 1
     global _SPORTSDB_ULTIMA_PETICION
     espera = _SPORTSDB_PAUSA_SEGUNDOS - (time.monotonic() - _SPORTSDB_ULTIMA_PETICION)
     if espera > 0:
@@ -7028,9 +7097,17 @@ def _frenar_sportsdb() -> None:
 def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> dict:
     resolved_country_hint = _guess_country_hint(team_name, country_hint)
     cache_key = f"team:{resolved_country_hint or 'any'}:{team_name}"
-    cached = _cache_get(THESPORTSDB_CACHE, cache_key, 7 * 24 * 3600)
-    if cached:
-        return cached
+    fresca = _cache_get(THESPORTSDB_CACHE, cache_key, SPORTSDB_TTL_FRESCA)
+    if fresca:
+        return fresca
+    # La identidad de un equipo -su id, su liga, su estadio- no cambia de una
+    # semana para otra. Si la copia guardada ya no esta "fresca" pero sigue
+    # dentro de la ventana larga, vale mas servirla que gastar cupo, y muchisimo
+    # mas que quedarse sin el equipo. Solo se pregunta al proveedor si queda
+    # cupo en este ciclo; si no, mañana habra mas.
+    vieja = _cache_get(THESPORTSDB_CACHE, cache_key, SPORTSDB_TTL_MAXIMA)
+    if vieja and not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+        return vieja
     canonical_team_name = _canonical_team_name(team_name)
     categoria_pedida = _categoria_por_nombre(team_name)
     # TheSportsDB no conoce el "(F)" de la quiniela: buscando "R.MADRID (F)" o
@@ -8216,6 +8293,11 @@ def _eventos_de_temporada_completa(league_id: str, etiqueta: str) -> list[dict]:
     # tres peticiones y basta con acertar UNA para que quede cacheada.
     data = None
     for intento, espera in enumerate(_ESPERAS_REINTENTO_TEMPORADA, start=1):
+        # Sin reserva: esta es la peticion prioritaria del ciclo y las de equipo
+        # se apartan para dejarle sitio. Aun asi tiene tope, para no vaciar el
+        # presupuesto compartido si hay muchas ligas que resolver de golpe.
+        if not _sportsdb_hay_cupo():
+            break
         try:
             _frenar_sportsdb()
             data = _request_json(
@@ -14267,6 +14349,7 @@ def run_once(print_summary: bool = False) -> dict:
     started_at = time.time()
     _log_cycle_event("info", "cycle_started", poll_seconds=POLL_SECONDS)
     _reiniciar_fallos_sportsdb()
+    _reiniciar_cupo_sportsdb()
     snapshot = fetch_snapshot()
     transition_audit = snapshot.get("season_transition_audit") or {}
     if transition_audit.get("degraded"):
