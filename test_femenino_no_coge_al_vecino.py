@@ -156,5 +156,37 @@ class LaReglaDeIdentidadTests(unittest.TestCase):
                 self.assertTrue(w._es_el_mismo_club(pedido, escrito))
 
 
+class NingunaLlamadaLoApagaTests(unittest.TestCase):
+    """Cambiar el valor por defecto no basta: dos llamadas lo pasaban explicito.
+
+    Con el candado activado por defecto pero apagado en esas dos, el feed seguia
+    resolviendo OPORTO a Everton, PSG a KuPS y Athletic Bilbao a Almeria. Solo
+    bajo de 11 equipos mal a 9, y ahi se vio.
+    """
+
+    def test_nadie_lo_pasa_apagado(self):
+        import re
+
+        fuente = inspect_getsource()
+        for linea in fuente.splitlines():
+            limpia = linea.strip()
+            if not limpia.startswith("exigir_mismo_club="):
+                continue
+            valor = limpia.split("=", 1)[1].rstrip(",")
+            with self.subTest(limpia):
+                self.assertIn(
+                    valor, {"True", "exigir_mismo_club"},
+                    f"esta llamada apaga el candado: {limpia}",
+                )
+
+
+def inspect_getsource():
+    import os
+
+    ruta = os.path.join(os.path.dirname(os.path.abspath(__file__)), "snapshot_worker.py")
+    with open(ruta, encoding="utf-8") as fh:
+        return fh.read()
+
+
 if __name__ == "__main__":
     unittest.main()

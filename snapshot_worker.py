@@ -13330,14 +13330,18 @@ def _bootstrap_quiniela_placeholder(
         filas_de_su_categoria=True,
         exacto=(categoria == "female" and tiene_api_local),
         umbral=0.6 if (categoria == "female" and not tiene_api_local) else 0.33,
-        exigir_mismo_club=(categoria == "female" and not tiene_api_local),
+        # Siempre, no solo en femenino. Se dejo apagado en masculino cuando la
+        # regla iba en un solo sentido y rechazaba "Sociedad" por "Real
+        # Sociedad"; ya es bidireccional. Con esto apagado seguian entrando
+        # OPORTO como Everton, PSG como KuPS y Athletic Bilbao como Almeria.
+        exigir_mismo_club=True,
     )
     away_history = _team_history_context(
         league_history, nombre_hist_visitante, kickoff_dt, season_code,
         filas_de_su_categoria=True,
         exacto=(categoria == "female" and tiene_api_visitante),
         umbral=0.6 if (categoria == "female" and not tiene_api_visitante) else 0.33,
-        exigir_mismo_club=(categoria == "female" and not tiene_api_visitante),
+        exigir_mismo_club=True,
     )
     home_resolved_name = home_history.get("resolved_name", home_team)
     away_resolved_name = away_history.get("resolved_name", away_team)
