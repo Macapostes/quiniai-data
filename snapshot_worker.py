@@ -474,6 +474,18 @@ LEAGUE_TIER_SIBLINGS = {
 }
 
 TEAM_NAME_ALIASES = {
+    # football-data abrevia "Ath" tanto para el Athletic como para el Atletico,
+    # asi que "Ath Madrid" no se parece a "Atletico" por letras y hay que
+    # decirlo a mano. Sin esto, el Atletico no se encuentra en su propia tabla.
+    "ath madrid": "Atlético Madrid",
+    "atl madrid": "Atlético Madrid",
+    # football-data escribe "Espanol" sin la y; es el mismo club y sin esto el
+    # candado de identidad lo tomaba por otro.
+    "espanol": "Espanyol",
+    "rcd espanol": "Espanyol",
+    "hamkam": "Hamarkameratene",
+    "celta fortuna": "Celta B",
+    "celta b": "Celta B",
     # Selecciones nacionales: la quiniela oficial suele publicarlas en español,
     # mientras que las fuentes de calendario/cuotas llegan en inglés.
     "alemania": "Germany",
@@ -8546,12 +8558,22 @@ def _season_rows(rows: list[dict], season_code: str) -> list[dict]:
 
 _PALABRAS_VACIAS_CLUB = {
     "de", "del", "la", "el", "los", "las", "club", "cf", "cd", "sd", "ud",
-    "fc", "sad", "afc", "cp", "ca",
+    "fc", "sad", "afc", "cp", "ca", "fk", "sk", "if", "bk", "ik", "aif",
+    # "Sarpsborg 08" y "Sarpsborg FK" son el mismo club: el ano de fundacion
+    # no distingue a nadie.
+    "08", "04", "05", "96", "1899", "1900",
 }
 
 
+_LETRAS_NORDICAS = str.maketrans({
+    "ø": "o", "Ø": "O", "æ": "ae", "Æ": "AE", "å": "a", "Å": "A",
+    "ö": "o", "Ö": "O", "ä": "a", "Ä": "A", "ð": "d", "þ": "th",
+})
+
+
 def _tokens_de_club(nombre: str) -> list[str]:
-    texto = _normalize_ascii(_sin_marca_femenina(str(nombre or ""))).lower()
+    crudo = str(nombre or "").translate(_LETRAS_NORDICAS)
+    texto = _normalize_ascii(_sin_marca_femenina(crudo)).lower()
     texto = re.sub(r"[^a-z0-9 ]", " ", texto)
     return [t for t in texto.split() if t and t not in _PALABRAS_VACIAS_CLUB]
 
@@ -8570,18 +8592,31 @@ def _es_el_mismo_club(pedido: str, candidato: str) -> bool:
     "Sevilla Women" y "AT.MADRID (F)" a "Atletico Madrid Femenino", pero
     ninguno alcanza al del al lado.
     """
-    tp, tc = _tokens_de_club(pedido), _tokens_de_club(candidato)
-    if not tp or not tc:
-        return False
-    iniciales = "".join(t[0] for t in tc)
+    def _cabe_en(unos: list[str], otros: list[str]) -> bool:
+        """Cada palabra de `unos` encaja con alguna de `otros`."""
+        if not unos or not otros:
+            return False
+        iniciales = "".join(t[0] for t in otros)
 
-    def casa(token: str) -> bool:
-        # Una sigla corta -"LP" de "Las Planas"- no es prefijo de nada.
-        if len(token) <= 2 and iniciales.startswith(token):
-            return True
-        return any(c.startswith(token) or token.startswith(c) for c in tc)
+        def casa(token: str) -> bool:
+            # Una sigla corta -"LP" de "Las Planas"- no es prefijo de nada.
+            if len(token) <= 2 and iniciales.startswith(token):
+                return True
+            return any(c.startswith(token) or token.startswith(c) for c in otros)
 
-    return all(casa(t) for t in tp)
+        return all(casa(t) for t in unos)
+
+    tp = _tokens_de_club(_canonical_team_name(str(pedido or "")) or str(pedido or ""))
+    tc = _tokens_de_club(_canonical_team_name(str(candidato or "")) or str(candidato or ""))
+    # En los dos sentidos, porque las fuentes acortan hacia lados distintos: el
+    # boleto escribe "SEVILLA (F)" y el proveedor "Sevilla Women", pero
+    # football-data escribe "Sociedad" por "Real Sociedad".
+    #
+    # Que "Levante" encaje tanto en el Levante UD como en el Levante Las Planas
+    # no se arregla aqui: se arregla en quien elige, descartando cuando encajan
+    # varios. Una regla lexica que intente distinguirlos acaba rompiendo
+    # "Celta" / "Celta Vigo", que si son el mismo.
+    return _cabe_en(tp, tc) or _cabe_en(tc, tp)
 
 
 def _resolve_csv_team_name(
@@ -8590,7 +8625,7 @@ def _resolve_csv_team_name(
     filas_de_su_categoria: bool = False,
     umbral: float = 0.33,
     exacto: bool = False,
-    exigir_mismo_club: bool = False,
+    exigir_mismo_club: bool = True,
 ) -> str:
     """Encuentra al equipo dentro de un historico.
 
@@ -8650,6 +8685,17 @@ def _resolve_csv_team_name(
         # el dato falso del vecino llegaba al informe como si fuera suyo.
         compatibles = [op for op in options if _es_el_mismo_club(team_name, op)]
         if not compatibles:
+            return team_name
+        # Si encajan varios clubes distintos, el nombre es ambiguo y elegir
+        # seria adivinar: "Levante" encaja en el Levante UD y en el Levante Las
+        # Planas, y son equipos diferentes. Sin resolver es correcto; escoger
+        # uno al azar es lo que metia datos de otro club en el informe.
+        distintos = {_norm_persona(_canonical_team_name(op)) for op in compatibles}
+        if len(distintos) > 1:
+            print(
+                f"[equipo] {team_name!r} encaja con {sorted(set(compatibles))[:4]}: "
+                "ambiguo, se deja sin resolver"
+            )
             return team_name
         options = compatibles
 
@@ -9084,7 +9130,7 @@ def _team_history_context(
     filas_de_su_categoria: bool = False,
     umbral: float = 0.33,
     exacto: bool = False,
-    exigir_mismo_club: bool = False,
+    exigir_mismo_club: bool = True,
 ) -> dict:
     if not rows:
         return {}

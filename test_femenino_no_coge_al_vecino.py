@@ -103,16 +103,57 @@ class LaReglaDeIdentidadTests(unittest.TestCase):
         # "LP" de "Las Planas" no es prefijo de ninguna palabra.
         self.assertTrue(w._es_el_mismo_club("LEVANTE LP (F)", "Levante Las Planas"))
 
-    def test_dos_levantes_distintos_no_son_el_mismo_club(self):
-        # Levante Las Planas y Levante UD Femenino son clubes diferentes.
-        self.assertFalse(w._es_el_mismo_club("LEVANTE LP (F)", "Levante Femenino"))
+    def test_dos_levantes_distintos_se_separan_al_elegir(self):
+        """Levante Las Planas y Levante UD son clubes distintos, pero eso no se
+        puede ver comparando dos nombres: "Levante" encaja en los dos, igual que
+        "Celta" encaja en "Celta Vigo" y ahi si es el mismo. Se resuelve donde
+        se elige: si encajan varios, no se resuelve ninguno."""
+        filas = [
+            {"HomeTeam": "Levante UD", "AwayTeam": "Levante Las Planas"},
+            {"HomeTeam": "Levante Las Planas", "AwayTeam": "Levante UD"},
+        ]
+        self.assertEqual(w._resolve_csv_team_name("LEVANTE", filas), "LEVANTE")
 
-    def test_el_camino_masculino_no_lo_usa(self):
-        """Ahi los nombres vienen abreviados por football-data ("Sociedad" por
-        "Real Sociedad") y esta regla los rechazaria. Se queda apagada."""
+    def test_un_nombre_corto_si_resuelve_cuando_no_hay_duda(self):
+        """Lo contrario tambien tiene que valer: si solo encaja uno, se coge."""
+        filas = [{"HomeTeam": "Celta", "AwayTeam": "Sevilla"}]
+        self.assertEqual(w._resolve_csv_team_name("Celta Vigo", filas), "Celta")
+
+    def test_ahora_lo_usan_todos_los_caminos(self):
+        """Al principio se dejo apagada en masculino porque la regla iba en un
+        solo sentido y rechazaba "Sociedad" por "Real Sociedad". Ya es
+        bidireccional, y hacia falta: en el feed del 08-09-2026 habia once
+        equipos resueltos a otro club -OPORTO a Everton, PSG a KuPS, Athletic
+        Bilbao a Almeria- y de ahi salian la clasificacion y el H2H del informe."""
         import inspect
-        firma = inspect.signature(w._resolve_csv_team_name)
-        self.assertIs(firma.parameters["exigir_mismo_club"].default, False)
+
+        for fn in (w._resolve_csv_team_name, w._team_history_context):
+            with self.subTest(fn.__name__):
+                firma = inspect.signature(fn)
+                self.assertIs(firma.parameters["exigir_mismo_club"].default, True)
+
+    def test_los_equipos_europeos_que_se_confundian(self):
+        casos = [
+            ("OPORTO", "Everton"), ("PSG", "KuPS"), ("ANDORRA FC", "Riga FC"),
+            ("LOGROÑO", "La Coruna"), ("Athletic Bilbao", "Almeria"),
+            ("SEVILLA", "Sabadell"), ("Alavés", "Albacete"),
+            ("MADRID CFF", "Ath Madrid"),
+        ]
+        for pedido, otro in casos:
+            with self.subTest(f"{pedido} != {otro}"):
+                self.assertFalse(w._es_el_mismo_club(pedido, otro))
+
+    def test_las_abreviaturas_legitimas_siguen_pasando(self):
+        casos = [
+            ("Real Sociedad", "Sociedad"), ("Real Betis", "Betis"),
+            ("Celta Vigo", "Celta"), ("Rayo Vallecano", "Vallecano"),
+            ("Atlético Madrid", "Ath Madrid"), ("Athletic Bilbao", "Ath Bilbao"),
+            ("Espanyol", "Espanol"), ("Lillestrom", "Lillestrøm"),
+            ("HamKam", "Hamarkameratene"), ("Sarpsborg FK", "Sarpsborg 08"),
+        ]
+        for pedido, escrito in casos:
+            with self.subTest(f"{pedido} == {escrito}"):
+                self.assertTrue(w._es_el_mismo_club(pedido, escrito))
 
 
 if __name__ == "__main__":
