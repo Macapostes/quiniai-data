@@ -630,6 +630,27 @@ TEAM_NAME_ALIASES = {
     "at madrid": "Atlético Madrid",
     "ath club": "Athletic Bilbao",
     "ath bilbao": "Athletic Bilbao",
+    # Abreviaturas y castellano del boleto LAE. Sin esto OPORTO no encuentra
+    # a Porto en su liga y MAN.CITY no encuentra a Manchester City.
+    "oporto": "Porto",
+    "fc porto": "Porto",
+    "porto": "Porto",
+    "man city": "Manchester City",
+    "manchester city": "Manchester City",
+    "man utd": "Manchester United",
+    "man united": "Manchester United",
+    "sporting port": "Sporting CP",
+    "sporting cp": "Sporting CP",
+    "sporting lisbon": "Sporting CP",
+    "b dortmund": "Borussia Dortmund",
+    "borussia dortmund": "Borussia Dortmund",
+    "b munich": "Bayern Munich",
+    "bayern munich": "Bayern Munich",
+    "b leverkusen": "Bayer Leverkusen",
+    "shakhtar": "Shakhtar Donetsk",
+    "shakhtar d": "Shakhtar Donetsk",
+    "slovan": "Slovan Bratislava",
+    "bodo glimt": "Bodo Glimt",
     "racing s": "Racing de Santander",
     "racing santander": "Racing de Santander",
     "real racing club de santander": "Racing de Santander",
@@ -5353,10 +5374,37 @@ def _normalize_team_name(value: str) -> str:
     return lowered
 
 
+def _expand_lae_prefixes(normalized: str) -> str:
+    """Reglas de abreviatura del boleto: MAN.CITY, R.MADRID, SPORTING PORT."""
+    text = f" {normalized} "
+    text = re.sub(r"\bman\s+", "manchester ", text)
+    text = re.sub(r"\br\s+", "real ", text)
+    text = re.sub(r"\batl\s+", "atletico ", text)
+    text = re.sub(r"\bat\s+", "atletico ", text)
+    text = re.sub(r"\bath\s+", "athletic ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    if text.startswith("sporting") and re.search(r"\b(port|cp|lisb|portugal)\b", text):
+        return "sporting cp"
+    if text.startswith("b "):
+        aleman = {
+            "dortmund": "borussia dortmund",
+            "munich": "bayern munich",
+            "munchen": "bayern munich",
+            "leverkusen": "bayer leverkusen",
+        }
+        rest = text[2:]
+        if rest in aleman:
+            return aleman[rest]
+    return text
+
+
 def _canonical_team_name(value: str) -> str:
     normalized = _normalize_team_name(value)
     if normalized in TEAM_NAME_ALIASES:
         return TEAM_NAME_ALIASES[normalized]
+    expanded = _expand_lae_prefixes(normalized)
+    if expanded != normalized and expanded in TEAM_NAME_ALIASES:
+        return TEAM_NAME_ALIASES[expanded]
     # El sufijo de categoria rompia la busqueda en el diccionario: "R.MADRID"
     # esta y resuelve a "Real Madrid", pero "R.MADRID (F)" normalizaba a
     # "r madrid f" y devolvia el nombre crudo. De ahi salian consultas como

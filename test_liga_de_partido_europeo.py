@@ -59,6 +59,28 @@ comprobar(
 # Sin datos no se inventa nada.
 comprobar(_liga("A", "B", {}, {}, {}) is None, "sin fichas no se asigna liga")
 
+# El boleto recorta. El histórico no. Tienen que ser el mismo club.
+comprobar(
+    w._es_el_mismo_club("OPORTO", "Porto"),
+    "OPORTO y Porto son el mismo club",
+)
+comprobar(
+    w._es_el_mismo_club("MAN.CITY", "Manchester City"),
+    "MAN.CITY y Manchester City son el mismo club",
+)
+comprobar(
+    w._es_el_mismo_club("SPORTING PORT.", "Sporting CP"),
+    "SPORTING PORT. y Sporting CP son el mismo club",
+)
+comprobar(
+    w._canonical_team_name("MAN.CITY") == "Manchester City",
+    "MAN.CITY canónico es Manchester City",
+)
+comprobar(
+    w._canonical_team_name("OPORTO") == "Porto",
+    "OPORTO canónico es Porto",
+)
+
 
 # La deduccion por historicos exige que los dos equipos sean de esa liga.
 filas_premier = [
