@@ -7451,7 +7451,34 @@ def _sportsdb_league_name(*payloads: dict) -> str:
     return ""
 
 
-def _apply_dynamic_league_metadata(match: dict, *payloads: dict) -> None:
+def _apply_dynamic_league_metadata(match: dict, evento: dict, *fichas: dict) -> None:
+    # El evento sabe en que competicion se juega ESTE partido; las fichas de
+    # equipo solo saben su liga domestica. Cogiendo la primera que apareciera
+    # -que es lo que se hacia-, un Dortmund-Villarreal quedaba etiquetado como
+    # LaLiga porque el Villarreal juega ahi, y un Oporto-Man City como Premier
+    # por el City. Despues se buscaba al otro equipo en esa tabla y salia otro
+    # club: de ahi el "el Oporto acabo 13o en la Premier" del informe.
+    def _liga_de(payload: dict) -> str:
+        return str((payload or {}).get("idLeague", "")).strip()
+
+    ligas_de_ficha = {_liga_de(f) for f in fichas if _liga_de(f)}
+    if _liga_de(evento):
+        # Lo dice el propio partido: es lo unico que conoce la competicion real.
+        payloads: tuple = (evento,)
+    elif len(ligas_de_ficha) == 1:
+        # Sin evento, las fichas valen solo si las dos coinciden: entonces si es
+        # un partido domestico de esa liga.
+        payloads = tuple(f for f in fichas if f)
+    else:
+        # Ligas distintas: es una competicion entre paises y ninguna liga
+        # domestica describe este partido. Antes se elegia una de las dos.
+        if len(ligas_de_ficha) > 1:
+            print(
+                f"[liga] {match.get('local','')} - {match.get('visitante','')}: "
+                "equipos de ligas distintas; no se asigna liga domestica"
+            )
+        payloads = ()
+
     league_name = _sportsdb_league_name(*payloads)
     league_key = _dynamic_league_key_from_sportsdb(*payloads)
     league_id = next(
@@ -13081,13 +13108,16 @@ def _infer_league_from_histories(home_team: str, away_team: str, histories: dict
         }
         if not options:
             continue
-        home_score = max((_team_similarity_score(home_team, option) for option in options), default=0.0)
-        away_score = max((_team_similarity_score(away_team, option) for option in options), default=0.0)
-        if min(home_score, away_score) < 0.72:
+        # Los dos equipos tienen que estar de verdad en esa liga. Medirlo por
+        # parecido (0.72) dejaba entrar a cualquiera escrito parecido; aqui se
+        # exige que sea el mismo club.
+        casa_home = [op for op in options if _es_el_mismo_club(home_team, op)]
+        casa_away = [op for op in options if _es_el_mismo_club(away_team, op)]
+        if not casa_home or not casa_away:
             continue
-        combined = home_score + away_score
-        if combined >= 1.55:
-            candidates.append((combined, _canonical_league_key(league_key)))
+        home_score = max((_team_similarity_score(home_team, op) for op in casa_home), default=0.0)
+        away_score = max((_team_similarity_score(away_team, op) for op in casa_away), default=0.0)
+        candidates.append((home_score + away_score, _canonical_league_key(league_key)))
     if not candidates:
         return ""
     candidates.sort(key=lambda item: item[0], reverse=True)
