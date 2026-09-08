@@ -19,3 +19,14 @@ def test_spanish_la_liga_2_name_is_spanish_segunda():
 
 def test_unknown_sportsdb_league_stays_unknown():
     assert _infer_league_key_from_sportsdb({"idLeague": "999999"}) == ""
+
+
+def test_ligue_1_and_champions_are_mapped():
+    assert (
+        _infer_league_key_from_sportsdb({"idLeague": "4334", "strLeague": "French Ligue 1"})
+        == "soccer_france_ligue_one"
+    )
+    assert (
+        _infer_league_key_from_sportsdb({"idLeague": "4480", "strLeague": "UEFA Champions League"})
+        == "soccer_uefa_champs_league"
+    )

@@ -290,5 +290,114 @@ class SnapshotWorkerQualityTests(unittest.TestCase):
             worker.MONITOR_GITHUB_API_DISABLED = original_disabled
 
 
+class DomesticHistoryAndH2HTests(unittest.TestCase):
+    def test_champions_league_is_not_domestic(self):
+        self.assertTrue(worker._is_non_domestic_competition("soccer_uefa_champs_league"))
+        self.assertTrue(worker._is_non_domestic_competition("sportsdb_4480"))
+        self.assertFalse(worker._is_non_domestic_competition("soccer_spain_la_liga"))
+        self.assertFalse(worker._is_non_domestic_competition("soccer_france_ligue_one"))
+
+    def test_team_api_resolves_domestic_league_not_the_match_competition(self):
+        lille = {"idLeague": "4334", "strLeague": "French Ligue 1", "strTeam": "Lille"}
+        betis = {"idLeague": "4335", "strLeague": "Spanish La Liga", "strTeam": "Real Betis"}
+        self.assertEqual(
+            worker._domestic_league_key_from_team_api(lille, "soccer_uefa_champs_league"),
+            "soccer_france_ligue_one",
+        )
+        self.assertEqual(
+            worker._domestic_league_key_from_team_api(betis, "soccer_uefa_champs_league"),
+            "soccer_spain_la_liga",
+        )
+
+    def test_h2h_keeps_old_meetings_and_normalizes_year(self):
+        rows = [
+            {
+                "Date": "15/03/2018",
+                "HomeTeam": "Lille",
+                "AwayTeam": "Betis",
+                "FTHG": 1,
+                "FTAG": 0,
+                "FTR": "H",
+                "League": "UEFA Champions League",
+            },
+            {
+                "Date": "03/11/2020",
+                "HomeTeam": "Real Betis",
+                "AwayTeam": "LOSC Lille",
+                "FTHG": 2,
+                "FTAG": 2,
+                "FTR": "D",
+                "League": "UEFA Europa League",
+            },
+        ]
+        h2h = worker._head_to_head_metrics(rows, "Lille", "Real Betis", last_n=30)
+        self.assertEqual(h2h["meetings"], 2)
+        self.assertEqual(h2h["draws"], 1)
+        self.assertEqual(h2h["home_team_wins"], 1)
+        dates = [item["date"] for item in h2h["recent_matches"]]
+        self.assertIn("2018-03-15", dates)
+        self.assertIn("2020-11-03", dates)
+
+    def test_resolve_uses_domestic_table_for_european_match(self):
+        histories = {
+            "soccer_uefa_champs_league": [
+                {
+                    "Date": "15/03/2018",
+                    "HomeTeam": "Lille",
+                    "AwayTeam": "Real Betis",
+                    "FTHG": 1,
+                    "FTAG": 0,
+                    "FTR": "H",
+                    "SeasonCode": "1718",
+                }
+            ],
+            "soccer_spain_la_liga": [
+                {
+                    "Date": f"{day:02d}/08/2026",
+                    "HomeTeam": "Real Betis",
+                    "AwayTeam": f"Rival{day}",
+                    "FTHG": 2,
+                    "FTAG": 0,
+                    "FTR": "H",
+                    "SeasonCode": "2627",
+                }
+                for day in range(10, 20)
+            ],
+            "soccer_france_ligue_one": [
+                {
+                    "Date": f"{day:02d}/08/2026",
+                    "HomeTeam": "Lille",
+                    "AwayTeam": f"Rival{day}",
+                    "FTHG": 1,
+                    "FTAG": 0,
+                    "FTR": "H",
+                    "SeasonCode": "2627",
+                }
+                for day in range(10, 20)
+            ],
+        }
+        kickoff = datetime(2026, 9, 16, tzinfo=timezone.utc)
+        with patch.object(worker, "fetch_league_history", side_effect=lambda key, seasons_back=None: histories.get(key, [])), patch.object(
+            worker, "fetch_the_sportsdb_h2h_events", return_value=[]
+        ):
+            home, away, h2h = worker._resolve_domestic_histories_and_h2h(
+                home_team="Lille",
+                away_team="Real Betis",
+                league_key="soccer_uefa_champs_league",
+                histories=dict(histories),
+                home_team_api={"idLeague": "4334", "strLeague": "French Ligue 1"},
+                away_team_api={"idLeague": "4335", "strLeague": "Spanish La Liga"},
+                kickoff_dt=kickoff,
+            )
+        self.assertEqual(home.get("league_scope"), "domestic")
+        self.assertEqual(away.get("league_scope"), "domestic")
+        self.assertEqual(home.get("league_key"), "soccer_france_ligue_one")
+        self.assertEqual(away.get("league_key"), "soccer_spain_la_liga")
+        self.assertGreater(home.get("table", {}).get("played", 0), 0)
+        self.assertGreater(away.get("table", {}).get("played", 0), 0)
+        self.assertGreater(away.get("recent_all", {}).get("points", 0), 0)
+        self.assertEqual(h2h.get("meetings"), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
