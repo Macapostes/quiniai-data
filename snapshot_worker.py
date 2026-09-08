@@ -368,6 +368,13 @@ LEAGUE_FOOTBALL_DATA_NEW_CODES = {
 }
 
 LEAGUE_THESPORTSDB_IDS = {
+    # Competiciones europeas. La clasificacion que importa en un partido de
+    # Champions es la de la Champions -si el equipo ya esta clasificado o se
+    # juega el pase-, no la de su liga domestica. Se calcula de los resultados,
+    # como en Liga F, porque lookuptable no devuelve nada para estas.
+    "soccer_uefa_champs_league": "4480",
+    "soccer_uefa_europa_league": "4481",
+    "soccer_uefa_europa_conference_league": "5071",
     "soccer_norway_eliteserien": "4358",
     "soccer_sweden_allsvenskan": "4347",
     "soccer_finland_veikkausliiga": "4636",
@@ -8629,6 +8636,10 @@ def _es_el_mismo_club(pedido: str, candidato: str) -> bool:
             # Una sigla corta -"LP" de "Las Planas"- no es prefijo de nada.
             if len(token) <= 2 and iniciales.startswith(token):
                 return True
+            # Y una de tres, solo si son EXACTAMENTE las iniciales: "PSG" es
+            # Paris Saint Germain. Con prefijo se abriria demasiado.
+            if len(token) == 3 and len(otros) >= 2 and token == iniciales:
+                return True
             return any(c.startswith(token) or token.startswith(c) for c in otros)
 
         return all(casa(t) for t in unos)
@@ -13124,6 +13135,48 @@ def _infer_league_from_histories(home_team: str, away_team: str, histories: dict
     return candidates[0][1]
 
 
+def _competicion_desde_las_cuotas(
+    match: dict, raw_matches: list[dict]
+) -> str:
+    """La competicion que dice el proveedor de cuotas para ESTE partido.
+
+    Es el unico que la sabe de verdad: "Porto - Manchester City" viene marcado
+    como soccer_uefa_champs_league. El boleto solo trae "OPORTO - MAN.CITY", y
+    de ahi no se puede deducir -deducirla de la liga de uno de los dos equipos
+    es lo que etiquetaba este partido como Premier League-.
+
+    Se empareja por los dos equipos a la vez y por la hora: cada nombre por
+    separado es ambiguo, pero la pareja mas el horario no lo es.
+    """
+    kickoff = _parse_iso_datetime(str(match.get("kickoff", "")).strip())
+    local = str(match.get("local", "")).strip()
+    visitante = str(match.get("visitante", "")).strip()
+    if not kickoff or not local or not visitante:
+        return ""
+    mejor, mejor_nota = "", 0.0
+    for item in raw_matches or []:
+        clave = _canonical_league_key(str(item.get("sport_key", "")).strip())
+        if not clave:
+            continue
+        hora = _parse_iso_datetime(str(item.get("commence_time", "")).strip())
+        if not hora or abs((hora - kickoff).total_seconds()) > 6 * 3600:
+            continue
+        rival_casa = str(item.get("home_team", ""))
+        rival_fuera = str(item.get("away_team", ""))
+        casa = _team_similarity_score(local, rival_casa)
+        fuera = _team_similarity_score(visitante, rival_fuera)
+        # Por parecido o por identidad: "PSG" y "Paris Saint Germain" no se
+        # parecen en letras, pero son el mismo club.
+        vale_casa = casa >= 0.5 or _es_el_mismo_club(local, rival_casa)
+        vale_fuera = fuera >= 0.5 or _es_el_mismo_club(visitante, rival_fuera)
+        if not (vale_casa and vale_fuera):
+            continue
+        nota = casa + fuera + (1.0 if _es_el_mismo_club(local, rival_casa) else 0.0)
+        if nota > mejor_nota:
+            mejor, mejor_nota = clave, nota
+    return mejor
+
+
 def _bootstrap_quiniela_placeholder(
     match: dict,
     raw_matches: list[dict],
@@ -13134,6 +13187,21 @@ def _bootstrap_quiniela_placeholder(
     away_team = str(match.get("visitante", "")).strip()
     if not home_team or not away_team:
         return
+
+    # Lo primero, porque es lo unico que conoce la competicion real del partido.
+    competicion = _competicion_desde_las_cuotas(match, raw_matches)
+    if competicion:
+        anterior = _canonical_league_key(match.get("league", ""))
+        if anterior != competicion:
+            print(
+                f"[liga] {home_team} - {away_team}: {competicion} segun el feed de "
+                f"cuotas (antes {anterior or 'sin liga'})"
+            )
+        match["league"] = competicion
+        match["league_name"] = _league_display_name(competicion)
+        match["league_id"] = _sportsdb_league_id_for_key(competicion)
+        match["league_source"] = "feed-de-cuotas"
+        match["dynamic_league"] = False
 
     history_inferred_league = _infer_league_from_histories(
         home_team,

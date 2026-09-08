@@ -80,6 +80,76 @@ comprobar(
 )
 
 
+# --- La competicion real la dice el feed de cuotas ---------------------------
+#
+# El boleto solo trae "OPORTO - MAN.CITY". Quien sabe que eso es Champions es el
+# proveedor de cuotas, que lo marca como soccer_uefa_champs_league. Y hace falta
+# saberlo para lo que de verdad importa: en un partido de Champions la
+# clasificacion que cuenta es la de la Champions -si el equipo ya esta
+# clasificado o se juega el pase-, no la de su liga domestica.
+
+CUOTAS = [
+    {"home_team": "Porto", "away_team": "Manchester City",
+     "commence_time": "2026-09-08T21:00:00Z", "sport_key": "soccer_uefa_champs_league"},
+    {"home_team": "Borussia Dortmund", "away_team": "Villarreal",
+     "commence_time": "2026-09-08T21:00:00Z", "sport_key": "soccer_uefa_champs_league"},
+    {"home_team": "Paris Saint Germain", "away_team": "ŠK Slovan Bratislava",
+     "commence_time": "2026-09-09T21:00:00Z", "sport_key": "soccer_uefa_champs_league"},
+    {"home_team": "Sevilla", "away_team": "Barcelona",
+     "commence_time": "2026-09-12T19:00:00Z", "sport_key": "soccer_spain_la_liga"},
+]
+
+
+def _competicion(local, visitante, kickoff):
+    return w._competicion_desde_las_cuotas(
+        {"local": local, "visitante": visitante, "kickoff": kickoff}, CUOTAS
+    )
+
+
+comprobar(
+    _competicion("OPORTO", "MAN.CITY", "2026-09-08T21:00:00Z") == "soccer_uefa_champs_league",
+    "OPORTO - MAN.CITY tiene que heredar la Champions del feed de cuotas",
+)
+comprobar(
+    _competicion("B.DORTMUND", "VILLARREAL", "2026-09-08T21:00:00Z") == "soccer_uefa_champs_league",
+    "B.DORTMUND tiene que emparejar con Borussia Dortmund",
+)
+comprobar(
+    _competicion("PSG", "SLOVAN BRATISLAVA", "2026-09-09T21:00:00Z") == "soccer_uefa_champs_league",
+    "PSG son las iniciales de Paris Saint Germain",
+)
+comprobar(
+    _competicion("SEVILLA", "BARCELONA", "2026-09-12T19:00:00Z") == "soccer_spain_la_liga",
+    "un partido domestico sigue siendo de su liga",
+)
+
+# La hora forma parte del emparejamiento: los mismos equipos en otra fecha son
+# otro partido, y puede ser de otra competicion.
+comprobar(
+    _competicion("OPORTO", "MAN.CITY", "2026-11-20T21:00:00Z") == "",
+    "con la hora lejos no se empareja",
+)
+
+# Y las competiciones europeas tienen que resolver a un historico propio, que es
+# de donde saldra su clasificacion segun avance la fase de liga.
+for clave, id_esperada in (
+    ("soccer_uefa_champs_league", "4480"),
+    ("soccer_uefa_europa_league", "4481"),
+    ("soccer_uefa_europa_conference_league", "5071"),
+):
+    comprobar(
+        w._sportsdb_league_id_for_key(clave) == id_esperada,
+        f"{clave} deberia resolver a {id_esperada}",
+    )
+
+# Las siglas no pueden abrir la mano: solo valen si son EXACTAMENTE las iniciales.
+comprobar(w._es_el_mismo_club("PSG", "Paris Saint Germain"), "PSG es Paris Saint Germain")
+comprobar(
+    not w._es_el_mismo_club("PSG", "Sporting Portugal Guimaraes"),
+    "tres letras que no son las iniciales no valen",
+)
+
+
 if FALLOS:
     print("FALLOS:")
     for f in FALLOS:
