@@ -9299,17 +9299,43 @@ def _h2h_iso_date(row: dict) -> str:
 
 
 def _h2h_search_names(team_name: str) -> list[str]:
+    """Nombres con los que TheSportsDB encuentra el cruce.
+
+    OPORTO y MAN.CITY no coinciden con "FC Porto vs Manchester City". Un
+    token corto (Porto, Inter) necesita el prefijo societario; si no, el
+    buscador devuelve solo el partido de hoy y el H2H de 2020 no existe.
+    """
     names: list[str] = []
-    for candidate in (team_name, _canonical_team_name(team_name)):
-        text = str(candidate or "").strip()
+
+    def add(value: object) -> None:
+        text = str(value or "").strip()
         if text and text not in names:
             names.append(text)
+
+    add(team_name)
+    add(_canonical_team_name(team_name))
+    expanded = _expand_lae_prefixes(_normalize_team_name(team_name))
+    if expanded:
+        add(expanded.title())
+        add(expanded)
+    tokens = _normalize_team_name(_canonical_team_name(team_name) or team_name).split()
+    if len(tokens) == 1:
+        token = tokens[0]
+        if token == "porto":
+            add("FC Porto")
+            add("Porto")
+        elif token == "inter":
+            add("Inter Milan")
+        elif token == "milan":
+            add("AC Milan")
+        else:
+            add(f"FC {token.title()}")
     return names
 
 
 def fetch_the_sportsdb_h2h_events(home_team: str, away_team: str) -> list[dict]:
     """Cruces históricos entre dos equipos, todas las competiciones."""
-    cache_key = f"h2h_events:{_normalize_team_name(home_team)}:{_normalize_team_name(away_team)}"
+    cache_key = f"h2h_events_v2:{_normalize_team_name(home_team)}:{_normalize_team_name(away_team)}"
     cached = _cache_get(THESPORTSDB_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
     if cached:
         return list(cached)

@@ -80,6 +80,14 @@ comprobar(
     w._canonical_team_name("OPORTO") == "Porto",
     "OPORTO canónico es Porto",
 )
+comprobar(
+    "FC Porto" in w._h2h_search_names("OPORTO"),
+    "TheSportsDB tiene que buscar FC Porto, no solo OPORTO",
+)
+comprobar(
+    any("manchester city" in n.lower() for n in w._h2h_search_names("MAN.CITY")),
+    "TheSportsDB tiene que buscar Manchester City, no solo MAN.CITY",
+)
 
 
 # La deduccion por historicos exige que los dos equipos sean de esa liga.
