@@ -30,3 +30,9 @@ def test_ligue_1_and_champions_are_mapped():
         _infer_league_key_from_sportsdb({"idLeague": "4480", "strLeague": "UEFA Champions League"})
         == "soccer_uefa_champs_league"
     )
+    assert (
+        _infer_league_key_from_sportsdb(
+            {"idLeague": "4354", "strLeague": "Ukrainian Premier League"}
+        )
+        == "soccer_ukraine_premier_league"
+    )

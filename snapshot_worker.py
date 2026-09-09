@@ -137,8 +137,10 @@ _THESPORTSDB_BASE = f"https://www.thesportsdb.com/api/v1/json/{THESPORTSDB_KEY}"
 THESPORTSDB_SEARCH_TEAM_URL = f"{_THESPORTSDB_BASE}/searchteams.php"
 THESPORTSDB_SEARCH_EVENTS_URL = f"{_THESPORTSDB_BASE}/searchevents.php"
 THESPORTSDB_EVENTS_NEXT_URL = f"{_THESPORTSDB_BASE}/eventsnext.php"
+THESPORTSDB_EVENTS_LAST_URL = f"{_THESPORTSDB_BASE}/eventslast.php"
 THESPORTSDB_EVENTS_ROUND_URL = f"{_THESPORTSDB_BASE}/eventsround.php"
 THESPORTSDB_EVENTS_SEASON_URL = f"{_THESPORTSDB_BASE}/eventsseason.php"
+THESPORTSDB_LOOKUP_TABLE_URL = f"{_THESPORTSDB_BASE}/lookuptable.php"
 
 # Cuantas peticiones ha rechazado TheSportsDB en el ciclo en curso. Sirve para
 # distinguir dos cosas que la auditoria de contexto confundia: que un equipo no
@@ -316,6 +318,8 @@ LEAGUE_KEY_ALIASES = {
     "sportsdb_4358": "soccer_norway_eliteserien",
     "sportsdb_4347": "soccer_sweden_allsvenskan",
     "sportsdb_4636": "soccer_finland_veikkausliiga",
+    "sportsdb_4354": "soccer_ukraine_premier_league",
+    "sportsdb_4339": "soccer_turkey_super_league",
 }
 
 
@@ -355,6 +359,8 @@ LEAGUE_DISPLAY_NAMES = {
     "soccer_germany_bundesliga": "Bundesliga",
     "soccer_netherlands_eredivisie": "Eredivisie",
     "soccer_portugal_primeira_liga": "Primeira Liga",
+    "soccer_ukraine_premier_league": "Ukrainian Premier League",
+    "soccer_turkey_super_league": "Turkish Super Lig",
     "soccer_norway_eliteserien": "Norwegian Eliteserien",
     "soccer_sweden_allsvenskan": "Swedish Allsvenskan",
     "soccer_sweden_superettan": "Swedish Superettan",
@@ -394,6 +400,8 @@ LEAGUE_THESPORTSDB_IDS = {
     "soccer_germany_bundesliga": "4331",
     "soccer_netherlands_eredivisie": "4337",
     "soccer_portugal_primeira_liga": "4344",
+    "soccer_ukraine_premier_league": "4354",
+    "soccer_turkey_super_league": "4339",
     "soccer_uefa_champs_league": "4480",
     "soccer_uefa_europa_league": "4481",
     "soccer_uefa_europa_conference_league": "5071",
@@ -645,10 +653,16 @@ TEAM_NAME_ALIASES = {
     "b dortmund": "Borussia Dortmund",
     "borussia dortmund": "Borussia Dortmund",
     "b munich": "Bayern Munich",
+    "b.munich": "Bayern Munich",
     "bayern munich": "Bayern Munich",
+    "bayern de munich": "Bayern Munich",
+    "fc bayern": "Bayern Munich",
+    "psv": "PSV Eindhoven",
+    "psv eindhoven": "PSV Eindhoven",
     "b leverkusen": "Bayer Leverkusen",
     "shakhtar": "Shakhtar Donetsk",
     "shakhtar d": "Shakhtar Donetsk",
+    "shakhtar donetsk": "Shakhtar Donetsk",
     "slovan": "Slovan Bratislava",
     "bodo glimt": "Bodo Glimt",
     "racing s": "Racing de Santander",
@@ -772,6 +786,49 @@ COUNTRY_LABELS = {
     "NO": "Norway",
     "SE": "Sweden",
     "FI": "Finland",
+    "DE": "Germany",
+    "IT": "Italy",
+    "FR": "France",
+    "NL": "The Netherlands",
+    "PT": "Portugal",
+    "UA": "Ukraine",
+    "TR": "Turkey",
+    "CZ": "Czech Republic",
+    "SK": "Slovakia",
+    "AZ": "Azerbaijan",
+    "BE": "Belgium",
+}
+
+TEAM_COUNTRY_HINTS = {
+    "bayern munich": "DE",
+    "borussia dortmund": "DE",
+    "rb leipzig": "DE",
+    "shakhtar donetsk": "UA",
+    "porto": "PT",
+    "psv eindhoven": "NL",
+    "feyenoord": "NL",
+    "bodo glimt": "NO",
+    "manchester city": "GB",
+    "manchester united": "GB",
+    "liverpool": "GB",
+    "arsenal": "GB",
+    "paris saint germain": "FR",
+    "lille": "FR",
+    "lens": "FR",
+    "inter milan": "IT",
+    "napoli": "IT",
+    "as roma": "IT",
+    "como": "IT",
+    "galatasaray": "TR",
+    "fenerbahce": "TR",
+    "slavia praha": "CZ",
+    "slovan bratislava": "SK",
+    "sabah": "AZ",
+    "real madrid": "ES",
+    "barcelona": "ES",
+    "atletico madrid": "ES",
+    "real betis": "ES",
+    "villarreal": "ES",
 }
 
 LOCAL_MEDIA_SOURCE_TOKENS = [
@@ -5424,7 +5481,11 @@ def _team_similarity_score(left: str, right: str) -> float:
     right_norm = _normalize_team_name(_canonical_team_name(right))
     if not left_norm or not right_norm:
         return 0.0
-    reserve_markers = {"b", "castilla", "fortuna", "fabril", "mestalla", "promesas"}
+    reserve_markers = {
+        "b", "castilla", "fortuna", "fabril", "mestalla", "promesas",
+        "legends", "legend", "ii", "iii", "u17", "u18", "u19", "u20", "u21", "u23",
+        "reserves", "reserve", "amateur", "oldboys",
+    }
     left_reserve = set(left_norm.split()) & reserve_markers
     right_reserve = set(right_norm.split()) & reserve_markers
     if bool(left_reserve) != bool(right_reserve):
@@ -5444,6 +5505,25 @@ def _team_similarity_score(left: str, right: str) -> float:
     token_score = len(left_tokens & right_tokens) / len(left_tokens | right_tokens)
     ratio_score = difflib.SequenceMatcher(a=left_norm, b=right_norm).ratio()
     return max(token_score, ratio_score)
+
+
+def _parece_equipo_satelite(nombre: str) -> bool:
+    """Legends, filiales y juveniles no son el primer equipo."""
+    tokens = set(_normalize_team_name(nombre).split())
+    return bool(tokens & {
+        "legends", "legend", "ii", "iii", "u17", "u18", "u19", "u20", "u21", "u23",
+        "reserves", "reserve", "amateur", "oldboys",
+    })
+
+
+def _country_label_matches(expected: str, candidate: str) -> bool:
+    left = str(expected or "").strip().casefold()
+    right = str(candidate or "").strip().casefold()
+    if not left or not right:
+        return True
+    if left == right:
+        return True
+    return left in right or right in left
 
 
 def _looks_like_known_team_entity(candidate: str) -> bool:
@@ -5569,10 +5649,13 @@ def _drop_inconsistent_coordinates(profile: dict, team_name: str = "") -> dict:
 
 
 def _guess_country_hint(team_name: str, fallback: str | None = None) -> str | None:
-    if fallback:
-        return fallback
     canonical = _canonical_team_name(team_name)
     normalized = _normalize_team_name(canonical)
+    known = TEAM_COUNTRY_HINTS.get(normalized)
+    if known:
+        return known
+    if fallback:
+        return fallback
     if normalized in NATIONAL_TEAM_COUNTRY_HINTS:
         return NATIONAL_TEAM_COUNTRY_HINTS[normalized]
     lower_name = canonical.lower()
@@ -7280,7 +7363,11 @@ def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> 
             candidate_alt = str(candidate.get("strTeamAlternate", "")).strip()
             candidate_country = str(candidate.get("strCountry", "")).strip()
             expected_country = COUNTRY_LABELS.get(resolved_country_hint or "", "")
-            if expected_country and candidate_country and candidate_country.casefold() != expected_country.casefold():
+            if expected_country and candidate_country and not _country_label_matches(
+                expected_country, candidate_country
+            ):
+                continue
+            if _parece_equipo_satelite(candidate_name) and not _parece_equipo_satelite(team_name):
                 continue
             candidato_femenino = _parece_femenino(
                 candidate_name,
@@ -7496,6 +7583,8 @@ def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
         "4331": "soccer_germany_bundesliga",
         "4337": "soccer_netherlands_eredivisie",
         "4344": "soccer_portugal_primeira_liga",
+        "4354": "soccer_ukraine_premier_league",
+        "4339": "soccer_turkey_super_league",
         "4480": "soccer_uefa_champs_league",
         "4481": "soccer_uefa_europa_league",
         "4358": "soccer_norway_eliteserien",
@@ -7525,6 +7614,8 @@ def _infer_league_key_from_sportsdb(*payloads: dict) -> str:
         "bundesliga": "soccer_germany_bundesliga",
         "dutch eredivisie": "soccer_netherlands_eredivisie",
         "eredivisie": "soccer_netherlands_eredivisie",
+        "ukrainian premier league": "soccer_ukraine_premier_league",
+        "turkish super lig": "soccer_turkey_super_league",
         "portuguese primeira liga": "soccer_portugal_primeira_liga",
         "primeira liga": "soccer_portugal_primeira_liga",
         "uefa champions league": "soccer_uefa_champs_league",
@@ -8429,6 +8520,9 @@ def _sportsdb_event_to_history_row(event: dict, season: str) -> dict:
         "SeasonCode": _sportsdb_season_code(season),
         "Source": "TheSportsDB",
         "Round": str(event.get("intRound", "") or ""),
+        "idLeague": str(event.get("idLeague", "") or "").strip(),
+        "strLeague": str(event.get("strLeague", "") or "").strip(),
+        "League": str(event.get("strLeague", "") or "").strip(),
     }
 
 
@@ -9373,7 +9467,8 @@ def fetch_the_sportsdb_h2h_events(home_team: str, away_team: str) -> list[dict]:
             row["League"] = str(event.get("strLeague") or "").strip()
             row["Source"] = "TheSportsDB-H2H"
             rows.append(row)
-    _cache_set(THESPORTSDB_CACHE, cache_key, rows)
+    if rows:
+        _cache_set(THESPORTSDB_CACHE, cache_key, rows)
     return rows
 
 
@@ -9384,6 +9479,188 @@ def _ensure_league_history(histories: dict, league_key: str) -> list[dict]:
     if key not in histories:
         histories[key] = fetch_league_history(key)
     return histories.get(key) or []
+
+
+def _cup_history_needs_domestic_fill(match: dict) -> bool:
+    if not _is_non_domestic_competition((match or {}).get("league")):
+        return False
+    history = (match or {}).get("history_context") or {}
+    home = history.get("home") or {}
+    away = history.get("away") or {}
+    if not ((home.get("recent_all") or {}).get("form")):
+        return True
+    if not ((away.get("recent_all") or {}).get("form")):
+        return True
+    if not ((home.get("table") or {}).get("position")):
+        return True
+    if not ((away.get("table") or {}).get("position")):
+        return True
+    return False
+
+
+def _history_row_is_domestic_league(row: dict, domestic_league_id: str = "") -> bool:
+    inferred = _infer_league_key_from_sportsdb(row)
+    if inferred and _is_non_domestic_competition(inferred):
+        return False
+    league_name = str(row.get("strLeague") or row.get("League") or "").lower()
+    if any(token in league_name for token in ("champions", "europa", "conference", "friendly", "amistoso")):
+        return False
+    row_id = str(row.get("idLeague") or "").strip()
+    if domestic_league_id and row_id and row_id != str(domestic_league_id):
+        return False
+    return True
+
+
+def fetch_the_sportsdb_last_events(team_id: str) -> list[dict]:
+    if not team_id:
+        return []
+    cache_key = f"sportsdb_last:v1:{team_id}"
+    cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
+    if cached:
+        return list(cached)
+    vieja = _cache_get(HISTORY_CACHE, cache_key) or []
+    if not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+        return list(vieja)
+    try:
+        _frenar_sportsdb()
+        data = _request_json(THESPORTSDB_EVENTS_LAST_URL, params={"id": team_id}, timeout=20)
+    except Exception as exc:
+        print(f"[sportsdb] eventslast {team_id}: {exc}")
+        return list(vieja)
+    events = (data or {}).get("results") or (data or {}).get("events") or []
+    payload = events if isinstance(events, list) else []
+    if payload:
+        _cache_set(HISTORY_CACHE, cache_key, payload)
+    return payload
+
+
+def fetch_the_sportsdb_lookup_table(league_id: str, season_label: str) -> list[dict]:
+    if not league_id or not season_label:
+        return []
+    cache_key = f"sportsdb_table:v1:{league_id}:{season_label}"
+    cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
+    if cached:
+        return list(cached)
+    vieja = _cache_get(HISTORY_CACHE, cache_key) or []
+    if not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+        return list(vieja)
+    try:
+        _frenar_sportsdb()
+        data = _request_json(
+            THESPORTSDB_LOOKUP_TABLE_URL,
+            params={"l": league_id, "s": season_label},
+            timeout=20,
+        )
+    except Exception as exc:
+        print(f"[sportsdb] lookuptable {league_id} {season_label}: {exc}")
+        return list(vieja)
+    rows = (data or {}).get("table") or []
+    payload = rows if isinstance(rows, list) else []
+    if payload:
+        _cache_set(HISTORY_CACHE, cache_key, payload)
+    return payload
+
+
+def _lookup_table_to_snapshot(rows: list[dict]) -> dict:
+    table = {}
+    for row in rows or []:
+        team = str(row.get("strTeam") or row.get("name") or "").strip()
+        if not team:
+            continue
+        played = _safe_int(row.get("intPlayed"), 0) or 0
+        points = _safe_int(row.get("intPoints"), 0) or 0
+        goals_for = _safe_int(row.get("intGoalsFor"), 0) or 0
+        goals_against = _safe_int(row.get("intGoalsAgainst"), 0) or 0
+        table[team] = {
+            "team": team,
+            "played": played,
+            "points": points,
+            "goals_for": goals_for,
+            "goals_against": goals_against,
+            "goal_diff": goals_for - goals_against,
+            "position": _safe_int(row.get("intRank"), None),
+            "scope": "domestic",
+            "league_name": str(row.get("strLeague") or "").strip(),
+        }
+    return table
+
+
+def _sportsdb_domestic_fallback(
+    team_name: str,
+    team_api: dict | None,
+    kickoff_dt: datetime | None,
+) -> tuple[list[dict], dict]:
+    """Si el CSV domestico no trae filas: ultimos partidos + tabla de SportsDB."""
+    team_api = team_api or {}
+    team_id = str(team_api.get("idTeam") or "").strip()
+    league_id = str(team_api.get("idLeague") or "").strip()
+    rows: list[dict] = []
+    table = {}
+    season = kickoff_dt or datetime.now(timezone.utc)
+    season_year = str(season.year if season.month >= 7 else season.year - 1)
+    if team_id:
+        for event in fetch_the_sportsdb_last_events(team_id):
+            row = _sportsdb_event_to_history_row(event, str(event.get("strSeason") or season_year))
+            if row.get("HomeTeam") and row.get("AwayTeam") and _history_row_is_domestic_league(row, league_id):
+                rows.append(row)
+    if league_id:
+        for etiqueta in _etiquetas_de_temporada(season_year):
+            raw_table = fetch_the_sportsdb_lookup_table(league_id, etiqueta)
+            if raw_table:
+                table = _lookup_table_to_snapshot(raw_table)
+                break
+        if len(_completed_rows_before_kickoff(rows, kickoff_dt)) < 5:
+            for etiqueta in _etiquetas_de_temporada(season_year):
+                events = _eventos_de_temporada_completa(league_id, etiqueta)
+                if not events:
+                    continue
+                extra = []
+                for event in events:
+                    row = _sportsdb_event_to_history_row(event, etiqueta)
+                    if row.get("HomeTeam") and row.get("AwayTeam") and _history_row_is_domestic_league(row, league_id):
+                        extra.append(row)
+                if extra:
+                    rows.extend(extra)
+                    break
+    return rows, table
+
+
+def _fill_side_from_sportsdb_if_empty(
+    history: dict,
+    team_name: str,
+    team_api: dict | None,
+    kickoff_dt: datetime | None,
+    league_key: str,
+    scope: str,
+    ctx_kwargs: dict | None,
+) -> dict:
+    if (history.get("recent_all") or {}).get("form") and (history.get("table") or {}).get("position"):
+        return history
+    extra, table_from_api = _sportsdb_domestic_fallback(team_name, team_api, kickoff_dt)
+    filled = history
+    if extra:
+        filled = _team_history_with_scope(extra, team_name, kickoff_dt, league_key, scope, ctx_kwargs) or dict(history or {})
+        if not (filled.get("recent_all") or {}).get("form"):
+            resolved = filled.get("resolved_name") or team_name
+            completed = _completed_rows_before_kickoff(extra, kickoff_dt)
+            filled["recent_all"] = _recent_form_metrics(completed, resolved, 5)
+            filled["resolved_name"] = resolved
+    if not (filled.get("table") or {}).get("position") and table_from_api:
+        api_row = _lookup_table_row(table_from_api, team_name) or _lookup_table_row(
+            table_from_api, filled.get("resolved_name") or team_name
+        )
+        if api_row:
+            table = dict(api_row)
+            table["scope"] = "domestic"
+            table["league_key"] = league_key
+            table.setdefault("league_name", _league_display_name(league_key, (team_api or {}).get("strLeague")))
+            filled = dict(filled or {})
+            filled["table"] = table
+            filled.setdefault("resolved_name", api_row.get("team") or team_name)
+            filled["league_key"] = league_key
+            filled["league_name"] = table.get("league_name") or _league_display_name(league_key)
+            filled["league_scope"] = "domestic"
+    return filled or history
 
 
 def _team_history_with_scope(
@@ -9454,6 +9731,25 @@ def _resolve_domestic_histories_and_h2h(
         away_scope,
         away_ctx_kwargs,
     )
+    if _is_non_domestic_competition(league_key):
+        home_history = _fill_side_from_sportsdb_if_empty(
+            home_history or {},
+            home_team,
+            home_team_api,
+            kickoff_dt,
+            home_domestic or league_key,
+            home_scope,
+            home_ctx_kwargs,
+        )
+        away_history = _fill_side_from_sportsdb_if_empty(
+            away_history or {},
+            away_team,
+            away_team_api,
+            kickoff_dt,
+            away_domestic or league_key,
+            away_scope,
+            away_ctx_kwargs,
+        )
     h2h_rows: list[dict] = []
     h2h_keys = []
     for key in (league_key, home_domestic, away_domestic):
@@ -9464,6 +9760,20 @@ def _resolve_domestic_histories_and_h2h(
         h2h_rows.extend(fetch_league_history(key, seasons_back=H2H_SEASONS_BACK))
     h2h_rows.extend(fetch_the_sportsdb_h2h_events(home_team, away_team))
     completed = _completed_rows_before_kickoff(h2h_rows, kickoff_dt)
+    if kickoff_dt:
+        kd = kickoff_dt
+        if kd.tzinfo is not None:
+            kd = kd.astimezone(timezone.utc).replace(tzinfo=None)
+        kickoff_day = kd.date()
+        sin_hoy = []
+        for row in completed:
+            parsed = _row_parsed_date(row)
+            if parsed is not None:
+                parsed_day = parsed.astimezone(timezone.utc).date() if parsed.tzinfo else parsed.date()
+                if parsed_day == kickoff_day and _row_is_h2h(row, home_team, away_team):
+                    continue
+            sin_hoy.append(row)
+        completed = sin_hoy
     home_resolved = home_history.get("resolved_name", home_team)
     away_resolved = away_history.get("resolved_name", away_team)
     h2h_history = _head_to_head_metrics(
@@ -14572,6 +14882,7 @@ def build_snapshot(raw_matches: list) -> dict:
                 needs_bootstrap = (
                     _needs_dynamic_league_revalidation(match)
                     or _active_context_refresh_due(match)
+                    or _cup_history_needs_domestic_fill(match)
                     or
                     not match.get("league")
                     or not match.get("kickoff")

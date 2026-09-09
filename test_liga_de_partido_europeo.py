@@ -45,7 +45,7 @@ comprobar(
 # Si el propio partido dice en que competicion se juega, manda el partido.
 comprobar(
     _liga("PSG", "SLOVAN", {"idLeague": CHAMPIONS}, {"idLeague": "4334"}, {"idLeague": "4353"})
-    == "sportsdb_" + CHAMPIONS,
+    == "soccer_uefa_champs_league",
     "con evento, la competicion la dice el evento",
 )
 
@@ -107,6 +107,41 @@ comprobar(
     w._infer_league_from_histories("SEVILLA", "BARCELONA", {"soccer_spain_la_liga": filas_liga})
     == "soccer_spain_la_liga",
     "con los dos equipos dentro, si se deduce",
+)
+
+# Un historico de copa no etiqueta el partido: el Betis esta en Champions y
+# Deportivo-Betis acababa como UCL. Hasta que lleguen las cuotas, sin liga.
+filas_ucl = [
+    {"HomeTeam": "Real Betis", "AwayTeam": "Lille"},
+    {"HomeTeam": "Deportivo", "AwayTeam": "Arsenal"},
+    {"HomeTeam": "Borussia Dortmund", "AwayTeam": "Villarreal"},
+]
+comprobar(
+    w._infer_league_from_histories(
+        "DEPORTIVO",
+        "BETIS",
+        {"soccer_uefa_champs_league": filas_ucl, "soccer_spain_la_liga": filas_liga},
+    )
+    == "",
+    "Deportivo-Betis no puede heredarse de la Champions",
+)
+comprobar(
+    w._infer_league_from_histories(
+        "B.DORTMUND",
+        "VILLARREAL",
+        {"soccer_uefa_champs_league": filas_ucl},
+    )
+    == "",
+    "sin cuotas, un cruce europeo se deja sin resolver",
+)
+comprobar(
+    w._infer_league_from_histories(
+        "ESPANA",
+        "FRANCIA",
+        {"soccer_fifa_world_cup": [{"HomeTeam": "Spain", "AwayTeam": "France"}]},
+    )
+    == "",
+    "un historico de Mundial no etiqueta un partido de selecciones",
 )
 
 
