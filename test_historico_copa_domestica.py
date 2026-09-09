@@ -10,6 +10,7 @@ real (Shakhtar = Ucrania), H2H historico sin el partido de hoy.
 import inspect
 import unittest
 from datetime import datetime, timezone
+from unittest.mock import patch
 
 import snapshot_worker as w
 
@@ -249,6 +250,108 @@ class CupoYCacheTests(unittest.TestCase):
             "table": {"position": 2, "played": 5},
         }
         self.assertFalse(w._cup_history_needs_domestic_fill(match))
+
+
+class BlindajeSinProveedorTests(unittest.TestCase):
+    """El ciclo del 9-9-2026 gasto el cupo en searchteams, tiro la ficha
+    cacheada al 429, y relleno a Bodo con la tabla de Champions (22o de 36).
+    """
+
+    def test_shakhtar_tiene_id_sin_consultar(self):
+        api = w._club_api_for_history("SHAKHTAR", {})
+        self.assertEqual(api["idTeam"], "134126")
+        self.assertEqual(api["idLeague"], "4354")
+        self.assertEqual(
+            w._domestic_league_key_from_team_api(api, "soccer_uefa_champs_league"),
+            "soccer_ukraine_premier_league",
+        )
+
+    def test_bayern_y_bodo_tambien(self):
+        self.assertEqual(w._known_club_profile("B.MUNICH")["idTeam"], "133664")
+        self.assertEqual(w._known_club_profile("Bodo Glimt")["idLeague"], "4358")
+        self.assertEqual(w._known_club_profile("PSV")["idTeam"], "133768")
+
+    def test_bodo_no_hereda_el_puesto_de_la_champions(self):
+        ucl = "soccer_uefa_champs_league"
+        filas_ucl = [
+            {
+                "Date": f"2026-08-{10 + i:02d}",
+                "HomeTeam": "Bodø/Glimt",
+                "AwayTeam": f"Rival {i}",
+                "FTHG": 1,
+                "FTAG": 0,
+                "FTR": "H",
+                "SeasonCode": "2627",
+            }
+            for i in range(1, 8)
+        ]
+        histories = {
+            ucl: filas_ucl,
+            "soccer_norway_eliteserien": [],
+            "soccer_germany_bundesliga": [],
+        }
+        kickoff = datetime(2026, 9, 9, 19, 0, tzinfo=timezone.utc)
+
+        def fake_fill(history, *args, **kwargs):
+            return history or {}
+
+        with (
+            patch.object(w, "_fill_side_from_sportsdb_if_empty", side_effect=fake_fill),
+            patch.object(w, "fetch_league_history", return_value=[]),
+            patch.object(w, "fetch_the_sportsdb_h2h_events", return_value=[]),
+        ):
+            _home, away, _h2h = w._resolve_domestic_histories_and_h2h(
+                home_team="Bayern Munich",
+                away_team="Bodø/Glimt",
+                league_key=ucl,
+                histories=histories,
+                home_team_api={},
+                away_team_api={},
+                kickoff_dt=kickoff,
+            )
+        self.assertFalse((away.get("recent_all") or {}).get("form"))
+        self.assertNotEqual((away.get("table") or {}).get("position"), 1)
+
+    def test_sportsdb_rellena_si_el_csv_esta_vacio(self):
+        extra = [
+            {
+                "Date": f"2026-08-{20 + i:02d}",
+                "HomeTeam": "Shakhtar Donetsk",
+                "AwayTeam": f"Rival {i}",
+                "FTHG": 2,
+                "FTAG": 0,
+                "FTR": "H",
+                "SeasonCode": "2627",
+            }
+            for i in range(1, 6)
+        ]
+        tabla = {
+            "Shakhtar Donetsk": {
+                "team": "Shakhtar Donetsk",
+                "position": 2,
+                "played": 5,
+                "points": 12,
+            }
+        }
+        kickoff = datetime(2026, 9, 9, 19, 0, tzinfo=timezone.utc)
+        with patch.object(w, "_sportsdb_domestic_fallback", return_value=(extra, tabla)):
+            ctx = w._fill_side_from_sportsdb_if_empty(
+                {},
+                "SHAKHTAR",
+                w._club_api_for_history("SHAKHTAR", {}),
+                kickoff,
+                "soccer_ukraine_premier_league",
+                "domestic",
+                {"filas_de_su_categoria": True},
+            )
+        self.assertEqual((ctx.get("recent_all") or {}).get("matches"), 5)
+        self.assertTrue((ctx.get("recent_all") or {}).get("form"))
+        self.assertEqual((ctx.get("table") or {}).get("position"), 2)
+
+    def test_ultimos_partidos_no_reservan_cupo_de_ligas(self):
+        fuente = inspect.getsource(w.fetch_the_sportsdb_last_events)
+        self.assertNotIn("SPORTSDB_RESERVA_LIGAS", fuente)
+        self.assertNotIn("_sportsdb_hay_cupo", fuente)
 
 
 class PistaDePaisTests(unittest.TestCase):
