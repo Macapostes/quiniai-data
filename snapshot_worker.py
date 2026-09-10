@@ -23,7 +23,7 @@ import sys
 import subprocess
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone, timedelta
+from datetime import date, datetime, timezone, timedelta
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -128,6 +128,41 @@ OPEN_METEO_GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search"
 OPEN_METEO_FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
 NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search"
 FOOTBALL_DATA_BASE_URL = "https://www.football-data.co.uk/mmz4281"
+# El equivalente a football-data para las competiciones europeas, que football-data
+# no publica. Sin esto, el H2H de un cruce de Champions solo podia salir de
+# TheSportsDB, que con la clave publica responde 429 antes de la vigesima peticion
+# y ademas trunca eventsseason.php a 15 eventos: por eso la pestana H2H de la app
+# salia vacia en las jornadas europeas. Es un fichero de texto por temporada,
+# servido por la CDN de GitHub: una peticion trae la competicion entera -fase de
+# grupos Y eliminatorias- y no gasta cupo de nadie.
+OPENFOOTBALL_UEFA_BASE_URL = (
+    "https://raw.githubusercontent.com/openfootball/champions-league/master"
+)
+OPENFOOTBALL_SOURCE = "openfootball"
+OPENFOOTBALL_UEFA_FILES = {
+    "soccer_uefa_champs_league": "cl.txt",
+    "soccer_uefa_europa_league": "el.txt",
+    "soccer_uefa_europa_conference_league": "conf.txt",
+    "sportsdb_4480": "cl.txt",
+    "sportsdb_4481": "el.txt",
+    "sportsdb_5071": "conf.txt",
+}
+# La primera temporada que publica el repositorio. Pedir mas atras es gastar
+# peticiones en 404 seguros.
+OPENFOOTBALL_UEFA_PRIMERA_TEMPORADA = 2011
+# Una temporada cerrada no vuelve a cambiar: cachearla un mes es correcto y
+# convierte el archivo entero en cero peticiones a partir del segundo ciclo.
+UEFA_ARCHIVE_CACHE_TTL_SECONDS = max(
+    HISTORY_CACHE_TTL_SECONDS,
+    int(os.getenv("QUINIAI_UEFA_ARCHIVE_TTL_SECONDS", str(30 * 24 * 3600)) or 30 * 24 * 3600),
+)
+# Y las temporadas que el repositorio aun no ha publicado -la Europa League de
+# 2025-26, la actual de cualquiera- se recuerdan como ausentes un dia, para no
+# repetir el mismo 404 en cada ciclo.
+UEFA_ARCHIVE_MISS_TTL_SECONDS = max(
+    3600,
+    int(os.getenv("QUINIAI_UEFA_ARCHIVE_MISS_TTL_SECONDS", str(24 * 3600)) or 24 * 3600),
+)
 # La "123" es la clave publica de TheSportsDB: la comparte todo el que usa la
 # API gratis, y por eso el worker se come miles de errores 429 y se queda sin
 # historico. Con una clave propia solo hay que poner QUINIAI_SPORTSDB_KEY en el
@@ -544,6 +579,33 @@ TEAM_NAME_ALIASES = {
     # candado de identidad lo tomaba por otro.
     "espanol": "Espanyol",
     "rcd espanol": "Espanyol",
+    # Los clubes europeos llegan con un nombre distinto en cada fuente, y en el
+    # H2H eso es la diferencia entre traer el cruce y no traerlo: el boleto y
+    # football-data escriben "PSG" y "Bayern Munich", y el archivo europeo
+    # "Paris Saint-Germain FC" y "Bayern München", que no se parecen por letras.
+    "psg": "Paris Saint-Germain",
+    "paris sg": "Paris Saint-Germain",
+    "paris saint germain": "Paris Saint-Germain",
+    "bayern munchen": "Bayern Munich",
+    "fc bayern munchen": "Bayern Munich",
+    # Y el Braga tiene que dejar de ser "un Sporting": sin esto se queda en un
+    # solo token generico, encaja con el Sporting CP y el H2H de SPORTING PORT.
+    # - GALATASARAY salia lleno de partidos del Braga.
+    "sporting braga": "Braga",
+    "sporting clube de braga": "Braga",
+    "sc braga": "Braga",
+    "sp braga": "Braga",
+    # El resto de clubes que el archivo europeo llama por su nombre de registro.
+    # Todos comprobados contra las 24 temporadas del archivo: son los unicos
+    # que, escritos asi, no se reconocian a si mismos entre temporadas.
+    "fc internazionale milano": "Inter Milan",
+    "internazionale": "Inter Milan",
+    "sport lisboa e benfica": "Benfica",
+    "sl benfica": "Benfica",
+    "fc red bull salzburg": "RB Salzburg",
+    "red bull salzburg": "RB Salzburg",
+    "bor monchengladbach": "Borussia Mönchengladbach",
+    "m gladbach": "Borussia Mönchengladbach",
     "hamkam": "Hamarkameratene",
     "celta fortuna": "Celta B",
     "celta b": "Celta B",
@@ -8742,11 +8804,268 @@ def _eventos_de_temporada_completa(league_id: str, etiqueta: str) -> list[dict]:
     return eventos
 
 
+_OPENFOOTBALL_MEMO: dict[tuple, list[dict]] = {}
+
+_OPENFOOTBALL_MESES = {
+    mes: numero
+    for numero, mes in enumerate(
+        ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        start=1,
+    )
+}
+# "= UEFA Champions League 2021/22"
+_OPENFOOTBALL_CABECERA_RE = re.compile(r"^=\s*(?P<competicion>.+?)\s+(?P<temporada>\d{4}/\d{2})\s*$")
+# "▪ Group A", "▪ Round of 16", "▪ League, Matchday 7"
+_OPENFOOTBALL_SECCION_RE = re.compile(r"^[^\w\s#=]\s*(?P<seccion>.+?)\s*$")
+# "Tue Feb 15 2022" o "Wed Feb 16" (el ano solo aparece cuando cambia)
+_OPENFOOTBALL_FECHA_RE = re.compile(
+    r"^\s*[A-Z][a-z]{2}\s+(?P<mes>[A-Z][a-z]{2})\s+(?P<dia>\d{1,2})(?:\s+(?P<anio>\d{4}))?\s*$"
+)
+# "  21:00  Real Madrid (ESP)       v Inter (ITA)              2-0 (1-0)"
+_OPENFOOTBALL_PARTIDO_RE = re.compile(
+    r"^\s*(?:\d{1,2}:\d{2}\s+)?(?P<local>\S.*?)\s+v\s+(?P<visitante>\S.*?)\s{2,}(?P<marcador>\d+-\d+.*?)\s*$"
+)
+_OPENFOOTBALL_PAIS_RE = re.compile(r"\s*\([A-Z]{3}\)\s*$")
+_OPENFOOTBALL_MARCADOR_RE = re.compile(r"(?P<local>\d+)-(?P<visitante>\d+)")
+
+
+def _openfootball_etiqueta_temporada(anio_inicio: int) -> str:
+    return f"{anio_inicio}-{(anio_inicio + 1) % 100:02d}"
+
+
+def _openfootball_resultado(marcador: str) -> tuple[int, int] | None:
+    """Los goles que deciden el partido, con prorroga si la hubo.
+
+    Cuatro formas en el archivo: "6-3 (3-1)", "0-0", "2-3 a.e.t. (1-3, 0-1)" y
+    "4-3 pen. 1-1 a.e.t. (1-1, 0-1)". El resultado del partido es el que va
+    justo antes de "a.e.t." cuando la hay -asi los penaltis no convierten un
+    empate en victoria, que es como cuenta el futbol- y el primero si no.
+    """
+    limpio = str(marcador or "").split("[")[0].strip()
+    prorroga = limpio.find("a.e.t.")
+    if prorroga > 0:
+        previos = list(_OPENFOOTBALL_MARCADOR_RE.finditer(limpio[:prorroga]))
+        if previos:
+            return int(previos[-1].group("local")), int(previos[-1].group("visitante"))
+    encontrado = _OPENFOOTBALL_MARCADOR_RE.search(limpio)
+    if not encontrado:
+        return None
+    return int(encontrado.group("local")), int(encontrado.group("visitante"))
+
+
+def _openfootball_fase(seccion: str) -> str:
+    """"group" si esa seccion es la liguilla, "knockout" si es eliminatoria.
+
+    El archivo nombra la liguilla de tres formas segun la epoca y el idioma
+    ("Group A", "Gruppe G", "League phase", "League, Matchday 7") y todo lo
+    demas son cruces a doble partido ("Round of 16", "Playoffs, Matchday 1").
+    """
+    texto = _normalize_ascii(str(seccion or "")).lower()
+    if any(pista in texto for pista in ("playoff", "final", "round of", "quarter", "semi")):
+        return "knockout"
+    if any(pista in texto for pista in ("group", "gruppe", "league")):
+        return "group"
+    return "knockout"
+
+
+def _openfootball_dentro_de_temporada(anio: int, mes: int, dia: int, temporada: int) -> bool:
+    """Si esa fecha puede pertenecer a la temporada del fichero.
+
+    Una temporada europea va de julio a junio, con la excepcion de 2019-20, que
+    la pandemia estiro hasta el 23 de agosto: de ahi el margen hasta septiembre.
+    """
+    try:
+        cuando = date(anio, mes, dia)
+    except ValueError:
+        return False
+    return date(temporada, 7, 1) <= cuando <= date(temporada + 1, 9, 30)
+
+
+def _parse_openfootball_uefa(texto: str, anio_inicio: int) -> list[dict]:
+    """Una temporada europea de openfootball, en filas con forma football-data.
+
+    El ano de cada partido no siempre esta escrito: el archivo lo pone en la
+    primera fecha y lo da por sabido en las siguientes. Se arrastra el ultimo
+    ano visto y solo se suma uno cuando el mes retrocede DENTRO de la misma
+    seccion; entre secciones se olvida el mes, porque cada grupo vuelve a
+    empezar en septiembre y si no la fase de grupos acababa en 2018.
+    """
+    competicion = ""
+    temporada = anio_inicio
+    seccion = ""
+    anio = anio_inicio
+    ultimo_mes: int | None = None
+    fecha: date | None = None
+    filas: list[dict] = []
+    for linea in str(texto or "").splitlines():
+        if not linea.strip():
+            continue
+        cabecera = _OPENFOOTBALL_CABECERA_RE.match(linea.strip())
+        if cabecera:
+            competicion = cabecera.group("competicion").strip()
+            temporada = int(cabecera.group("temporada")[:4])
+            anio = temporada
+            continue
+        if linea.lstrip().startswith("#"):
+            continue
+        marca_fecha = _OPENFOOTBALL_FECHA_RE.match(linea)
+        if marca_fecha:
+            mes = _OPENFOOTBALL_MESES.get(marca_fecha.group("mes"))
+            if not mes:
+                continue
+            dia = int(marca_fecha.group("dia"))
+            if marca_fecha.group("anio"):
+                anio = int(marca_fecha.group("anio"))
+            else:
+                candidato = anio + 1 if (ultimo_mes is not None and mes < ultimo_mes) else anio
+                if not _openfootball_dentro_de_temporada(candidato, mes, dia, temporada):
+                    # Ultima red: una temporada europea cabe en dos anos
+                    # naturales y solo uno de los dos deja la fecha dentro. Sin
+                    # esto, una eliminatoria cuyo ano el archivo da por sabido
+                    # -porque venia escrito en la seccion anterior- se fecha un
+                    # ano antes y se cae del H2H sin hacer ruido.
+                    for alternativa in (temporada, temporada + 1):
+                        if _openfootball_dentro_de_temporada(alternativa, mes, dia, temporada):
+                            candidato = alternativa
+                            break
+                anio = candidato
+            ultimo_mes = mes
+            try:
+                fecha = date(anio, mes, dia)
+            except ValueError:
+                fecha = None
+            continue
+        partido = _OPENFOOTBALL_PARTIDO_RE.match(linea)
+        if partido and fecha:
+            goles = _openfootball_resultado(partido.group("marcador"))
+            if not goles:
+                continue
+            local, visitante = goles
+            filas.append(
+                {
+                    "Date": fecha.isoformat(),
+                    "HomeTeam": _OPENFOOTBALL_PAIS_RE.sub("", partido.group("local")).strip(),
+                    "AwayTeam": _OPENFOOTBALL_PAIS_RE.sub("", partido.group("visitante")).strip(),
+                    "FTHG": local,
+                    "FTAG": visitante,
+                    "FTR": "H" if local > visitante else ("A" if visitante > local else "D"),
+                    "SeasonCode": _sportsdb_season_code(str(temporada)),
+                    # La app pinta la tarjeta sin competicion si esto llega
+                    # vacio, asi que la competicion sale de la cabecera del
+                    # fichero y no se deduce de nada.
+                    "League": competicion,
+                    "strLeague": competicion,
+                    "Round": seccion,
+                    # Para el H2H una eliminatoria cuenta igual que un partido
+                    # de grupos -Madrid-Chelsea de cuartos es historial-, pero
+                    # para una CLASIFICACION no: sumarla da nueve jornadas al
+                    # que llego a la final y ocho al que no. Se marca aqui y se
+                    # descarta al construir tablas.
+                    "Stage": _openfootball_fase(seccion),
+                    "Source": OPENFOOTBALL_SOURCE,
+                }
+            )
+            continue
+        marca_seccion = _OPENFOOTBALL_SECCION_RE.match(linea.strip())
+        if marca_seccion:
+            seccion = marca_seccion.group("seccion")
+            ultimo_mes = None
+    return filas
+
+
+def _openfootball_temporadas(seasons_back: int | None = None) -> list[int]:
+    """Anos de inicio de temporada, del mas reciente al mas antiguo."""
+    ahora = datetime.now(timezone.utc)
+    actual = ahora.year if ahora.month >= 7 else ahora.year - 1
+    total = max(1, seasons_back or HISTORY_SEASONS_BACK)
+    anios = [actual - salto for salto in range(total)]
+    return [anio for anio in anios if anio >= OPENFOOTBALL_UEFA_PRIMERA_TEMPORADA]
+
+
+def _fetch_openfootball_uefa_temporada(fichero: str, anio: int) -> list[dict]:
+    cache_key = f"openfootball:v1:{fichero}:{anio}"
+    cacheado = _cache_get(HISTORY_CACHE, cache_key, UEFA_ARCHIVE_CACHE_TTL_SECONDS)
+    if cacheado:
+        return list(cacheado)
+    ausente = f"openfootball_ausente:v1:{fichero}:{anio}"
+    if _cache_get(HISTORY_CACHE, ausente, UEFA_ARCHIVE_MISS_TTL_SECONDS):
+        return []
+    etiqueta = _openfootball_etiqueta_temporada(anio)
+    url = f"{OPENFOOTBALL_UEFA_BASE_URL}/{etiqueta}/{fichero}"
+    texto = None
+    exc: Exception | None = None
+    # Un corte de red deja esa temporada fuera del H2H hasta el ciclo siguiente,
+    # y con veinte temporadas por competicion pasa mas de lo que parece. Aqui no
+    # hay cupo que cuidar -es la CDN de GitHub-, asi que se insiste una vez.
+    for intento in range(2):
+        try:
+            texto = _request_text(url, timeout=25)
+            exc = None
+            break
+        except Exception as fallo:
+            exc = fallo
+            if "404" in str(fallo) or intento:
+                break
+            time.sleep(1)
+    if texto is None:
+        # Un 404 es que esa temporada aun no esta publicada; un fallo de red es
+        # pasajero. Ninguno de los dos puede borrar lo que ya habia: si hay
+        # copia anterior se sirve aunque haya caducado.
+        anterior = _cache_get(HISTORY_CACHE, cache_key) or []
+        if anterior:
+            return list(anterior)
+        if "404" in str(exc):
+            _cache_set(HISTORY_CACHE, ausente, True)
+        else:
+            print(f"[openfootball] {etiqueta}/{fichero}: {exc}")
+        return []
+    filas = _parse_openfootball_uefa(texto, anio)
+    if filas:
+        _cache_set(HISTORY_CACHE, cache_key, filas)
+        return filas
+    return list(_cache_get(HISTORY_CACHE, cache_key) or [])
+
+
+def _fetch_openfootball_uefa_history(
+    league_key: str, seasons_back: int | None = None
+) -> list[dict]:
+    """El archivo europeo completo de una competicion, temporada a temporada."""
+    fichero = OPENFOOTBALL_UEFA_FILES.get(_canonical_league_key(league_key) or league_key)
+    if not fichero:
+        return []
+    temporadas = _openfootball_temporadas(seasons_back)
+    memo_key = (fichero, tuple(temporadas))
+    memorizado = _OPENFOOTBALL_MEMO.get(memo_key)
+    if memorizado is not None:
+        return list(memorizado)
+    filas: list[dict] = []
+    for anio in temporadas:
+        filas.extend(_fetch_openfootball_uefa_temporada(fichero, anio))
+    # El archivo no cambia dentro de un ciclo y el H2H lo pide una vez por
+    # partido: sin esto son quince recorridos identicos de veinte temporadas.
+    # Se vacia al empezar cada ciclo (_reiniciar_memo_openfootball), porque el
+    # worker vive dias y una temporada nueva tiene que poder entrar.
+    _OPENFOOTBALL_MEMO[memo_key] = filas
+    return list(filas)
+
+
+def _reiniciar_memo_openfootball() -> None:
+    _OPENFOOTBALL_MEMO.clear()
+
+
 def _fetch_sportsdb_league_history(
-    league_key: str, league_id: str, seasons_back: int | None = None
+    league_key: str,
+    league_id: str,
+    seasons_back: int | None = None,
+    saltar_temporadas: set[str] | None = None,
 ) -> list[dict]:
     combined_rows: list[dict] = []
     for season in _sportsdb_recent_seasons(seasons_back):
+        # Lo que ya trae el archivo europeo no se le vuelve a pedir al
+        # proveedor: son las peticiones que despues faltan para la temporada en
+        # curso, que es la unica que el archivo no puede tener.
+        if saltar_temporadas and _sportsdb_season_code(season) in saltar_temporadas:
+            continue
         cache_key = f"sportsdb_history:v5:{league_key}:{league_id}:{season}"
         cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
         if cached:
@@ -8897,10 +9216,26 @@ def fetch_league_history(league_key: str, seasons_back: int | None = None) -> li
         anterior = _cache_get(HISTORY_CACHE, cache_key) or []
         if anterior:
             return anterior
+    # Las competiciones europeas no tienen CSV en football-data, asi que su
+    # historico -y con el, el H2H de cualquier cruce de Champions- salia solo de
+    # TheSportsDB. Con la clave publica eso son tres temporadas en el mejor de
+    # los casos y ninguna eliminatoria, porque el respaldo ronda a ronda se para
+    # a las cuatro rondas vacias y las de cuartos en adelante van numeradas
+    # 125, 150 y 200. El archivo va primero: cubre desde 2011-12 y trae la
+    # competicion escrita, que es lo que la app necesita para etiquetar la
+    # tarjeta.
+    archivo_uefa = _fetch_openfootball_uefa_history(league_key, seasons_back)
     sportsdb_league_id = _sportsdb_league_id_for_key(league_key)
     if sportsdb_league_id:
-        return _fetch_sportsdb_league_history(league_key, sportsdb_league_id, seasons_back)
-    return []
+        cubiertas = {str(row.get("SeasonCode") or "") for row in archivo_uefa}
+        cubiertas.discard("")
+        return archivo_uefa + _fetch_sportsdb_league_history(
+            league_key,
+            sportsdb_league_id,
+            seasons_back,
+            saltar_temporadas=cubiertas,
+        )
+    return archivo_uefa
 
 
 def _row_matches_season(row: dict, season_code: str) -> bool:
@@ -9523,14 +9858,21 @@ def _row_is_h2h(row: dict, home_team: str, away_team: str, threshold: float = 0.
     row_away = str(row.get("AwayTeam") or "")
     if not row_home or not row_away:
         return False
-    direct = (
-        _team_similarity_score(row_home, home_team) >= threshold
-        and _team_similarity_score(row_away, away_team) >= threshold
-    )
-    swapped = (
-        _team_similarity_score(row_home, away_team) >= threshold
-        and _team_similarity_score(row_away, home_team) >= threshold
-    )
+
+    def _es_el_cruce(fila: str, buscado: str) -> bool:
+        # Parecerse por letras no basta cuando el pozo de nombres es toda
+        # Europa: "Manchester City" y "Manchester United" puntuan 0.81, y
+        # "Leicester City" 0.76. Asi es como el H2H de OPORTO - MAN.CITY se
+        # llenaba de partidos contra el Leicester. La misma regla de identidad
+        # que ya usa el resolutor de nombres decide aqui: ademas de parecerse,
+        # tienen que poder ser el mismo club.
+        return (
+            _team_similarity_score(fila, buscado) >= threshold
+            and _es_el_mismo_club(fila, buscado)
+        )
+
+    direct = _es_el_cruce(row_home, home_team) and _es_el_cruce(row_away, away_team)
+    swapped = _es_el_cruce(row_home, away_team) and _es_el_cruce(row_away, home_team)
     return direct or swapped
 
 
@@ -9913,6 +10255,13 @@ def _resolve_domestic_histories_and_h2h(
     for key in h2h_keys:
         h2h_rows.extend(fetch_league_history(key, seasons_back=H2H_SEASONS_BACK))
     h2h_rows.extend(fetch_the_sportsdb_h2h_events(home_team, away_team))
+    if _parece_femenino(home_team, away_team):
+        # El archivo europeo es masculino. Que un cruce femenino no herede el
+        # H2H del primer equipo no se deja a que los nombres no se parezcan:
+        # "Real Madrid" y "Real Madrid Femenino" se parecen de sobra.
+        h2h_rows = [
+            row for row in h2h_rows if str(row.get("Source") or "") != OPENFOOTBALL_SOURCE
+        ]
     completed = _completed_rows_before_kickoff(h2h_rows, kickoff_dt)
     if kickoff_dt:
         kd = kickoff_dt
@@ -9939,8 +10288,34 @@ def _resolve_domestic_histories_and_h2h(
     return home_history, away_history, h2h_history
 
 
+def _h2h_sin_repetidos(meetings: list[dict]) -> list[dict]:
+    """El mismo partido contado una vez, venga de donde venga.
+
+    Un cruce europeo puede llegar por el archivo y por TheSportsDB a la vez, con
+    los nombres escritos distinto ("Inter" y "Inter Milan"). Sin unificarlos, un
+    2-0 aparece dos veces y el marcador global dice seis enfrentamientos donde
+    hubo tres. Gana la fila que trae competicion, que es la que la app puede
+    etiquetar.
+    """
+    unicos: dict[str, dict] = {}
+    for row in meetings:
+        # Basta la fecha: aqui ya solo hay filas de ESTE cruce, y dos equipos no
+        # juegan dos veces el mismo dia. Comparar tambien los nombres no valdria,
+        # que es justo el problema: cada fuente los escribe distinto.
+        clave = _h2h_iso_date(row)
+        anterior = unicos.get(clave)
+        if anterior is None:
+            unicos[clave] = row
+            continue
+        tenia_liga = str(anterior.get("League") or anterior.get("strLeague") or "").strip()
+        trae_liga = str(row.get("League") or row.get("strLeague") or "").strip()
+        if trae_liga and not tenia_liga:
+            unicos[clave] = row
+    return list(unicos.values())
+
+
 def _head_to_head_metrics(rows: list[dict], home_team: str, away_team: str, last_n: int = 10) -> dict:
-    meetings = [row for row in rows if _row_is_h2h(row, home_team, away_team)]
+    meetings = _h2h_sin_repetidos([row for row in rows if _row_is_h2h(row, home_team, away_team)])
     meetings.sort(key=lambda item: _h2h_iso_date(item))
     meetings = meetings[-last_n:]
     if not meetings:
@@ -11279,6 +11654,9 @@ def _final_table_for_season(league_key: str, season_code: str) -> dict:
         return cached
     try:
         rows = _season_rows(fetch_league_history(league_key), season_code)
+        # Una tabla se hace con la liguilla. Las eliminatorias que trae el
+        # archivo europeo son historial para el H2H, no jornadas de nadie.
+        rows = [row for row in rows if str(row.get("Stage") or "group") != "knockout"]
         table = _table_snapshot(rows) if rows else {}
     except Exception:
         table = {}
@@ -15336,6 +15714,7 @@ def run_once(print_summary: bool = False) -> dict:
     _log_cycle_event("info", "cycle_started", poll_seconds=POLL_SECONDS)
     _reiniciar_fallos_sportsdb()
     _reiniciar_cupo_sportsdb()
+    _reiniciar_memo_openfootball()
     snapshot = fetch_snapshot()
     transition_audit = snapshot.get("season_transition_audit") or {}
     if transition_audit.get("degraded"):
