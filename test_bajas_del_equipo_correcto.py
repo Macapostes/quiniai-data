@@ -94,3 +94,50 @@ class LaCategoriaDecideDeQuienSonLasBajasTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SinPoderConfirmarNoSeNombraANadieTests(unittest.TestCase):
+    """Si no se puede comprobar que el jugador es de ese equipo, no se publica
+    su nombre: se dice que hay bajas y cuántas.
+
+    No es prudencia genérica. El índice de plantillas se llena con
+    `lookup_all_players` de TheSportsDB y la clave pública lo bloquea: hoy hay
+    CERO plantillas en caché, así que ningún nombre que imprimamos está
+    verificado. Un nombre equivocado se detecta de un vistazo y tira abajo la
+    credibilidad del informe entero; "3 bajas" sigue sirviendo para el signo.
+
+    Con una clave propia el índice se llena y los nombres vuelven solos.
+    """
+
+    def test_hoy_no_hay_plantillas_con_las_que_confirmar(self):
+        self.assertFalse(
+            w._jugador_confirmado_del_equipo("Diakhaby", "VALENCIA"),
+            "sin plantilla no se puede confirmar a nadie",
+        )
+
+    def test_con_plantilla_si_se_confirma(self):
+        w._INDICE_DE_JUGADORES.setdefault(w._norm_persona("Diakhaby"), set()).add(
+            w._norm_persona("VALENCIA")
+        )
+        try:
+            self.assertTrue(w._jugador_confirmado_del_equipo("Diakhaby", "VALENCIA"))
+            self.assertFalse(w._jugador_confirmado_del_equipo("Diakhaby", "SEVILLA"))
+        finally:
+            w._INDICE_DE_JUGADORES.pop(w._norm_persona("Diakhaby"), None)
+
+    def test_cada_baja_dice_si_esta_verificada(self):
+        entidades = w._build_injury_entities(
+            "VALENCIA",
+            _items(["Diakhaby, baja en el Valencia CF por una lesión muscular"]),
+        )
+        self.assertTrue(entidades)
+        for e in entidades:
+            self.assertIn("verificado", e)
+            self.assertFalse(e["verificado"], "sin plantilla no puede estar verificada")
+
+    def test_el_texto_del_worker_no_nombra_a_los_no_verificados(self):
+        import inspect
+
+        fuente = inspect.getsource(w)
+        trozo = fuente[fuente.index("home_injury_names = ["):][:500]
+        self.assertIn('i.get("verificado")', trozo)

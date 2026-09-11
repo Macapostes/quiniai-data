@@ -3133,6 +3133,32 @@ def _es_jugador_de_otro_equipo(candidate: object, team_name: object) -> bool:
     return _norm_persona(team_name) not in equipos
 
 
+def _jugador_confirmado_del_equipo(candidate: object, team_name: object) -> bool:
+    """`True` solo si la plantilla del equipo confirma que ese jugador es suyo.
+
+    Es lo contrario de la de arriba, y la diferencia importa: "no consta que sea
+    de otro" no es "consta que es de este". Que el titular lo nombre junto al
+    equipo tampoco vale como prueba — es justo lo que dejo pasar a Lamine Yamal
+    como baja del Valencia.
+
+    Hoy esto devuelve False casi siempre, porque el indice de plantillas se
+    llena con el lookup de plantillas de TheSportsDB, que la clave publica
+    bloquea.
+    Esa es la razon de fondo por la que el informe no nombra a nadie: no es que
+    no queramos, es que no podemos comprobarlo. Con una clave propia el indice
+    se llena y los nombres vuelven solos, sin tocar nada.
+    """
+    nombre = _norm_persona(candidate)
+    equipos = _INDICE_DE_JUGADORES.get(nombre)
+    if not equipos:
+        return False
+    posibles = {
+        _norm_persona(team_name),
+        _norm_persona(_canonical_team_name(str(team_name or ""))),
+    }
+    return bool(posibles & equipos)
+
+
 def _norm_persona(value: object) -> str:
     """Sin acentos, sin puntuacion y en minusculas, para poder comparar."""
     texto = _normalize_ascii(str(value or ""))
@@ -3429,6 +3455,12 @@ def _build_injury_entities(
             entities.append(
                 {
                     "player_name": person,
+                    # Si la plantilla no confirma que sea suyo, el nombre no se
+                    # publica: se cuenta la baja y ya. Nombrar a alguien que no
+                    # es de ese equipo -Lamine Yamal como baja del Valencia- es
+                    # el error que mas se nota y el que mas confianza cuesta, y
+                    # lo hemos estado imprimiendo en informes de pago.
+                    "verificado": _jugador_confirmado_del_equipo(person, team_name),
                     "status": _infer_injury_status(title),
                     "headline": title,
                     "source": item.get("source", ""),
@@ -13893,15 +13925,19 @@ def _focus_match_ai_briefing(match: dict) -> dict:
     referee_name = referee_context.get("assigned_referee", "") or "No confirmado"
     referee_bias = _referee_analysis_summary(referee_analysis) if referee_analysis else "Sin histórico arbitral fiable"
 
+    # Solo se nombra a quien la plantilla confirma. Sin confirmar se dice
+    # cuantas bajas hay y ya: un nombre equivocado -Lamine Yamal como baja del
+    # Valencia- se detecta de un vistazo y tira abajo la credibilidad del
+    # informe entero, mientras que "3 bajas" sigue siendo util para el signo.
     home_injury_names = [
         i.get("player_name") or i.get("player", "")
         for i in home_injuries[:4]
-        if i.get("player_name") or i.get("player")
+        if (i.get("player_name") or i.get("player")) and i.get("verificado")
     ]
     away_injury_names = [
         i.get("player_name") or i.get("player", "")
         for i in away_injuries[:4]
-        if i.get("player_name") or i.get("player")
+        if (i.get("player_name") or i.get("player")) and i.get("verificado")
     ]
     home_injury_text = (
         f"{len(home_injuries)} baja(s) detectada(s)"
