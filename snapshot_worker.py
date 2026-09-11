@@ -3200,6 +3200,59 @@ def _titular_menciona_equipo(headline: object, team_name: object) -> bool:
     return any(t in titular for t in tokens)
 
 
+# "previo al Valencia", "contra el Sevilla", "ante el Madrid": detras de una de
+# estas, el equipo que viene es el RIVAL de quien cuenta la noticia.
+_MARCAS_DE_RIVAL = (
+    "previo al", "previo a la", "previo a", "antes del", "antes de la",
+    "contra el", "contra la", "contra", "ante el", "ante la", "ante",
+    "frente al", "frente a la", "frente a", "visita al", "visita a la",
+    "visita a", "recibe al", "recibe a la", "recibe a", "recibir al",
+    "medirse al", "medirse a la", "enfrentarse al", "enfrentarse a la",
+    "duelo ante", "duelo contra", "partido contra", "partido ante", "vs",
+)
+
+
+def _somos_el_rival_en_el_titular(headline: object, team_name: object) -> bool:
+    """`True` si en el titular nuestro equipo es el RIVAL, no el protagonista.
+
+    "Lamine Yamal, baja en el ultimo entrenamiento previo al Valencia CF" habla
+    del Barcelona: al Valencia lo nombra como rival. Pero nombrarlo lo nombra,
+    asi que pasaba la comprobacion de procedencia y Lamine Yamal acababa de
+    baja del Valencia -y en el femenino, para rematar-.
+
+    No vale con mirar si otro club aparece antes: aqui el Barcelona aparece
+    DESPUES, al final, como fuente. Lo que delata el papel de cada uno es la
+    preposicion que va delante del nombre.
+
+    Solo se descarta si TODAS las menciones son de rival. "Baja del Valencia CF
+    contra el Barcelona" nombra al Valencia como sujeto la primera vez, y esa
+    noticia si es suya.
+    """
+    titular = _norm_persona(headline)
+    nombres = {
+        _norm_persona(team_name),
+        _norm_persona(_canonical_team_name(str(team_name or ""))),
+    }
+    posiciones = []
+    for nombre in nombres:
+        if not nombre:
+            continue
+        desde = 0
+        while True:
+            pos = titular.find(nombre, desde)
+            if pos < 0:
+                break
+            posiciones.append(pos)
+            desde = pos + 1
+    if not posiciones:
+        return False
+    for pos in posiciones:
+        previo = titular[max(0, pos - 18):pos].strip()
+        if not any(previo.endswith(marca) for marca in _MARCAS_DE_RIVAL):
+            return False
+    return True
+
+
 def _el_titular_es_de_otro_equipo(headline: object, team_name: object) -> bool:
     """`True` si el titular trata de otro club, aunque nombre al nuestro.
 
@@ -3332,6 +3385,9 @@ def _build_injury_entities(
         if not _titular_menciona_equipo(title, team_name):
             continue
         if _el_titular_es_de_otro_equipo(title, team_name):
+            continue
+        # Y que no nos nombre solo como rival: ahi los nombres son del otro.
+        if _somos_el_rival_en_el_titular(title, team_name):
             continue
         source_tokens = {
             token
@@ -13054,11 +13110,21 @@ def _enrich_quiniela_match(match: dict) -> None:
     # Y sus plantillas, una vez por equipo y cacheadas una semana.
     _registrar_plantilla(match["local"])
     _registrar_plantilla(match["visitante"])
+    # Con el nombre del boleto, que es el que lleva la marca de categoria:
+    # `_build_injury_entities` ya sabe descartar noticias del primer equipo en
+    # un cruce femenino, pero la deduce del nombre, y "VALENCIA (F)" viajaba
+    # aqui como "VALENCIA". Asi acabaron Diakhaby, Corberan -que es el
+    # entrenador del masculino- y Lamine Yamal como bajas del Valencia
+    # femenino, en el PDF de un informe de pago.
     home_injuries = _build_injury_entities(
-        match["local"], home_availability_items, rival=match["visitante"]
+        _nombre_para_el_proveedor(match, "local"),
+        home_availability_items,
+        rival=match["visitante"],
     )
     away_injuries = _build_injury_entities(
-        match["visitante"], away_availability_items, rival=match["local"]
+        _nombre_para_el_proveedor(match, "visitante"),
+        away_availability_items,
+        rival=match["local"],
     )
 
     def _availability_status(items: list[dict], injuries: list[dict]) -> str:
