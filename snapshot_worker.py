@@ -5910,9 +5910,34 @@ def _parece_femenino(*textos: object) -> bool:
     return any(pista in plano for pista in _PISTAS_FEMENINAS)
 
 
+def _nombre_para_el_proveedor(match: dict, lado: str) -> str:
+    """Con que nombre buscar a este equipo en TheSportsDB.
+
+    `fetch_the_sportsdb_team` mira el sufijo del nombre para decidir si busca la
+    seccion femenina; sin el se trae el primer equipo masculino. El nombre que
+    lleva el partido ya viene canonizado -"Alavés"- y ha perdido la marca, asi
+    que para un cruce femenino se usa el del boleto, "ALAVÉS (F)".
+
+    Solo para femenino: en las jornadas europeas el boleto sella "(M)", y ese
+    sufijo no ayuda a encontrar a nadie -ningun proveedor llama asi al Madrid-,
+    asi que ahi se sigue buscando como hasta ahora.
+    """
+    lae = str(match.get(f"{lado}_lae") or "").strip()
+    if lae and _categoria_por_nombre(lae) == "female":
+        return lae
+    return str(match.get(lado) or "").strip()
+
+
 def _categoria_del_partido(match: dict) -> str | None:
-    """Categoria del cruce, mirando los dos equipos del boleto."""
-    for lado in ("local", "visitante"):
+    """Categoria del cruce, mirando los dos equipos del boleto.
+
+    El nombre del boleto va primero porque es el unico que sella la categoria.
+    Los otros dos llegan del proveedor de cuotas o ya canonizados, y ahi el
+    sufijo se ha perdido: "ALAVÉS (F)" viaja como "Alavés" y no se distingue
+    del masculino. Cuando eso pasaba, la guarda de mas abajo no saltaba y el
+    partido acababa resuelto contra Segunda -con el Granada masculino dentro-.
+    """
+    for lado in ("local_lae", "visitante_lae", "local", "visitante"):
         categoria = _categoria_por_nombre(match.get(lado, ""))
         if categoria:
             return categoria
@@ -6636,13 +6661,23 @@ def _eduardo_parse_percentages_xml(xml_text: str, source_name: str, source_url: 
         position = _safe_int(partido.attrib.get("num"))
         if not position:
             continue
+        local_lae = html.unescape(partido.attrib.get("local", "")).strip()
+        visitante_lae = html.unescape(partido.attrib.get("visitante", "")).strip()
         slots.append(
             {
                 "position": position,
-                "local": _canonical_team_name(html.unescape(partido.attrib.get("local", "")).strip()),
-                "visitante": _canonical_team_name(
-                    html.unescape(partido.attrib.get("visitante", "")).strip()
-                ),
+                "local": _canonical_team_name(local_lae),
+                "visitante": _canonical_team_name(visitante_lae),
+                # El nombre tal y como lo escribe el boleto, con su sufijo de
+                # categoria. `_canonical_team_name` se lo quita a proposito
+                # -"ALAVÉS (F)" no esta en ningun diccionario-, pero al tirar el
+                # original se perdia la unica pista de que el partido es
+                # femenino: el boleto escribe "ALAVÉS (F)" y aqui quedaba
+                # "Alavés", que resuelve tan ricamente contra la liga
+                # masculina. De ahi salia el Granada masculino colgado de un
+                # partido de Liga F.
+                "local_lae": local_lae,
+                "visitante_lae": visitante_lae,
                 "percentages": {
                     "1": _safe_float(partido.attrib.get("porc_1")),
                     "X": _safe_float(partido.attrib.get("porc_X")),
@@ -6664,7 +6699,12 @@ def _eduardo_parse_percentages_xml(xml_text: str, source_name: str, source_url: 
 
 def _fetch_eduardo_percentages_source(jornada: int, temporada: int, source: str) -> dict:
     base_url = EDUARDO_API_QUINIELISTA_URL if source == "quinielista" else EDUARDO_API_LAE_URL
-    cache_key = f"eduardo:{source}:{temporada}:{jornada}"
+    # La version va en la clave: el contenido cacheado lo produce el parser, y
+    # al anadirle el nombre con sufijo de categoria las fichas guardadas por el
+    # parser anterior se quedaron sin ese campo. Sin versionar, el codigo nuevo
+    # seguia leyendo fichas viejas y el arreglo no se notaba hasta seis horas
+    # despues -o nunca, porque cada ciclo las vuelve a guardar-.
+    cache_key = f"eduardo:{source}:v2:{temporada}:{jornada}"
     cached = _cache_get(EXTERNAL_FEEDS_CACHE, cache_key, 6 * 3600)
     if cached:
         return cached
@@ -6709,7 +6749,7 @@ def fetch_quiniela_jornada_page(jornada: int, temporada: int | None = None) -> d
             "error": "Temporada no disponible",
         }
 
-    cache_key = f"eduardo:merged:{season_value}:{jornada}"
+    cache_key = f"eduardo:merged:v2:{season_value}:{jornada}"
     cached = _cache_get(EXTERNAL_FEEDS_CACHE, cache_key, 6 * 3600)
     if cached:
         return cached
@@ -6751,6 +6791,13 @@ def fetch_quiniela_jornada_page(jornada: int, temporada: int | None = None) -> d
                 current["local"] = slot.get("local", "")
             if not current.get("visitante"):
                 current["visitante"] = slot.get("visitante", "")
+            # El nombre con el sufijo de categoria tiene que sobrevivir a la
+            # mezcla: es lo unico que dice que el partido es femenino. Manda la
+            # fuente LAE, que es la que sella "(F)".
+            for campo in ("local_lae", "visitante_lae"):
+                valor = str(slot.get(campo) or "").strip()
+                if valor and (source_name == "lae" or not current.get(campo)):
+                    current[campo] = valor
             current.setdefault("percentages", {})[source_name] = slot.get("percentages", {})
 
     ordered_slots = [slots_by_position[position] for position in sorted(slots_by_position)]
@@ -10173,6 +10220,25 @@ def _team_history_with_scope(
     return history
 
 
+def _divisiones_hermanas(league_key: str) -> list[str]:
+    """Las otras divisiones del mismo pais, para buscar cruces antiguos.
+
+    Solo las que tienen historico propio en football-data: son ficheros que ya
+    se descargan y se cachean, asi que esto no gasta cupo de ningun proveedor.
+    Fuera de ahi -una liga que solo conoce TheSportsDB- se devuelve vacio a
+    proposito, porque cada clave nueva serian peticiones al proveedor.
+    """
+    clave = _canonical_league_key(league_key)
+    pais = LEAGUE_COUNTRY_HINTS.get(clave)
+    if not pais or clave not in LEAGUE_FOOTBALL_DATA_CODES:
+        return []
+    return [
+        otra
+        for otra, suyo in LEAGUE_COUNTRY_HINTS.items()
+        if suyo == pais and otra != clave and otra in LEAGUE_FOOTBALL_DATA_CODES
+    ]
+
+
 def _resolve_domestic_histories_and_h2h(
     *,
     home_team: str,
@@ -10252,6 +10318,15 @@ def _resolve_domestic_histories_and_h2h(
         canon = _canonical_league_key(key)
         if canon and canon not in h2h_keys:
             h2h_keys.append(canon)
+    # Dos equipos pueden haberse cruzado en OTRA division del mismo pais. El
+    # Racing y el Alaves se vieron cuatro veces en Segunda -2014, 2015, 2022 y
+    # 2023-, pero este ano los dos estan en Primera, asi que preguntando solo
+    # por las ligas de hoy el H2H salia vacio. Pasa con cualquier recien
+    # ascendido o descendido, que en la quiniela hay siempre.
+    for key in list(h2h_keys):
+        for hermana in _divisiones_hermanas(key):
+            if hermana not in h2h_keys:
+                h2h_keys.append(hermana)
     for key in h2h_keys:
         h2h_rows.extend(fetch_league_history(key, seasons_back=H2H_SEASONS_BACK))
     h2h_rows.extend(fetch_the_sportsdb_h2h_events(home_team, away_team))
@@ -12591,8 +12666,12 @@ def _enrich_quiniela_match(match: dict) -> None:
     match["match_signals"]["match_weather_attention"] = merged_signals.get("weather_count", 0)
 
     league_country_hint = LEAGUE_COUNTRY_HINTS.get(_canonical_league_key(match.get("league", "")))
-    home_team_api = fetch_the_sportsdb_team(match["local"], league_country_hint)
-    away_team_api = fetch_the_sportsdb_team(match["visitante"], league_country_hint)
+    home_team_api = fetch_the_sportsdb_team(
+        _nombre_para_el_proveedor(match, "local"), league_country_hint
+    )
+    away_team_api = fetch_the_sportsdb_team(
+        _nombre_para_el_proveedor(match, "visitante"), league_country_hint
+    )
     inferred_round = max(
         int(((match.get("history_context") or {}).get("home") or {}).get("table", {}).get("played", 0) or 0),
         int(((match.get("history_context") or {}).get("away") or {}).get("table", {}).get("played", 0) or 0),
@@ -13965,7 +14044,16 @@ def _apply_quiniela_slot(match: dict, jornada: int, slot: dict) -> None:
         "pleno15": bool(slot.get("pleno15")),
         "source": "Eduardo Losilla",
         "percentages": slot.get("percentages", {}),
+        "local_lae": str(slot.get("local_lae") or ""),
+        "visitante_lae": str(slot.get("visitante_lae") or ""),
     }
+    # Y en el propio partido, que es donde lo busca `_categoria_del_partido`.
+    # Tiene que estar puesto ANTES de que se resuelva la liga, y lo esta: el
+    # boleto se engancha en build_quiniela_jornadas y la liga se revisa despues,
+    # en _bootstrap_quiniela_placeholder y _enrich_quiniela_match.
+    for campo in ("local_lae", "visitante_lae"):
+        if slot.get(campo) and not str(match.get(campo) or "").strip():
+            match[campo] = str(slot[campo])
     slots = match.setdefault("quiniela_slots", [])
     if not any(
         current.get("jornada") == slot_entry.get("jornada")
@@ -14485,8 +14573,12 @@ def _bootstrap_quiniela_placeholder(
     if categoria:
         match["gender"] = categoria
 
-    home_team_api = fetch_the_sportsdb_team(home_team, league_country_hint)
-    away_team_api = fetch_the_sportsdb_team(away_team, league_country_hint)
+    home_team_api = fetch_the_sportsdb_team(
+        _nombre_para_el_proveedor(match, "local"), league_country_hint
+    )
+    away_team_api = fetch_the_sportsdb_team(
+        _nombre_para_el_proveedor(match, "visitante"), league_country_hint
+    )
 
     if categoria == "female":
         descartes = []
