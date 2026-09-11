@@ -267,3 +267,55 @@ class ElHistoricoViajaEtiquetadoTests(unittest.TestCase):
         self.assertFalse(
             self._el_backend_lo_serviria({"gender": "", "league": "Segunda Division"})
         )
+
+
+class CadaEnfrentamientoDiceDeQueLigaEsTests(unittest.TestCase):
+    """La tarjeta del H2H se pintaba sin competición en TODO lo doméstico.
+
+    Las filas de football-data no traen el nombre de la liga: traen la columna
+    `Div` con el código ("SP1", "SP2"). Al leer solo `League`, `liga` salía
+    vacía y la app -que ya no se inventa etiquetas- ponía su texto de reserva:
+    "H2H histórico", "Quiniela histórica". Visto en el Racing-Alavés.
+    """
+
+    def _filas_segunda(self):
+        return [
+            {"Div": "SP2", "Date": "01/11/2022", "HomeTeam": "Santander",
+             "AwayTeam": "Alaves", "FTHG": 1, "FTAG": 1, "FTR": "D"},
+            {"Div": "SP2", "Date": "21/01/2023", "HomeTeam": "Alaves",
+             "AwayTeam": "Santander", "FTHG": 3, "FTAG": 0, "FTR": "H"},
+        ]
+
+    def test_una_fila_de_football_data_sabe_de_que_liga_es(self):
+        self.assertEqual(w._liga_de_la_fila(self._filas_segunda()[0]), "Segunda Division")
+        self.assertEqual(w._liga_de_la_fila({"Div": "SP1"}), "LaLiga")
+        self.assertEqual(w._liga_de_la_fila({"Div": "E0"}), "English Premier League")
+
+    def test_lo_que_ya_traia_nombre_manda(self):
+        """Las filas del archivo europeo y las de TheSportsDB ya lo traen."""
+        self.assertEqual(
+            w._liga_de_la_fila({"League": "UEFA Champions League", "Div": "SP1"}),
+            "UEFA Champions League",
+        )
+        self.assertEqual(w._liga_de_la_fila({"strLeague": "Liga F"}), "Liga F")
+
+    def test_sin_division_reconocible_no_se_inventa(self):
+        """Si no se sabe, se deja vacía: la app pinta la tarjeta sin
+        competición, que es mejor que ponerle una liga equivocada."""
+        self.assertEqual(w._liga_de_la_fila({}), "")
+        self.assertEqual(w._liga_de_la_fila({"Div": "XX9"}), "")
+
+    def test_ninguna_fila_del_h2h_sale_sin_competicion(self):
+        h2h = w._head_to_head_metrics(
+            w._completed_rows_before_kickoff(self._filas_segunda(), None),
+            "Santander", "Alaves", last_n=30,
+        )
+        recientes = h2h.get("recent_matches") or []
+        self.assertEqual(len(recientes), 2)
+        for fila in recientes:
+            self.assertEqual(fila["liga"], "Segunda Division")
+
+    def test_el_mapa_de_vuelta_cubre_todas_las_ligas(self):
+        for clave, codigo in w.LEAGUE_FOOTBALL_DATA_CODES.items():
+            with self.subTest(clave):
+                self.assertEqual(w.LEAGUE_KEY_POR_CODIGO_FOOTBALL_DATA.get(codigo), clave)

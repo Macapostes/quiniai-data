@@ -420,6 +420,12 @@ def _league_display_name(league_key: object, fallback: object = "") -> str:
         return raw_fallback
     return "Liga no resuelta" if key == "league_unresolved" else (key or "-")
 
+# El camino de vuelta: del codigo que trae cada fila de football-data ("SP2") a
+# la clave de la liga, para poder ponerle nombre a un enfrentamiento.
+LEAGUE_KEY_POR_CODIGO_FOOTBALL_DATA = {
+    codigo: clave for clave, codigo in LEAGUE_FOOTBALL_DATA_CODES.items()
+}
+
 LEAGUE_FOOTBALL_DATA_NEW_CODES = {
     "soccer_norway_eliteserien": "NOR",
     "soccer_sweden_allsvenskan": "SWE",
@@ -10363,6 +10369,26 @@ def _resolve_domestic_histories_and_h2h(
     return home_history, away_history, h2h_history
 
 
+def _liga_de_la_fila(row: dict) -> str:
+    """El nombre de la competicion de un enfrentamiento, para la tarjeta.
+
+    Las filas de football-data no traen el nombre de la liga: traen la columna
+    `Div` con el codigo ("SP1", "SP2", "E0"). Al leer solo `League` salia vacio
+    en TODO el historico domestico, y la app, que ya no se inventa etiquetas,
+    pintaba su texto de reserva -"H2H historico", "Quiniela historica"- en vez
+    de "Segunda Division".
+
+    Se traduce aqui y no al descargar el CSV a proposito: las filas ya
+    cacheadas tampoco lo llevan, y haciendolo al leer valen igual sin esperar a
+    que caduque nada.
+    """
+    nombre = str(row.get("League") or row.get("strLeague") or "").strip()
+    if nombre:
+        return nombre
+    clave = LEAGUE_KEY_POR_CODIGO_FOOTBALL_DATA.get(_row_division_code(row))
+    return _league_display_name(clave) if clave else ""
+
+
 def _h2h_sin_repetidos(meetings: list[dict]) -> list[dict]:
     """El mismo partido contado una vez, venga de donde venga.
 
@@ -10382,8 +10408,8 @@ def _h2h_sin_repetidos(meetings: list[dict]) -> list[dict]:
         if anterior is None:
             unicos[clave] = row
             continue
-        tenia_liga = str(anterior.get("League") or anterior.get("strLeague") or "").strip()
-        trae_liga = str(row.get("League") or row.get("strLeague") or "").strip()
+        tenia_liga = _liga_de_la_fila(anterior)
+        trae_liga = _liga_de_la_fila(row)
         if trae_liga and not tenia_liga:
             unicos[clave] = row
     return list(unicos.values())
@@ -10413,7 +10439,7 @@ def _head_to_head_metrics(rows: list[dict], home_team: str, away_team: str, last
                 "home": row.get("HomeTeam", ""),
                 "away": row.get("AwayTeam", ""),
                 "score": f"{row.get('FTHG', '')}-{row.get('FTAG', '')}",
-                "liga": str(row.get("League") or row.get("strLeague") or "").strip(),
+                "liga": _liga_de_la_fila(row),
             }
         )
     first_dt = _parse_match_date(str(meetings[0].get("Date", "")).strip()) or _row_parsed_date(meetings[0])
