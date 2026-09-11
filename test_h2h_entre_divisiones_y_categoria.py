@@ -319,3 +319,35 @@ class CadaEnfrentamientoDiceDeQueLigaEsTests(unittest.TestCase):
         for clave, codigo in w.LEAGUE_FOOTBALL_DATA_CODES.items():
             with self.subTest(clave):
                 self.assertEqual(w.LEAGUE_KEY_POR_CODIGO_FOOTBALL_DATA.get(codigo), clave)
+
+
+class LasFilasViejasHeredanElNombreDeLaLigaTests(unittest.TestCase):
+    """Unas temporadas de Liga F se guardaron con `League` a null.
+
+    El nombre no está en esas filas -ni siquiera el idLeague- pero sí en las de
+    las temporadas recientes, que son de la misma liga. Copiarlo de ahí evita
+    volver a pedirle al proveedor unas temporadas que ya tenemos, que con la
+    clave pública es tirar el dato a la basura.
+    """
+
+    def test_las_filas_sin_nombre_lo_heredan(self):
+        filas = [
+            {"Date": "2024-11-09", "HomeTeam": "Madrid CFF", "AwayTeam": "Sevilla Women"},
+            {"Date": "2026-08-29", "HomeTeam": "Madrid CFF", "AwayTeam": "Granada Femenino",
+             "League": "Spanish Liga F", "strLeague": "Spanish Liga F"},
+        ]
+        w._completar_nombre_de_liga(filas)
+        self.assertEqual(filas[0]["League"], "Spanish Liga F")
+
+    def test_no_pisa_el_nombre_que_ya_traen(self):
+        filas = [
+            {"League": "UEFA Champions League"},
+            {"League": "Spanish Liga F"},
+        ]
+        w._completar_nombre_de_liga(filas)
+        self.assertEqual(filas[0]["League"], "UEFA Champions League")
+
+    def test_si_ninguna_lo_sabe_no_se_inventa(self):
+        filas = [{"Date": "2024-11-09"}, {"Date": "2025-04-12"}]
+        w._completar_nombre_de_liga(filas)
+        self.assertEqual([f.get("League", "") for f in filas], ["", ""])

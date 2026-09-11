@@ -9181,7 +9181,37 @@ def _fetch_sportsdb_league_history(
                     f"({len(rows)} filas) porque el proveedor no ha respondido"
                 )
         combined_rows.extend(rows)
+    # Las filas guardadas por versiones anteriores de este parser no llevan el
+    # nombre de la competicion -se quedaron con League a null- y en la tarjeta
+    # del H2H eso sale sin liga. El nombre no esta en la fila, pero si en las
+    # de las temporadas recientes, que son de ESTA misma liga: se copia de ahi.
+    # Asi no hay que volver a pedirle al proveedor unas temporadas que ya
+    # tenemos, que con la clave publica es tirar el dato a la basura.
+    _completar_nombre_de_liga(combined_rows)
     return combined_rows
+
+
+def _completar_nombre_de_liga(rows: list[dict]) -> None:
+    """Le pone nombre de competicion a las filas que se quedaron sin el.
+
+    Todas las filas de esta lista son de la MISMA liga, asi que el nombre que
+    traiga cualquiera vale para las demas. Sin esto, unas cuantas temporadas de
+    Liga F guardadas por una version anterior del parser -con League a null-
+    salian en la tarjeta del H2H sin competicion.
+    """
+    nombre = next(
+        (
+            str(row.get("League") or row.get("strLeague") or "").strip()
+            for row in rows
+            if str(row.get("League") or row.get("strLeague") or "").strip()
+        ),
+        "",
+    )
+    if not nombre:
+        return
+    for row in rows:
+        if not str(row.get("League") or row.get("strLeague") or "").strip():
+            row["League"] = nombre
 
 def _row_division_code(row: dict) -> str:
     """Codigo de division de una fila de football-data.
