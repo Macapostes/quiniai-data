@@ -18,6 +18,7 @@
    proveedor escribe "W." y eso si es una marca que el worker reconoce.
 """
 
+import re
 import unittest
 
 import snapshot_worker as w
@@ -213,3 +214,56 @@ class LaCacheNoSirveFichasViejasTests(unittest.TestCase):
         }
         leido = w._cache_get(w.EXTERNAL_FEEDS_CACHE, f"eduardo:merged:v2:{ctx_temp}:99", 6 * 3600)
         self.assertIsNone(leido, "la clave nueva no puede leer lo guardado por la vieja")
+
+
+class ElHistoricoViajaEtiquetadoTests(unittest.TestCase):
+    """No basta con resolver bien la Liga F: hay que decir que lo es.
+
+    El backend se niega a servir un historico femenino que no venga marcado
+    como tal -y hace bien, es lo que impide colar la tabla del primer equipo en
+    un cruce de Liga F-, pero busca la marca DENTRO de history_context. El
+    worker la ponia solo en el partido, asi que resolvia bien la Liga F y el
+    dato se tiraba igual al llegar: el usuario seguia viendo la pestaña vacia.
+
+    Esta es la copia del criterio del backend (_history_matches_match_scope en
+    main.py). Si alli cambia, esto deja de proteger y hay que actualizarlo.
+    """
+
+    MARCA_FEMENINA = re.compile(
+        r"\b(femenin[oa]?|women'?s?|female|liga\s*f|wsl|frauen)\b", re.IGNORECASE
+    )
+
+    def _el_backend_lo_serviria(self, history: dict) -> bool:
+        texto = " ".join(
+            str(history.get(k) or "")
+            for k in ("gender", "category", "competition", "league", "source")
+        )
+        return bool(self.MARCA_FEMENINA.search(re.sub(r"[_/-]+", " ", texto)))
+
+    def test_las_dos_ramas_arman_history_context_con_la_marca(self):
+        import inspect
+
+        fuente = inspect.getsource(w)
+        armados = fuente.count('"head_to_head": h2h_history,')
+        con_gender = fuente.count('"gender": _categoria')
+        self.assertEqual(
+            armados,
+            con_gender,
+            "cada sitio que arma history_context tiene que etiquetar la categoria",
+        )
+
+    def test_un_historico_femenino_etiquetado_si_pasa(self):
+        self.assertTrue(
+            self._el_backend_lo_serviria({"gender": "female", "league": "Spanish Liga F"})
+        )
+        self.assertTrue(self._el_backend_lo_serviria({"gender": "female", "league": ""}))
+
+    def test_sin_marca_no_pasa(self):
+        """El fallo tal cual estaba."""
+        self.assertFalse(self._el_backend_lo_serviria({"supported": True, "home": {}, "away": {}}))
+
+    def test_un_masculino_colado_sigue_sin_pasar(self):
+        """Lo que NO se puede romper al arreglar lo anterior."""
+        self.assertFalse(
+            self._el_backend_lo_serviria({"gender": "", "league": "Segunda Division"})
+        )

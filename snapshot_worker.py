@@ -14860,6 +14860,14 @@ def _bootstrap_quiniela_placeholder(
     match["history_context"] = {
         "supported": bool(league_history),
         "updated_at": _now_iso(),
+        # La categoria y la liga viajan DENTRO del historico, no solo en el
+        # partido. El backend se niega a servir un historico femenino que no
+        # venga marcado como tal -y hace bien: es lo que impide colar la tabla
+        # del primer equipo en un cruce de Liga F-, pero lo busca aqui. Sin
+        # esto, el worker resolvia bien la Liga F y el dato se tiraba igual al
+        # llegar, asi que el usuario seguia viendo la pestaña vacia.
+        "gender": _categoria_del_partido(match) or "",
+        "league": match.get("league_name") or match.get("league") or "",
         "table_quality": _table_quality_snapshot(
             current_table_snapshot,
             home_resolved_name,
@@ -15308,6 +15316,12 @@ def build_snapshot(raw_matches: list) -> dict:
                 "history_context": {
                     "supported": bool(league_history),
                     "updated_at": _now_iso(),
+                    # Ver el comentario del otro sitio donde se arma esto: el
+                    # backend busca la marca de categoria DENTRO del historico.
+                    "gender": _categoria_por_nombre(home_team)
+                    or _categoria_por_nombre(away_team)
+                    or "",
+                    "league": _league_display_name(league) or league or "",
                     "table_quality": _table_quality_snapshot(
                         current_table_snapshot,
                         home_resolved_name,
