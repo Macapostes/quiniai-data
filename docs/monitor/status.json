@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-20T18:12:27.577397+00:00",
-  "snapshot_generated_at": "2026-09-20T18:12:22.863239+00:00",
+  "generated_at": "2026-09-20T22:04:08.240118+00:00",
+  "snapshot_generated_at": "2026-09-20T22:04:02.734519+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -18,9 +18,9 @@
     "sources_ok": 24,
     "fresh_headlines": 26,
     "structured_focus_matches": 60,
-    "structured_referees": 21,
+    "structured_referees": 20,
     "focus_valid_tables": 8,
-    "focus_rosters_checked": 12,
+    "focus_rosters_checked": 13,
     "focus_rosters_checked_partial": 2,
     "focus_referees_confirmed": 0,
     "focus_season_transition_covered": 15,
@@ -28,10 +28,10 @@
     "focus_resolved_leagues": 15
   },
   "structured_db_summary": {
-    "teams": 149,
-    "matches": 138,
-    "referees": 21,
-    "last_pruned_at": "2026-09-20T18:12:22.843933+00:00"
+    "teams": 148,
+    "matches": 136,
+    "referees": 20,
+    "last_pruned_at": "2026-09-20T22:04:02.714224+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -39,24 +39,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-09-19T19:43:33.083256+00:00",
-      "finished_at": "2026-09-19T20:02:10.809545+00:00",
-      "ok": true,
-      "duration_seconds": 1117.73,
-      "monitored_matches": 156,
-      "tracked_matches": 60,
-      "current_jornada": 8
-    },
-    {
-      "started_at": "2026-09-19T21:43:33.640741+00:00",
-      "finished_at": "2026-09-19T22:01:56.028140+00:00",
-      "ok": true,
-      "duration_seconds": 1102.39,
-      "monitored_matches": 156,
-      "tracked_matches": 60,
-      "current_jornada": 8
-    },
     {
       "started_at": "2026-09-19T23:43:35.046334+00:00",
       "finished_at": "2026-09-20T00:05:23.419673+00:00",
@@ -143,6 +125,24 @@
       "finished_at": "2026-09-20T18:12:27.576475+00:00",
       "ok": true,
       "duration_seconds": 1725.76,
+      "monitored_matches": 143,
+      "tracked_matches": 60,
+      "current_jornada": 9
+    },
+    {
+      "started_at": "2026-09-20T19:43:42.457727+00:00",
+      "finished_at": "2026-09-20T20:08:27.315102+00:00",
+      "ok": true,
+      "duration_seconds": 1484.86,
+      "monitored_matches": 143,
+      "tracked_matches": 60,
+      "current_jornada": 9
+    },
+    {
+      "started_at": "2026-09-20T21:43:43.116483+00:00",
+      "finished_at": "2026-09-20T22:04:08.239249+00:00",
+      "ok": true,
+      "duration_seconds": 1225.12,
       "monitored_matches": 143,
       "tracked_matches": 60,
       "current_jornada": 9
@@ -818,9 +818,9 @@
           },
           "travel_km": 732.8,
           "weather": {
-            "temperature_c": 24.2,
+            "temperature_c": 23.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 12.3
+            "wind_speed_kmh": 14.8
           },
           "referee": {
             "name": "no confirmado",
@@ -857,7 +857,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-20T18:00:15.417550+00:00",
+          "context_updated_at": "2026-09-20T21:57:22.596480+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 78,
@@ -1563,7 +1563,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-20T18:00:17.471926+00:00",
+          "context_updated_at": "2026-09-20T21:57:31.512107+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -2275,21 +2275,21 @@
               "team": "Celta Fortuna",
               "items": [],
               "count": 0,
-              "verification_status": "not_verified",
-              "source_items_checked": 3
+              "verification_status": "sources_checked_no_confirmed_absence",
+              "source_items_checked": 4
             },
             "away": {
               "team": "Sabadell FC",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-20T18:00:25.965344+00:00",
+          "context_updated_at": "2026-09-20T21:57:45.234096+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 70,
+            "score": 73,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -2303,19 +2303,18 @@
               "porcentajes de quiniela",
               "calendario próximo",
               "H2H",
-              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "partial_verification",
+              "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 5,
+              "availability_items": 6,
               "official_items": 0,
-              "match_items": 0,
+              "match_items": 1,
               "team_items": 36,
               "season_transition_items": 28,
-              "verified_teams": 1,
-              "home_roster_status": "not_verified",
+              "verified_teams": 2,
+              "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "sources_checked_no_confirmed_absence",
               "referee_confirmed": false
             }
@@ -3007,9 +3006,9 @@
           },
           "travel_km": 1333.1,
           "weather": {
-            "temperature_c": 17.6,
+            "temperature_c": 14.4,
             "precipitation_probability": 44,
-            "wind_speed_kmh": 3.6
+            "wind_speed_kmh": 4.7
           },
           "referee": {
             "name": "no confirmado",
@@ -3035,8 +3034,8 @@
               "team": "Tenerife",
               "items": [],
               "count": 0,
-              "verification_status": "not_verified",
-              "source_items_checked": 3
+              "verification_status": "sources_checked_no_confirmed_absence",
+              "source_items_checked": 4
             },
             "away": {
               "team": "Cádiz CF",
@@ -3046,10 +3045,10 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-20T18:00:37.288395+00:00",
+          "context_updated_at": "2026-09-20T21:57:57.516054+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 84,
+            "score": 85,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -3061,19 +3060,19 @@
             ],
             "faltan": [
               "porcentajes de quiniela",
-              "bajas/convocatorias verificadas",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "not_verified",
+              "roster_status": "partial_verification",
               "injury_items": 0,
               "availability_items": 1,
-              "official_items": 2,
+              "official_items": 3,
               "match_items": 0,
               "team_items": 29,
               "season_transition_items": 28,
-              "verified_teams": 0,
-              "home_roster_status": "not_verified",
+              "verified_teams": 1,
+              "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "not_verified",
               "referee_confirmed": false
             }
@@ -3806,7 +3805,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-20T18:00:39.248912+00:00",
+          "context_updated_at": "2026-09-20T21:58:14.385019+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -4490,7 +4489,7 @@
               "source_items_checked": 8
             }
           },
-          "context_updated_at": "2026-09-20T18:07:54.356724+00:00",
+          "context_updated_at": "2026-09-20T22:02:23.603861+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -5190,9 +5189,9 @@
           },
           "travel_km": 495.1,
           "weather": {
-            "temperature_c": 20.2,
+            "temperature_c": 20.8,
             "precipitation_probability": 2,
-            "wind_speed_kmh": 5.1
+            "wind_speed_kmh": 7.7
           },
           "referee": {
             "name": "no confirmado",
@@ -5219,17 +5218,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 20
+              "source_items_checked": 21
             },
             "away": {
               "team": "ELDENSE",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 16
+              "source_items_checked": 20
             }
           },
-          "context_updated_at": "2026-09-20T18:08:14.041890+00:00",
+          "context_updated_at": "2026-09-20T22:02:26.071743+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -5251,7 +5250,7 @@
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
               "availability_items": 7,
-              "official_items": 3,
+              "official_items": 8,
               "match_items": 1,
               "team_items": 56,
               "season_transition_items": 28,
@@ -5877,9 +5876,9 @@
           },
           "travel_km": 2038.0,
           "weather": {
-            "temperature_c": 18.3,
+            "temperature_c": 18.1,
             "precipitation_probability": 8,
-            "wind_speed_kmh": 2.4
+            "wind_speed_kmh": 0.6
           },
           "referee": {
             "name": "no confirmado",
@@ -5916,7 +5915,7 @@
               "source_items_checked": 12
             }
           },
-          "context_updated_at": "2026-09-20T18:08:37.058189+00:00",
+          "context_updated_at": "2026-09-20T22:02:30.402173+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -6591,9 +6590,9 @@
           },
           "travel_km": 447.9,
           "weather": {
-            "temperature_c": 15.6,
+            "temperature_c": 16.7,
             "precipitation_probability": 18,
-            "wind_speed_kmh": 1.9
+            "wind_speed_kmh": 2.3
           },
           "referee": {
             "name": "no confirmado",
@@ -6630,7 +6629,7 @@
               "source_items_checked": 12
             }
           },
-          "context_updated_at": "2026-09-20T18:09:07.798341+00:00",
+          "context_updated_at": "2026-09-20T22:02:42.687686+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -7250,9 +7249,9 @@
           },
           "travel_km": 314.6,
           "weather": {
-            "temperature_c": 31.6,
+            "temperature_c": 31.8,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 4.3
+            "wind_speed_kmh": 5.1
           },
           "referee": {
             "name": "no confirmado",
@@ -7289,7 +7288,7 @@
               "source_items_checked": 20
             }
           },
-          "context_updated_at": "2026-09-20T18:09:55.549492+00:00",
+          "context_updated_at": "2026-09-20T22:02:44.916935+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -7878,9 +7877,9 @@
           },
           "travel_km": 309.4,
           "weather": {
-            "temperature_c": 17.8,
-            "precipitation_probability": 10,
-            "wind_speed_kmh": 2.8
+            "temperature_c": 18.7,
+            "precipitation_probability": 14,
+            "wind_speed_kmh": 5.6
           },
           "referee": {
             "name": "no confirmado",
@@ -7901,7 +7900,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 7
+              "source_items_checked": 8
             },
             "away": {
               "team": "Atlético Madrid",
@@ -7911,7 +7910,7 @@
               "source_items_checked": 21
             }
           },
-          "context_updated_at": "2026-09-20T18:10:02.816761+00:00",
+          "context_updated_at": "2026-09-20T22:02:53.404483+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -7932,10 +7931,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 17,
+              "availability_items": 16,
               "official_items": 8,
               "match_items": 3,
-              "team_items": 33,
+              "team_items": 34,
               "season_transition_items": 21,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -8595,9 +8594,9 @@
           },
           "travel_km": 1907.7,
           "weather": {
-            "temperature_c": 23.3,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 1.3
+            "temperature_c": 22.4,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 3.4
           },
           "referee": {
             "name": "no confirmado",
@@ -8634,7 +8633,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-20T18:10:17.496124+00:00",
+          "context_updated_at": "2026-09-20T22:02:56.852555+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 58,
@@ -9283,9 +9282,9 @@
           },
           "travel_km": 709.9,
           "weather": {
-            "temperature_c": 25.4,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 7.7
+            "temperature_c": 30.4,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 4.7
           },
           "referee": {
             "name": "no confirmado",
@@ -9322,7 +9321,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-20T18:10:31.071295+00:00",
+          "context_updated_at": "2026-09-20T22:03:23.792272+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -9986,7 +9985,7 @@
           "weather": {
             "temperature_c": 7.6,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 1.1
+            "wind_speed_kmh": 1.5
           },
           "referee": {
             "name": "no confirmado",
@@ -10023,7 +10022,7 @@
               "source_items_checked": 18
             }
           },
-          "context_updated_at": "2026-09-20T18:11:19.252781+00:00",
+          "context_updated_at": "2026-09-20T22:03:27.989109+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 58,
@@ -10305,37 +10304,37 @@
                 "signings": [],
                 "transfer_reports": [
                   {
-                    "title": "Barcelona confirms signing of Spain captain Rodri from Manchester City - lanacion.com.ar",
+                    "title": "Barcelona confirms signing of Spain captain Rodri from Manchester City - La Nación",
                     "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQOWgzTmNnYzQyM3NONzd0OWVsdlpKX1JTNnZNQ2V3aGpub0ZlX3h2WEJjeUhQOUVCLUhFaWdLSE11RS1fM1J6bloxS2pGVVFiQnpRaGJ4U05IcWpaUWI3aXJWYUEtX1FOQ3k2SU9zMnJoLVRzMFA1T3pqck43d0hIcTFDR3BnQ2x3ZlNvc19IWlJVU2VhQXZYTjRCaEJwbGNSQk5OcTdpN2UxTEpOMUd0cjFoRE9Tdw?oc=5",
                     "published_at": "Tue, 18 Aug 2026 07:00:00 GMT",
-                    "source": "lanacion.com.ar",
+                    "source": "La Nación",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Rodri set to arrive as Barcelona finalize transfer of Spain captain from Man City - lanacion.com.ar",
+                    "title": "Rodri set to arrive as Barcelona finalize transfer of Spain captain from Man City - La Nación",
                     "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPcXkyaGxYcHMyQnVNZFo0WjhIZHdHMWhPWU95ZjFHQmRCalJvMUdXZkxqdEdocUNzUzdTc29mb1ppNHdha1pVU3pWa1RodjZHYTFEVTJod0VoYzlXcWR4RGFYS05BdE5peHVsSS02VzV1azZTN2xzZUJULVl5QS1hOTI2aXduajFHaDVyUTZVU3NEcFQybHlHTk1uV05mZ2VZb2ZGcDZ5SWdsTk5EMTNBb2d2WmNrbEJSSE9GcFJJVHY4SlEx?oc=5",
                     "published_at": "Mon, 17 Aug 2026 07:00:00 GMT",
-                    "source": "lanacion.com.ar",
+                    "source": "La Nación",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Barcelona shock PSG with MASSIVE Ferran Torres price tag as Spain World Cup hero demands summer transfer - sports.yahoo.com",
+                    "title": "Barcelona shock PSG with MASSIVE Ferran Torres price tag as Spain World Cup hero demands summer transfer - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPc1VrVVVPcDgycThkLW1SWWVick03cFdoNzJfOGVub3hTaUFFcFZYVFZROW9KdnZGZWZPZG95akZrT2RaZnpBYlFOR1BwZ3J5eFBmdU5rVUR3Z0podzM0bHJELVlIUjJ2dWY4ejVIcy14OW4xVUxIMEt6Rjh0bVh0eGszaG5jNk1PdktN?oc=5",
                     "published_at": "Mon, 10 Aug 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Julian Alvarez Faces Transfer Setback Ahead of Argentina's World Cup Match vs. Spain - sports.yahoo.com",
+                    "title": "Julian Alvarez Faces Transfer Setback Ahead of Argentina's World Cup Match vs. Spain - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQYmx3TXZvcFpfS2JuY3l0Y3dyMnVVRzktd2pOdE9XZDA3OUFDM0kxMWJrN05jYTRYQWMtek1uTUdqTmZmaXVkRHBQRlFTMVVxbzNnVTE2SFVOQU9oMGlLTmgwZUlGNzdFeHZBbThtS3ZXM29OaFc4czVBaFpUWGZLbHBOa1R1TFVXODB6Q1Vobw?oc=5",
                     "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -10345,8 +10344,8 @@
                 "departure_reports": [
                   {
                     "title": "Águilas da la salida a la Race Across Spain - Murcia.com",
-                    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNdXJUTHJoQmswbXFVOHFVNkQzYjZoRmRYbS00dGRNOUFNQ0FIRXVqRjBUNEYxZzg5OHBXemM3N3lOd0ZpVllPLTE4MVFrX21OaDExMXRtQnVCWVhGUjdqb3p0SDQwNG50czlRVGhwV0lyNW5sS0M3ejdRWEN6a2tOV2R0VlF5YXR5TW1wWGZxa3dHQTQ1OXJPeHdZNGpiMEXSAZ8BQVVfeXFMTUU1eDlkdVZsRjE5LUJGaG1XWXE2RE91S2FVaTN2b1BEYnQxUHBJV01ucDJqWjhLc0lnQ3pXVmVyZ2h0d2o5X29BNE54WnJIdFBzTVM0TUJKWnVOS0pBNHVsNmNpN3h0Yl9qeVBWNHVZdEI5dlRSd0FCV1NTR0JMaUhBcUtuWmJFU2J2TGI0QXZsSGVCZkFCd2h2VTNsdjdN?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 12:03:39 GMT",
+                    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNRTV4OWR1VmxGMTktQkZobVdZcTZET3VLYVVpM3ZvUERidDFQcElXTW5wMmpaOEtzSWdDeldWZXJnaHR3ajlfb0E0Tnhackh0UHNNUzRNQkpadU5LSkE0dWw2Y2k3eHRiX2p5UFY0dVl0Qjl2VFJ3QUJXU1NHQkxpSEFxS25aYkVTYnZMYjRBdmxIZUJmQUJ3aHZVM2x2N03SAZ8BQVVfeXFMTUU1eDlkdVZsRjE5LUJGaG1XWXE2RE91S2FVaTN2b1BEYnQxUHBJV01ucDJqWjhLc0lnQ3pXVmVyZ2h0d2o5X29BNE54WnJIdFBzTVM0TUJKWnVOS0pBNHVsNmNpN3h0Yl9qeVBWNHVZdEI5dlRSd0FCV1NTR0JMaUhBcUtuWmJFU2J2TGI0QXZsSGVCZkFCd2h2VTNsdjdN?oc=5",
+                    "published_at": "Fri, 18 Sep 2026 12:02:54 GMT",
                     "source": "Murcia.com",
                     "category": "departure",
                     "fact_status": "reported",
@@ -10371,19 +10370,19 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Digi Spain cede un 8,04% en su salida a Bolsa y reduce su valor a 1.528,5 millones - El Conciso",
-                    "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQclQ4NjJQcDF6eHQ3S0hUaDF0WWNjOW9uanRfSDhnWkQxdTNkdGpYQk1EMjF1bDM3MzNMODRqc2tzUW1WSGVjZDlYZGpSVE5RcGNVcGlOMTF5c0tzVjRtRFZFa1RodHdQcEVJXzh4alp2Z1pNeW91STEySjVkdGMyQWVR0gGHAUFVX3lxTE9VX21HR1Q3UWs3cjg3Z3QzVWZ6OWZJeE4yeFlOZ2VReW5PWHFHNDMxSERJZVJJaXNSVU13ZGNPdFFYMU9UVkxnSjdTSVBZRW94U3BWTHEyRklQb0Q4Tkd5QzIyaU9NRnhCZThhN0FtVS1qU0ZFaUprMkVVUDNIUnRVaHpaT0ZsTQ?oc=5",
+                    "title": "Un accionista de Digi Spain Telecom vende acciones adicionales en su salida a bolsa. - Yahoo",
+                    "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOal9NUEJ2UVd6ZDhrQWt5M09LU0JWWkNrbS0wYlA1OHJrUUJiWEE3aENpOTNrdTVMd21zeU14ci15aC1FUVJsaE5oanBZWWNCMGRSeDZXUUFhUFpVUmo1M1Q4d3pJWDd4UGkyRTRURFY4amlmTmJTbGE1UHQteW9BOENSOHZBTjVUZ0JkcEV5M2p4UQ?oc=5",
                     "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
-                    "source": "El Conciso",
+                    "source": "Yahoo",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Digi Spain Telecom fija el precio de su salida a bolsa en 5,60 euros por acción - DPL News",
-                    "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPM3BnUXVtVTNBOFlMaWxSWkVpMGR6VUd1a0ZFQ0lwMk1jQl8xbTdlZFRxNF91QkhUeVUxdy1lWXFUUm13OE92TzYxd3BwSVBIM0lRdjEySzdkRDdqT2pkRmJ4VklIQlVBcUxnYjR0d05hTnpZT19YM3hjNEtUMlZDN0hQYWh6NElGVzdTcmV5TjJrWXV5SXlBd2t4Yl9Da2RQ?oc=5",
-                    "published_at": "Wed, 15 Jul 2026 07:00:00 GMT",
-                    "source": "DPL News",
+                    "title": "Digi Spain cede un 8,04% en su salida a Bolsa y reduce su valor a 1.528,5 millones - El Conciso",
+                    "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQclQ4NjJQcDF6eHQ3S0hUaDF0WWNjOW9uanRfSDhnWkQxdTNkdGpYQk1EMjF1bDM3MzNMODRqc2tzUW1WSGVjZDlYZGpSVE5RcGNVcGlOMTF5c0tzVjRtRFZFa1RodHdQcEVJXzh4alp2Z1pNeW91STEySjVkdGMyQWVR0gGHAUFVX3lxTE9VX21HR1Q3UWs3cjg3Z3QzVWZ6OWZJeE4yeFlOZ2VReW5PWHFHNDMxSERJZVJJaXNSVU13ZGNPdFFYMU9UVkxnSjdTSVBZRW94U3BWTHEyRklQb0Q4Tkd5QzIyaU9NRnhCZThhN0FtVS1qU0ZFaUprMkVVUDNIUnRVaHpaT0ZsTQ?oc=5",
+                    "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
+                    "source": "El Conciso",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -10398,27 +10397,27 @@
                 "all_evidence": [
                   {
                     "title": "Águilas da la salida a la Race Across Spain - Murcia.com",
-                    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNdXJUTHJoQmswbXFVOHFVNkQzYjZoRmRYbS00dGRNOUFNQ0FIRXVqRjBUNEYxZzg5OHBXemM3N3lOd0ZpVllPLTE4MVFrX21OaDExMXRtQnVCWVhGUjdqb3p0SDQwNG50czlRVGhwV0lyNW5sS0M3ejdRWEN6a2tOV2R0VlF5YXR5TW1wWGZxa3dHQTQ1OXJPeHdZNGpiMEXSAZ8BQVVfeXFMTUU1eDlkdVZsRjE5LUJGaG1XWXE2RE91S2FVaTN2b1BEYnQxUHBJV01ucDJqWjhLc0lnQ3pXVmVyZ2h0d2o5X29BNE54WnJIdFBzTVM0TUJKWnVOS0pBNHVsNmNpN3h0Yl9qeVBWNHVZdEI5dlRSd0FCV1NTR0JMaUhBcUtuWmJFU2J2TGI0QXZsSGVCZkFCd2h2VTNsdjdN?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 12:03:39 GMT",
+                    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNRTV4OWR1VmxGMTktQkZobVdZcTZET3VLYVVpM3ZvUERidDFQcElXTW5wMmpaOEtzSWdDeldWZXJnaHR3ajlfb0E0Tnhackh0UHNNUzRNQkpadU5LSkE0dWw2Y2k3eHRiX2p5UFY0dVl0Qjl2VFJ3QUJXU1NHQkxpSEFxS25aYkVTYnZMYjRBdmxIZUJmQUJ3aHZVM2x2N03SAZ8BQVVfeXFMTUU1eDlkdVZsRjE5LUJGaG1XWXE2RE91S2FVaTN2b1BEYnQxUHBJV01ucDJqWjhLc0lnQ3pXVmVyZ2h0d2o5X29BNE54WnJIdFBzTVM0TUJKWnVOS0pBNHVsNmNpN3h0Yl9qeVBWNHVZdEI5dlRSd0FCV1NTR0JMaUhBcUtuWmJFU2J2TGI0QXZsSGVCZkFCd2h2VTNsdjdN?oc=5",
+                    "published_at": "Fri, 18 Sep 2026 12:02:54 GMT",
                     "source": "Murcia.com",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Barcelona confirms signing of Spain captain Rodri from Manchester City - lanacion.com.ar",
+                    "title": "Barcelona confirms signing of Spain captain Rodri from Manchester City - La Nación",
                     "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQOWgzTmNnYzQyM3NONzd0OWVsdlpKX1JTNnZNQ2V3aGpub0ZlX3h2WEJjeUhQOUVCLUhFaWdLSE11RS1fM1J6bloxS2pGVVFiQnpRaGJ4U05IcWpaUWI3aXJWYUEtX1FOQ3k2SU9zMnJoLVRzMFA1T3pqck43d0hIcTFDR3BnQ2x3ZlNvc19IWlJVU2VhQXZYTjRCaEJwbGNSQk5OcTdpN2UxTEpOMUd0cjFoRE9Tdw?oc=5",
                     "published_at": "Tue, 18 Aug 2026 07:00:00 GMT",
-                    "source": "lanacion.com.ar",
+                    "source": "La Nación",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Rodri set to arrive as Barcelona finalize transfer of Spain captain from Man City - lanacion.com.ar",
+                    "title": "Rodri set to arrive as Barcelona finalize transfer of Spain captain from Man City - La Nación",
                     "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPcXkyaGxYcHMyQnVNZFo0WjhIZHdHMWhPWU95ZjFHQmRCalJvMUdXZkxqdEdocUNzUzdTc29mb1ppNHdha1pVU3pWa1RodjZHYTFEVTJod0VoYzlXcWR4RGFYS05BdE5peHVsSS02VzV1azZTN2xzZUJULVl5QS1hOTI2aXduajFHaDVyUTZVU3NEcFQybHlHTk1uV05mZ2VZb2ZGcDZ5SWdsTk5EMTNBb2d2WmNrbEJSSE9GcFJJVHY4SlEx?oc=5",
                     "published_at": "Mon, 17 Aug 2026 07:00:00 GMT",
-                    "source": "lanacion.com.ar",
+                    "source": "La Nación",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -10433,10 +10432,10 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Barcelona shock PSG with MASSIVE Ferran Torres price tag as Spain World Cup hero demands summer transfer - sports.yahoo.com",
+                    "title": "Barcelona shock PSG with MASSIVE Ferran Torres price tag as Spain World Cup hero demands summer transfer - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPc1VrVVVPcDgycThkLW1SWWVick03cFdoNzJfOGVub3hTaUFFcFZYVFZROW9KdnZGZWZPZG95akZrT2RaZnpBYlFOR1BwZ3J5eFBmdU5rVUR3Z0podzM0bHJELVlIUjJ2dWY4ejVIcy14OW4xVUxIMEt6Rjh0bVh0eGszaG5jNk1PdktN?oc=5",
                     "published_at": "Mon, 10 Aug 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -10451,6 +10450,15 @@
                     "evidence_quality": "medium"
                   },
                   {
+                    "title": "Un accionista de Digi Spain Telecom vende acciones adicionales en su salida a bolsa. - Yahoo",
+                    "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOal9NUEJ2UVd6ZDhrQWt5M09LU0JWWkNrbS0wYlA1OHJrUUJiWEE3aENpOTNrdTVMd21zeU14ci15aC1FUVJsaE5oanBZWWNCMGRSeDZXUUFhUFpVUmo1M1Q4d3pJWDd4UGkyRTRURFY4amlmTmJTbGE1UHQteW9BOENSOHZBTjVUZ0JkcEV5M2p4UQ?oc=5",
+                    "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
+                    "source": "Yahoo",
+                    "category": "departure",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
                     "title": "Digi Spain cede un 8,04% en su salida a Bolsa y reduce su valor a 1.528,5 millones - El Conciso",
                     "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQclQ4NjJQcDF6eHQ3S0hUaDF0WWNjOW9uanRfSDhnWkQxdTNkdGpYQk1EMjF1bDM3MzNMODRqc2tzUW1WSGVjZDlYZGpSVE5RcGNVcGlOMTF5c0tzVjRtRFZFa1RodHdQcEVJXzh4alp2Z1pNeW91STEySjVkdGMyQWVR0gGHAUFVX3lxTE9VX21HR1Q3UWs3cjg3Z3QzVWZ6OWZJeE4yeFlOZ2VReW5PWHFHNDMxSERJZVJJaXNSVU13ZGNPdFFYMU9UVkxnSjdTSVBZRW94U3BWTHEyRklQb0Q4Tkd5QzIyaU9NRnhCZThhN0FtVS1qU0ZFaUprMkVVUDNIUnRVaHpaT0ZsTQ?oc=5",
                     "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
@@ -10460,10 +10468,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Julian Alvarez Faces Transfer Setback Ahead of Argentina's World Cup Match vs. Spain - sports.yahoo.com",
+                    "title": "Julian Alvarez Faces Transfer Setback Ahead of Argentina's World Cup Match vs. Spain - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQYmx3TXZvcFpfS2JuY3l0Y3dyMnVVRzktd2pOdE9XZDA3OUFDM0kxMWJrN05jYTRYQWMtek1uTUdqTmZmaXVkRHBQRlFTMVVxbzNnVTE2SFVOQU9oMGlLTmgwZUlGNzdFeHZBbThtS3ZXM29OaFc4czVBaFpUWGZLbHBOa1R1TFVXODB6Q1Vobw?oc=5",
                     "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -10491,15 +10499,6 @@
                     "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQcmRNWElFOEZkTHdUU1JsREVidlVNb1d4eDBwOGcyUkszUE5DUlhBRWFWV19ER1E1OHhDaDQ1Vl9SVFlsOGxNN3ExVHExdlRTQjNLdzdQYzhHeDZCWGd4aWtXZDNfLUtWZlRucGwtRHYxTVoyWTJiYm5qMG13WUM2ZmRvOENwVGQzbGhSWWxqV2RzUDd1c2MweUtFLUdZRFNRb21FUHpDM2xVc1V1REtDNXhjd1FxRWNDQW9QVmt6YlBKSks3bnhTVA?oc=5",
                     "published_at": "Tue, 14 Jul 2026 07:00:00 GMT",
                     "source": "Data Center Dynamics",
-                    "category": "departure",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "La CNMV aprueba el folleto de salida a bolsa de Digi Spain - TradingView",
-                    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBWX1k4REtIS2R2NDk4TjNSZVd5QkxBY1BpekZkaDZQd0ZrU2hKUHhTWUNfSUQ4RFpwd0c3TFFqUTNDYzgxMW5ocmVXQWp6Q1pyMWxqTG9WZHd2bG55NVp0TW8wbWpkRG1sNVFFSVpuS3N4bjF2M2Jv?oc=5",
-                    "published_at": "Thu, 09 Jul 2026 07:00:00 GMT",
-                    "source": "TradingView",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -10536,9 +10535,9 @@
           },
           "travel_km": 1263.4,
           "weather": {
-            "temperature_c": 19.5,
+            "temperature_c": 18.6,
             "precipitation_probability": 4,
-            "wind_speed_kmh": 6.1
+            "wind_speed_kmh": 5.4
           },
           "referee": {
             "name": "no confirmado",
@@ -10579,7 +10578,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-20T18:00:50.806238+00:00",
+          "context_updated_at": "2026-09-20T21:58:22.827887+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 86,
@@ -10600,7 +10599,7 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 1,
-              "availability_items": 10,
+              "availability_items": 8,
               "official_items": 8,
               "match_items": 0,
               "team_items": 20,
@@ -10692,7 +10691,7 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -11046,9 +11045,9 @@
           },
           "travel_km": 17033.1,
           "weather": {
-            "temperature_c": 22.6,
+            "temperature_c": 22.1,
             "precipitation_probability": 59,
-            "wind_speed_kmh": 3.1
+            "wind_speed_kmh": 3.2
           },
           "referee": {
             "name": "no confirmado",
@@ -11076,10 +11075,10 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 1
+              "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-20T18:04:37.481786+00:00",
+          "context_updated_at": "2026-09-20T22:00:58.451789+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 44,
@@ -11106,7 +11105,7 @@
               "availability_items": 5,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 18,
+              "team_items": 17,
               "season_transition_items": 17,
               "verified_teams": 0,
               "home_roster_status": "not_verified",
@@ -11396,7 +11395,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-20T18:04:43.385805+00:00",
+          "context_updated_at": "2026-09-20T22:01:04.473267+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 37,
@@ -11721,9 +11720,9 @@
           },
           "travel_km": 8303.1,
           "weather": {
-            "temperature_c": 28.5,
+            "temperature_c": 28.2,
             "precipitation_probability": 4,
-            "wind_speed_kmh": 20.7
+            "wind_speed_kmh": 18.0
           },
           "referee": {
             "name": "no confirmado",
@@ -11754,7 +11753,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-20T18:04:49.821294+00:00",
+          "context_updated_at": "2026-09-20T22:01:11.562312+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -11778,7 +11777,7 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 5,
+              "availability_items": 3,
               "official_items": 4,
               "match_items": 0,
               "team_items": 6,
@@ -12002,7 +12001,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-20T18:05:00.688499+00:00",
+          "context_updated_at": "2026-09-20T22:01:23.693207+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 27,
@@ -12361,9 +12360,9 @@
           },
           "travel_km": 1863.9,
           "weather": {
-            "temperature_c": 13.1,
-            "precipitation_probability": 6,
-            "wind_speed_kmh": 3.3
+            "temperature_c": 14.8,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 1.3
           },
           "referee": {
             "name": "no confirmado",
@@ -12394,7 +12393,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-20T18:05:05.881179+00:00",
+          "context_updated_at": "2026-09-20T22:01:26.575544+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 44,
@@ -12840,7 +12839,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-20T18:05:50.395052+00:00",
+          "context_updated_at": "2026-09-20T22:01:30.414952+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -12891,31 +12890,19 @@
           "official_percent": {},
           "home_table": {
             "position": null,
-            "points": 0,
-            "form": "L",
-            "form_matches": 1
+            "points": null,
+            "form": "",
+            "form_matches": 0
           },
           "away_table": {
             "position": null,
-            "points": 1,
-            "form": "D",
-            "form_matches": 1
+            "points": null,
+            "form": "",
+            "form_matches": 0
           },
           "pressure": {
-            "home": {
-              "score": 37.22,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": null
-            },
-            "away": {
-              "score": 37.15,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": null
-            }
+            "home": {},
+            "away": {}
           },
           "fatigue": {
             "home": {
@@ -13118,9 +13105,9 @@
           },
           "travel_km": 6563.1,
           "weather": {
-            "temperature_c": 12.9,
-            "precipitation_probability": 5,
-            "wind_speed_kmh": 22.7
+            "temperature_c": 15.2,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 22.8
           },
           "referee": {
             "name": "no confirmado",
@@ -13157,7 +13144,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-20T18:05:53.182641+00:00",
+          "context_updated_at": "2026-09-20T22:01:35.003272+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 38,
@@ -13462,9 +13449,9 @@
           },
           "travel_km": 3102.4,
           "weather": {
-            "temperature_c": 33.7,
+            "temperature_c": 33.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 13.2
+            "wind_speed_kmh": 11.4
           },
           "referee": {
             "name": "no confirmado",
@@ -13495,7 +13482,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-20T18:05:58.545148+00:00",
+          "context_updated_at": "2026-09-20T22:01:39.709001+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -13973,9 +13960,9 @@
           },
           "travel_km": 2967.4,
           "weather": {
-            "temperature_c": 20.3,
+            "temperature_c": 20.1,
             "precipitation_probability": 90,
-            "wind_speed_kmh": 1.5
+            "wind_speed_kmh": 1.1
           },
           "referee": {
             "name": "no confirmado",
@@ -14016,7 +14003,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-20T18:06:03.524257+00:00",
+          "context_updated_at": "2026-09-20T22:01:44.069592+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -14038,10 +14025,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 1,
-              "availability_items": 5,
+              "availability_items": 4,
               "official_items": 6,
               "match_items": 0,
-              "team_items": 18,
+              "team_items": 17,
               "season_transition_items": 16,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -14472,9 +14459,9 @@
           },
           "travel_km": 1047.5,
           "weather": {
-            "temperature_c": 12.9,
-            "precipitation_probability": 5,
-            "wind_speed_kmh": 8.2
+            "temperature_c": 12.3,
+            "precipitation_probability": 8,
+            "wind_speed_kmh": 14.7
           },
           "referee": {
             "name": "no confirmado",
@@ -14505,7 +14492,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-20T18:06:33.149450+00:00",
+          "context_updated_at": "2026-09-20T22:01:49.181697+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 55,
@@ -15021,7 +15008,7 @@
                   "status": "out",
                   "headline": "Joan Mir, baja para el GP de Austria - Diario AS",
                   "source": "Diario AS",
-                  "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQSkR1VWU0UUx4N1RyYlNTT2xUdGs5QVMxQVRtLTRGMHRKNUNaLUVCNkNqSlM4YmFKQzlNQUhGSUU3NHk1d2x3VUtNU1lTUkRCcVJEM1U4ZFltdWZHMkVVZjVCY2FSdGhoZFU4SGc0QzRaVDNpMTBjZUpqcjc2ZU1IZmVQc0NjQjQ?oc=5",
+                  "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQSkR1VWU0UUx4N1RyYlNTT2xUdGs5QVMxQVRtLTRGMHRKNUNaLUVCNkNqSlM4YmFKQzlNQUhGSUU3NHk1d2x3VUtNU1lTUkRCcVJEM1U4ZFltdWZHMkVVZjVCY2FSdGhoZFU4SGc0QzRaVDNpMTBjZUpqcjc2ZU1IZmVQc0NjQjTSAZsBQVVfeXFMTzVfUUF4c1lydC01Yzhrd0dITEhhWHJLejNuX3l6RW9SNUlGYlZVT2x1ci1ueU4yM3UteHpXVkdNUVlwMnp2bEZkcHVhU3pXYkd4aTkxZndaT1NmT1M4WUg1aGZyaEhHMmpDLWVoMUJkbTFIUEpiQnZXMFVlcW1Ia0VjZVpIVkRrM2J5aTg1Sk9ELXNaX0pybE5BcFU?oc=5",
                   "published_at": "Wed, 16 Sep 2026 10:09:00 GMT"
                 },
                 {
@@ -15045,10 +15032,10 @@
               ],
               "count": 6,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 5
+              "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-20T18:06:38.661108+00:00",
+          "context_updated_at": "2026-09-20T22:01:53.928705+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 35,
@@ -15075,7 +15062,7 @@
               "availability_items": 6,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 19,
+              "team_items": 20,
               "season_transition_items": 14,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
@@ -15297,9 +15284,9 @@
           },
           "travel_km": 1276.3,
           "weather": {
-            "temperature_c": 17.7,
+            "temperature_c": 16.4,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 14.8
+            "wind_speed_kmh": 18.7
           },
           "referee": {
             "name": "no confirmado",
@@ -15330,7 +15317,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-20T18:07:05.926318+00:00",
+          "context_updated_at": "2026-09-20T22:01:56.981340+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -15825,9 +15812,9 @@
           },
           "travel_km": 9108.1,
           "weather": {
-            "temperature_c": 24.3,
+            "temperature_c": 24.8,
             "precipitation_probability": 3,
-            "wind_speed_kmh": 6.5
+            "wind_speed_kmh": 5.7
           },
           "referee": {
             "name": "no confirmado",
@@ -15855,10 +15842,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-20T18:07:19.157907+00:00",
+          "context_updated_at": "2026-09-20T22:02:10.178152+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -15884,7 +15871,7 @@
               "availability_items": 5,
               "official_items": 4,
               "match_items": 0,
-              "team_items": 18,
+              "team_items": 19,
               "season_transition_items": 17,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -16305,9 +16292,9 @@
           },
           "travel_km": 6712.5,
           "weather": {
-            "temperature_c": 31.1,
+            "temperature_c": 30.8,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 19.6
+            "wind_speed_kmh": 19.9
           },
           "referee": {
             "name": "no confirmado",
@@ -16335,10 +16322,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 18
+              "source_items_checked": 17
             }
           },
-          "context_updated_at": "2026-09-20T18:07:22.425218+00:00",
+          "context_updated_at": "2026-09-20T22:02:12.715042+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -16359,8 +16346,8 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 29,
-              "official_items": 5,
+              "availability_items": 28,
+              "official_items": 4,
               "match_items": 0,
               "team_items": 30,
               "season_transition_items": 14,
@@ -16519,37 +16506,37 @@
                 "signings": [],
                 "transfer_reports": [
                   {
-                    "title": "Barcelona confirms signing of Spain captain Rodri from Manchester City - lanacion.com.ar",
+                    "title": "Barcelona confirms signing of Spain captain Rodri from Manchester City - La Nación",
                     "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQOWgzTmNnYzQyM3NONzd0OWVsdlpKX1JTNnZNQ2V3aGpub0ZlX3h2WEJjeUhQOUVCLUhFaWdLSE11RS1fM1J6bloxS2pGVVFiQnpRaGJ4U05IcWpaUWI3aXJWYUEtX1FOQ3k2SU9zMnJoLVRzMFA1T3pqck43d0hIcTFDR3BnQ2x3ZlNvc19IWlJVU2VhQXZYTjRCaEJwbGNSQk5OcTdpN2UxTEpOMUd0cjFoRE9Tdw?oc=5",
                     "published_at": "Tue, 18 Aug 2026 07:00:00 GMT",
-                    "source": "lanacion.com.ar",
+                    "source": "La Nación",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Rodri set to arrive as Barcelona finalize transfer of Spain captain from Man City - lanacion.com.ar",
+                    "title": "Rodri set to arrive as Barcelona finalize transfer of Spain captain from Man City - La Nación",
                     "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPcXkyaGxYcHMyQnVNZFo0WjhIZHdHMWhPWU95ZjFHQmRCalJvMUdXZkxqdEdocUNzUzdTc29mb1ppNHdha1pVU3pWa1RodjZHYTFEVTJod0VoYzlXcWR4RGFYS05BdE5peHVsSS02VzV1azZTN2xzZUJULVl5QS1hOTI2aXduajFHaDVyUTZVU3NEcFQybHlHTk1uV05mZ2VZb2ZGcDZ5SWdsTk5EMTNBb2d2WmNrbEJSSE9GcFJJVHY4SlEx?oc=5",
                     "published_at": "Mon, 17 Aug 2026 07:00:00 GMT",
-                    "source": "lanacion.com.ar",
+                    "source": "La Nación",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Barcelona shock PSG with MASSIVE Ferran Torres price tag as Spain World Cup hero demands summer transfer - sports.yahoo.com",
+                    "title": "Barcelona shock PSG with MASSIVE Ferran Torres price tag as Spain World Cup hero demands summer transfer - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPc1VrVVVPcDgycThkLW1SWWVick03cFdoNzJfOGVub3hTaUFFcFZYVFZROW9KdnZGZWZPZG95akZrT2RaZnpBYlFOR1BwZ3J5eFBmdU5rVUR3Z0podzM0bHJELVlIUjJ2dWY4ejVIcy14OW4xVUxIMEt6Rjh0bVh0eGszaG5jNk1PdktN?oc=5",
                     "published_at": "Mon, 10 Aug 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Julian Alvarez Faces Transfer Setback Ahead of Argentina's World Cup Match vs. Spain - sports.yahoo.com",
+                    "title": "Julian Alvarez Faces Transfer Setback Ahead of Argentina's World Cup Match vs. Spain - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQYmx3TXZvcFpfS2JuY3l0Y3dyMnVVRzktd2pOdE9XZDA3OUFDM0kxMWJrN05jYTRYQWMtek1uTUdqTmZmaXVkRHBQRlFTMVVxbzNnVTE2SFVOQU9oMGlLTmgwZUlGNzdFeHZBbThtS3ZXM29OaFc4czVBaFpUWGZLbHBOa1R1TFVXODB6Q1Vobw?oc=5",
                     "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -16559,8 +16546,8 @@
                 "departure_reports": [
                   {
                     "title": "Águilas da la salida a la Race Across Spain - Murcia.com",
-                    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNdXJUTHJoQmswbXFVOHFVNkQzYjZoRmRYbS00dGRNOUFNQ0FIRXVqRjBUNEYxZzg5OHBXemM3N3lOd0ZpVllPLTE4MVFrX21OaDExMXRtQnVCWVhGUjdqb3p0SDQwNG50czlRVGhwV0lyNW5sS0M3ejdRWEN6a2tOV2R0VlF5YXR5TW1wWGZxa3dHQTQ1OXJPeHdZNGpiMEXSAZ8BQVVfeXFMTUU1eDlkdVZsRjE5LUJGaG1XWXE2RE91S2FVaTN2b1BEYnQxUHBJV01ucDJqWjhLc0lnQ3pXVmVyZ2h0d2o5X29BNE54WnJIdFBzTVM0TUJKWnVOS0pBNHVsNmNpN3h0Yl9qeVBWNHVZdEI5dlRSd0FCV1NTR0JMaUhBcUtuWmJFU2J2TGI0QXZsSGVCZkFCd2h2VTNsdjdN?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 12:03:39 GMT",
+                    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNRTV4OWR1VmxGMTktQkZobVdZcTZET3VLYVVpM3ZvUERidDFQcElXTW5wMmpaOEtzSWdDeldWZXJnaHR3ajlfb0E0Tnhackh0UHNNUzRNQkpadU5LSkE0dWw2Y2k3eHRiX2p5UFY0dVl0Qjl2VFJ3QUJXU1NHQkxpSEFxS25aYkVTYnZMYjRBdmxIZUJmQUJ3aHZVM2x2N03SAZ8BQVVfeXFMTUU1eDlkdVZsRjE5LUJGaG1XWXE2RE91S2FVaTN2b1BEYnQxUHBJV01ucDJqWjhLc0lnQ3pXVmVyZ2h0d2o5X29BNE54WnJIdFBzTVM0TUJKWnVOS0pBNHVsNmNpN3h0Yl9qeVBWNHVZdEI5dlRSd0FCV1NTR0JMaUhBcUtuWmJFU2J2TGI0QXZsSGVCZkFCd2h2VTNsdjdN?oc=5",
+                    "published_at": "Fri, 18 Sep 2026 12:02:54 GMT",
                     "source": "Murcia.com",
                     "category": "departure",
                     "fact_status": "reported",
@@ -16585,19 +16572,19 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Digi Spain cede un 8,04% en su salida a Bolsa y reduce su valor a 1.528,5 millones - El Conciso",
-                    "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQclQ4NjJQcDF6eHQ3S0hUaDF0WWNjOW9uanRfSDhnWkQxdTNkdGpYQk1EMjF1bDM3MzNMODRqc2tzUW1WSGVjZDlYZGpSVE5RcGNVcGlOMTF5c0tzVjRtRFZFa1RodHdQcEVJXzh4alp2Z1pNeW91STEySjVkdGMyQWVR0gGHAUFVX3lxTE9VX21HR1Q3UWs3cjg3Z3QzVWZ6OWZJeE4yeFlOZ2VReW5PWHFHNDMxSERJZVJJaXNSVU13ZGNPdFFYMU9UVkxnSjdTSVBZRW94U3BWTHEyRklQb0Q4Tkd5QzIyaU9NRnhCZThhN0FtVS1qU0ZFaUprMkVVUDNIUnRVaHpaT0ZsTQ?oc=5",
+                    "title": "Un accionista de Digi Spain Telecom vende acciones adicionales en su salida a bolsa. - Yahoo",
+                    "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOal9NUEJ2UVd6ZDhrQWt5M09LU0JWWkNrbS0wYlA1OHJrUUJiWEE3aENpOTNrdTVMd21zeU14ci15aC1FUVJsaE5oanBZWWNCMGRSeDZXUUFhUFpVUmo1M1Q4d3pJWDd4UGkyRTRURFY4amlmTmJTbGE1UHQteW9BOENSOHZBTjVUZ0JkcEV5M2p4UQ?oc=5",
                     "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
-                    "source": "El Conciso",
+                    "source": "Yahoo",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Digi Spain Telecom fija el precio de su salida a bolsa en 5,60 euros por acción - DPL News",
-                    "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPM3BnUXVtVTNBOFlMaWxSWkVpMGR6VUd1a0ZFQ0lwMk1jQl8xbTdlZFRxNF91QkhUeVUxdy1lWXFUUm13OE92TzYxd3BwSVBIM0lRdjEySzdkRDdqT2pkRmJ4VklIQlVBcUxnYjR0d05hTnpZT19YM3hjNEtUMlZDN0hQYWh6NElGVzdTcmV5TjJrWXV5SXlBd2t4Yl9Da2RQ?oc=5",
-                    "published_at": "Wed, 15 Jul 2026 07:00:00 GMT",
-                    "source": "DPL News",
+                    "title": "Digi Spain cede un 8,04% en su salida a Bolsa y reduce su valor a 1.528,5 millones - El Conciso",
+                    "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQclQ4NjJQcDF6eHQ3S0hUaDF0WWNjOW9uanRfSDhnWkQxdTNkdGpYQk1EMjF1bDM3MzNMODRqc2tzUW1WSGVjZDlYZGpSVE5RcGNVcGlOMTF5c0tzVjRtRFZFa1RodHdQcEVJXzh4alp2Z1pNeW91STEySjVkdGMyQWVR0gGHAUFVX3lxTE9VX21HR1Q3UWs3cjg3Z3QzVWZ6OWZJeE4yeFlOZ2VReW5PWHFHNDMxSERJZVJJaXNSVU13ZGNPdFFYMU9UVkxnSjdTSVBZRW94U3BWTHEyRklQb0Q4Tkd5QzIyaU9NRnhCZThhN0FtVS1qU0ZFaUprMkVVUDNIUnRVaHpaT0ZsTQ?oc=5",
+                    "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
+                    "source": "El Conciso",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -16612,27 +16599,27 @@
                 "all_evidence": [
                   {
                     "title": "Águilas da la salida a la Race Across Spain - Murcia.com",
-                    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNdXJUTHJoQmswbXFVOHFVNkQzYjZoRmRYbS00dGRNOUFNQ0FIRXVqRjBUNEYxZzg5OHBXemM3N3lOd0ZpVllPLTE4MVFrX21OaDExMXRtQnVCWVhGUjdqb3p0SDQwNG50czlRVGhwV0lyNW5sS0M3ejdRWEN6a2tOV2R0VlF5YXR5TW1wWGZxa3dHQTQ1OXJPeHdZNGpiMEXSAZ8BQVVfeXFMTUU1eDlkdVZsRjE5LUJGaG1XWXE2RE91S2FVaTN2b1BEYnQxUHBJV01ucDJqWjhLc0lnQ3pXVmVyZ2h0d2o5X29BNE54WnJIdFBzTVM0TUJKWnVOS0pBNHVsNmNpN3h0Yl9qeVBWNHVZdEI5dlRSd0FCV1NTR0JMaUhBcUtuWmJFU2J2TGI0QXZsSGVCZkFCd2h2VTNsdjdN?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 12:03:39 GMT",
+                    "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNRTV4OWR1VmxGMTktQkZobVdZcTZET3VLYVVpM3ZvUERidDFQcElXTW5wMmpaOEtzSWdDeldWZXJnaHR3ajlfb0E0Tnhackh0UHNNUzRNQkpadU5LSkE0dWw2Y2k3eHRiX2p5UFY0dVl0Qjl2VFJ3QUJXU1NHQkxpSEFxS25aYkVTYnZMYjRBdmxIZUJmQUJ3aHZVM2x2N03SAZ8BQVVfeXFMTUU1eDlkdVZsRjE5LUJGaG1XWXE2RE91S2FVaTN2b1BEYnQxUHBJV01ucDJqWjhLc0lnQ3pXVmVyZ2h0d2o5X29BNE54WnJIdFBzTVM0TUJKWnVOS0pBNHVsNmNpN3h0Yl9qeVBWNHVZdEI5dlRSd0FCV1NTR0JMaUhBcUtuWmJFU2J2TGI0QXZsSGVCZkFCd2h2VTNsdjdN?oc=5",
+                    "published_at": "Fri, 18 Sep 2026 12:02:54 GMT",
                     "source": "Murcia.com",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Barcelona confirms signing of Spain captain Rodri from Manchester City - lanacion.com.ar",
+                    "title": "Barcelona confirms signing of Spain captain Rodri from Manchester City - La Nación",
                     "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQOWgzTmNnYzQyM3NONzd0OWVsdlpKX1JTNnZNQ2V3aGpub0ZlX3h2WEJjeUhQOUVCLUhFaWdLSE11RS1fM1J6bloxS2pGVVFiQnpRaGJ4U05IcWpaUWI3aXJWYUEtX1FOQ3k2SU9zMnJoLVRzMFA1T3pqck43d0hIcTFDR3BnQ2x3ZlNvc19IWlJVU2VhQXZYTjRCaEJwbGNSQk5OcTdpN2UxTEpOMUd0cjFoRE9Tdw?oc=5",
                     "published_at": "Tue, 18 Aug 2026 07:00:00 GMT",
-                    "source": "lanacion.com.ar",
+                    "source": "La Nación",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Rodri set to arrive as Barcelona finalize transfer of Spain captain from Man City - lanacion.com.ar",
+                    "title": "Rodri set to arrive as Barcelona finalize transfer of Spain captain from Man City - La Nación",
                     "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPcXkyaGxYcHMyQnVNZFo0WjhIZHdHMWhPWU95ZjFHQmRCalJvMUdXZkxqdEdocUNzUzdTc29mb1ppNHdha1pVU3pWa1RodjZHYTFEVTJod0VoYzlXcWR4RGFYS05BdE5peHVsSS02VzV1azZTN2xzZUJULVl5QS1hOTI2aXduajFHaDVyUTZVU3NEcFQybHlHTk1uV05mZ2VZb2ZGcDZ5SWdsTk5EMTNBb2d2WmNrbEJSSE9GcFJJVHY4SlEx?oc=5",
                     "published_at": "Mon, 17 Aug 2026 07:00:00 GMT",
-                    "source": "lanacion.com.ar",
+                    "source": "La Nación",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -16647,10 +16634,10 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Barcelona shock PSG with MASSIVE Ferran Torres price tag as Spain World Cup hero demands summer transfer - sports.yahoo.com",
+                    "title": "Barcelona shock PSG with MASSIVE Ferran Torres price tag as Spain World Cup hero demands summer transfer - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPc1VrVVVPcDgycThkLW1SWWVick03cFdoNzJfOGVub3hTaUFFcFZYVFZROW9KdnZGZWZPZG95akZrT2RaZnpBYlFOR1BwZ3J5eFBmdU5rVUR3Z0podzM0bHJELVlIUjJ2dWY4ejVIcy14OW4xVUxIMEt6Rjh0bVh0eGszaG5jNk1PdktN?oc=5",
                     "published_at": "Mon, 10 Aug 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -16665,6 +16652,15 @@
                     "evidence_quality": "medium"
                   },
                   {
+                    "title": "Un accionista de Digi Spain Telecom vende acciones adicionales en su salida a bolsa. - Yahoo",
+                    "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOal9NUEJ2UVd6ZDhrQWt5M09LU0JWWkNrbS0wYlA1OHJrUUJiWEE3aENpOTNrdTVMd21zeU14ci15aC1FUVJsaE5oanBZWWNCMGRSeDZXUUFhUFpVUmo1M1Q4d3pJWDd4UGkyRTRURFY4amlmTmJTbGE1UHQteW9BOENSOHZBTjVUZ0JkcEV5M2p4UQ?oc=5",
+                    "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
+                    "source": "Yahoo",
+                    "category": "departure",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
                     "title": "Digi Spain cede un 8,04% en su salida a Bolsa y reduce su valor a 1.528,5 millones - El Conciso",
                     "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQclQ4NjJQcDF6eHQ3S0hUaDF0WWNjOW9uanRfSDhnWkQxdTNkdGpYQk1EMjF1bDM3MzNMODRqc2tzUW1WSGVjZDlYZGpSVE5RcGNVcGlOMTF5c0tzVjRtRFZFa1RodHdQcEVJXzh4alp2Z1pNeW91STEySjVkdGMyQWVR0gGHAUFVX3lxTE9VX21HR1Q3UWs3cjg3Z3QzVWZ6OWZJeE4yeFlOZ2VReW5PWHFHNDMxSERJZVJJaXNSVU13ZGNPdFFYMU9UVkxnSjdTSVBZRW94U3BWTHEyRklQb0Q4Tkd5QzIyaU9NRnhCZThhN0FtVS1qU0ZFaUprMkVVUDNIUnRVaHpaT0ZsTQ?oc=5",
                     "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
@@ -16674,10 +16670,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Julian Alvarez Faces Transfer Setback Ahead of Argentina's World Cup Match vs. Spain - sports.yahoo.com",
+                    "title": "Julian Alvarez Faces Transfer Setback Ahead of Argentina's World Cup Match vs. Spain - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQYmx3TXZvcFpfS2JuY3l0Y3dyMnVVRzktd2pOdE9XZDA3OUFDM0kxMWJrN05jYTRYQWMtek1uTUdqTmZmaXVkRHBQRlFTMVVxbzNnVTE2SFVOQU9oMGlLTmgwZUlGNzdFeHZBbThtS3ZXM29OaFc4czVBaFpUWGZLbHBOa1R1TFVXODB6Q1Vobw?oc=5",
                     "published_at": "Thu, 16 Jul 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -16705,15 +16701,6 @@
                     "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQcmRNWElFOEZkTHdUU1JsREVidlVNb1d4eDBwOGcyUkszUE5DUlhBRWFWV19ER1E1OHhDaDQ1Vl9SVFlsOGxNN3ExVHExdlRTQjNLdzdQYzhHeDZCWGd4aWtXZDNfLUtWZlRucGwtRHYxTVoyWTJiYm5qMG13WUM2ZmRvOENwVGQzbGhSWWxqV2RzUDd1c2MweUtFLUdZRFNRb21FUHpDM2xVc1V1REtDNXhjd1FxRWNDQW9QVmt6YlBKSks3bnhTVA?oc=5",
                     "published_at": "Tue, 14 Jul 2026 07:00:00 GMT",
                     "source": "Data Center Dynamics",
-                    "category": "departure",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "La CNMV aprueba el folleto de salida a bolsa de Digi Spain - TradingView",
-                    "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBWX1k4REtIS2R2NDk4TjNSZVd5QkxBY1BpekZkaDZQd0ZrU2hKUHhTWUNfSUQ4RFpwd0c3TFFqUTNDYzgxMW5ocmVXQWp6Q1pyMWxqTG9WZHd2bG55NVp0TW8wbWpkRG1sNVFFSVpuS3N4bjF2M2Jv?oc=5",
-                    "published_at": "Thu, 09 Jul 2026 07:00:00 GMT",
-                    "source": "TradingView",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -16812,9 +16799,9 @@
           },
           "travel_km": 1648.9,
           "weather": {
-            "temperature_c": 24.7,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 2.1
+            "temperature_c": 22.7,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 3.9
           },
           "referee": {
             "name": "no confirmado",
@@ -16855,7 +16842,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-20T18:00:53.293043+00:00",
+          "context_updated_at": "2026-09-20T21:58:25.283123+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 70,
@@ -18231,7 +18218,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-20T18:04:02.683129+00:00",
+          "context_updated_at": "2026-09-20T22:00:46.832566+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 98,
@@ -19680,17 +19667,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 17
+              "source_items_checked": 16
             },
             "away": {
               "team": "Málaga",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 25
+              "source_items_checked": 31
             }
           },
-          "context_updated_at": "2026-09-20T17:58:36.543734+00:00",
+          "context_updated_at": "2026-09-20T21:56:53.195621+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -19707,8 +19694,8 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 21,
-              "official_items": 0,
+              "availability_items": 22,
+              "official_items": 4,
               "match_items": 11,
               "team_items": 47,
               "season_transition_items": 28,
@@ -20410,7 +20397,7 @@
           },
           "travel_km": 697.1,
           "weather": {
-            "temperature_c": 25.9,
+            "temperature_c": 26.0,
             "precipitation_probability": 0,
             "wind_speed_kmh": 5.4
           },
@@ -20436,10 +20423,20 @@
           "availability": {
             "home": {
               "team": "Deportivo La Coruña",
-              "items": [],
-              "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "items": [
+                {
+                  "player_name": "Marc Casadó",
+                  "verificado": false,
+                  "status": "watch",
+                  "headline": "Marc Casadó se retira del partido del Deportivo de A Coruña contra el Betis con una lesión en el hombro - Tribuna.com",
+                  "source": "Tribuna.com",
+                  "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOVFVDWU41SkFCU1N0eFQxUzJMODBkWkYxY0NPNGtpSUlFLVB3RXYtNl9aNUtFRkdYemN5aVVQbGpfQTZFeUhSMXdOTlYtQVNJSmlfOXFOWDlZWTlIQ1lJU1dsSEg5akYwVjZKX01hRzFseWZvS0JtUUdZYUYzRktGVXZIVTNaZkhwNW9nZzExSThzMlBJRTFndzl0SEJ3d0YySmNjRGFJWmgweW5JYkVVQTZ1ZlljNU8yQVhxcU5EQ1FzdWo5TjdMedIBzgFBVV95cUxOVkl1akNYRXZMN0M0Y3ZhMVBGTk9CdEotSF9CcGdobERoMGhlY01BcXhOMGNMbDZVbkpaRjhGM0tvbjJubE5pX3NMdGlBQlpfSVVCNG9QM0xZRktFQVdzVWtPeE5lSk5lVXdXQmlVWEZRYkxwbUFHZVBwbGpzMUxCNmRBa2FBNEFDNThzX09vVkdTMWZyc2ZGRm5aWWR5cTlIdF90RER6bVFzOENybGttTmRkalVZOVltU095eXNfLTMyUjNMT2gyMEdPNU5XUQ?oc=5",
+                  "published_at": "Sun, 20 Sep 2026 19:12:00 GMT"
+                }
+              ],
+              "count": 1,
+              "verification_status": "confirmed_absences",
+              "source_items_checked": 7
             },
             "away": {
               "team": "Real Betis",
@@ -20448,8 +20445,8 @@
                   "player_name": "Morante",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Morante, novedad en la convocatoria del Betis que mantiene las bajas de Ruibal y Llorente - muchodeporte.com",
-                  "source": "muchodeporte.com",
+                  "headline": "Morante, novedad en la convocatoria del Betis que mantiene las bajas de Ruibal y Llorente - Muchodeporte",
+                  "source": "Muchodeporte",
                   "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNYUpESktuRkFjOWxSU1l1MHJ0Mkc4SklpU1NTdUw2eWwzeGlMd2RIQUFXamc0Rk90NEhYMUNReVdGWk8yMVU3TlAyQi1VYVVYTXFDZ2d2ZWc5b2xMWmJnUnlYZ0JSaDJPQ09VWnJzOWh0SkVmQmFmMmtsQTlEOXA0LTRaS0FNcjVtamZpVUZUUlpFdzZhU2VKY1JfLXhfUzNtR1dmRXhISjF0X0NDZ2dDNjVpV1RMMU8tUGx3TTRKUENTa2ZQenZUVQ?oc=5",
                   "published_at": "Sat, 19 Sep 2026 16:00:13 GMT"
                 },
@@ -20457,8 +20454,8 @@
                   "player_name": "Ruibal",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Morante, novedad en la convocatoria del Betis que mantiene las bajas de Ruibal y Llorente - muchodeporte.com",
-                  "source": "muchodeporte.com",
+                  "headline": "Morante, novedad en la convocatoria del Betis que mantiene las bajas de Ruibal y Llorente - Muchodeporte",
+                  "source": "Muchodeporte",
                   "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNYUpESktuRkFjOWxSU1l1MHJ0Mkc4SklpU1NTdUw2eWwzeGlMd2RIQUFXamc0Rk90NEhYMUNReVdGWk8yMVU3TlAyQi1VYVVYTXFDZ2d2ZWc5b2xMWmJnUnlYZ0JSaDJPQ09VWnJzOWh0SkVmQmFmMmtsQTlEOXA0LTRaS0FNcjVtamZpVUZUUlpFdzZhU2VKY1JfLXhfUzNtR1dmRXhISjF0X0NDZ2dDNjVpV1RMMU8tUGx3TTRKUENTa2ZQenZUVQ?oc=5",
                   "published_at": "Sat, 19 Sep 2026 16:00:13 GMT"
                 },
@@ -20466,10 +20463,19 @@
                   "player_name": "Llorente",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Morante, novedad en la convocatoria del Betis que mantiene las bajas de Ruibal y Llorente - muchodeporte.com",
-                  "source": "muchodeporte.com",
+                  "headline": "Morante, novedad en la convocatoria del Betis que mantiene las bajas de Ruibal y Llorente - Muchodeporte",
+                  "source": "Muchodeporte",
                   "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNYUpESktuRkFjOWxSU1l1MHJ0Mkc4SklpU1NTdUw2eWwzeGlMd2RIQUFXamc0Rk90NEhYMUNReVdGWk8yMVU3TlAyQi1VYVVYTXFDZ2d2ZWc5b2xMWmJnUnlYZ0JSaDJPQ09VWnJzOWh0SkVmQmFmMmtsQTlEOXA0LTRaS0FNcjVtamZpVUZUUlpFdzZhU2VKY1JfLXhfUzNtR1dmRXhISjF0X0NDZ2dDNjVpV1RMMU8tUGx3TTRKUENTa2ZQenZUVQ?oc=5",
                   "published_at": "Sat, 19 Sep 2026 16:00:13 GMT"
+                },
+                {
+                  "player_name": "Marc Bartra",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Lesión de Marc Bartra: qué tiene, parte médico y posible tiempo de baja con el Betis - El Desmarque",
+                  "source": "El Desmarque",
+                  "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNeFN1YVVxVUt6eERiQnY5Q0h6am9FUkx2c0Qwak1PWkhmcnBHNmdaQlJERGYtZ0hyQWp4bTRyX3EzWGZ1S3lESU03d3c4MThzOUs1NWRtUHg3ektjb0ZxWk1uSHhQeVV6aUlLb0FYWjVCaE1RZ1hXUDd6TEMtQ0lKVDRVd19tZW5lMEJ3cXlZTTUwWVJlS0NfNnE5SWY4Q0ZhUVZuQ0kxVDRlVjZtZjIwd05wVmYwWmVHUV83V25ZN00?oc=5",
+                  "published_at": "Sun, 20 Sep 2026 19:13:54 GMT"
                 },
                 {
                   "player_name": "Diego Llorente",
@@ -20481,12 +20487,12 @@
                   "published_at": "Wed, 16 Sep 2026 09:58:38 GMT"
                 }
               ],
-              "count": 4,
+              "count": 5,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 20
+              "source_items_checked": 23
             }
           },
-          "context_updated_at": "2026-09-20T18:04:09.318722+00:00",
+          "context_updated_at": "2026-09-20T22:00:50.879056+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -20504,14 +20510,14 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 4,
-              "availability_items": 18,
+              "injury_items": 6,
+              "availability_items": 20,
               "official_items": 4,
-              "match_items": 2,
-              "team_items": 48,
+              "match_items": 5,
+              "team_items": 47,
               "season_transition_items": 28,
               "verified_teams": 2,
-              "home_roster_status": "sources_checked_no_confirmed_absence",
+              "home_roster_status": "confirmed_absences",
               "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
@@ -21135,9 +21141,9 @@
           },
           "travel_km": 57.2,
           "weather": {
-            "temperature_c": 28.5,
+            "temperature_c": 28.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 14.0
+            "wind_speed_kmh": 13.0
           },
           "referee": {
             "name": "Mateo Busquets",
@@ -21164,7 +21170,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 16
+              "source_items_checked": 18
             },
             "away": {
               "team": "Levante",
@@ -21174,7 +21180,7 @@
               "source_items_checked": 27
             }
           },
-          "context_updated_at": "2026-09-20T17:59:12.839227+00:00",
+          "context_updated_at": "2026-09-20T21:57:18.293919+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -21191,8 +21197,8 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 27,
-              "official_items": 4,
+              "availability_items": 26,
+              "official_items": 6,
               "match_items": 12,
               "team_items": 46,
               "season_transition_items": 28,
@@ -21831,15 +21837,15 @@
           },
           "travel_km": 448.3,
           "weather": {
-            "temperature_c": 25.8,
+            "temperature_c": 26.0,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 7.3
+            "wind_speed_kmh": 7.0
           },
           "referee": {
             "name": "José Luis Munuera",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Racing Santander (10º) | casa vs Athletic Club (9º) | casa vs Villarreal (14º) | fuera vs Elche (20º) | casa vs Real Madrid (2º)",
+          "future_home": "casa vs Athletic Club (9º) | casa vs Villarreal (14º) | fuera vs Elche (20º) | casa vs Real Madrid (2º) | fuera vs Rayo Vallecano (11º)",
           "future_away": "casa vs Deportivo (-) | fuera vs Union St.-Gilloise (-, UEFA Europa League) | fuera vs Málaga (19º) | fuera vs Lillestrom (-, UEFA Europa League) | casa vs Levante (15º)",
           "history_quality": {
             "valid": true,
@@ -21860,7 +21866,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 31
+              "source_items_checked": 32
             },
             "away": {
               "team": "Real Sociedad",
@@ -21886,10 +21892,10 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 33
+              "source_items_checked": 32
             }
           },
-          "context_updated_at": "2026-09-20T17:59:37.711869+00:00",
+          "context_updated_at": "2026-09-20T21:57:19.947492+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -21906,8 +21912,8 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 2,
-              "availability_items": 36,
-              "official_items": 6,
+              "availability_items": 35,
+              "official_items": 4,
               "match_items": 12,
               "team_items": 64,
               "season_transition_items": 28,
@@ -22577,7 +22583,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-20T18:04:30.687331+00:00",
+          "context_updated_at": "2026-09-20T22:00:52.233643+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 94,
@@ -24005,17 +24011,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "source_items_checked": 5
             },
             "away": {
               "team": "Granada CF",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 7
+              "source_items_checked": 8
             }
           },
-          "context_updated_at": "2026-09-20T17:59:56.228519+00:00",
+          "context_updated_at": "2026-09-20T21:57:20.025654+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -24032,9 +24038,9 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 3,
+              "availability_items": 4,
               "official_items": 1,
-              "match_items": 4,
+              "match_items": 5,
               "team_items": 30,
               "season_transition_items": 28,
               "verified_teams": 2,
@@ -24703,9 +24709,9 @@
           },
           "travel_km": 233.2,
           "weather": {
-            "temperature_c": 19.6,
+            "temperature_c": 23.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 3.7
+            "wind_speed_kmh": 1.8
           },
           "referee": {
             "name": "no confirmado",
@@ -24742,7 +24748,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-20T18:11:36.870931+00:00",
+          "context_updated_at": "2026-09-20T22:03:38.818889+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 78,
@@ -24763,7 +24769,7 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 12,
+              "availability_items": 11,
               "official_items": 4,
               "match_items": 0,
               "team_items": 41,
@@ -25327,9 +25333,9 @@
           },
           "travel_km": 31.4,
           "weather": {
-            "temperature_c": 24.8,
+            "temperature_c": 16.7,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 7.3
+            "wind_speed_kmh": 1.1
           },
           "referee": {
             "name": "no confirmado",
@@ -25363,10 +25369,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-20T18:11:42.981353+00:00",
+          "context_updated_at": "2026-09-20T22:03:43.454558+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 83,
@@ -25389,7 +25395,7 @@
               "availability_items": 5,
               "official_items": 4,
               "match_items": 0,
-              "team_items": 25,
+              "team_items": 26,
               "season_transition_items": 21,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -25997,9 +26003,9 @@
           },
           "travel_km": 302.4,
           "weather": {
-            "temperature_c": 22.3,
+            "temperature_c": 23.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 1.8
+            "wind_speed_kmh": 3.0
           },
           "referee": {
             "name": "no confirmado",
@@ -26020,7 +26026,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 39
+              "source_items_checked": 38
             },
             "away": {
               "team": "VALENCIA",
@@ -26030,7 +26036,7 @@
               "source_items_checked": 28
             }
           },
-          "context_updated_at": "2026-09-20T18:11:51.337760+00:00",
+          "context_updated_at": "2026-09-20T22:03:45.971592+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 78,
@@ -26051,8 +26057,8 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 34,
-              "official_items": 6,
+              "availability_items": 33,
+              "official_items": 5,
               "match_items": 9,
               "team_items": 68,
               "season_transition_items": 28,
@@ -26761,7 +26767,7 @@
               "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-09-20T18:11:59.095680+00:00",
+          "context_updated_at": "2026-09-20T22:03:49.988959+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 83,
@@ -27416,15 +27422,15 @@
           },
           "travel_km": 29.9,
           "weather": {
-            "temperature_c": 27.6,
+            "temperature_c": 27.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 1.8
+            "wind_speed_kmh": 1.5
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Manchester United (-, UEFA Champions League) | fuera vs Espanyol (8º) | fuera vs VfB Stuttgart (-, UEFA Champions League) | casa vs Deportivo (-) | fuera vs Levante (15º)",
+          "future_home": "fuera vs Alavés (6º) | casa vs Manchester United (-, UEFA Champions League) | fuera vs Espanyol (8º) | fuera vs VfB Stuttgart (-, UEFA Champions League) | casa vs Deportivo (-)",
           "future_away": "casa vs Villarreal (14º) | fuera vs AS Roma (-, UEFA Champions League) | casa vs Sevilla (5º) | casa vs RB Leipzig (-, UEFA Champions League) | fuera vs Barcelona (1º)",
           "history_quality": {
             "valid": true,
@@ -27509,11 +27515,29 @@
               ],
               "count": 7,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 28
+              "source_items_checked": 30
             },
             "away": {
               "team": "Real Madrid",
               "items": [
+                {
+                  "player_name": "Kang",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "El Madrid señala a Kang-in y al árbitro: Valverde, lesionado - Diario AS",
+                  "source": "Diario AS",
+                  "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOdW9veC1ONXZrTXdSdkdoVWh1TVZlMUpfVGl5VXkwTXcyS2VKQXlZZkk4dERwUDVlOHhza3pUbzg3d1JfTGRqMGh1NHdKd1FPaWdnT3lTUndZWGZsdXJCXzR4WFUwSkdsSHM2R3hpS2otOG5tY25ReUNZUngxNFhYSDBLY1FMUzZLaVlMSEdVTE00M1FaM2fSAaoBQVVfeXFMTmpxTDlLVUdQeFM4UFFiTENJWk1BZVVoZUkteHJva296WVhudUdQNXExajlmSWpFRjBjY1dPTUpVREtuWHJTOEJTNUd6OXVYYlpMdjdpT2U3VVBEZTFhaV9OQ2szQ1l3OE5PbVBXWkVsUFl0NW9jUXYxdDV5Y3hkV1BtUXFxVjNFY3BfX2hhX0tjcWVqUExILWFhbmNkcHBMNWNRcWtKTEFfeHc?oc=5",
+                  "published_at": "Sun, 20 Sep 2026 18:30:28 GMT"
+                },
+                {
+                  "player_name": "Valverde",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "El Madrid señala a Kang-in y al árbitro: Valverde, lesionado - Diario AS",
+                  "source": "Diario AS",
+                  "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOdW9veC1ONXZrTXdSdkdoVWh1TVZlMUpfVGl5VXkwTXcyS2VKQXlZZkk4dERwUDVlOHhza3pUbzg3d1JfTGRqMGh1NHdKd1FPaWdnT3lTUndZWGZsdXJCXzR4WFUwSkdsSHM2R3hpS2otOG5tY25ReUNZUngxNFhYSDBLY1FMUzZLaVlMSEdVTE00M1FaM2fSAaoBQVVfeXFMTmpxTDlLVUdQeFM4UFFiTENJWk1BZVVoZUkteHJva296WVhudUdQNXExajlmSWpFRjBjY1dPTUpVREtuWHJTOEJTNUd6OXVYYlpMdjdpT2U3VVBEZTFhaV9OQ2szQ1l3OE5PbVBXWkVsUFl0NW9jUXYxdDV5Y3hkV1BtUXFxVjNFY3BfX2hhX0tjcWVqUExILWFhbmNkcHBMNWNRcWtKTEFfeHc?oc=5",
+                  "published_at": "Sun, 20 Sep 2026 18:30:28 GMT"
+                },
                 {
                   "player_name": "Mourinho",
                   "verificado": false,
@@ -27524,12 +27548,12 @@
                   "published_at": "Mon, 14 Sep 2026 11:59:19 GMT"
                 }
               ],
-              "count": 1,
+              "count": 3,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 43
+              "source_items_checked": 42
             }
           },
-          "context_updated_at": "2026-09-20T17:58:45.892906+00:00",
+          "context_updated_at": "2026-09-20T21:56:57.212676+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -27548,9 +27572,9 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 8,
-              "availability_items": 40,
-              "official_items": 8,
+              "injury_items": 10,
+              "availability_items": 38,
+              "official_items": 7,
               "match_items": 12,
               "team_items": 66,
               "season_transition_items": 28,
@@ -27617,7 +27641,7 @@
     "ok": true,
     "degraded": false,
     "degraded_reason": "",
-    "provider_failures": 1159,
+    "provider_failures": 1227,
     "focus_matches": 15,
     "checked_evidence": 403,
     "invalid_evidence_count": 0,
