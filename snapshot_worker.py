@@ -340,6 +340,7 @@ LEAGUE_COUNTRY_HINTS = {
     "soccer_sweden_superettan": "SE",
     "soccer_finland_veikkausliiga": "FI",
     "soccer_fifa_world_cup": "",
+    "soccer_uefa_nations_league": "",
     "soccer_uefa_european_championship": "",
     "soccer_conmebol_copa_america": "",
     "soccer_international_friendlies": "",
@@ -404,6 +405,11 @@ LEAGUE_DISPLAY_NAMES = {
     "soccer_uefa_europa_league": "UEFA Europa League",
     "soccer_uefa_europa_conference_league": "UEFA Conference League",
     "soccer_fifa_world_cup": "FIFA World Cup",
+    # El Inglaterra-España del Pleno de la jornada 9 llegaba del feed de cuotas
+    # como Nations League y salía rotulado "FIFA World Cup": sin nombre propio
+    # para esta clave, se quedaba el del evento que encontraba TheSportsDB, que
+    # era otro partido entre las mismas selecciones.
+    "soccer_uefa_nations_league": "UEFA Nations League",
     "soccer_uefa_european_championship": "UEFA European Championship",
     "soccer_conmebol_copa_america": "Copa America",
     "soccer_international_friendlies": "International Friendlies",
@@ -432,6 +438,7 @@ LEAGUE_FOOTBALL_DATA_NEW_CODES = {
 }
 
 LEAGUE_THESPORTSDB_IDS = {
+    "soccer_uefa_nations_league": "4490",
     "soccer_spain_la_liga": "4335",
     "soccer_spain_segunda_division": "4400",
     "soccer_epl": "4328",
@@ -464,11 +471,14 @@ NON_DOMESTIC_LEAGUE_KEYS = {
     "soccer_uefa_europa_conference_league",
     "soccer_uefa_european_championship",
     "soccer_fifa_world_cup",
+    "soccer_uefa_nations_league",
     "soccer_conmebol_copa_america",
     "soccer_international_friendlies",
 }
 
 NON_DOMESTIC_SPORTSDB_IDS = {
+    "4429",  # FIFA World Cup
+    "4490",  # UEFA Nations League
     "4480",  # UEFA Champions League
     "4481",  # UEFA Europa League
     "4482",
@@ -613,8 +623,12 @@ TEAM_NAME_ALIASES = {
     "bor monchengladbach": "Borussia Mönchengladbach",
     "m gladbach": "Borussia Mönchengladbach",
     "hamkam": "Hamarkameratene",
-    "celta fortuna": "Celta B",
-    "celta b": "Celta B",
+    # El filial del Celta se llama Celta Fortuna desde 2023; football-data lo
+    # sigue escribiendo "Celta B". Esta clave estaba dos veces en el
+    # diccionario y la segunda -"Celta Fortuna"- pisaba a la primera, así que
+    # las dos formas acababan en nombres distintos y el equipo no aparecía en
+    # la clasificación de Segunda. Ahora las dos van al mismo.
+    "celta b": "Celta Fortuna",
     # Selecciones nacionales: la quiniela oficial suele publicarlas en español,
     # mientras que las fuentes de calendario/cuotas llegan en inglés.
     "alemania": "Germany",
@@ -737,6 +751,10 @@ TEAM_NAME_ALIASES = {
     "racing santander": "Racing de Santander",
     "real racing club de santander": "Racing de Santander",
     "sporting gijon": "Sporting de Gijon",
+    # football-data lo abrevia "Sp Gijon". Casaba con "SPORTING" porque "SP"
+    # hacia de principio de "Sporting", y por la misma via casaban tambien
+    # "ESPAÑA" y "SPORTING PORT.". Mejor decirlo que adivinarlo.
+    "sp gijon": "Sporting de Gijon",
     "sporting gijÃ³n": "Sporting de Gijon",
     "sabadell fc": "CE Sabadell",
     "celta fortuna": "Celta Fortuna",
@@ -7636,9 +7654,108 @@ def _frenar_sportsdb() -> None:
     _SPORTSDB_ULTIMA_PETICION = time.monotonic()
 
 
+LIGA_F_KEY = "sportsdb_5106"
+_PLANTILLA_LIGA_F_MEMO: dict = {"cuando": 0.0, "filas": []}
+
+
+def _nombre_en_plantilla_liga_f(team_name: str) -> str:
+    """El nombre con el que la Liga F guarda a ese club, o "" si no está.
+
+    El buscador de TheSportsDB devuelve UN equipo por consulta, y con los
+    nombres de la quiniela casi siempre el que no es: "Deportivo Femenino" da
+    Always Ready (Bolivia), cuyo nombre oficial es Club Deportivo Always Ready;
+    "Deportivo Femeni" da el Toluca mexicano. El Deportivo (F)-Espanyol (F) de
+    la jornada 9 salió así etiquetado como Copa Libertadores Femenina, con la
+    clasificación y el histórico de otro club.
+
+    La plantilla real de la Liga F ya la tenemos: es el histórico que se baja
+    para la clasificación. Contra ella, el parecido de nombres acierta los 16
+    equipos de la temporada con mucho margen sobre el segundo candidato, y no
+    empareja a los que no están en la categoría.
+    """
+    ahora = time.time()
+    if ahora - _PLANTILLA_LIGA_F_MEMO["cuando"] > 6 * 3600:
+        # Una vez por ciclo: cada equipo femenino la pedía otra vez al
+        # proveedor, que tiene un cupo de unas veinte peticiones seguidas.
+        try:
+            filas = fetch_league_history(LIGA_F_KEY)
+        except Exception:
+            filas = []
+        if isinstance(filas, dict):
+            filas = filas.get("rows") or filas.get("matches") or []
+        _PLANTILLA_LIGA_F_MEMO["filas"] = list(filas or [])
+        _PLANTILLA_LIGA_F_MEMO["cuando"] = ahora
+    filas = _PLANTILLA_LIGA_F_MEMO["filas"]
+    por_temporada: dict[str, set[str]] = {}
+    for fila in filas or []:
+        if not isinstance(fila, dict):
+            continue
+        temporada = str(fila.get("SeasonCode") or "").strip()
+        for lado in ("HomeTeam", "AwayTeam"):
+            nombre = str(fila.get(lado) or "").strip()
+            if temporada and nombre:
+                por_temporada.setdefault(temporada, set()).add(nombre)
+    if not por_temporada:
+        return ""
+    club = (
+        _sin_marca_femenina(_canonical_team_name(team_name))
+        or _sin_marca_femenina(team_name)
+        or team_name
+    )
+    # La temporada en curso primero; la anterior solo por si esta aún no ha
+    # arrancado y la plantilla todavía no aparece en los resultados.
+    for temporada in sorted(por_temporada, reverse=True)[:2]:
+        mejor, nota = "", 0.0
+        for nombre in por_temporada[temporada]:
+            parecido = _team_similarity_score(club, nombre)
+            if parecido >= 0.6 and parecido > nota and _es_el_mismo_club(club, nombre):
+                mejor, nota = nombre, parecido
+        if mejor:
+            return mejor
+    return ""
+
+
+def _ficha_por_nombre_exacto(nombre: str) -> dict:
+    """La ficha del proveedor para un nombre que ya sabemos que es el bueno."""
+    cache_key = f"team:ligaf:v1:{nombre}"
+    fresca = _cache_get(THESPORTSDB_CACHE, cache_key, SPORTSDB_TTL_FRESCA)
+    if fresca:
+        return fresca
+    vieja = _cache_get(THESPORTSDB_CACHE, cache_key, SPORTSDB_TTL_MAXIMA)
+    if vieja and not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+        return vieja
+    try:
+        _frenar_sportsdb()
+        data = _request_json(THESPORTSDB_SEARCH_TEAM_URL, params={"t": nombre}, timeout=20)
+    except Exception as exc:
+        print(f"[sportsdb] consulta exacta {nombre!r} fallida: {exc}")
+        return vieja or {}
+    for candidato in (data or {}).get("teams") or []:
+        if str(candidato.get("strSport", "")).strip().lower() != "soccer":
+            continue
+        if not _ficha_es_femenina(candidato):
+            continue
+        if _team_similarity_score(nombre, str(candidato.get("strTeam") or "")) < 0.9:
+            continue
+        _cache_set(THESPORTSDB_CACHE, cache_key, candidato)
+        return candidato
+    return vieja or {}
+
+
 def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> dict:
     resolved_country_hint = _guess_country_hint(team_name, country_hint)
-    cache_key = f"team:{resolved_country_hint or 'any'}:{team_name}"
+    categoria_pedida = _categoria_por_nombre(team_name)
+    if categoria_pedida == "female":
+        en_plantilla = _nombre_en_plantilla_liga_f(team_name)
+        if en_plantilla:
+            ficha = _ficha_por_nombre_exacto(en_plantilla)
+            if ficha:
+                return ficha
+    # Las fichas femeninas guardadas antes de esto pueden ser de otro club (el
+    # Deportivo (F) estaba cacheado como Always Ready): esas claves se
+    # abandonan y la primera consulta las rehace.
+    prefijo = "team:v2f" if categoria_pedida == "female" else "team"
+    cache_key = f"{prefijo}:{resolved_country_hint or 'any'}:{team_name}"
     fresca = _cache_get(THESPORTSDB_CACHE, cache_key, SPORTSDB_TTL_FRESCA)
     if fresca:
         return fresca
@@ -7651,10 +7768,12 @@ def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> 
     if vieja and not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
         return vieja
     known = _known_club_profile(team_name)
-    if known:
+    if known and (categoria_pedida != "female" or _ficha_es_femenina(known)):
+        # Para un equipo femenino el perfil conocido es el del primer equipo
+        # masculino: "R.MADRID (F)" salía como el Real Madrid, y de ahí los
+        # treinta partidos de LaLiga en el histórico de un cruce de Liga F.
         return vieja or known
     canonical_team_name = _canonical_team_name(team_name)
-    categoria_pedida = _categoria_por_nombre(team_name)
     # TheSportsDB no conoce el "(F)" de la quiniela: buscando "R.MADRID (F)" o
     # "Real Madrid" devuelve el primer equipo masculino y nunca el femenino. Hay
     # que preguntarle por el nombre que si usa.
@@ -7747,6 +7866,14 @@ def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> 
                 nombres_candidatos |= {
                     _sin_marca_femenina(candidate_name),
                     _sin_marca_femenina(candidate_alt),
+                }
+            if categoria_pedida == "female":
+                # El nombre alternativo es por donde entraba "Club Deportivo
+                # Always Ready" al buscar "Deportivo": se parecía en la palabra
+                # genérica, no en el club. Para femeninos solo cuenta el nombre.
+                nombres_candidatos = {
+                    candidate_name,
+                    _sin_marca_femenina(candidate_name),
                 }
             score = max(
                 _team_similarity_score(pedido, candidato)
@@ -9506,7 +9633,17 @@ def _es_el_mismo_club(pedido: str, candidato: str) -> bool:
             # Paris Saint Germain. Con prefijo se abriria demasiado.
             if len(token) == 3 and len(otros) >= 2 and token == iniciales:
                 return True
-            return any(c.startswith(token) or token.startswith(c) for c in otros)
+            # Que el candidato tenga una palabra corta -la "B" de un filial, el
+            # "CE" de "CE Sabadell"- no la convierte en el principio de nada:
+            # asi "Burgos CF" encajaba en "Celta B" ("B" -> "Burgos") y
+            # "Sabadell FC" en "Ceuta" ("CE" -> "Ceuta"), y Burgos, Sabadell y
+            # R.Sociedad B salian ambiguos y sin clasificacion. Las abreviaturas
+            # del boleto -"R." de Real, "AT." de Atletico- van en el otro
+            # sentido y siguen valiendo.
+            return any(
+                c.startswith(token) or (len(c) >= 3 and token.startswith(c))
+                for c in otros
+            )
 
         return all(casa(t) for t in unos)
 
@@ -14559,6 +14696,17 @@ def _infer_league_from_histories(home_team: str, away_team: str, histories: dict
     candidates = []
     for league_key, rows in (histories or {}).items():
         if not rows:
+            continue
+        # Que los dos equipos coincidan en un historico de torneo no dice en
+        # que se juega ESTE partido: el Betis esta en Champions y un
+        # Deportivo-Betis acababa como UCL; un España-Francia, como Mundial
+        # porque ya se cruzaron en uno. De un historico solo se deduce una
+        # liga domestica; la competicion de un torneo la dicen las cuotas.
+        clave = _canonical_league_key(league_key)
+        if clave in NON_DOMESTIC_LEAGUE_KEYS or (
+            clave.startswith("sportsdb_")
+            and clave.split("_", 1)[1] in NON_DOMESTIC_SPORTSDB_IDS
+        ):
             continue
         options = {
             str(row.get(field, "")).strip()
