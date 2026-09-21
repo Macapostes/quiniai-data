@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-21T02:05:53.380725+00:00",
-  "snapshot_generated_at": "2026-09-21T02:05:47.968473+00:00",
+  "generated_at": "2026-09-21T04:08:20.020940+00:00",
+  "snapshot_generated_at": "2026-09-21T04:08:14.613010+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -20,8 +20,8 @@
     "structured_focus_matches": 60,
     "structured_referees": 20,
     "focus_valid_tables": 8,
-    "focus_rosters_checked": 13,
-    "focus_rosters_checked_partial": 2,
+    "focus_rosters_checked": 12,
+    "focus_rosters_checked_partial": 3,
     "focus_referees_confirmed": 0,
     "focus_season_transition_covered": 15,
     "focus_season_transition_evidence": 402,
@@ -31,7 +31,7 @@
     "teams": 148,
     "matches": 136,
     "referees": 20,
-    "last_pruned_at": "2026-09-21T02:05:47.947978+00:00"
+    "last_pruned_at": "2026-09-21T04:08:14.592310+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -39,15 +39,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-09-20T03:43:36.157121+00:00",
-      "finished_at": "2026-09-20T04:02:42.503034+00:00",
-      "ok": true,
-      "duration_seconds": 1146.35,
-      "monitored_matches": 156,
-      "tracked_matches": 60,
-      "current_jornada": 9
-    },
     {
       "started_at": "2026-09-20T05:43:37.299999+00:00",
       "finished_at": "2026-09-20T06:07:04.769589+00:00",
@@ -143,6 +134,15 @@
       "finished_at": "2026-09-21T02:05:53.379879+00:00",
       "ok": true,
       "duration_seconds": 1328.55,
+      "monitored_matches": 143,
+      "tracked_matches": 60,
+      "current_jornada": 9
+    },
+    {
+      "started_at": "2026-09-21T03:43:46.261218+00:00",
+      "finished_at": "2026-09-21T04:08:20.020060+00:00",
+      "ok": true,
+      "duration_seconds": 1473.76,
       "monitored_matches": 143,
       "tracked_matches": 60,
       "current_jornada": 9
@@ -818,9 +818,9 @@
           },
           "travel_km": 732.8,
           "weather": {
-            "temperature_c": 23.2,
+            "temperature_c": 22.4,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 14.8
+            "wind_speed_kmh": 10.4
           },
           "referee": {
             "name": "no confirmado",
@@ -857,7 +857,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-21T01:57:58.152634+00:00",
+          "context_updated_at": "2026-09-21T03:57:57.505680+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 78,
@@ -1505,9 +1505,9 @@
           },
           "travel_km": 502.8,
           "weather": {
-            "temperature_c": 29.7,
+            "temperature_c": 32.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 12.4
+            "wind_speed_kmh": 7.0
           },
           "referee": {
             "name": "no confirmado",
@@ -1544,7 +1544,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-21T01:57:59.355044+00:00",
+          "context_updated_at": "2026-09-21T03:58:05.968351+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -2219,9 +2219,9 @@
           },
           "travel_km": 899.3,
           "weather": {
-            "temperature_c": 19.6,
-            "precipitation_probability": 8,
-            "wind_speed_kmh": 4.3
+            "temperature_c": 25.9,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 7.2
           },
           "referee": {
             "name": "no confirmado",
@@ -2247,21 +2247,21 @@
               "team": "Celta Fortuna",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 6
+              "verification_status": "not_verified",
+              "source_items_checked": 5
             },
             "away": {
               "team": "Sabadell FC",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 3
+              "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-21T01:58:05.106913+00:00",
+          "context_updated_at": "2026-09-21T03:58:15.199355+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 73,
+            "score": 70,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -2275,18 +2275,19 @@
               "porcentajes de quiniela",
               "calendario próximo",
               "H2H",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "sources_checked_no_confirmed_absence",
+              "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 6,
+              "availability_items": 5,
               "official_items": 0,
-              "match_items": 1,
+              "match_items": 0,
               "team_items": 39,
               "season_transition_items": 28,
-              "verified_teams": 2,
-              "home_roster_status": "sources_checked_no_confirmed_absence",
+              "verified_teams": 1,
+              "home_roster_status": "not_verified",
               "away_roster_status": "sources_checked_no_confirmed_absence",
               "referee_confirmed": false
             }
@@ -2978,9 +2979,9 @@
           },
           "travel_km": 1333.1,
           "weather": {
-            "temperature_c": 14.4,
-            "precipitation_probability": 44,
-            "wind_speed_kmh": 4.7
+            "temperature_c": 18.5,
+            "precipitation_probability": 41,
+            "wind_speed_kmh": 8.0
           },
           "referee": {
             "name": "no confirmado",
@@ -3017,7 +3018,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-21T01:58:12.064680+00:00",
+          "context_updated_at": "2026-09-21T03:58:24.317386+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -3728,9 +3729,9 @@
           },
           "travel_km": 414.6,
           "weather": {
-            "temperature_c": 21.8,
-            "precipitation_probability": 4,
-            "wind_speed_kmh": 7.3
+            "temperature_c": 23.7,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 2.3
           },
           "referee": {
             "name": "no confirmado",
@@ -3757,7 +3758,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "source_items_checked": 2
             },
             "away": {
               "team": "Córdoba",
@@ -3777,7 +3778,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-21T01:58:13.277723+00:00",
+          "context_updated_at": "2026-09-21T03:58:58.831723+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -3798,7 +3799,7 @@
               "roster_status": "confirmed_absences",
               "injury_items": 1,
               "availability_items": 2,
-              "official_items": 3,
+              "official_items": 1,
               "match_items": 0,
               "team_items": 29,
               "season_transition_items": 28,
@@ -4413,9 +4414,9 @@
           },
           "travel_km": 539.9,
           "weather": {
-            "temperature_c": 23.2,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 2.6
+            "temperature_c": 28.4,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 5.9
           },
           "referee": {
             "name": "no confirmado",
@@ -4452,7 +4453,7 @@
               "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-21T02:02:50.889025+00:00",
+          "context_updated_at": "2026-09-21T04:06:23.172393+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -5152,9 +5153,9 @@
           },
           "travel_km": 495.1,
           "weather": {
-            "temperature_c": 20.8,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 7.7
+            "temperature_c": 30.6,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 6.6
           },
           "referee": {
             "name": "no confirmado",
@@ -5191,7 +5192,7 @@
               "source_items_checked": 22
             }
           },
-          "context_updated_at": "2026-09-21T02:03:05.054465+00:00",
+          "context_updated_at": "2026-09-21T04:06:25.238192+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -5830,9 +5831,9 @@
           },
           "travel_km": 2038.0,
           "weather": {
-            "temperature_c": 18.1,
-            "precipitation_probability": 8,
-            "wind_speed_kmh": 0.6
+            "temperature_c": 31.8,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 7.5
           },
           "referee": {
             "name": "no confirmado",
@@ -5869,7 +5870,7 @@
               "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-09-21T02:03:23.912929+00:00",
+          "context_updated_at": "2026-09-21T04:06:28.370299+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -6554,9 +6555,9 @@
           },
           "travel_km": 447.9,
           "weather": {
-            "temperature_c": 16.7,
-            "precipitation_probability": 18,
-            "wind_speed_kmh": 2.3
+            "temperature_c": 20.2,
+            "precipitation_probability": 11,
+            "wind_speed_kmh": 3.9
           },
           "referee": {
             "name": "no confirmado",
@@ -6593,7 +6594,7 @@
               "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-09-21T02:03:45.641581+00:00",
+          "context_updated_at": "2026-09-21T04:06:33.557437+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -7223,9 +7224,9 @@
           },
           "travel_km": 314.6,
           "weather": {
-            "temperature_c": 31.8,
+            "temperature_c": 31.6,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 5.1
+            "wind_speed_kmh": 4.4
           },
           "referee": {
             "name": "no confirmado",
@@ -7262,7 +7263,7 @@
               "source_items_checked": 20
             }
           },
-          "context_updated_at": "2026-09-21T02:04:01.182024+00:00",
+          "context_updated_at": "2026-09-21T04:06:36.400812+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -7852,7 +7853,7 @@
           "travel_km": 309.4,
           "weather": {
             "temperature_c": 18.7,
-            "precipitation_probability": 14,
+            "precipitation_probability": 1,
             "wind_speed_kmh": 5.6
           },
           "referee": {
@@ -7884,7 +7885,7 @@
               "source_items_checked": 26
             }
           },
-          "context_updated_at": "2026-09-21T02:04:07.890597+00:00",
+          "context_updated_at": "2026-09-21T04:06:44.286341+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -8568,9 +8569,9 @@
           },
           "travel_km": 1907.7,
           "weather": {
-            "temperature_c": 22.4,
-            "precipitation_probability": 1,
-            "wind_speed_kmh": 3.4
+            "temperature_c": 21.9,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 2.3
           },
           "referee": {
             "name": "no confirmado",
@@ -8607,7 +8608,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-21T02:04:19.141413+00:00",
+          "context_updated_at": "2026-09-21T04:06:47.894908+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 58,
@@ -9256,9 +9257,9 @@
           },
           "travel_km": 709.9,
           "weather": {
-            "temperature_c": 30.4,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 4.7
+            "temperature_c": 33.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 2.3
           },
           "referee": {
             "name": "no confirmado",
@@ -9295,7 +9296,7 @@
               "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-09-21T02:04:31.172295+00:00",
+          "context_updated_at": "2026-09-21T04:06:50.093490+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -9957,9 +9958,9 @@
           },
           "travel_km": 9651.2,
           "weather": {
-            "temperature_c": 7.6,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 1.5
+            "temperature_c": 20.5,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 10.3
           },
           "referee": {
             "name": "no confirmado",
@@ -9996,7 +9997,7 @@
               "source_items_checked": 18
             }
           },
-          "context_updated_at": "2026-09-21T02:04:50.093658+00:00",
+          "context_updated_at": "2026-09-21T04:06:54.430046+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 58,
@@ -10498,7 +10499,7 @@
           "travel_km": 1263.4,
           "weather": {
             "temperature_c": 18.6,
-            "precipitation_probability": 4,
+            "precipitation_probability": 6,
             "wind_speed_kmh": 5.4
           },
           "referee": {
@@ -10540,7 +10541,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-21T01:58:21.608098+00:00",
+          "context_updated_at": "2026-09-21T03:59:05.638668+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 86,
@@ -11008,7 +11009,7 @@
           "travel_km": 17033.1,
           "weather": {
             "temperature_c": 22.1,
-            "precipitation_probability": 59,
+            "precipitation_probability": 49,
             "wind_speed_kmh": 3.2
           },
           "referee": {
@@ -11040,7 +11041,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-21T02:01:15.681074+00:00",
+          "context_updated_at": "2026-09-21T04:02:17.971553+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 44,
@@ -11324,9 +11325,9 @@
           },
           "travel_km": 3621.0,
           "weather": {
-            "temperature_c": 17.6,
-            "precipitation_probability": 1,
-            "wind_speed_kmh": 1.1
+            "temperature_c": 12.6,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 5.0
           },
           "referee": {
             "name": "no confirmado",
@@ -11357,7 +11358,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-21T02:01:21.203283+00:00",
+          "context_updated_at": "2026-09-21T04:02:32.894708+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 37,
@@ -11682,9 +11683,9 @@
           },
           "travel_km": 8303.1,
           "weather": {
-            "temperature_c": 28.2,
-            "precipitation_probability": 4,
-            "wind_speed_kmh": 18.0
+            "temperature_c": 28.5,
+            "precipitation_probability": 6,
+            "wind_speed_kmh": 20.4
           },
           "referee": {
             "name": "no confirmado",
@@ -11715,7 +11716,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-21T02:01:28.109018+00:00",
+          "context_updated_at": "2026-09-21T04:02:45.573923+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -11924,9 +11925,9 @@
           },
           "travel_km": 8065.6,
           "weather": {
-            "temperature_c": 13.3,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 5.7
+            "temperature_c": 14.3,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 4.5
           },
           "referee": {
             "name": "no confirmado",
@@ -11963,7 +11964,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-21T02:01:38.601709+00:00",
+          "context_updated_at": "2026-09-21T04:03:04.287069+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 27,
@@ -12323,8 +12324,8 @@
           "travel_km": 1863.9,
           "weather": {
             "temperature_c": 14.8,
-            "precipitation_probability": 1,
-            "wind_speed_kmh": 1.3
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 2.0
           },
           "referee": {
             "name": "no confirmado",
@@ -12355,7 +12356,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-21T02:01:40.947624+00:00",
+          "context_updated_at": "2026-09-21T04:03:20.619909+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 44,
@@ -12768,9 +12769,9 @@
           },
           "travel_km": 609.2,
           "weather": {
-            "temperature_c": 17.7,
+            "temperature_c": 16.4,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 6.0
+            "wind_speed_kmh": 6.6
           },
           "referee": {
             "name": "no confirmado",
@@ -12797,14 +12798,14 @@
               "team": "ALBANIA",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 1
+              "verification_status": "not_verified",
+              "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-21T02:01:43.959123+00:00",
+          "context_updated_at": "2026-09-21T04:03:36.138692+00:00",
           "data_confidence": {
             "nivel": "media",
-            "score": 48,
+            "score": 45,
             "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
               "liga identificada",
@@ -12812,26 +12813,27 @@
               "viaje",
               "temporada anterior de ambos equipos",
               "mercado, plantilla y pretemporada investigados",
-              "plantillas investigadas en fuentes recientes"
+              "una plantilla investigada en fuentes recientes"
             ],
             "faltan": [
               "cuotas/referencia 1X2",
               "porcentajes de quiniela",
               "calendario próximo",
               "H2H",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "sources_checked_no_confirmed_absence",
+              "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 2,
+              "availability_items": 1,
               "official_items": 2,
               "match_items": 0,
-              "team_items": 12,
+              "team_items": 11,
               "season_transition_items": 11,
-              "verified_teams": 2,
+              "verified_teams": 1,
               "home_roster_status": "sources_checked_no_confirmed_absence",
-              "away_roster_status": "sources_checked_no_confirmed_absence",
+              "away_roster_status": "not_verified",
               "referee_confirmed": false
             }
           },
@@ -13073,9 +13075,9 @@
           },
           "travel_km": 6563.1,
           "weather": {
-            "temperature_c": 15.2,
-            "precipitation_probability": 4,
-            "wind_speed_kmh": 22.8
+            "temperature_c": 14.8,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 20.9
           },
           "referee": {
             "name": "no confirmado",
@@ -13112,7 +13114,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-21T02:01:46.988977+00:00",
+          "context_updated_at": "2026-09-21T04:03:53.740687+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 38,
@@ -13417,9 +13419,9 @@
           },
           "travel_km": 3102.4,
           "weather": {
-            "temperature_c": 33.3,
+            "temperature_c": 33.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 11.4
+            "wind_speed_kmh": 11.0
           },
           "referee": {
             "name": "no confirmado",
@@ -13450,7 +13452,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-21T02:01:51.656163+00:00",
+          "context_updated_at": "2026-09-21T04:04:27.875900+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -13928,9 +13930,9 @@
           },
           "travel_km": 2967.4,
           "weather": {
-            "temperature_c": 20.1,
+            "temperature_c": 20.5,
             "precipitation_probability": 90,
-            "wind_speed_kmh": 1.1
+            "wind_speed_kmh": 1.0
           },
           "referee": {
             "name": "no confirmado",
@@ -13971,7 +13973,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-21T02:01:56.397427+00:00",
+          "context_updated_at": "2026-09-21T04:04:43.155774+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -14427,9 +14429,9 @@
           },
           "travel_km": 1047.5,
           "weather": {
-            "temperature_c": 12.3,
-            "precipitation_probability": 8,
-            "wind_speed_kmh": 14.7
+            "temperature_c": 12.7,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 12.4
           },
           "referee": {
             "name": "no confirmado",
@@ -14460,7 +14462,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-21T02:01:59.795182+00:00",
+          "context_updated_at": "2026-09-21T04:04:59.852438+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 55,
@@ -14983,8 +14985,8 @@
                   "player_name": "Joan Mir",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Joan Mir es baja para el Gran Premio de Austria - MARCA",
-                  "source": "MARCA",
+                  "headline": "Joan Mir es baja para el Gran Premio de Austria - marca.com",
+                  "source": "marca.com",
                   "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQUmkxOWJCT0M4R0ZOWmVtU2pEdUUyVXNqZEdwRmtkVnNGdVVyU1VlWl81SWl2Wm5UdXFCSGZnZlpGM2ZOck9LZFVQektIUXNwNFRSRVptUnhabmFmNlZ3bmZ3a2VXOHFaRi14QUhtV29nNmtGaGR1UVkwRzhoZkZROG5aZUZzS2NLcTJybkdsb1pKYlpVX0prQlpEY9IBmwFBVV95cUxQUmkxOWJCT0M4R0ZOWmVtU2pEdUUyVXNqZEdwRmtkVnNGdVVyU1VlWl81SWl2Wm5UdXFCSGZnZlpGM2ZOck9LZFVQektIUXNwNFRSRVptUnhabmFmNlZ3bmZ3a2VXOHFaRi14QUhtV29nNmtGaGR1UVkwRzhoZkZROG5aZUZzS2NLcTJybkdsb1pKYlpVX0prQlpEYw?oc=5",
                   "published_at": "Wed, 16 Sep 2026 09:00:38 GMT"
                 },
@@ -14992,8 +14994,8 @@
                   "player_name": "Gran Premio",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Joan Mir es baja para el Gran Premio de Austria - MARCA",
-                  "source": "MARCA",
+                  "headline": "Joan Mir es baja para el Gran Premio de Austria - marca.com",
+                  "source": "marca.com",
                   "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQUmkxOWJCT0M4R0ZOWmVtU2pEdUUyVXNqZEdwRmtkVnNGdVVyU1VlWl81SWl2Wm5UdXFCSGZnZlpGM2ZOck9LZFVQektIUXNwNFRSRVptUnhabmFmNlZ3bmZ3a2VXOHFaRi14QUhtV29nNmtGaGR1UVkwRzhoZkZROG5aZUZzS2NLcTJybkdsb1pKYlpVX0prQlpEY9IBmwFBVV95cUxQUmkxOWJCT0M4R0ZOWmVtU2pEdUUyVXNqZEdwRmtkVnNGdVVyU1VlWl81SWl2Wm5UdXFCSGZnZlpGM2ZOck9LZFVQektIUXNwNFRSRVptUnhabmFmNlZ3bmZ3a2VXOHFaRi14QUhtV29nNmtGaGR1UVkwRzhoZkZROG5aZUZzS2NLcTJybkdsb1pKYlpVX0prQlpEYw?oc=5",
                   "published_at": "Wed, 16 Sep 2026 09:00:38 GMT"
                 }
@@ -15003,7 +15005,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-21T02:02:04.289998+00:00",
+          "context_updated_at": "2026-09-21T04:05:14.757178+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 35,
@@ -15285,7 +15287,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-21T02:02:07.571277+00:00",
+          "context_updated_at": "2026-09-21T04:05:26.653780+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -15780,9 +15782,9 @@
           },
           "travel_km": 9108.1,
           "weather": {
-            "temperature_c": 24.8,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 5.7
+            "temperature_c": 25.3,
+            "precipitation_probability": 8,
+            "wind_speed_kmh": 4.3
           },
           "referee": {
             "name": "no confirmado",
@@ -15813,7 +15815,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-21T02:02:20.809822+00:00",
+          "context_updated_at": "2026-09-21T04:05:50.826514+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -16260,9 +16262,9 @@
           },
           "travel_km": 6712.5,
           "weather": {
-            "temperature_c": 30.8,
+            "temperature_c": 31.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 19.9
+            "wind_speed_kmh": 20.2
           },
           "referee": {
             "name": "no confirmado",
@@ -16293,7 +16295,7 @@
               "source_items_checked": 17
             }
           },
-          "context_updated_at": "2026-09-21T02:02:24.783471+00:00",
+          "context_updated_at": "2026-09-21T04:06:05.534341+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 58,
@@ -16756,9 +16758,9 @@
           },
           "travel_km": 1648.9,
           "weather": {
-            "temperature_c": 22.7,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 3.9
+            "temperature_c": 25.2,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 10.3
           },
           "referee": {
             "name": "no confirmado",
@@ -16799,7 +16801,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-21T01:58:29.121224+00:00",
+          "context_updated_at": "2026-09-21T03:59:07.736260+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 70,
@@ -18136,9 +18138,9 @@
           },
           "travel_km": 46.0,
           "weather": {
-            "temperature_c": 16.4,
+            "temperature_c": 18.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 3.7
+            "wind_speed_kmh": 2.5
           },
           "referee": {
             "name": "no confirmado",
@@ -18175,7 +18177,7 @@
               "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-21T02:01:04.534200+00:00",
+          "context_updated_at": "2026-09-21T04:01:56.797691+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 98,
@@ -19595,9 +19597,9 @@
           },
           "travel_km": 403.1,
           "weather": {
-            "temperature_c": 23.4,
+            "temperature_c": 23.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 5.4
+            "wind_speed_kmh": 4.0
           },
           "referee": {
             "name": "Javier Alberola",
@@ -19624,7 +19626,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 17
+              "source_items_checked": 18
             },
             "away": {
               "team": "Málaga",
@@ -19634,7 +19636,7 @@
               "source_items_checked": 33
             }
           },
-          "context_updated_at": "2026-09-21T01:56:54.303381+00:00",
+          "context_updated_at": "2026-09-21T03:57:24.813265+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -20354,9 +20356,9 @@
           },
           "travel_km": 697.1,
           "weather": {
-            "temperature_c": 26.0,
+            "temperature_c": 18.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 5.4
+            "wind_speed_kmh": 4.5
           },
           "referee": {
             "name": "no confirmado",
@@ -20393,7 +20395,7 @@
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 7
+              "source_items_checked": 5
             },
             "away": {
               "team": "Real Betis",
@@ -20433,23 +20435,14 @@
                   "source": "El Desmarque",
                   "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNeFN1YVVxVUt6eERiQnY5Q0h6am9FUkx2c0Qwak1PWkhmcnBHNmdaQlJERGYtZ0hyQWp4bTRyX3EzWGZ1S3lESU03d3c4MThzOUs1NWRtUHg3ektjb0ZxWk1uSHhQeVV6aUlLb0FYWjVCaE1RZ1hXUDd6TEMtQ0lKVDRVd19tZW5lMEJ3cXlZTTUwWVJlS0NfNnE5SWY4Q0ZhUVZuQ0kxVDRlVjZtZjIwd05wVmYwWmVHUV83V25ZN00?oc=5",
                   "published_at": "Sun, 20 Sep 2026 19:13:54 GMT"
-                },
-                {
-                  "player_name": "Diego Llorente",
-                  "verificado": false,
-                  "status": "out",
-                  "headline": "Diego Llorente no entrena y será baja para el Betis - Getafe - ABC",
-                  "source": "ABC",
-                  "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQUUlMa3R4aU1BbExKRmdaRzVQYWt2OXo0VDB5Rk4zcWlkOW5KUmpoU1lQT1JrOWNkSmVKZWdUN25sME5zTWpDY2JyNUlXR1BMSlFjZnNkMUtldnJXTVdVQzZaekVOc2ZrMXFSMzE4TWdGYUZPX0JCLXdXVm81SXpMM1pLdnBUbjNyYWFnRkhrVUlRQkJ5U2s4VjJzOWFsRThYMUw5OUlHNHZGUkduOXlwYUxfM1h3eHE4YXllUGRZaWV1MU5E0gHKAUFVX3lxTFBzaU1LTXFWWHRGODVfSDUxZ0FzOTMtaDk3X1d4UC1rekptZWloNng2MEpwWVB6cVFEdnlkalpjTXMxQXFVSEpFUDhXUzF1cU1BVjYtbXZQQTlhVmR4U3VpVnU3bFpGU3NfUDM4MjR6V0dLT2w2UEltOUdDYXJnZDZGc0dkYXlPYmQ2aERZR1hENDF3VlpseGdhYzlYUlRxSlM5dEN5NlB5SUhoLXhwZ2JJZGdiN1Fma05CQ0ItSUpvelNqOFZGUWtXSVE?oc=5",
-                  "published_at": "Wed, 16 Sep 2026 09:58:38 GMT"
                 }
               ],
-              "count": 5,
+              "count": 4,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 23
+              "source_items_checked": 22
             }
           },
-          "context_updated_at": "2026-09-21T02:01:08.591443+00:00",
+          "context_updated_at": "2026-09-21T04:02:00.597265+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -20467,11 +20460,11 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 6,
-              "availability_items": 20,
+              "injury_items": 5,
+              "availability_items": 18,
               "official_items": 4,
-              "match_items": 5,
-              "team_items": 47,
+              "match_items": 4,
+              "team_items": 44,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -21098,9 +21091,9 @@
           },
           "travel_km": 57.2,
           "weather": {
-            "temperature_c": 28.3,
+            "temperature_c": 18.8,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 13.0
+            "wind_speed_kmh": 5.7
           },
           "referee": {
             "name": "Mateo Busquets",
@@ -21127,17 +21120,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 18
+              "source_items_checked": 19
             },
             "away": {
               "team": "Levante",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 28
+              "source_items_checked": 30
             }
           },
-          "context_updated_at": "2026-09-21T01:57:16.449382+00:00",
+          "context_updated_at": "2026-09-21T03:57:51.305864+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -21794,9 +21787,9 @@
           },
           "travel_km": 448.3,
           "weather": {
-            "temperature_c": 26.0,
+            "temperature_c": 20.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 7.0
+            "wind_speed_kmh": 3.9
           },
           "referee": {
             "name": "José Luis Munuera",
@@ -21852,7 +21845,7 @@
               "source_items_checked": 34
             }
           },
-          "context_updated_at": "2026-09-21T01:57:31.898919+00:00",
+          "context_updated_at": "2026-09-21T03:57:51.620712+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -22521,7 +22514,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-21T02:01:10.041953+00:00",
+          "context_updated_at": "2026-09-21T04:02:02.378191+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 94,
@@ -23959,17 +23952,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 6
+              "source_items_checked": 5
             },
             "away": {
               "team": "Granada CF",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 9
+              "source_items_checked": 8
             }
           },
-          "context_updated_at": "2026-09-21T01:57:43.871678+00:00",
+          "context_updated_at": "2026-09-21T03:57:53.252152+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -23986,9 +23979,9 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 4,
+              "availability_items": 3,
               "official_items": 1,
-              "match_items": 6,
+              "match_items": 5,
               "team_items": 30,
               "season_transition_items": 28,
               "verified_teams": 2,
@@ -24657,9 +24650,9 @@
           },
           "travel_km": 233.2,
           "weather": {
-            "temperature_c": 23.2,
+            "temperature_c": 23.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 1.8
+            "wind_speed_kmh": 2.4
           },
           "referee": {
             "name": "no confirmado",
@@ -24696,7 +24689,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-21T02:05:05.209063+00:00",
+          "context_updated_at": "2026-09-21T04:07:05.483545+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 78,
@@ -25281,9 +25274,9 @@
           },
           "travel_km": 31.4,
           "weather": {
-            "temperature_c": 16.7,
+            "temperature_c": 16.6,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 1.1
+            "wind_speed_kmh": 1.8
           },
           "referee": {
             "name": "no confirmado",
@@ -25320,7 +25313,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-21T02:05:11.646186+00:00",
+          "context_updated_at": "2026-09-21T04:07:34.955498+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 83,
@@ -25951,9 +25944,9 @@
           },
           "travel_km": 302.4,
           "weather": {
-            "temperature_c": 23.1,
+            "temperature_c": 23.0,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 3.0
+            "wind_speed_kmh": 3.6
           },
           "referee": {
             "name": "no confirmado",
@@ -25984,7 +25977,7 @@
               "source_items_checked": 30
             }
           },
-          "context_updated_at": "2026-09-21T02:05:19.884461+00:00",
+          "context_updated_at": "2026-09-21T04:07:38.083771+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 78,
@@ -26676,9 +26669,9 @@
           },
           "travel_km": 1382.4,
           "weather": {
-            "temperature_c": 19.6,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 8.8
+            "temperature_c": 17.9,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 5.2
           },
           "referee": {
             "name": "no confirmado",
@@ -26715,7 +26708,7 @@
               "source_items_checked": 15
             }
           },
-          "context_updated_at": "2026-09-21T02:05:27.299532+00:00",
+          "context_updated_at": "2026-09-21T04:07:41.567132+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 83,
@@ -27370,9 +27363,9 @@
           },
           "travel_km": 29.9,
           "weather": {
-            "temperature_c": 27.5,
+            "temperature_c": 23.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 1.5
+            "wind_speed_kmh": 2.4
           },
           "referee": {
             "name": "no confirmado",
@@ -27487,24 +27480,6 @@
               "team": "Real Madrid",
               "items": [
                 {
-                  "player_name": "Kang",
-                  "verificado": false,
-                  "status": "out",
-                  "headline": "El Madrid señala a Kang-in y al árbitro: Valverde, lesionado - Diario AS",
-                  "source": "Diario AS",
-                  "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOdW9veC1ONXZrTXdSdkdoVWh1TVZlMUpfVGl5VXkwTXcyS2VKQXlZZkk4dERwUDVlOHhza3pUbzg3d1JfTGRqMGh1NHdKd1FPaWdnT3lTUndZWGZsdXJCXzR4WFUwSkdsSHM2R3hpS2otOG5tY25ReUNZUngxNFhYSDBLY1FMUzZLaVlMSEdVTE00M1FaM2fSAaoBQVVfeXFMTmpxTDlLVUdQeFM4UFFiTENJWk1BZVVoZUkteHJva296WVhudUdQNXExajlmSWpFRjBjY1dPTUpVREtuWHJTOEJTNUd6OXVYYlpMdjdpT2U3VVBEZTFhaV9OQ2szQ1l3OE5PbVBXWkVsUFl0NW9jUXYxdDV5Y3hkV1BtUXFxVjNFY3BfX2hhX0tjcWVqUExILWFhbmNkcHBMNWNRcWtKTEFfeHc?oc=5",
-                  "published_at": "Sun, 20 Sep 2026 18:30:28 GMT"
-                },
-                {
-                  "player_name": "Valverde",
-                  "verificado": false,
-                  "status": "out",
-                  "headline": "El Madrid señala a Kang-in y al árbitro: Valverde, lesionado - Diario AS",
-                  "source": "Diario AS",
-                  "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOdW9veC1ONXZrTXdSdkdoVWh1TVZlMUpfVGl5VXkwTXcyS2VKQXlZZkk4dERwUDVlOHhza3pUbzg3d1JfTGRqMGh1NHdKd1FPaWdnT3lTUndZWGZsdXJCXzR4WFUwSkdsSHM2R3hpS2otOG5tY25ReUNZUngxNFhYSDBLY1FMUzZLaVlMSEdVTE00M1FaM2fSAaoBQVVfeXFMTmpxTDlLVUdQeFM4UFFiTENJWk1BZVVoZUkteHJva296WVhudUdQNXExajlmSWpFRjBjY1dPTUpVREtuWHJTOEJTNUd6OXVYYlpMdjdpT2U3VVBEZTFhaV9OQ2szQ1l3OE5PbVBXWkVsUFl0NW9jUXYxdDV5Y3hkV1BtUXFxVjNFY3BfX2hhX0tjcWVqUExILWFhbmNkcHBMNWNRcWtKTEFfeHc?oc=5",
-                  "published_at": "Sun, 20 Sep 2026 18:30:28 GMT"
-                },
-                {
                   "player_name": "Fede Valverde",
                   "verificado": false,
                   "status": "watch",
@@ -27577,12 +27552,12 @@
                   "published_at": "Sun, 20 Sep 2026 17:46:18 GMT"
                 }
               ],
-              "count": 10,
+              "count": 8,
               "verification_status": "confirmed_absences",
               "source_items_checked": 38
             }
           },
-          "context_updated_at": "2026-09-21T01:56:59.843390+00:00",
+          "context_updated_at": "2026-09-21T03:57:25.601618+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -27601,7 +27576,7 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 19,
+              "injury_items": 17,
               "availability_items": 46,
               "official_items": 7,
               "match_items": 12,
@@ -27670,7 +27645,7 @@
     "ok": true,
     "degraded": false,
     "degraded_reason": "",
-    "provider_failures": 1259,
+    "provider_failures": 1280,
     "focus_matches": 15,
     "checked_evidence": 402,
     "invalid_evidence_count": 0,
