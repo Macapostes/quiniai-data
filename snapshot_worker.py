@@ -2174,6 +2174,8 @@ def _team_relevance_score(title: str, team_name: str) -> float:
     team_norm = _normalize_team_name(_canonical_team_name(team_name))
     if not title_norm or not team_norm:
         return 0.0
+    if _titular_de_otra_categoria(title, team_name):
+        return 0.0
     stop_tokens = {
         "a",
         "al",
@@ -2627,7 +2629,39 @@ def _annotate_season_transition_item(item: dict) -> dict:
     return enriched
 
 
+def _titular_de_otra_categoria(title: str, team_name: str) -> bool:
+    """True si el titular habla del otro equipo del club.
+
+    Al VALENCIA (F) - TENERIFE (F) de la jornada 9 le llegaron dieciséis
+    titulares sobre Javier Aguirre como nuevo entrenador del Valencia, que es
+    el masculino. Las noticias se buscan por nombre de equipo y al partido
+    femenino le llegaba "Valencia" a secas, así que la búsqueda traía al
+    primer equipo y nada lo filtraba después.
+
+    La regla es estricta a propósito: para un equipo femenino solo vale el
+    titular que se identifique como femenino. Se pierde alguna noticia buena
+    —"la capitana del Valencia se lesiona" no lleva marca—, pero un fichaje
+    del masculino colado en un informe de pago se ve a la legua y tira abajo
+    todo lo demás.
+    """
+    pedido_femenino = _categoria_por_nombre(team_name) == "female"
+    return pedido_femenino != bool(_parece_femenino(str(title or "")))
+
+
 def _team_query_terms(team_name: str) -> str:
+    if _categoria_por_nombre(team_name) == "female":
+        # Buscar "Valencia" devuelve al masculino. El club, en femenino, y con
+        # las tres formas que usa la prensa.
+        club = (
+            _sin_marca_femenina(_canonical_team_name(team_name))
+            or _sin_marca_femenina(team_name)
+            or team_name
+        ).strip()
+        # El boleto escribe en mayúsculas y los buscadores responden peor:
+        # "VALENCIA femenino" no es lo mismo que "Valencia femenino".
+        if club.isupper():
+            club = club.title()
+        return f'"{club} femenino" OR "{club} femenina" OR "{club} Liga F"'
     normalized = _normalize_team_name(team_name)
     hints = TEAM_NEWS_QUERY_HINTS.get(normalized) or TEAM_NEWS_QUERY_HINTS.get(normalized.split()[0] if normalized else "")
     if hints:
@@ -2690,6 +2724,8 @@ def _passes_team_news_quality(item: dict, team_name: str, require_signal: bool =
     source = str(item.get("source", "")).strip()
     domain = _safe_url_host(str(item.get("link", "")).strip())
     if not title:
+        return False
+    if _titular_de_otra_categoria(title, team_name):
         return False
     if _is_low_signal_source(source):
         return False
@@ -7202,6 +7238,83 @@ def fetch_focus_team_news(team_name: str) -> dict:
     except Exception:
         items = []
     payload = {"items": items, "signals": _summarize_news_signals(items), "query_count": len(queries)}
+    _cache_set(TEAM_NEWS_CACHE, cache_key, payload)
+    return payload
+
+
+def _noticias_femeninas(team_name: str, max_age_days: int, limite: int) -> list[dict]:
+    """Búsqueda ancha para un equipo femenino, y criba después.
+
+    El resto del worker pega palabras clave a la consulta -"lesion OR baja OR
+    sancion OR convocatoria..."- y en Liga F eso deja fuera casi todo: medido
+    sobre el Valencia, la frase sola devuelve veinte titulares y con las
+    palabras clave, uno. Aquí se busca ancho y se filtra en Python, que es
+    donde ya está la puerta de categoría.
+    """
+    club = (
+        _sin_marca_femenina(_canonical_team_name(team_name))
+        or _sin_marca_femenina(team_name)
+        or team_name
+    ).strip()
+    if club.isupper():
+        club = club.title()
+    items: list[dict] = []
+    for consulta in (f'"{club} femenino"', f'"{club} femenina"', f'"{club} Liga F"'):
+        try:
+            items.extend(
+                _query_news_with_relevance(
+                    consulta,
+                    lambda title, equipo=team_name: _team_relevance_score(title, equipo),
+                    limite * 2,
+                    max_age_days,
+                )
+            )
+        except Exception as exc:
+            LOGGER.warning("noticias_femeninas_failed team=%s error=%s", team_name, exc)
+    filtrados = [
+        item
+        for item in _predictive_news_items(items)
+        if _passes_team_news_quality(item, team_name, require_signal=False)
+    ]
+    return _clean_news_items(filtrados, max_age_days, limite)
+
+
+def fetch_focus_team_news_femenino(team_name: str) -> dict:
+    cache_key = f"v1:focus-fem:{team_name}"
+    cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
+    if cached:
+        return cached
+    items = _noticias_femeninas(team_name, TEAM_NEWS_MAX_AGE_DAYS, TEAM_NEWS_ITEMS)
+    payload = {"items": items, "signals": _summarize_news_signals(items), "query_count": 3}
+    _cache_set(TEAM_NEWS_CACHE, cache_key, payload)
+    return payload
+
+
+def fetch_season_transition_news_femenino(team_name: str) -> dict:
+    cache_key = f"v1:season-transition-fem:{team_name}"
+    cached = _cache_get(TEAM_NEWS_CACHE, cache_key, 24 * 3600)
+    if cached:
+        return cached
+    items = [
+        _annotate_season_transition_item(item)
+        for item in _noticias_femeninas(
+            team_name, SEASON_TRANSITION_NEWS_MAX_AGE_DAYS, SEASON_TRANSITION_NEWS_ITEMS
+        )
+    ]
+    counts = {
+        category: sum(1 for item in items if item.get("category") == category)
+        for category in [
+            "signing", "departure", "coach", "availability",
+            "preseason", "promotion_history", "squad", "morale",
+        ]
+    }
+    payload = {
+        "items": items,
+        "category_counts": counts,
+        "query_count": 3,
+        "lookback_days": SEASON_TRANSITION_NEWS_MAX_AGE_DAYS,
+        "coverage": "rich" if len(items) >= 5 else ("partial" if items else "none"),
+    }
     _cache_set(TEAM_NEWS_CACHE, cache_key, payload)
     return payload
 
@@ -12901,14 +13014,30 @@ def _competitive_context_line(team_name: str, table: dict, relegation: dict, obj
 
 
 def _enrich_quiniela_match(match: dict) -> None:
-    match_news = fetch_match_news(match["local"], match["visitante"])
-    referee_news_items = fetch_match_referee_news(match["local"], match["visitante"])
-    home_focus_news = fetch_focus_team_news(match["local"])
-    away_focus_news = fetch_focus_team_news(match["visitante"])
-    home_transition_news = fetch_season_transition_news(match["local"])
-    away_transition_news = fetch_season_transition_news(match["visitante"])
-    home_media_news = fetch_local_media_news(match["local"])
-    away_media_news = fetch_local_media_news(match["visitante"])
+    # Con el nombre del partido -"VALENCIA"- la búsqueda de noticias se trae al
+    # primer equipo masculino. El del boleto lleva la marca: "VALENCIA (F)".
+    local_noticias = _nombre_para_el_proveedor(match, "local") or match["local"]
+    visitante_noticias = _nombre_para_el_proveedor(match, "visitante") or match["visitante"]
+    match_news = fetch_match_news(local_noticias, visitante_noticias)
+    referee_news_items = fetch_match_referee_news(local_noticias, visitante_noticias)
+    # Un equipo femenino se busca por su cuenta: con las palabras clave de los
+    # buscadores normales se quedaba sin una sola noticia.
+    def _foco(nombre: str) -> dict:
+        if _categoria_por_nombre(nombre) == "female":
+            return fetch_focus_team_news_femenino(nombre)
+        return fetch_focus_team_news(nombre)
+
+    def _transicion(nombre: str) -> dict:
+        if _categoria_por_nombre(nombre) == "female":
+            return fetch_season_transition_news_femenino(nombre)
+        return fetch_season_transition_news(nombre)
+
+    home_focus_news = _foco(local_noticias)
+    away_focus_news = _foco(visitante_noticias)
+    home_transition_news = _transicion(local_noticias)
+    away_transition_news = _transicion(visitante_noticias)
+    home_media_news = fetch_local_media_news(local_noticias)
+    away_media_news = fetch_local_media_news(visitante_noticias)
     match["home_team_context"]["focus_news"] = home_focus_news
     match["away_team_context"]["focus_news"] = away_focus_news
     match["home_team_context"]["season_transition_news"] = home_transition_news
