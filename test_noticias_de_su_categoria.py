@@ -229,3 +229,84 @@ class ElBloqueGeneralTambienEsDeSuCategoriaTests(unittest.TestCase):
         titular = "El Valencia destituye a su entrenador Carlos Corberan y a toda la cupula"
         self.assertTrue(w._titular_de_otra_categoria(titular, "VALENCIA (F)"))
         self.assertFalse(w._titular_de_otra_categoria(titular, "Valencia CF"))
+
+
+class LoGuardadoTambienSeLimpiaTests(unittest.TestCase):
+    """Un partido sin cuotas no se vuelve a enriquecer: se sirve como se guardó.
+
+    Los cuatro cruces de Liga F de la jornada 9 no entran en el feed de cuotas,
+    así que ningún arreglo del enriquecimiento les llega nunca. Medido sobre el
+    snapshot real: 29 titulares del equipo masculino colgando de ellos, entre
+    ellos la destitución de Corberán en el VALENCIA (F). El filtro de hoy se
+    aplica también a lo ya guardado.
+
+    Los bloques no tienen la misma forma: el general se guarda como lista suelta
+    con sus señales al lado, y los otros como {"items": [...]}. Mirar solo los
+    segundos dejaba fuera justo los titulares de Corberán.
+    """
+
+    CORBERAN = "El Valencia destituye a su entrenador Carlos Corberan y a toda la cupula"
+    LIGA_F = "El Valencia CF inicia la pretemporada del regreso a la Liga F - Superdeporte"
+
+    def _partido(self):
+        return {
+            "local": "Valencia CF",
+            "visitante": "Tenerife",
+            "local_lae": "VALENCIA (F)",
+            "visitante_lae": "TENERIFE (F)",
+            "home_team_context": {
+                "news": [{"title": self.CORBERAN}, {"title": self.LIGA_F}],
+                "signals": {"injury": 1},
+                "focus_news": {"items": [{"title": self.CORBERAN}], "signals": {"injury": 1}},
+                "official_site": {"website": "x", "items": [{"title": self.CORBERAN}]},
+            },
+            "away_team_context": {},
+            "competition_context": {
+                "season_transition": {
+                    "home": {
+                        "all_evidence": [{"title": self.CORBERAN}, {"title": self.LIGA_F}],
+                        "evidence_count": 2,
+                    }
+                }
+            },
+        }
+
+    def test_se_retira_lo_del_masculino_y_se_queda_lo_suyo(self):
+        partido = self._partido()
+        retirados = w._limpiar_noticias_de_otra_categoria(partido)
+        self.assertEqual(retirados, 4)
+        ctx = partido["home_team_context"]
+        self.assertEqual([i["title"] for i in ctx["news"]], [self.LIGA_F])
+        self.assertEqual(ctx["focus_news"]["items"], [])
+        self.assertEqual(ctx["official_site"]["items"], [])
+
+    def test_el_bloque_general_se_guarda_como_lista(self):
+        """Mirar solo los diccionarios dejaba pasar justo lo de Corberán."""
+        partido = self._partido()
+        self.assertIsInstance(partido["home_team_context"]["news"], list)
+        w._limpiar_noticias_de_otra_categoria(partido)
+        self.assertNotIn(
+            self.CORBERAN, [i["title"] for i in partido["home_team_context"]["news"]]
+        )
+
+    def test_las_cuentas_se_rehacen(self):
+        partido = self._partido()
+        w._limpiar_noticias_de_otra_categoria(partido)
+        lado = partido["competition_context"]["season_transition"]["home"]
+        self.assertEqual(lado["evidence_count"], 1)
+        self.assertEqual([i["title"] for i in lado["all_evidence"]], [self.LIGA_F])
+
+    def test_a_un_partido_masculino_no_le_toca_lo_suyo(self):
+        partido = {
+            "local": "Valencia CF",
+            "visitante": "Granada CF",
+            "local_lae": "VALENCIA",
+            "visitante_lae": "GRANADA",
+            "home_team_context": {"news": [{"title": self.CORBERAN}]},
+        }
+        self.assertEqual(w._limpiar_noticias_de_otra_categoria(partido), 0)
+        self.assertEqual(len(partido["home_team_context"]["news"]), 1)
+
+    def test_el_ciclo_lo_hace_antes_de_publicar(self):
+        fuente = inspect.getsource(w.build_snapshot)
+        self.assertIn("_limpiar_noticias_de_otra_categoria(match)", fuente)

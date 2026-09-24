@@ -14131,6 +14131,89 @@ def _transicion_por_categoria(team_name: str) -> dict:
     return fetch_season_transition_news(team_name)
 
 
+BLOQUES_DE_NOTICIAS_DEL_EQUIPO = (
+    "news",
+    "focus_news",
+    "media_news",
+    "season_transition_news",
+    "official_site",
+)
+
+
+def _titulares_del_equipo(items: list, equipo: str) -> list:
+    """Se queda con los titulares que son de la categoria de este equipo."""
+    return [
+        item
+        for item in items
+        if not (
+            isinstance(item, dict)
+            and item.get("title")
+            and _titular_de_otra_categoria(str(item.get("title", "")), equipo)
+        )
+    ]
+
+
+def _filtrar_titulares(nodo, equipo: str) -> int:
+    """Quita de cualquier lista de titulares los que no son de este equipo."""
+    retirados = 0
+    if isinstance(nodo, dict):
+        for clave, valor in list(nodo.items()):
+            if isinstance(valor, list):
+                buenos = _titulares_del_equipo(valor, equipo)
+                if len(buenos) != len(valor):
+                    retirados += len(valor) - len(buenos)
+                    nodo[clave] = buenos
+            else:
+                retirados += _filtrar_titulares(valor, equipo)
+    return retirados
+
+
+def _limpiar_noticias_de_otra_categoria(match: dict) -> int:
+    """Aplica a un partido ya guardado el filtro de categoria de hoy.
+
+    Un cruce sin cuotas -en la jornada 9, los cuatro de Liga F- no vuelve a
+    pasar por el enriquecimiento pesado: se sirve tal como quedo guardado. Por
+    eso al VALENCIA (F) le seguian llegando cuatro titulares sobre la
+    destitucion de Corberan, entrenador del masculino: se eligieron antes de
+    que existiera el filtro y nadie los volvia a mirar. Se retiran; no se
+    inventa nada en su lugar.
+
+    Los bloques no tienen todos la misma forma: unos se guardan como
+    {"items": [...]} y el general, como lista suelta con sus senales al lado.
+    """
+    retirados = 0
+    for lado, side in (("local", "home"), ("visitante", "away")):
+        equipo = _nombre_para_el_proveedor(match, lado) or str(match.get(lado, "")).strip()
+        if not equipo:
+            continue
+        contexto = match.get(f"{side}_team_context") or {}
+        for bloque in BLOQUES_DE_NOTICIAS_DEL_EQUIPO:
+            dato = contexto.get(bloque)
+            if isinstance(dato, list):
+                buenos = _titulares_del_equipo(dato, equipo)
+                quitados = len(dato) - len(buenos)
+                if quitados:
+                    contexto[bloque] = buenos
+                    if isinstance(contexto.get("signals"), dict):
+                        contexto["signals"] = _summarize_news_signals(buenos)
+            elif isinstance(dato, dict):
+                quitados = _filtrar_titulares(dato, equipo)
+                if quitados and "signals" in dato:
+                    dato["signals"] = _summarize_news_signals(dato.get("items") or [])
+            else:
+                continue
+            retirados += quitados
+        transicion = ((match.get("competition_context") or {}).get("season_transition") or {})
+        lado_transicion = transicion.get(side)
+        if isinstance(lado_transicion, dict):
+            quitados = _filtrar_titulares(lado_transicion, equipo)
+            if quitados:
+                retirados += quitados
+                if isinstance(lado_transicion.get("all_evidence"), list):
+                    lado_transicion["evidence_count"] = len(lado_transicion["all_evidence"])
+    return retirados
+
+
 def _ensure_season_transition_context(match: dict) -> bool:
     """Completa solo plantilla/mercado sin repetir el enriquecimiento pesado."""
     competition = match.setdefault("competition_context", {})
@@ -16136,6 +16219,19 @@ def build_snapshot(raw_matches: list) -> dict:
                     _enrich_quiniela_match(match)
                 elif not competition_context.get("season_transition"):
                     _ensure_season_transition_context(match)
+    # Un partido guardado conserva las noticias que se eligieron el dia que se
+    # guardo. Los cruces sin cuotas no se vuelven a enriquecer nunca, asi que el
+    # filtro de categoria hay que aplicarselo aqui o no les llega jamas.
+    noticias_retiradas = 0
+    for jornada in quiniela_jornadas:
+        for match in jornada.get("matches", []):
+            noticias_retiradas += _limpiar_noticias_de_otra_categoria(match)
+    if noticias_retiradas:
+        print(
+            f"[categoria] {noticias_retiradas} titulares de otra categoria "
+            "retirados de partidos ya guardados"
+        )
+
     quiniela_integrity = _audit_quiniela_integrity(
         quiniela_jornadas,
         _safe_int(_eduardo_current_context().get("temporada")),
