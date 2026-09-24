@@ -105,3 +105,74 @@ class LaLimpiezaBorraLoQueLaAuditoriaRechazaTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ElBriefingSeRehaceAlLimpiarTests(unittest.TestCase):
+    """Limpiar el contexto no bastaba: el informe imprime una copia redactada.
+
+    Con el contexto ya limpio y la auditoría en verde, el feed publicado seguía
+    diciendo "local Mallorca: entrenador: Javier Aguirre, nuevo entrenador del
+    Valencia CF". La frase salía de focus_ai_briefing, que se redacta una vez y
+    se queda como está.
+    """
+
+    def _partido(self):
+        coach = {"title": AGUIRRE, "source": "Diario de Mallorca", "fact_status": "reported"}
+        lado = {
+            "previous_season": {"summary": "17º en LaLiga"},
+            "coach_changes": [coach],
+            "all_evidence": [coach],
+            "evidence_count": 1,
+        }
+        return {
+            "local": "Mallorca",
+            "visitante": "Almería",
+            "local_lae": "MALLORCA",
+            "visitante_lae": "ALMERIA",
+            "competition_context": {
+                "season_transition": {
+                    "home": lado,
+                    "away": {"previous_season": {"summary": "3º en Segunda"}, "all_evidence": []},
+                }
+            },
+            "focus_ai_briefing": {
+                "plantillas_y_transicion_de_temporada": {
+                    "local": {"entrenador": [{"titular": AGUIRRE}]},
+                    "visitante": {},
+                }
+            },
+        }
+
+    def test_la_frase_redactada_desaparece(self):
+        partido = self._partido()
+        w._limpiar_noticias_de_otra_categoria(partido)
+        briefing = partido["focus_ai_briefing"]["plantillas_y_transicion_de_temporada"]
+        self.assertEqual(briefing["local"]["entrenador"], [])
+
+    def test_un_partido_sin_briefing_no_revienta(self):
+        partido = self._partido()
+        partido.pop("focus_ai_briefing")
+        self.assertEqual(w._limpiar_noticias_de_otra_categoria(partido), 2)
+
+
+class CadaBloqueConSuFiltroTests(unittest.TestCase):
+    """La web del club casi nunca se nombra a sí misma."""
+
+    def _partido(self, bloque, titulares):
+        return {
+            "local": "Real Sociedad B",
+            "visitante": "Almería",
+            "local_lae": "SANSE",
+            "visitante_lae": "ALMERIA",
+            "home_team_context": {bloque: {"items": [{"title": t} for t in titulares]}},
+        }
+
+    def test_la_web_oficial_conserva_lo_suyo(self):
+        partido = self._partido("official_site", ["Promotion dream fulfilled"])
+        self.assertEqual(w._limpiar_noticias_de_otra_categoria(partido), 0)
+        self.assertEqual(len(partido["home_team_context"]["official_site"]["items"]), 1)
+
+    def test_las_noticias_buscadas_pasan_el_filtro_con_el_que_se_eligieron(self):
+        partido = self._partido("media_news", ["Promotion dream fulfilled"])
+        self.assertEqual(w._limpiar_noticias_de_otra_categoria(partido), 1)
+        self.assertEqual(partido["home_team_context"]["media_news"]["items"], [])

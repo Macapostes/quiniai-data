@@ -14178,10 +14178,20 @@ BLOQUES_DE_NOTICIAS_DEL_EQUIPO = (
     "season_transition_news",
     "official_site",
 )
+# La web del club casi nunca se nombra a si misma -"Trabaja con nosotros",
+# "Rueda de prensa del primer equipo"-, asi que ese bloque nunca paso por el
+# filtro de relevancia y aplicarselo ahora lo dejaria vacio. A los demas si,
+# porque es el filtro con el que se eligieron.
+BLOQUES_SIN_FILTRO_DE_RELEVANCIA = ("official_site",)
 
 
 def _es_de_su_categoria(titulo: str, equipo: str) -> bool:
     return not _titular_de_otra_categoria(titulo, equipo)
+
+
+def _titular_habla_del_equipo(titulo: str, equipo: str) -> bool:
+    """El filtro con el que se eligieron las noticias de equipo al buscarlas."""
+    return _team_relevance_score(titulo, equipo) > 0
 
 
 def _evidencia_de_transicion_vale(titulo: str, equipo: str) -> bool:
@@ -14239,16 +14249,21 @@ def _limpiar_noticias_de_otra_categoria(match: dict) -> int:
             continue
         contexto = match.get(f"{side}_team_context") or {}
         for bloque in BLOQUES_DE_NOTICIAS_DEL_EQUIPO:
+            criterio = (
+                _es_de_su_categoria
+                if bloque in BLOQUES_SIN_FILTRO_DE_RELEVANCIA
+                else _titular_habla_del_equipo
+            )
             dato = contexto.get(bloque)
             if isinstance(dato, list):
-                buenos = _titulares_del_equipo(dato, equipo)
+                buenos = _titulares_del_equipo(dato, equipo, criterio)
                 quitados = len(dato) - len(buenos)
                 if quitados:
                     contexto[bloque] = buenos
                     if isinstance(contexto.get("signals"), dict):
                         contexto["signals"] = _summarize_news_signals(buenos)
             elif isinstance(dato, dict):
-                quitados = _filtrar_titulares(dato, equipo)
+                quitados = _filtrar_titulares(dato, equipo, criterio)
                 if quitados and "signals" in dato:
                     dato["signals"] = _summarize_news_signals(dato.get("items") or [])
             else:
@@ -14267,7 +14282,29 @@ def _limpiar_noticias_de_otra_categoria(match: dict) -> int:
                 retirados += quitados
                 if isinstance(lado_transicion.get("all_evidence"), list):
                     lado_transicion["evidence_count"] = len(lado_transicion["all_evidence"])
+    if retirados:
+        _rehacer_briefing_de_plantillas(match)
     return retirados
+
+
+def _rehacer_briefing_de_plantillas(match: dict) -> None:
+    """El briefing es una copia ya redactada: hay que rehacerla o no cambia nada.
+
+    Limpiar el contexto no bastaba. El backend imprime este bloque -"entrenador
+    [publicado, no confirmado]: ..."-, asi que el titular retirado seguia
+    apareciendo en el informe con el contexto ya limpio detras.
+    """
+    briefing = match.get("focus_ai_briefing")
+    if not isinstance(briefing, dict) or not briefing:
+        return
+    transicion = ((match.get("competition_context") or {}).get("season_transition") or {})
+    if not transicion:
+        return
+    briefing["plantillas_y_transicion_de_temporada"] = {
+        "local": _transition_briefing_side(transicion.get("home") or {}),
+        "visitante": _transition_briefing_side(transicion.get("away") or {}),
+        "criterios_para_la_ia": transicion.get("analysis_priorities") or [],
+    }
 
 
 def _ensure_season_transition_context(match: dict) -> bool:
