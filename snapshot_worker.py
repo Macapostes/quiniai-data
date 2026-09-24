@@ -2662,6 +2662,23 @@ def _titular_de_otra_categoria(title: str, team_name: str) -> bool:
     return pedido_femenino != _titular_femenino(title)
 
 
+def _lo_guardado_sigue_pasando_el_filtro(payload: dict, team_name: str) -> bool:
+    """Las noticias guardadas se eligieron con el filtro de aquel dia.
+
+    El 23/09 por la noche la marca de categoria estaba rota -un caracter de
+    control donde debia ir un limite de palabra- y no reconocia "Femeni" ni
+    "Liga F". Con la expresion ya arreglada, la cache seguia devolviendo lo
+    que se habia elegido sin ella: noticias femeninas colgando de equipos
+    masculinos que la auditoria rechazaba, ciclo tras ciclo, sin volver a
+    buscar nunca. Antes de reutilizar lo guardado se comprueba con el filtro
+    de hoy; si algo ya no vale, se busca de nuevo.
+    """
+    for item in (payload or {}).get("items") or []:
+        if _titular_de_otra_categoria(str(item.get("title", "")), team_name):
+            return False
+    return True
+
+
 def _team_query_terms(team_name: str) -> str:
     if _categoria_por_nombre(team_name) == "female":
         # Buscar "Valencia" devuelve al masculino. El club, en femenino, y con
@@ -7190,7 +7207,7 @@ def _query_news_with_relevance(
 def fetch_team_news(team_name: str) -> dict:
     cache_key = f"v12:team:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
-    if cached:
+    if cached and _lo_guardado_sigue_pasando_el_filtro(cached, team_name):
         return cached
     queries = []
     try:
@@ -7222,7 +7239,7 @@ def fetch_team_news(team_name: str) -> dict:
 def fetch_focus_team_news(team_name: str) -> dict:
     cache_key = f"v13:focus:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
-    if cached:
+    if cached and _lo_guardado_sigue_pasando_el_filtro(cached, team_name):
         return cached
     team_query = _team_query_terms(team_name)
     queries = [
@@ -7296,7 +7313,7 @@ def _noticias_femeninas(team_name: str, max_age_days: int, limite: int) -> list[
 def fetch_focus_team_news_femenino(team_name: str) -> dict:
     cache_key = f"v1:focus-fem:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
-    if cached:
+    if cached and _lo_guardado_sigue_pasando_el_filtro(cached, team_name):
         return cached
     items = _noticias_femeninas(team_name, TEAM_NEWS_MAX_AGE_DAYS, TEAM_NEWS_ITEMS)
     payload = {"items": items, "signals": _summarize_news_signals(items), "query_count": 3}
@@ -7307,7 +7324,7 @@ def fetch_focus_team_news_femenino(team_name: str) -> dict:
 def fetch_season_transition_news_femenino(team_name: str) -> dict:
     cache_key = f"v1:season-transition-fem:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, 24 * 3600)
-    if cached:
+    if cached and _lo_guardado_sigue_pasando_el_filtro(cached, team_name):
         return cached
     items = [
         _annotate_season_transition_item(item)
@@ -7343,7 +7360,7 @@ def fetch_season_transition_news(team_name: str) -> dict:
     """
     cache_key = f"v6:season-transition:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, 24 * 3600)
-    if cached:
+    if cached and _lo_guardado_sigue_pasando_el_filtro(cached, team_name):
         return cached
     team_query = _team_query_terms(team_name)
     queries = [
@@ -7407,7 +7424,7 @@ def fetch_season_transition_news(team_name: str) -> dict:
 def fetch_local_media_news(team_name: str) -> dict:
     cache_key = f"v13:media:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
-    if cached:
+    if cached and _lo_guardado_sigue_pasando_el_filtro(cached, team_name):
         return cached
     team_query = _team_query_terms(team_name)
     team_hint_key = _normalize_team_name(team_name)
@@ -13970,10 +13987,14 @@ def _audit_season_transition_snapshot(snapshot: dict) -> dict:
     for match in focus_matches:
         match_label = f"{match.get('local', '')} - {match.get('visitante', '')}".strip(" -")
         transition = ((match.get("competition_context") or {}).get("season_transition") or {})
-        for side, team_name in (
-            ("home", str(match.get("local", "")).strip()),
-            ("away", str(match.get("visitante", "")).strip()),
-        ):
+        for side, lado in (("home", "local"), ("away", "visitante")):
+            # Con el nombre sin marca -"VALENCIA"- una noticia femenina correcta
+            # de un cruce femenino se juzga contra el equipo masculino y sale
+            # invalida. Se juzga con el mismo nombre con el que se buscó.
+            team_name = (
+                _nombre_para_el_proveedor(match, lado)
+                or str(match.get(lado, "")).strip()
+            )
             side_context = transition.get(side) or {}
             previous_summary = str(
                 ((side_context.get("previous_season") or {}).get("summary") or "")
@@ -14075,20 +14096,63 @@ def _transition_briefing_side(context: dict) -> dict:
     }
 
 
+def _transicion_guardada_sigue_valiendo(match: dict, transicion: dict) -> bool:
+    """¿La transición que ya trae el partido pasa el filtro de hoy?
+
+    Se reutilizaba sin mirarla. Cuando se añadió el filtro por categoría, las
+    evidencias guardadas en ciclos anteriores dejaron de pasarlo -noticias
+    femeninas colgando de equipos masculinos- y la auditoría rechazaba el
+    snapshot entero, ciclo tras ciclo, porque nunca se reconstruía. Aquí se
+    aplica el mismo criterio que usa la auditoría: si algo ya no vale, se
+    rehace.
+    """
+    for side, lado in (("home", "local"), ("away", "visitante")):
+        equipo = (
+            _nombre_para_el_proveedor(match, lado) or str(match.get(lado, "")).strip()
+        )
+        if not equipo:
+            return False
+        for item in ((transicion.get(side) or {}).get("all_evidence") or []):
+            titulo = str(item.get("title", "")).strip()
+            if _team_relevance_score(titulo, equipo) <= 0 or _is_opponent_only_transition_title(
+                titulo, equipo
+            ):
+                print(
+                    f"[transicion] {match.get('local','')} - {match.get('visitante','')}: "
+                    f"evidencia guardada que ya no vale ({titulo[:70]!r}); se rehace"
+                )
+                return False
+    return True
+
+
+def _transicion_por_categoria(team_name: str) -> dict:
+    if _categoria_por_nombre(team_name) == "female":
+        return fetch_season_transition_news_femenino(team_name)
+    return fetch_season_transition_news(team_name)
+
+
 def _ensure_season_transition_context(match: dict) -> bool:
     """Completa solo plantilla/mercado sin repetir el enriquecimiento pesado."""
     competition = match.setdefault("competition_context", {})
     existing = competition.get("season_transition") or {}
-    if existing.get("home") and existing.get("away"):
+    if (
+        existing.get("home")
+        and existing.get("away")
+        and _transicion_guardada_sigue_valiendo(match, existing)
+    ):
         return False
 
-    home_team = str(match.get("local", "")).strip()
-    away_team = str(match.get("visitante", "")).strip()
+    # Con el nombre del partido -"VALENCIA"- las noticias que se traen son las
+    # del primer equipo masculino. El del boleto lleva la marca: "VALENCIA (F)".
+    home_team = _nombre_para_el_proveedor(match, "local") or str(match.get("local", "")).strip()
+    away_team = (
+        _nombre_para_el_proveedor(match, "visitante") or str(match.get("visitante", "")).strip()
+    )
     if not home_team or not away_team:
         return False
 
-    home_news = fetch_season_transition_news(home_team)
-    away_news = fetch_season_transition_news(away_team)
+    home_news = _transicion_por_categoria(home_team)
+    away_news = _transicion_por_categoria(away_team)
     match.setdefault("home_team_context", {})["season_transition_news"] = home_news
     match.setdefault("away_team_context", {})["season_transition_news"] = away_news
 

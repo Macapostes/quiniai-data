@@ -142,3 +142,52 @@ class LaContaminacionVaEnLosDosSentidosTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LaCacheSeVuelveAComprobarTests(unittest.TestCase):
+    """Lo guardado se eligió con el filtro de aquel día, no con el de hoy.
+
+    Esto tumbó el snapshot dos ciclos seguidos. La noche del 23 la marca de
+    categoría estaba rota y la búsqueda guardó noticias femeninas para equipos
+    masculinos. Arreglada la expresión, la caché seguía devolviendo aquello: la
+    auditoría lo rechazaba y nadie volvía a buscar nunca.
+    """
+
+    GUARDADO_SUCIO = {
+        "items": [
+            {"title": "El Andorra anuncia el fichaje de Nacho Quintana - AS"},
+            {"title": "El Barca Femeni realizara un stage de pretemporada en Andorra la Vella"},
+        ]
+    }
+    GUARDADO_LIMPIO = {"items": [{"title": "El Andorra anuncia el fichaje de Nacho Quintana - AS"}]}
+
+    def test_lo_contaminado_no_se_reutiliza(self):
+        self.assertFalse(w._lo_guardado_sigue_pasando_el_filtro(self.GUARDADO_SUCIO, "Andorra CF"))
+
+    def test_lo_bueno_se_sigue_reutilizando(self):
+        self.assertTrue(w._lo_guardado_sigue_pasando_el_filtro(self.GUARDADO_LIMPIO, "Andorra CF"))
+        self.assertTrue(w._lo_guardado_sigue_pasando_el_filtro({"items": []}, "Andorra CF"))
+
+    def test_y_al_femenino_le_vale_lo_femenino(self):
+        self.assertTrue(
+            w._lo_guardado_sigue_pasando_el_filtro(
+                {"items": [{"title": "Gabi Nunes regresa a Liga F para reforzar al Atletico"}]},
+                "AT.MADRID (F)",
+            )
+        )
+
+    def test_todos_los_buscadores_lo_comprueban(self):
+        for funcion in (
+            w.fetch_team_news,
+            w.fetch_focus_team_news,
+            w.fetch_focus_team_news_femenino,
+            w.fetch_season_transition_news,
+            w.fetch_season_transition_news_femenino,
+            w.fetch_local_media_news,
+        ):
+            fuente = inspect.getsource(funcion)
+            self.assertIn(
+                "if cached and _lo_guardado_sigue_pasando_el_filtro(cached, team_name):",
+                fuente,
+                funcion.__name__,
+            )
