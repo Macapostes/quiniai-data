@@ -2169,7 +2169,47 @@ def _headline_recent_enough(item: dict, max_age_days: int) -> bool:
     return age_days <= max_age_days
 
 
+_TITULO_Y_FUENTE = re.compile(r"^(?P<titulo>.+?)\s+[-–—]\s+(?P<fuente>[^-–—]{2,45})$")
+# Lo que puede sobrar en el nombre de un club sin dejar de ser el club.
+_PALABRAS_QUE_SOBRAN_EN_UNA_FUENTE = {
+    "de", "del", "la", "el", "los", "las", "club", "futbol", "balompie",
+    "sad", "oficial", "web", "and",
+    # Las siglas siguen ahi: _normalize_team_name solo las quita cuando van
+    # entre espacios, y al final del nombre no lo estan.
+    "cf", "fc", "cd", "sd", "ud", "rcd", "rcde", "sc", "afc", "ca", "cff",
+    "cp", "ce", "fs", "ac",
+}
+
+
+def _la_fuente_es_el_club(source: str, team_name: str) -> bool:
+    """La noticia la publica el propio club, no un periodico que se llama igual."""
+    fuente = set(_normalize_team_name(source).split())
+    equipo = set(_normalize_team_name(_canonical_team_name(team_name)).split())
+    if not fuente or not equipo or not (fuente & equipo):
+        return False
+    return not (fuente - equipo - _PALABRAS_QUE_SOBRAN_EN_UNA_FUENTE)
+
+
+def _titulo_sin_el_periodico(title: str, team_name: str) -> str:
+    """Descuenta la cabecera del periodico al medir de quien habla un titular.
+
+    "Javier Aguirre, nuevo entrenador del Valencia CF - Diario de Mallorca"
+    se le colgaba al Mallorca, y el informe de pago decia que el Mallorca
+    tenia entrenador nuevo: el equipo estaba en la cabecera del periodico, no
+    en la noticia. Al reves, la web del club si es senal -"Acuerdo para el
+    traspaso de Hugo San - Real Valladolid CF"-, asi que la fuente solo se
+    descuenta cuando no es el club.
+    """
+    marca = _TITULO_Y_FUENTE.match(str(title or "").strip())
+    if not marca:
+        return title
+    if _la_fuente_es_el_club(marca.group("fuente"), team_name):
+        return title
+    return marca.group("titulo")
+
+
 def _team_relevance_score(title: str, team_name: str) -> float:
+    title = _titulo_sin_el_periodico(title, team_name)
     title_norm = _normalize_team_name(title)
     team_norm = _normalize_team_name(_canonical_team_name(team_name))
     if not title_norm or not team_norm:
@@ -14140,31 +14180,42 @@ BLOQUES_DE_NOTICIAS_DEL_EQUIPO = (
 )
 
 
-def _titulares_del_equipo(items: list, equipo: str) -> list:
-    """Se queda con los titulares que son de la categoria de este equipo."""
+def _es_de_su_categoria(titulo: str, equipo: str) -> bool:
+    return not _titular_de_otra_categoria(titulo, equipo)
+
+
+def _evidencia_de_transicion_vale(titulo: str, equipo: str) -> bool:
+    """El mismo criterio que usa la auditoria para aceptar una evidencia."""
+    return _team_relevance_score(titulo, equipo) > 0 and not _is_opponent_only_transition_title(
+        titulo, equipo
+    )
+
+
+def _titulares_del_equipo(items: list, equipo: str, criterio=_es_de_su_categoria) -> list:
+    """Se queda con los titulares que pasan el criterio para este equipo."""
     return [
         item
         for item in items
         if not (
             isinstance(item, dict)
             and item.get("title")
-            and _titular_de_otra_categoria(str(item.get("title", "")), equipo)
+            and not criterio(str(item.get("title", "")), equipo)
         )
     ]
 
 
-def _filtrar_titulares(nodo, equipo: str) -> int:
+def _filtrar_titulares(nodo, equipo: str, criterio=_es_de_su_categoria) -> int:
     """Quita de cualquier lista de titulares los que no son de este equipo."""
     retirados = 0
     if isinstance(nodo, dict):
         for clave, valor in list(nodo.items()):
             if isinstance(valor, list):
-                buenos = _titulares_del_equipo(valor, equipo)
+                buenos = _titulares_del_equipo(valor, equipo, criterio)
                 if len(buenos) != len(valor):
                     retirados += len(valor) - len(buenos)
                     nodo[clave] = buenos
             else:
-                retirados += _filtrar_titulares(valor, equipo)
+                retirados += _filtrar_titulares(valor, equipo, criterio)
     return retirados
 
 
@@ -14206,7 +14257,12 @@ def _limpiar_noticias_de_otra_categoria(match: dict) -> int:
         transicion = ((match.get("competition_context") or {}).get("season_transition") or {})
         lado_transicion = transicion.get(side)
         if isinstance(lado_transicion, dict):
-            quitados = _filtrar_titulares(lado_transicion, equipo)
+            # Aqui el criterio es el de la auditoria, ni mas ni menos estricto:
+            # lo que ella rechaza tiene que salir antes, o el snapshot se queda
+            # otra vez sin publicar por algo que ya sabemos que sobra.
+            quitados = _filtrar_titulares(
+                lado_transicion, equipo, criterio=_evidencia_de_transicion_vale
+            )
             if quitados:
                 retirados += quitados
                 if isinstance(lado_transicion.get("all_evidence"), list):
