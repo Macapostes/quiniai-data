@@ -14431,10 +14431,24 @@ def _team_country_hints(raw_matches: list) -> dict:
     return hints
 
 
+def _noticias_del_equipo(team_name: str) -> dict:
+    """El bloque general de noticias, cada equipo en su categoria.
+
+    Los otros dos bloques -foco y transicion- ya lo hacian; este no, y era el
+    que llevaba a la jornada 9 del VALENCIA (F) la destitucion de Corberan,
+    que entrena al masculino. Un equipo femenino usa la busqueda ancha, la
+    misma del bloque de foco y con el mismo formato, porque las consultas con
+    palabras clave en Liga F no encuentran casi nada.
+    """
+    if _categoria_por_nombre(team_name) == "female":
+        return fetch_focus_team_news_femenino(team_name)
+    return fetch_team_news(team_name)
+
+
 def _enrich_team(team_name: str, country_hint: str | None) -> dict:
     return {
         "profile": fetch_team_profile(team_name, country_hint),
-        "news": fetch_team_news(team_name),
+        "news": _noticias_del_equipo(team_name),
     }
 
 
@@ -15027,18 +15041,29 @@ def _bootstrap_quiniela_placeholder(
         _canonical_league_key(match.get("league", "")),
     )
 
-    home_context = team_contexts.get(home_team)
+    # El contexto de equipo se guarda por nombre y se comparte entre partidos.
+    # Con el nombre canonizado -"Valencia"- el cruce femenino se quedaba con el
+    # contexto del masculino: misma clave, mismas noticias. El del boleto lleva
+    # la marca de categoria y le da entrada propia.
+    nombre_local = _nombre_para_el_proveedor(match, "local") or home_team
+    nombre_visitante = _nombre_para_el_proveedor(match, "visitante") or away_team
+
+    home_context = team_contexts.get(nombre_local)
     if not home_context:
-        home_context = _enrich_team(home_team, _guess_country_hint(home_team, league_country_hint))
-        team_contexts[home_team] = home_context
+        home_context = _enrich_team(
+            nombre_local, _guess_country_hint(home_team, league_country_hint)
+        )
+        team_contexts[nombre_local] = home_context
     elif league_country_hint:
-        home_context["profile"] = fetch_team_profile(home_team, league_country_hint)
-    away_context = team_contexts.get(away_team)
+        home_context["profile"] = fetch_team_profile(nombre_local, league_country_hint)
+    away_context = team_contexts.get(nombre_visitante)
     if not away_context:
-        away_context = _enrich_team(away_team, _guess_country_hint(away_team, league_country_hint))
-        team_contexts[away_team] = away_context
+        away_context = _enrich_team(
+            nombre_visitante, _guess_country_hint(away_team, league_country_hint)
+        )
+        team_contexts[nombre_visitante] = away_context
     elif league_country_hint:
-        away_context["profile"] = fetch_team_profile(away_team, league_country_hint)
+        away_context["profile"] = fetch_team_profile(nombre_visitante, league_country_hint)
 
     home_profile = _repair_profile_location(
         home_team,

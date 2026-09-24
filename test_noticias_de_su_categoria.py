@@ -191,3 +191,41 @@ class LaCacheSeVuelveAComprobarTests(unittest.TestCase):
                 fuente,
                 funcion.__name__,
             )
+
+
+class ElBloqueGeneralTambienEsDeSuCategoriaTests(unittest.TestCase):
+    """El tercer bloque de noticias, el que se quedó fuera del primer arreglo.
+
+    Con Aguirre ya filtrado, al VALENCIA (F) de la jornada 9 seguían llegando
+    cuatro titulares sobre la destitución de Corberán —entrenador del
+    masculino— por otra puerta: el contexto de equipo se guarda por nombre y
+    se comparte entre partidos, así que el cruce femenino heredaba entero el
+    del masculino.
+    """
+
+    def test_un_equipo_femenino_usa_la_busqueda_ancha(self):
+        llamadas = []
+        original_fem = w.fetch_focus_team_news_femenino
+        original = w.fetch_team_news
+        w.fetch_focus_team_news_femenino = lambda n: llamadas.append(("fem", n)) or {}
+        w.fetch_team_news = lambda n: llamadas.append(("masc", n)) or {}
+        try:
+            w._noticias_del_equipo("VALENCIA (F)")
+            w._noticias_del_equipo("Valencia CF")
+        finally:
+            w.fetch_focus_team_news_femenino = original_fem
+            w.fetch_team_news = original
+        self.assertEqual(llamadas, [("fem", "VALENCIA (F)"), ("masc", "Valencia CF")])
+
+    def test_el_contexto_no_se_comparte_entre_categorias(self):
+        fuente = inspect.getsource(w)
+        bloque = fuente[fuente.index("nombre_local = _nombre_para_el_proveedor(match"):][:900]
+        self.assertIn("team_contexts.get(nombre_local)", bloque)
+        self.assertIn("team_contexts[nombre_local] = home_context", bloque)
+        self.assertIn("team_contexts.get(nombre_visitante)", bloque)
+        self.assertNotIn("team_contexts.get(home_team)", bloque)
+
+    def test_la_destitucion_del_masculino_no_pasa_el_filtro(self):
+        titular = "El Valencia destituye a su entrenador Carlos Corberan y a toda la cupula"
+        self.assertTrue(w._titular_de_otra_categoria(titular, "VALENCIA (F)"))
+        self.assertFalse(w._titular_de_otra_categoria(titular, "Valencia CF"))
