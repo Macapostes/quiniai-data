@@ -79,5 +79,66 @@ class ElPartidoBuscaConElNombreDelBoletoTests(unittest.TestCase):
             self.assertNotIn(palabra, codigo)
 
 
+
+class LaMarcaFemeninaSeBuscaPorPalabrasTests(unittest.TestCase):
+    """Buscarla por trozos de texto tumbó un snapshot entero.
+
+    "liga f" aparece dentro de "liga francesa" y de "LaLiga Fantasy", así que
+    titulares masculinos normales contaban como femeninos, la auditoría de
+    contexto los daba por evidencia inválida y rechazaba la publicación.
+    """
+
+    def test_liga_francesa_no_es_liga_f(self):
+        self.assertFalse(w._titular_femenino("El Andorra jugara en la liga francesa"))
+        self.assertFalse(w._titular_femenino("LaLiga Fantasy: los fichajes del Andorra"))
+
+    def test_liga_f_de_verdad_si(self):
+        self.assertTrue(w._titular_femenino("La Liga F arranca este fin de semana"))
+
+    def test_las_formas_que_usa_la_prensa(self):
+        for titular in (
+            "El Barca Femeni golea",
+            "Athletic Club Women gana en San Mames",
+            "El Atletico femenino ficha a una delantera",
+            "Frauen-Bundesliga: resultados",
+        ):
+            self.assertTrue(w._titular_femenino(titular), titular)
+
+
+class LaContaminacionVaEnLosDosSentidosTests(unittest.TestCase):
+    """Los nueve titulares que rechazó la auditoría del 23/09, todos reales.
+
+    Eran noticias femeninas guardadas en el contexto de equipos MASCULINOS: el
+    espejo del caso de Aguirre. El filtro las caza, y por eso hay que tirar la
+    caché de noticias anterior: se eligieron cuando no existía.
+    """
+
+    CASOS = [
+        ("ANDORRA", "El Barca Femeni realizara un stage de pretemporada en Andorra la Vella"),
+        ("TENERIFE", "Asi afronta el Costa Adeje Tenerife su nueva temporada en la Liga F"),
+        ("AT.MADRID", "Gabi Nunes regresa a Liga F para reforzar el ataque del Atletico de Madrid"),
+        ("VALENCIA", "El Valencia CF inicia la pretemporada del regreso a la Liga F"),
+    ]
+
+    def test_una_noticia_femenina_no_es_del_equipo_masculino(self):
+        for equipo, titular in self.CASOS:
+            self.assertTrue(w._titular_de_otra_categoria(titular, equipo), titular)
+
+    def test_y_esa_misma_noticia_si_es_del_femenino(self):
+        for equipo, titular in self.CASOS:
+            self.assertFalse(w._titular_de_otra_categoria(titular, f"{equipo} (F)"), titular)
+
+    def test_la_cache_de_noticias_se_abandona(self):
+        """Lo guardado antes se eligió sin filtro y la auditoría lo rechaza."""
+        import inspect
+
+        for funcion, version in (
+            (w.fetch_team_news, "v12:team:"),
+            (w.fetch_focus_team_news, "v13:focus:"),
+            (w.fetch_season_transition_news, "v6:season-transition:"),
+            (w.fetch_local_media_news, "v13:media:"),
+        ):
+            self.assertIn(version, inspect.getsource(funcion))
+
 if __name__ == "__main__":
     unittest.main()

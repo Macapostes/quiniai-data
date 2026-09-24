@@ -2629,6 +2629,20 @@ def _annotate_season_transition_item(item: dict) -> dict:
     return enriched
 
 
+# En un titular hay que buscar la marca femenina por palabras completas. Con
+# trozos de texto, "liga f" aparece dentro de "liga francesa" y de "LaLiga
+# Fantasy", y un titular masculino cualquiera acababa contando como femenino.
+_MARCAS_FEMENINAS_TITULAR = re.compile(
+    r"\b(?:femenin[ao]s?|femenil(?:es)?|femeni|femin[ei]n[ao]s?|women'?s?|wsl|nwsl|frauen)\b"
+    r"|\bliga\s+f\b",
+    re.IGNORECASE,
+)
+
+
+def _titular_femenino(title: str) -> bool:
+    return bool(_MARCAS_FEMENINAS_TITULAR.search(_normalize_ascii(str(title or ""))))
+
+
 def _titular_de_otra_categoria(title: str, team_name: str) -> bool:
     """True si el titular habla del otro equipo del club.
 
@@ -2645,7 +2659,7 @@ def _titular_de_otra_categoria(title: str, team_name: str) -> bool:
     todo lo demás.
     """
     pedido_femenino = _categoria_por_nombre(team_name) == "female"
-    return pedido_femenino != bool(_parece_femenino(str(title or "")))
+    return pedido_femenino != _titular_femenino(title)
 
 
 def _team_query_terms(team_name: str) -> str:
@@ -7174,7 +7188,7 @@ def _query_news_with_relevance(
 
 
 def fetch_team_news(team_name: str) -> dict:
-    cache_key = f"v11:team:{team_name}"
+    cache_key = f"v12:team:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -7206,7 +7220,7 @@ def fetch_team_news(team_name: str) -> dict:
 
 
 def fetch_focus_team_news(team_name: str) -> dict:
-    cache_key = f"v12:focus:{team_name}"
+    cache_key = f"v13:focus:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -7327,7 +7341,7 @@ def fetch_season_transition_news(team_name: str) -> dict:
     si el jugador es bueno: conserva titular, fuente y fecha para que el motor
     avanzado pueda valorar el impacto sin inventarlo.
     """
-    cache_key = f"v5:season-transition:{team_name}"
+    cache_key = f"v6:season-transition:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, 24 * 3600)
     if cached:
         return cached
@@ -7391,7 +7405,7 @@ def fetch_season_transition_news(team_name: str) -> dict:
 
 
 def fetch_local_media_news(team_name: str) -> dict:
-    cache_key = f"v12:media:{team_name}"
+    cache_key = f"v13:media:{team_name}"
     cached = _cache_get(TEAM_NEWS_CACHE, cache_key, NEWS_CACHE_TTL_SECONDS)
     if cached:
         return cached
