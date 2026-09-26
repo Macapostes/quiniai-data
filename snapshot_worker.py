@@ -10602,6 +10602,22 @@ def _fill_side_from_sportsdb_if_empty(
 ) -> dict:
     if (history.get("recent_all") or {}).get("form") and (history.get("table") or {}).get("position"):
         return history
+    # La ficha de TheSportsDB dice en qué liga juega el equipo, y no siempre es
+    # la del partido: al Andorra CF lo tiene en la liga andorrana, así que en la
+    # jornada 9 se le montó una tabla de otra competición y salió "15º con 1
+    # partido jugado" en un Segunda donde va 20º con seis jugados. El informe
+    # escribió "Granada y Andorra están 14º y 15º, separados por nada" y montó
+    # encima la apuesta más grande del boleto. Mejor sin tabla que con la de
+    # otra liga.
+    liga_del_equipo = str((team_api or {}).get("idLeague") or "").strip()
+    liga_del_partido = str(_sportsdb_league_id_for_key(league_key) or "").strip()
+    if liga_del_equipo and liga_del_partido and liga_del_equipo != liga_del_partido:
+        print(
+            f"[tabla] {team_name}: su ficha es de la liga {liga_del_equipo} y el partido "
+            f"es de {league_key} ({liga_del_partido}); no se usa como tabla doméstica"
+        )
+        return history
+
     extra, table_from_api = _sportsdb_domestic_fallback(team_name, team_api, kickoff_dt)
     filled = history
     if extra:
