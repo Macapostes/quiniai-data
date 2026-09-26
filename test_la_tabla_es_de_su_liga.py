@@ -24,24 +24,29 @@ class ElRellenoNoTraeTablasDeOtraLigaTests(unittest.TestCase):
             fuente.index("liga_del_equipo"), fuente.index("_sportsdb_domestic_fallback(")
         )
 
-    def test_una_ficha_de_otra_liga_no_rellena(self):
-        historia = {"recent_all": {}, "table": {}}
-        salida = w._fill_side_from_sportsdb_if_empty(
-            historia,
-            "Andorra CF",
-            {"idTeam": "1", "idLeague": "5554"},   # liga andorrana
-            None,
-            "soccer_spain_segunda_division",       # el partido es de Segunda (4400)
-            "domestic",
-            None,
-        )
-        self.assertEqual(salida, historia)
-        self.assertFalse((salida.get("table") or {}).get("position"))
+    def test_se_pide_la_tabla_de_la_liga_del_partido(self):
+        """No se descarta el relleno: se busca donde el equipo juega de verdad."""
+        pedidas = []
+        original = w.fetch_the_sportsdb_lookup_table
+        w.fetch_the_sportsdb_lookup_table = lambda liga, etiqueta: pedidas.append(liga) or []
+        try:
+            w._sportsdb_domestic_fallback(
+                "Andorra CF", {"idTeam": "1", "idLeague": "5554"}, None, "4400"
+            )
+        finally:
+            w.fetch_the_sportsdb_lookup_table = original
+        self.assertTrue(pedidas)
+        self.assertEqual(set(pedidas), {"4400"}, "la liga del partido, no la de la ficha")
 
-    def test_sin_ficha_de_liga_no_se_bloquea(self):
-        """Si TheSportsDB no dice liga, se sigue como hasta ahora."""
-        fuente = inspect.getsource(w._fill_side_from_sportsdb_if_empty)
-        self.assertIn("if liga_del_equipo and liga_del_partido and", fuente)
+    def test_sin_liga_del_partido_se_usa_la_de_la_ficha(self):
+        pedidas = []
+        original = w.fetch_the_sportsdb_lookup_table
+        w.fetch_the_sportsdb_lookup_table = lambda liga, etiqueta: pedidas.append(liga) or []
+        try:
+            w._sportsdb_domestic_fallback("Un Equipo", {"idTeam": "1", "idLeague": "4400"}, None, "")
+        finally:
+            w.fetch_the_sportsdb_lookup_table = original
+        self.assertEqual(set(pedidas), {"4400"})
 
     def test_segunda_tiene_su_id(self):
         self.assertEqual(str(w._sportsdb_league_id_for_key("soccer_spain_segunda_division")), "4400")

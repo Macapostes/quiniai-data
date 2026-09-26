@@ -10568,11 +10568,19 @@ def _sportsdb_domestic_fallback(
     team_name: str,
     team_api: dict | None,
     kickoff_dt: datetime | None,
+    league_id_del_partido: str = "",
 ) -> tuple[list[dict], dict]:
-    """Si el CSV domestico no trae filas: ultimos partidos + tabla de SportsDB."""
+    """Si el CSV domestico no trae filas: ultimos partidos + tabla de SportsDB.
+
+    La liga la manda el partido, no la ficha del equipo. Al Andorra CF
+    TheSportsDB lo tiene en la liga andorrana, asi que pidiendo "su" liga salia
+    una tabla de otra competicion: 15o con un partido jugado en una jornada
+    donde el resto de Segunda llevaba seis. Con la liga del partido se busca su
+    fila en la tabla de Segunda, que es donde juega.
+    """
     team_api = team_api or {}
     team_id = str(team_api.get("idTeam") or "").strip()
-    league_id = str(team_api.get("idLeague") or "").strip()
+    league_id = str(league_id_del_partido or "").strip() or str(team_api.get("idLeague") or "").strip()
     rows: list[dict] = []
     table = {}
     season = kickoff_dt or datetime.now(timezone.utc)
@@ -10612,13 +10620,17 @@ def _fill_side_from_sportsdb_if_empty(
     liga_del_equipo = str((team_api or {}).get("idLeague") or "").strip()
     liga_del_partido = str(_sportsdb_league_id_for_key(league_key) or "").strip()
     if liga_del_equipo and liga_del_partido and liga_del_equipo != liga_del_partido:
+        # No se descarta el relleno: se pide por la liga del partido, que es la
+        # que importa. Lo que no puede pasar es lo de la jornada 9, montar la
+        # tabla de la liga andorrana y llamarla clasificación de Segunda.
         print(
             f"[tabla] {team_name}: su ficha es de la liga {liga_del_equipo} y el partido "
-            f"es de {league_key} ({liga_del_partido}); no se usa como tabla doméstica"
+            f"es de {league_key} ({liga_del_partido}); se busca en la del partido"
         )
-        return history
 
-    extra, table_from_api = _sportsdb_domestic_fallback(team_name, team_api, kickoff_dt)
+    extra, table_from_api = _sportsdb_domestic_fallback(
+        team_name, team_api, kickoff_dt, liga_del_partido
+    )
     filled = history
     if extra:
         filled = _team_history_with_scope(extra, team_name, kickoff_dt, league_key, scope, ctx_kwargs) or dict(history or {})
