@@ -14245,6 +14245,44 @@ def _filtrar_titulares(nodo, equipo: str, criterio=_es_de_su_categoria) -> int:
     return retirados
 
 
+def _quitar_tablas_de_otra_liga(match: dict) -> int:
+    """Quita de un partido guardado la clasificación que no es de su liga.
+
+    El arreglo del relleno no le llega a un partido que ya estaba guardado:
+    como no vuelve a pasar por el enriquecimiento, se sirve con lo que tuviera.
+    El Andorra CF seguía saliendo "15º con 1 partido jugado" con la tabla de la
+    liga andorrana después de arreglar la causa, y de ahí salió el "Granada y
+    Andorra están 14º y 15º, separados por nada" del informe.
+
+    Solo actúa cuando el partido es de una competición doméstica: en una
+    jornada europea las fichas de los dos equipos son de sus ligas y eso está
+    bien.
+    """
+    liga = _canonical_league_key(match.get("league") or "")
+    if not liga or liga in NON_DOMESTIC_LEAGUE_KEYS:
+        return 0
+    historia = match.get("history_context") or {}
+    quitadas = 0
+    for lado in ("home", "away"):
+        bloque = historia.get(lado)
+        if not isinstance(bloque, dict):
+            continue
+        tabla = bloque.get("table") or {}
+        if not tabla.get("position"):
+            continue
+        suya = str(
+            bloque.get("league_key") or tabla.get("league_key") or ""
+        ).strip()
+        if suya and suya != liga:
+            print(
+                f"[tabla] {match.get('local','')} - {match.get('visitante','')} [{lado}]: "
+                f"la clasificación guardada es de {suya} y el partido es de {liga}; se retira"
+            )
+            bloque["table"] = {}
+            quitadas += 1
+    return quitadas
+
+
 def _limpiar_noticias_de_otra_categoria(match: dict) -> int:
     """Aplica a un partido ya guardado el filtro de categoria de hoy.
 
@@ -16332,9 +16370,13 @@ def build_snapshot(raw_matches: list) -> dict:
     # guardo. Los cruces sin cuotas no se vuelven a enriquecer nunca, asi que el
     # filtro de categoria hay que aplicarselo aqui o no les llega jamas.
     noticias_retiradas = 0
+    tablas_retiradas = 0
     for jornada in quiniela_jornadas:
         for match in jornada.get("matches", []):
             noticias_retiradas += _limpiar_noticias_de_otra_categoria(match)
+            tablas_retiradas += _quitar_tablas_de_otra_liga(match)
+    if tablas_retiradas:
+        print(f"[tabla] {tablas_retiradas} clasificaciones de otra liga retiradas de partidos guardados")
     if noticias_retiradas:
         print(
             f"[categoria] {noticias_retiradas} titulares de otra categoria "

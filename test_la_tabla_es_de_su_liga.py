@@ -49,3 +49,50 @@ class ElRellenoNoTraeTablasDeOtraLigaTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ALoGuardadoTambienSeLeQuitaTests(unittest.TestCase):
+    """Arreglar la causa no le llega a un partido que ya estaba guardado.
+
+    Es la misma trampa que con las noticias: un partido que no vuelve a pasar
+    por el enriquecimiento se sirve con lo que tuviera dentro. Tras arreglar el
+    relleno, el Andorra seguía saliendo 15º con la tabla andorrana.
+    """
+
+    def _partido(self, liga="soccer_spain_segunda_division", liga_ficha="sportsdb_5554"):
+        return {
+            "local": "Granada CF",
+            "visitante": "Andorra CF",
+            "league": liga,
+            "history_context": {
+                "home": {
+                    "league_key": "soccer_spain_segunda_division",
+                    "table": {"position": 14, "played": 6, "points": 8},
+                },
+                "away": {
+                    "league_key": liga_ficha,
+                    "table": {"position": 15, "played": 1, "points": 0},
+                },
+            },
+        }
+
+    def test_se_retira_la_de_otra_liga(self):
+        partido = self._partido()
+        self.assertEqual(w._quitar_tablas_de_otra_liga(partido), 1)
+        self.assertEqual(partido["history_context"]["away"]["table"], {})
+        self.assertEqual(partido["history_context"]["home"]["table"]["position"], 14)
+
+    def test_la_de_su_liga_se_queda(self):
+        partido = self._partido(liga_ficha="soccer_spain_segunda_division")
+        self.assertEqual(w._quitar_tablas_de_otra_liga(partido), 0)
+
+    def test_en_una_jornada_europea_no_se_toca_nada(self):
+        """Ahí las fichas de los dos equipos son de sus ligas, y está bien."""
+        partido = self._partido(liga="soccer_uefa_champs_league", liga_ficha="soccer_spain_la_liga")
+        partido["history_context"]["home"]["league_key"] = "soccer_germany_bundesliga"
+        self.assertEqual(w._quitar_tablas_de_otra_liga(partido), 0)
+        self.assertEqual(partido["history_context"]["away"]["table"]["position"], 15)
+
+    def test_el_ciclo_lo_hace_antes_de_publicar(self):
+        fuente = inspect.getsource(w.build_snapshot)
+        self.assertIn("_quitar_tablas_de_otra_liga(match)", fuente)
