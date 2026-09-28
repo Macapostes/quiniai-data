@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-27T21:42:30.861089+00:00",
-  "snapshot_generated_at": "2026-09-27T21:42:25.669019+00:00",
+  "generated_at": "2026-09-28T01:31:24.506823+00:00",
+  "snapshot_generated_at": "2026-09-28T01:31:19.366534+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -16,10 +16,10 @@
     "history_matches": 170,
     "sources_total": 24,
     "sources_ok": 24,
-    "fresh_headlines": 30,
+    "fresh_headlines": 28,
     "structured_focus_matches": 60,
     "structured_referees": 21,
-    "focus_valid_tables": 3,
+    "focus_valid_tables": 8,
     "focus_rosters_checked": 4,
     "focus_rosters_checked_partial": 8,
     "focus_referees_confirmed": 0,
@@ -31,7 +31,7 @@
     "teams": 129,
     "matches": 146,
     "referees": 21,
-    "last_pruned_at": "2026-09-27T21:42:25.661717+00:00"
+    "last_pruned_at": "2026-09-28T01:31:19.359015+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -39,24 +39,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-09-26T23:08:14.045646+00:00",
-      "finished_at": "2026-09-26T23:43:42.905094+00:00",
-      "ok": true,
-      "duration_seconds": 2128.86,
-      "monitored_matches": 187,
-      "tracked_matches": 60,
-      "current_jornada": 9
-    },
-    {
-      "started_at": "2026-09-27T01:08:14.741554+00:00",
-      "finished_at": "2026-09-27T01:30:50.330055+00:00",
-      "ok": true,
-      "duration_seconds": 1355.59,
-      "monitored_matches": 187,
-      "tracked_matches": 60,
-      "current_jornada": 10
-    },
     {
       "started_at": "2026-09-27T03:08:16.078447+00:00",
       "finished_at": "2026-09-27T03:28:37.395939+00:00",
@@ -146,6 +128,24 @@
       "monitored_matches": 183,
       "tracked_matches": 60,
       "current_jornada": 10
+    },
+    {
+      "started_at": "2026-09-27T23:08:26.969125+00:00",
+      "finished_at": "2026-09-27T23:30:54.410624+00:00",
+      "ok": true,
+      "duration_seconds": 1347.44,
+      "monitored_matches": 183,
+      "tracked_matches": 60,
+      "current_jornada": 10
+    },
+    {
+      "started_at": "2026-09-28T01:08:28.093048+00:00",
+      "finished_at": "2026-09-28T01:31:24.505898+00:00",
+      "ok": true,
+      "duration_seconds": 1376.41,
+      "monitored_matches": 183,
+      "tracked_matches": 60,
+      "current_jornada": 10
     }
   ],
   "public_jornadas": [
@@ -201,7 +201,7 @@
               "key": "early",
               "label": "tramo temprano",
               "played": null,
-              "total_rounds": 30,
+              "total_rounds": 106,
               "progress": 0.2,
               "source": "calendar_date"
             },
@@ -233,11 +233,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -572,7 +572,7 @@
           "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": false,
-            "teams": 16,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
             "home_played": 0,
@@ -599,7 +599,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-27T21:39:24.839275+00:00",
+          "context_updated_at": "2026-09-28T01:29:41.674342+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -675,22 +675,22 @@
           },
           "fatigue": {
             "home": {
-              "score": 45.0,
-              "label": "medium"
+              "score": 35.0,
+              "label": "low"
             },
             "away": {
-              "score": 70.0,
-              "label": "high"
+              "score": 60.0,
+              "label": "medium"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "early",
               "label": "tramo temprano",
-              "played": null,
-              "total_rounds": 30,
-              "progress": 0.2,
-              "source": "calendar_date"
+              "played": 1,
+              "total_rounds": 106,
+              "progress": 0.009,
+              "source": "played_matches"
             },
             "competitive_stakes_label": "sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir",
             "direct_rivalry": {
@@ -720,11 +720,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -844,16 +844,16 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Faroe Islands (-) | fuera vs Moldova (-) | casa vs Faroe Islands (-) | fuera vs Kazakhstan (-)",
-          "future_away": "casa vs Moldova (-) | casa vs Faroe Islands (-) | fuera vs Moldova (-) | casa vs Slovakia (-)",
+          "future_home": "fuera vs Faroe Islands (27º) | fuera vs Moldova (50º) | casa vs Faroe Islands (27º) | fuera vs Kazakhstan (29º)",
+          "future_away": "casa vs Moldova (50º) | casa vs Faroe Islands (27º) | fuera vs Moldova (50º) | casa vs Slovakia (12º)",
           "history_quality": {
-            "valid": false,
-            "teams": 16,
+            "valid": true,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
-            "home_played": 0,
-            "away_played": 0,
-            "reason": "muestra de tabla incompleta para uno o ambos equipos",
+            "home_played": 1,
+            "away_played": 1,
+            "reason": "",
             "sample_regime": "preseason",
             "positions_usable": false,
             "objectives_usable": false,
@@ -865,7 +865,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "source_items_checked": 1
             },
             "away": {
               "team": "Kazakhstan",
@@ -875,7 +875,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-27T21:29:48.308965+00:00",
+          "context_updated_at": "2026-09-28T01:24:49.266119+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 76,
@@ -898,7 +898,7 @@
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
               "availability_items": 1,
-              "official_items": 3,
+              "official_items": 2,
               "match_items": 0,
               "team_items": 2,
               "season_transition_items": 1,
@@ -908,7 +908,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (72.7%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (72.7%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
           "analysis_ready": true
         },
         {
@@ -1165,7 +1165,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-27T21:39:35.251757+00:00",
+          "context_updated_at": "2026-09-28T01:29:54.954143+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 38,
@@ -1234,8 +1234,8 @@
           },
           "fatigue": {
             "home": {
-              "score": 45.0,
-              "label": "medium"
+              "score": 35.0,
+              "label": "low"
             },
             "away": {
               "score": 70.0,
@@ -1246,10 +1246,10 @@
             "season_context_phase": {
               "key": "early",
               "label": "tramo temprano",
-              "played": null,
-              "total_rounds": 30,
-              "progress": 0.2,
-              "source": "calendar_date"
+              "played": 1,
+              "total_rounds": 106,
+              "progress": 0.009,
+              "source": "played_matches"
             },
             "competitive_stakes_label": "sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir",
             "direct_rivalry": {
@@ -1279,11 +1279,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -1375,22 +1375,22 @@
           },
           "travel_km": 8065.6,
           "weather": {
-            "temperature_c": 13.8,
+            "temperature_c": 13.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 5.8
+            "wind_speed_kmh": 7.2
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Switzerland (-) | fuera vs Scotland (-) | casa vs Switzerland (-) | fuera vs North Macedonia (-)",
+          "future_home": "fuera vs Switzerland (7º) | fuera vs Scotland (33º) | casa vs Switzerland (7º) | fuera vs North Macedonia (51º)",
           "future_away": "sin calendario detectado",
           "history_quality": {
             "valid": false,
-            "teams": 16,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
-            "home_played": 0,
+            "home_played": 1,
             "away_played": 0,
             "reason": "muestra de tabla incompleta para uno o ambos equipos",
             "sample_regime": "preseason",
@@ -1414,7 +1414,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-27T21:39:58.839776+00:00",
+          "context_updated_at": "2026-09-28T01:30:10.462325+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 37,
@@ -1448,7 +1448,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza baja: análisis orientativo; faltan datos clave. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26 | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza baja: análisis orientativo; faltan datos clave. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26 | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (low). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -1489,22 +1489,22 @@
           },
           "fatigue": {
             "home": {
-              "score": 45.0,
-              "label": "medium"
+              "score": 35.0,
+              "label": "low"
             },
             "away": {
-              "score": 70.0,
-              "label": "high"
+              "score": 60.0,
+              "label": "medium"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "early",
               "label": "tramo temprano",
-              "played": null,
-              "total_rounds": 30,
-              "progress": 0.2,
-              "source": "calendar_date"
+              "played": 1,
+              "total_rounds": 106,
+              "progress": 0.009,
+              "source": "played_matches"
             },
             "competitive_stakes_label": "sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir",
             "direct_rivalry": {
@@ -1534,11 +1534,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -1771,16 +1771,16 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Iceland (-) | fuera vs Luxembourg (-) | casa vs Iceland (-) | fuera vs Estonia (-)",
-          "future_away": "casa vs Luxembourg (-) | casa vs Iceland (-) | fuera vs Luxembourg (-) | casa vs Bulgaria (-)",
+          "future_home": "fuera vs Iceland (28º) | fuera vs Luxembourg (16º) | casa vs Iceland (28º) | fuera vs Estonia (26º)",
+          "future_away": "casa vs Luxembourg (16º) | casa vs Iceland (28º) | fuera vs Luxembourg (16º) | casa vs Bulgaria (38º)",
           "history_quality": {
-            "valid": false,
-            "teams": 16,
+            "valid": true,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
-            "home_played": 0,
-            "away_played": 0,
-            "reason": "muestra de tabla incompleta para uno o ambos equipos",
+            "home_played": 1,
+            "away_played": 1,
+            "reason": "",
             "sample_regime": "preseason",
             "positions_usable": false,
             "objectives_usable": false,
@@ -1802,7 +1802,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-27T21:29:15.610222+00:00",
+          "context_updated_at": "2026-09-28T01:24:44.118408+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 79,
@@ -1835,7 +1835,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (56.8%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 2 salidas confirmadas | Visitante: temporada anterior: sin registro en 25/26; 1 altas/refuerzos confirmados; 2 posibles salidas; 1 cambios de entrenador | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (56.8%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 2 salidas confirmadas | Visitante: temporada anterior: sin registro en 25/26; 1 altas/refuerzos confirmados; 2 posibles salidas; 1 cambios de entrenador | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
           "analysis_ready": true
         },
         {
@@ -1876,11 +1876,11 @@
           },
           "fatigue": {
             "home": {
-              "score": 45.0,
-              "label": "medium"
+              "score": 35.0,
+              "label": "low"
             },
             "away": {
-              "score": 62.5,
+              "score": 52.5,
               "label": "medium"
             }
           },
@@ -1888,10 +1888,10 @@
             "season_context_phase": {
               "key": "early",
               "label": "tramo temprano",
-              "played": null,
-              "total_rounds": 30,
-              "progress": 0.2,
-              "source": "calendar_date"
+              "played": 1,
+              "total_rounds": 106,
+              "progress": 0.009,
+              "source": "played_matches"
             },
             "competitive_stakes_label": "sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir",
             "direct_rivalry": {
@@ -1921,11 +1921,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -2338,16 +2338,16 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Belarus (-) | fuera vs Albania (-) | casa vs Belarus (-) | fuera vs Finland (-)",
-          "future_away": "fuera vs Finland (-) | casa vs San Marino (-) | casa vs Finland (-) | fuera vs Belarus (-)",
+          "future_home": "fuera vs Belarus (46º) | fuera vs Albania (9º) | casa vs Belarus (46º) | fuera vs Finland (6º)",
+          "future_away": "fuera vs Finland (6º) | casa vs San Marino (54º) | casa vs Finland (6º) | fuera vs Belarus (46º)",
           "history_quality": {
-            "valid": false,
-            "teams": 16,
+            "valid": true,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
-            "home_played": 0,
-            "away_played": 0,
-            "reason": "muestra de tabla incompleta para uno o ambos equipos",
+            "home_played": 1,
+            "away_played": 1,
+            "reason": "",
             "sample_regime": "preseason",
             "positions_usable": false,
             "objectives_usable": false,
@@ -2369,7 +2369,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-27T21:28:58.787218+00:00",
+          "context_updated_at": "2026-09-28T01:24:41.579805+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -2402,7 +2402,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (89.2%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 5 posibles salidas; 2 señales de pretemporada | Visitante: temporada anterior: sin registro en 25/26; 4 posibles salidas; 3 señales de pretemporada | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (89.2%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 5 posibles salidas; 2 señales de pretemporada | Visitante: temporada anterior: sin registro en 25/26; 4 posibles salidas; 3 señales de pretemporada | Calendario futuro con 1 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
           "analysis_ready": true
         },
         {
@@ -2443,22 +2443,22 @@
           },
           "fatigue": {
             "home": {
-              "score": 45.0,
-              "label": "medium"
+              "score": 35.0,
+              "label": "low"
             },
             "away": {
-              "score": 70.0,
-              "label": "high"
+              "score": 60.0,
+              "label": "medium"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "early",
               "label": "tramo temprano",
-              "played": null,
-              "total_rounds": 30,
-              "progress": 0.2,
-              "source": "calendar_date"
+              "played": 1,
+              "total_rounds": 106,
+              "progress": 0.009,
+              "source": "played_matches"
             },
             "competitive_stakes_label": "sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir",
             "direct_rivalry": {
@@ -2488,11 +2488,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -2604,24 +2604,24 @@
           },
           "travel_km": 6563.1,
           "weather": {
-            "temperature_c": 17.8,
+            "temperature_c": 20.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 1.9
+            "wind_speed_kmh": 4.6
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs North Macedonia (-) | casa vs Slovenia (-) | casa vs North Macedonia (-) | fuera vs Switzerland (-)",
-          "future_away": "casa vs Slovenia (-) | casa vs North Macedonia (-) | fuera vs Slovenia (-) | casa vs Scotland (-)",
+          "future_home": "fuera vs North Macedonia (51º) | casa vs Slovenia (34º) | casa vs North Macedonia (51º) | fuera vs Switzerland (7º)",
+          "future_away": "casa vs Slovenia (34º) | casa vs North Macedonia (51º) | fuera vs Slovenia (34º) | casa vs Scotland (33º)",
           "history_quality": {
-            "valid": false,
-            "teams": 16,
+            "valid": true,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
-            "home_played": 0,
-            "away_played": 0,
-            "reason": "muestra de tabla incompleta para uno o ambos equipos",
+            "home_played": 1,
+            "away_played": 1,
+            "reason": "",
             "sample_regime": "preseason",
             "positions_usable": false,
             "objectives_usable": false,
@@ -2633,7 +2633,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "source_items_checked": 4
             },
             "away": {
               "team": "Switzerland",
@@ -2643,7 +2643,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-27T21:30:04.103822+00:00",
+          "context_updated_at": "2026-09-28T01:24:52.017084+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 73,
@@ -2666,8 +2666,8 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 1,
-              "official_items": 2,
+              "availability_items": 2,
+              "official_items": 4,
               "match_items": 0,
               "team_items": 1,
               "season_transition_items": 1,
@@ -2677,7 +2677,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (49.2%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (49.2%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
           "analysis_ready": true
         },
         {
@@ -3043,7 +3043,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-27T21:40:15.687416+00:00",
+          "context_updated_at": "2026-09-28T01:30:15.818569+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -3586,10 +3586,10 @@
               ],
               "count": 5,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 5
+              "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-27T21:40:38.578726+00:00",
+          "context_updated_at": "2026-09-28T01:30:31.347863+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -3612,7 +3612,7 @@
               "roster_status": "confirmed_absences",
               "injury_items": 5,
               "availability_items": 8,
-              "official_items": 5,
+              "official_items": 6,
               "match_items": 0,
               "team_items": 21,
               "season_transition_items": 16,
@@ -3663,21 +3663,21 @@
           },
           "fatigue": {
             "home": {
-              "score": 9.0,
+              "score": 36.0,
               "label": "low"
             },
             "away": {
-              "score": 34.0,
-              "label": "low"
+              "score": 61.0,
+              "label": "medium"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "early",
               "label": "tramo temprano",
-              "played": 1,
-              "total_rounds": 30,
-              "progress": 0.033,
+              "played": 2,
+              "total_rounds": 106,
+              "progress": 0.019,
               "source": "played_matches"
             },
             "competitive_stakes_label": "sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir",
@@ -3708,11 +3708,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -4033,15 +4033,15 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Greece (4º) | fuera vs Serbia (12º) | casa vs Netherlands (9º)",
-          "future_away": "fuera vs Netherlands (9º) | casa vs Germany (8º) | fuera vs Greece (4º)",
+          "future_home": "fuera vs Greece (2º) | fuera vs Serbia (45º) | casa vs Netherlands (5º)",
+          "future_away": "fuera vs Netherlands (5º) | casa vs Germany (36º) | fuera vs Greece (2º)",
           "history_quality": {
             "valid": true,
-            "teams": 16,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
-            "home_played": 1,
-            "away_played": 1,
+            "home_played": 2,
+            "away_played": 2,
             "reason": "",
             "sample_regime": "preseason",
             "positions_usable": false,
@@ -4101,7 +4101,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-27T21:30:32.435395+00:00",
+          "context_updated_at": "2026-09-28T01:25:09.803185+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -4134,7 +4134,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (73.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 5 señales de pretemporada | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (73.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 5 señales de pretemporada | Calendario futuro con 2 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (4 vs 4 días).",
           "analysis_ready": true
         },
         {
@@ -4579,7 +4579,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-27T21:40:56.206098+00:00",
+          "context_updated_at": "2026-09-28T01:30:38.459971+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 44,
@@ -4655,21 +4655,21 @@
           },
           "fatigue": {
             "home": {
-              "score": 9.0,
+              "score": 36.0,
               "label": "low"
             },
             "away": {
-              "score": 34.0,
-              "label": "low"
+              "score": 61.0,
+              "label": "medium"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "early",
               "label": "tramo temprano",
-              "played": 1,
-              "total_rounds": 30,
-              "progress": 0.033,
+              "played": 2,
+              "total_rounds": 106,
+              "progress": 0.019,
               "source": "played_matches"
             },
             "competitive_stakes_label": "sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir",
@@ -4700,11 +4700,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -4795,10 +4795,10 @@
                 "signings": [],
                 "transfer_reports": [
                   {
-                    "title": "Norway World Cup star tracked by Manchester City over potential summer transfer - OneFootball",
+                    "title": "Norway World Cup star tracked by Manchester City over potential summer transfer - onefootball.com",
                     "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPVWEtQjJaanNRZFhYQUxZSTBnU0x3TlRjbnhvcnF6WkdzS2ZaRklRNHNUMGlKWVpLVi1icERwLXg3SjNZbEUxd2VybWJuWlhPS290X0xpMEpsaUNEeUJEY3JSY3NUWGFBVjlxc3NpeVBzdWJaWm1IdnBnQWZYX29TY3oyekt1TzJsMVhQX0R6UjZoVFRpa0o0eTFFdzI4eGw5eWtnQVd3TUFEZ2lkU0FBUVF4Y2lBM0dUaU9mVDdwUW5sZw?oc=5",
                     "published_at": "Wed, 08 Jul 2026 07:00:00 GMT",
-                    "source": "OneFootball",
+                    "source": "onefootball.com",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -4814,10 +4814,10 @@
                 "morale": [],
                 "all_evidence": [
                   {
-                    "title": "Norway World Cup star tracked by Manchester City over potential summer transfer - OneFootball",
+                    "title": "Norway World Cup star tracked by Manchester City over potential summer transfer - onefootball.com",
                     "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPVWEtQjJaanNRZFhYQUxZSTBnU0x3TlRjbnhvcnF6WkdzS2ZaRklRNHNUMGlKWVpLVi1icERwLXg3SjNZbEUxd2VybWJuWlhPS290X0xpMEpsaUNEeUJEY3JSY3NUWGFBVjlxc3NpeVBzdWJaWm1IdnBnQWZYX29TY3oyekt1TzJsMVhQX0R6UjZoVFRpa0o0eTFFdzI4eGw5eWtnQVd3TUFEZ2lkU0FBUVF4Y2lBM0dUaU9mVDdwUW5sZw?oc=5",
                     "published_at": "Wed, 08 Jul 2026 07:00:00 GMT",
-                    "source": "OneFootball",
+                    "source": "onefootball.com",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -4844,15 +4844,15 @@
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Denmark (10º) | fuera vs Norway (3º) | casa vs Portugal (7º)",
-          "future_away": "fuera vs Portugal (7º) | casa vs Wales (14º) | fuera vs Denmark (10º)",
+          "future_home": "casa vs Denmark (13º) | fuera vs Norway (23º) | casa vs Portugal (3º)",
+          "future_away": "fuera vs Portugal (3º) | casa vs Wales (52º) | fuera vs Denmark (13º)",
           "history_quality": {
             "valid": true,
-            "teams": 16,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
-            "home_played": 1,
-            "away_played": 1,
+            "home_played": 2,
+            "away_played": 2,
             "reason": "",
             "sample_regime": "preseason",
             "positions_usable": false,
@@ -4891,10 +4891,10 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 2
+              "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-27T21:30:46.823425+00:00",
+          "context_updated_at": "2026-09-28T01:25:17.110167+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 73,
@@ -4917,8 +4917,8 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 2,
-              "availability_items": 2,
-              "official_items": 0,
+              "availability_items": 5,
+              "official_items": 4,
               "match_items": 0,
               "team_items": 4,
               "season_transition_items": 2,
@@ -4928,7 +4928,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (53.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 señales de pretemporada | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (53.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 señales de pretemporada | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario futuro con 1 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (4 vs 4 días).",
           "analysis_ready": true
         },
         {
@@ -5436,7 +5436,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-27T21:41:25.097121+00:00",
+          "context_updated_at": "2026-09-28T01:30:53.247324+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 55,
@@ -5511,21 +5511,21 @@
           },
           "fatigue": {
             "home": {
-              "score": 9.0,
+              "score": 36.0,
               "label": "low"
             },
             "away": {
-              "score": 34.0,
-              "label": "low"
+              "score": 61.0,
+              "label": "medium"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "early",
               "label": "tramo temprano",
-              "played": 1,
-              "total_rounds": 30,
-              "progress": 0.033,
+              "played": 2,
+              "total_rounds": 106,
+              "progress": 0.019,
               "source": "played_matches"
             },
             "competitive_stakes_label": "sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir",
@@ -5556,11 +5556,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -5621,10 +5621,10 @@
                 "coach_changes": [],
                 "availability": [
                   {
-                    "title": "What happened to Christian Eriksen? Update comes after scary collapse for Denmark, reminiscent of past injury - sports.yahoo.com",
+                    "title": "What happened to Christian Eriksen? Update comes after scary collapse for Denmark, reminiscent of past injury - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQXzFTc0J3djNiQXphWGtUNTl6aDFxOEItelZHNk1pTER4LVNucU5pSGFPUkdrN0NqcVVLME5OZmllU21CaWpENlBLbXBoejFaSHpoeGJWR3lkWVpoaERFbzNwQ1RQcjFEQm1EdkRmQm5Lb1IyQzg4c0dqMF9SQkNWNXdwS1VhVEdYOVRfWlZ4Uk0?oc=5",
                     "published_at": "Sun, 07 Jun 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "availability",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -5645,10 +5645,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "What happened to Christian Eriksen? Update comes after scary collapse for Denmark, reminiscent of past injury - sports.yahoo.com",
+                    "title": "What happened to Christian Eriksen? Update comes after scary collapse for Denmark, reminiscent of past injury - Yahoo Sports",
                     "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQXzFTc0J3djNiQXphWGtUNTl6aDFxOEItelZHNk1pTER4LVNucU5pSGFPUkdrN0NqcVVLME5OZmllU21CaWpENlBLbXBoejFaSHpoeGJWR3lkWVpoaERFbzNwQ1RQcjFEQm1EdkRmQm5Lb1IyQzg4c0dqMF9SQkNWNXdwS1VhVEdYOVRfWlZ4Uk0?oc=5",
                     "published_at": "Sun, 07 Jun 2026 07:00:00 GMT",
-                    "source": "sports.yahoo.com",
+                    "source": "Yahoo Sports",
                     "category": "availability",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -5780,28 +5780,10 @@
                 "promotion_history": [],
                 "squad_news": [
                   {
-                    "title": "Cristiano Ronaldo sigue al frente de Portugal: Jorge Jesus revela su primera convocatoria - El Informador",
-                    "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPSm51RzF6NHh3NXh6dGZOOG0tT3FzdFRBbkxDUllKOTFSd0RSU1lFVkVuRjNieFU4QUFicE1OWjQxb1RqTGk4V0twQklvSEY4TEhLNnNUSDhTSkV2alpucUJJM0RwSWxQMzU3OGEzX2NwYVdxay1Vek5pWEhFMlZjV2lPbmp1ekFJT0J6Y3E1RzJDemFBenoyM0k0QUdWeWoxd2tCSXdmeUxrd3c4U3dYRkVaUGxybjA5UFFZbWVrMnBNY1l5TlV1cUFFcUtHcl9VbXNUekFTckFid9IB3wFBVV95cUxNZ3BycmFqUl85UE03RnJzeWZJT1NPVjRCbEhfckx1RERYelp1Z1BOMkhQY1ZlU0FZUWhya0ZrbWNaMG90bDdXcHdhLVhXRU5FTUNHaTZfOHFCcjBwVE5rUnRRVzlkQkdlRXJoQTlkcFJTRm9YeWpvSVVfSTNFalZhVWV1em1RZ2hTNkNYcHgwTjRKVWYxeEt6NjZqNC1aYUtYQ09maGdQUmJoMmxXbWgtN2syRXM0UDBzRUotVXVHT29KX0hOWk9kc1FGUzFDeHMxWnRDM2ozeGJGMkhqelJV?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 17:16:38 GMT",
-                    "source": "El Informador",
-                    "category": "squad",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "Cristiano, al frente de la primera lista de Jorge Jesus con Portugal - MARCA",
-                    "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOcjNTN05nVFJKUml2cFdQM1h6LVdQU00xS0I5RVQ1Sk93bWZwVTBKRnlIeDNTcVNxcXB5LUxQX1Z2RW56MnlHVTl5dVEwUTRTZ0MwOEV3RVRyTG01cjlNZFd4VElLNmY5YW45RGh0T2Z1dURkaWszSnp1aU12UHdpenh1WGNjMTVVNlNaQnpXcFJmT3lUb0JxSElmQWNEb0lIU2ZQQTFwbHFrbmFQOEFNRtIBsAFBVV95cUxPOFpWdUdKYXVjWXlwNVpfa0RtMWhoclNUUW1Ddk5MQVBhRUMtdUROam9DSmxHeGZTZWlMR2lpMHprZFA0WXdmTWV5OFQteGcyVF81RzlJTFZzc2xYSmRLZ0w3WUs2TUh1aEx1YjNOQXZpcDd0ay1Pckl2OTdvX0EySFBROXNRZzlfazV0SVl2OWtRSXQ4bVYwR09BSDNQeUUtclZKYkpGT1UtXzZxbnZhYQ?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 11:20:17 GMT",
-                    "source": "MARCA",
-                    "category": "squad",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
-                  },
-                  {
-                    "title": "Cristiano Ronaldo se mantiene en la convocatoria de Portugal por la Liga de Naciones - EL UNIVERSAL",
+                    "title": "Cristiano Ronaldo se mantiene en la convocatoria de Portugal por la Liga de Naciones - eluniversal.com",
                     "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNcThOVk8wTnFMNU4xaThVeWc1RDA2ckduRmhPdUJ0QVhpanFRU2VfZVA0MTNVWjBndkpXNjU5cjhRQl9KSlctSlZKb1BGREhuRjZ1bEdtZ1dsYllqbHpYT1V5Wk14ODZ0SXgzTHRMVjQyVGYtWlQtQVVBVzR2bHJIMGlVdUtUQWFDcV9SMTA0MzJ6YWZsbVJBbFREd1NiQldYamFqNWdLaXFESVcyNUVMbnBGTXZTb1RmTUxoUWhGWXBQbTN2Vmc?oc=5",
                     "published_at": "Fri, 18 Sep 2026 10:34:00 GMT",
-                    "source": "EL UNIVERSAL",
+                    "source": "eluniversal.com",
                     "category": "squad",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -5837,28 +5819,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Cristiano Ronaldo sigue al frente de Portugal: Jorge Jesus revela su primera convocatoria - El Informador",
-                    "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPSm51RzF6NHh3NXh6dGZOOG0tT3FzdFRBbkxDUllKOTFSd0RSU1lFVkVuRjNieFU4QUFicE1OWjQxb1RqTGk4V0twQklvSEY4TEhLNnNUSDhTSkV2alpucUJJM0RwSWxQMzU3OGEzX2NwYVdxay1Vek5pWEhFMlZjV2lPbmp1ekFJT0J6Y3E1RzJDemFBenoyM0k0QUdWeWoxd2tCSXdmeUxrd3c4U3dYRkVaUGxybjA5UFFZbWVrMnBNY1l5TlV1cUFFcUtHcl9VbXNUekFTckFid9IB3wFBVV95cUxNZ3BycmFqUl85UE03RnJzeWZJT1NPVjRCbEhfckx1RERYelp1Z1BOMkhQY1ZlU0FZUWhya0ZrbWNaMG90bDdXcHdhLVhXRU5FTUNHaTZfOHFCcjBwVE5rUnRRVzlkQkdlRXJoQTlkcFJTRm9YeWpvSVVfSTNFalZhVWV1em1RZ2hTNkNYcHgwTjRKVWYxeEt6NjZqNC1aYUtYQ09maGdQUmJoMmxXbWgtN2syRXM0UDBzRUotVXVHT29KX0hOWk9kc1FGUzFDeHMxWnRDM2ozeGJGMkhqelJV?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 17:16:38 GMT",
-                    "source": "El Informador",
-                    "category": "squad",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "Cristiano, al frente de la primera lista de Jorge Jesus con Portugal - MARCA",
-                    "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOcjNTN05nVFJKUml2cFdQM1h6LVdQU00xS0I5RVQ1Sk93bWZwVTBKRnlIeDNTcVNxcXB5LUxQX1Z2RW56MnlHVTl5dVEwUTRTZ0MwOEV3RVRyTG01cjlNZFd4VElLNmY5YW45RGh0T2Z1dURkaWszSnp1aU12UHdpenh1WGNjMTVVNlNaQnpXcFJmT3lUb0JxSElmQWNEb0lIU2ZQQTFwbHFrbmFQOEFNRtIBsAFBVV95cUxPOFpWdUdKYXVjWXlwNVpfa0RtMWhoclNUUW1Ddk5MQVBhRUMtdUROam9DSmxHeGZTZWlMR2lpMHprZFA0WXdmTWV5OFQteGcyVF81RzlJTFZzc2xYSmRLZ0w3WUs2TUh1aEx1YjNOQXZpcDd0ay1Pckl2OTdvX0EySFBROXNRZzlfazV0SVl2OWtRSXQ4bVYwR09BSDNQeUUtclZKYkpGT1UtXzZxbnZhYQ?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 11:20:17 GMT",
-                    "source": "MARCA",
-                    "category": "squad",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
-                  },
-                  {
-                    "title": "Cristiano Ronaldo se mantiene en la convocatoria de Portugal por la Liga de Naciones - EL UNIVERSAL",
+                    "title": "Cristiano Ronaldo se mantiene en la convocatoria de Portugal por la Liga de Naciones - eluniversal.com",
                     "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNcThOVk8wTnFMNU4xaThVeWc1RDA2ckduRmhPdUJ0QVhpanFRU2VfZVA0MTNVWjBndkpXNjU5cjhRQl9KSlctSlZKb1BGREhuRjZ1bEdtZ1dsYllqbHpYT1V5Wk14ODZ0SXgzTHRMVjQyVGYtWlQtQVVBVzR2bHJIMGlVdUtUQWFDcV9SMTA0MzJ6YWZsbVJBbFREd1NiQldYamFqNWdLaXFESVcyNUVMbnBGTXZTb1RmTUxoUWhGWXBQbTN2Vmc?oc=5",
                     "published_at": "Fri, 18 Sep 2026 10:34:00 GMT",
-                    "source": "EL UNIVERSAL",
+                    "source": "eluniversal.com",
                     "category": "squad",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -5934,9 +5898,27 @@
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "high"
+                  },
+                  {
+                    "title": "La emoción del mercado de fichajes: Deco planea un gran golpe desde Portugal - Goal.com",
+                    "link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQMVZvZVBxSFVjWVVpMVl6MW1wRmtlSjNYMm5hMTlvbzgxcWZISTI1MlZRdFpTa2lHYlpIV1lSLTlpcUF2S1NQdlNqaEFGQ2cyZ1o4YUJZMFhtNUNRVF9yV0M5MG1tNXVoMU5jaDV2SF96OGx6dFdTb083dTdlbG4zV1RfdkhjWUlfVGVLUmtwcGJyUTBsOXpFeXlvX0tNN1Z1RWFkNVAyWkZ4WndXSzRjMktnZmNRUlhmNEhXZmdTUjlmeTRPX2VR?oc=5",
+                    "published_at": "Sun, 23 Aug 2026 07:00:00 GMT",
+                    "source": "Goal.com",
+                    "category": "signing",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Milan va a por Gonçalo Inácio, el Sporting lo deja fuera: desde Portugal hablan de «traspaso inminente», ojo con el Barcelona - Goal.com",
+                    "link": "https://news.google.com/rss/articles/CBMigwJBVV95cUxPSzlvWXByRjJUaFdwTjA5NGpoa0tJYWNGOFRudThVSC15VlhRWWQtejZ5MmZ2ODhVMmc3Z21aUFBVMGUzOGp5OW11amNocEhnUU9mZWFuWlNyUW9mR2RNckhVUm40SUVjNjN6UEpJVXRMNXVwQm5ZdGQ3QnZZa0tPTXRlVjREUVdiaVpPNHlHWHNyZGs4NnNZblpETzl3RU9oejVjelpNLWpfU00tenBpbDl6Z1hxLVJ2eGFoNko5ZkNfUU1qNXo5Y1hCc0R6VVhhbmwya21INVlWclpTdTBuYjI0VTJETDVsZjZYbThLM3lqTk5oWVVjWnlibVFYX2dLdWpn?oc=5",
+                    "published_at": "Sun, 23 Aug 2026 07:00:00 GMT",
+                    "source": "Goal.com",
+                    "category": "signing",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   }
                 ],
-                "summary": "temporada anterior: sin registro en 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 3 noticias de plantilla"
+                "summary": "temporada anterior: sin registro en 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 1 noticias de plantilla"
               },
               "evidence_count": 16,
               "analysis_priorities": [
@@ -5949,23 +5931,23 @@
           },
           "travel_km": 6712.5,
           "weather": {
-            "temperature_c": 23.6,
-            "precipitation_probability": 5,
-            "wind_speed_kmh": 15.8
+            "temperature_c": 23.5,
+            "precipitation_probability": 6,
+            "wind_speed_kmh": 16.6
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Wales (14º) | fuera vs Portugal (7º) | casa vs Norway (3º)",
-          "future_away": "casa vs Norway (3º) | casa vs Denmark (10º) | fuera vs Wales (14º)",
+          "future_home": "fuera vs Wales (52º) | fuera vs Portugal (3º) | casa vs Norway (23º)",
+          "future_away": "casa vs Norway (23º) | casa vs Denmark (13º) | fuera vs Wales (52º)",
           "history_quality": {
             "valid": true,
-            "teams": 16,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
-            "home_played": 1,
-            "away_played": 1,
+            "home_played": 2,
+            "away_played": 2,
             "reason": "",
             "sample_regime": "preseason",
             "positions_usable": false,
@@ -5988,7 +5970,7 @@
               "source_items_checked": 21
             }
           },
-          "context_updated_at": "2026-09-27T21:30:23.814802+00:00",
+          "context_updated_at": "2026-09-28T01:24:56.315981+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -6008,7 +5990,7 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 24,
+              "availability_items": 22,
               "official_items": 2,
               "match_items": 0,
               "team_items": 33,
@@ -6019,7 +6001,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (46.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 1 bajas/disponibilidad | Visitante: temporada anterior: sin registro en 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 3 noticias de plantilla | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (46.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 1 bajas/disponibilidad | Visitante: temporada anterior: sin registro en 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 1 noticias de plantilla | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (4 vs 4 días).",
           "analysis_ready": true
         },
         {
@@ -6060,22 +6042,22 @@
           },
           "fatigue": {
             "home": {
-              "score": 45.0,
-              "label": "medium"
+              "score": 35.0,
+              "label": "low"
             },
             "away": {
-              "score": 70.0,
-              "label": "high"
+              "score": 60.0,
+              "label": "medium"
             }
           },
           "competitive_context": {
             "season_context_phase": {
               "key": "early",
               "label": "tramo temprano",
-              "played": null,
-              "total_rounds": 30,
-              "progress": 0.2,
-              "source": "calendar_date"
+              "played": 1,
+              "total_rounds": 106,
+              "progress": 0.009,
+              "source": "played_matches"
             },
             "competitive_stakes_label": "sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir",
             "direct_rivalry": {
@@ -6105,11 +6087,11 @@
               "regime": "preseason",
               "positions_usable": false,
               "objectives_usable": false,
-              "teams_ranked": 16,
-              "expected_teams": 16,
+              "teams_ranked": 54,
+              "expected_teams": 54,
               "median_played": 1.0,
               "min_played": 1,
-              "points_spread": 3,
+              "points_spread": 6,
               "reason": "arranque de temporada: 1 jornada disputada"
             },
             "season_preview": {
@@ -6459,24 +6441,24 @@
           },
           "travel_km": 1648.9,
           "weather": {
-            "temperature_c": 23.8,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 9.1
+            "temperature_c": 24.0,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 10.3
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Czech Republic (-) | fuera vs Croatia (-) | fuera vs Czech Republic (-) | casa vs England (-)",
-          "future_away": "casa vs England (-) | casa vs Spain (-) | fuera vs England (-) | casa vs Czech Republic (-)",
+          "future_home": "casa vs Czech Republic (40º) | fuera vs Croatia (15º) | fuera vs Czech Republic (40º) | casa vs England (37º)",
+          "future_away": "casa vs England (37º) | casa vs Spain (14º) | fuera vs England (37º) | casa vs Czech Republic (40º)",
           "history_quality": {
-            "valid": false,
-            "teams": 16,
+            "valid": true,
+            "teams": 54,
             "median_played": 1.0,
             "minimum_expected": 1,
-            "home_played": 0,
-            "away_played": 0,
-            "reason": "muestra de tabla incompleta para uno o ambos equipos",
+            "home_played": 1,
+            "away_played": 1,
+            "reason": "",
             "sample_regime": "preseason",
             "positions_usable": false,
             "objectives_usable": false,
@@ -6498,7 +6480,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-27T21:29:33.859814+00:00",
+          "context_updated_at": "2026-09-28T01:24:46.620675+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -6531,7 +6513,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (80.6%). | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 5 posibles salidas | Visitante: temporada anterior: sin registro en 25/26; 2 posibles altas u operaciones; 1 señales de pretemporada | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (80.6%). | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 5 posibles salidas | Visitante: temporada anterior: sin registro en 25/26; 2 posibles altas u operaciones; 1 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
           "analysis_ready": true
         }
       ]
@@ -7212,10 +7194,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 6
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-27T21:27:51.478101+00:00",
+          "context_updated_at": "2026-09-28T01:24:25.885715+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -7236,7 +7218,7 @@
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
               "availability_items": 9,
-              "official_items": 5,
+              "official_items": 4,
               "match_items": 0,
               "team_items": 35,
               "season_transition_items": 28,
@@ -7415,19 +7397,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "UD Almería - transfermarkt.es",
-                    "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQS2Nmb0g0S2x4Ujg0T0xHUUM1SGxERm5DZ1dza0RXNkc0RkdqX3ExQkhCUVlYdjh5NVlEMHB5NG9aQU9yamlZX2hHNmNtQ0tBd2JGSjMtODlQOUhaMWtyVFR2MzBxVFFuUEZnUEVIMllDTW9fc0pLQXhrV1F5S2xqbU9NS2wwLXV3UEJpREJJdw?oc=5",
-                    "published_at": "Tue, 22 Sep 2026 03:02:15 GMT",
-                    "source": "transfermarkt.es",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "UD Almería Juvenil B - transfermarkt.es",
+                    "title": "UD Almería Juvenil B - Transfermarkt",
                     "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPSi1obUF6OTdRZ0hjd1JRY1ZyTGZMWkRJX0FCT3VaVjYxeGZtMi1UQ2MxTmlBeDIxd01vMGFqNi1uUWl2M2xXd2FpWVd3aDVIZ2ktRWNxRFVUTmhxM3h1SVliMG1qVjhkczM2S1YzRi1vNTVSb2lTaXY3SU12R2habGZ0WQ?oc=5",
                     "published_at": "Sun, 20 Sep 2026 05:32:48 GMT",
-                    "source": "transfermarkt.es",
+                    "source": "Transfermarkt",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -7449,24 +7422,33 @@
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "El mejor 'fichaje' del Almería ya está aquí: Arribas vuelve 25 días después - La Voz de Almería",
+                    "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOYi04UG1EaDhlMHlNQjd6eEhBNDQ3UmhIa0IySVY4cVZmZ1pqMjBrM19NT0V2Y0hNU3YxNUNpMWJwcU5BOWdGbTdqTHZ6elZrMlIwejJTclo5RTBSckhnQmR6NWxuRDJ1MUotU0lfZUg3WVlkaUhUOTV1clpob2c5bFdMN204THl3MEQ0VmhNSF80SWh5VzNsdlVFVmhvTDlISkJNQkhwWQ?oc=5",
+                    "published_at": "Fri, 11 Sep 2026 07:00:00 GMT",
+                    "source": "La Voz de Almería",
+                    "category": "signing",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   }
                 ],
                 "departures": [],
                 "departure_reports": [
                   {
-                    "title": "Cortes en la A-92 en Almería: una importante salida de la autovía quedará inhabilitada casi una semana - La Voz de Almería",
-                    "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQZ0FTS3JPVTgtSUhBN0FhRnZhYXN6TEVSdWl6RGFNeUQ1UUlxd0U0Q05odkgwQmJITzF6TjNLV2RfNmpLZXJfSnNWX3d6R2ptaE82TlRtUG5INXpLRGd0elYwWkVfTEV2YS1pU0dqbWUweE12ZDZHOXJQVlVEd0d6RHU5TnctX3NOVno4OUxJTnltT3RLX0pfYWFKLWMyNFoxa1ltTDk0M0RwNUVtVnFGVlFXRllkekJ0blRPMUtqUlVNUQ?oc=5",
-                    "published_at": "Fri, 25 Sep 2026 18:06:59 GMT",
-                    "source": "La Voz de Almería",
+                    "title": "La alcaldesa de Almería acompaña a la Hermandad del Rocío de Almería en su salida por el 25 aniversario de su imagen - Europa Press",
+                    "link": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxPYko4anVid1VjVWZ2V3h0MTBNMlJMRloxYXJibE1XVXY4OHFJQmNuV24wUlNoYnRGQTZkem9CVEFZOXNJMTVnWUZTX0VJNXFaVTVYS2pKTDV2REJKSk9TcGVKRXd4M1Vzb3Njcm5GYkJsVmFlVHRJN0VzQmp3LWZHWTlneDNGU0VINk1YLXJvSFNzZU9Lc2dMXzQ1TUNBeDlzek1taHg2c3ZvclpXLVltbWVZZWNnemVfMVhSZWtsY21rdlVCUkQ2Wk01SFh3X3FzM29NZ3huN2FseGRLR0FNQmRTc2h4V1dtRXJXTGNTRQ?oc=5",
+                    "published_at": "Sun, 27 Sep 2026 08:26:37 GMT",
+                    "source": "Europa Press",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Renfe afirma que ya está trabajando para crear una autopista ferroviaria desde Almería que de salida a frutas y hortalizas - Fhalmeria",
-                    "link": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxObWx4ZjUySXdsOTBPRndvU2g5RzVJN0ZVS3AtUWF6aHFZUUcyQU1GTnVZNF9FblpRQkkzc1RJMTJNLVh2TW45UGFKNkNRZFZyZXBWRjdrLUl2Q1JnQ3lnMWltd0VibmVHaUUtUmtpbVRXcUpWaFBmSFd2U2djTXdnTks0U1JteHlDMGhTMlUwdWNVNllGVzF2MmZZaFZXRjhRNTRQZi0xb3BFRHNjMXBpLVUtMWRpTVdSU01yWV9XcHh0bElITUlPTS1LR2NBSnZzNkhpcmFUS1dmVERvc0taVjFaRkxNZG9laXJ2ajh0a0lEcThhS3AyXw?oc=5",
-                    "published_at": "Thu, 24 Sep 2026 07:40:43 GMT",
-                    "source": "Fhalmeria",
+                    "title": "Cortes en la A-92 en Almería: una importante salida de la autovía quedará inhabilitada casi una semana - La Voz de Almería",
+                    "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQZ0FTS3JPVTgtSUhBN0FhRnZhYXN6TEVSdWl6RGFNeUQ1UUlxd0U0Q05odkgwQmJITzF6TjNLV2RfNmpLZXJfSnNWX3d6R2ptaE82TlRtUG5INXpLRGd0elYwWkVfTEV2YS1pU0dqbWUweE12ZDZHOXJQVlVEd0d6RHU5TnctX3NOVno4OUxJTnltT3RLX0pfYWFKLWMyNFoxa1ltTDk0M0RwNUVtVnFGVlFXRllkekJ0blRPMUtqUlVNUQ?oc=5",
+                    "published_at": "Fri, 25 Sep 2026 18:06:59 GMT",
+                    "source": "La Voz de Almería",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -7507,6 +7489,15 @@
                 "morale": [],
                 "all_evidence": [
                   {
+                    "title": "La alcaldesa de Almería acompaña a la Hermandad del Rocío de Almería en su salida por el 25 aniversario de su imagen - Europa Press",
+                    "link": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxPYko4anVid1VjVWZ2V3h0MTBNMlJMRloxYXJibE1XVXY4OHFJQmNuV24wUlNoYnRGQTZkem9CVEFZOXNJMTVnWUZTX0VJNXFaVTVYS2pKTDV2REJKSk9TcGVKRXd4M1Vzb3Njcm5GYkJsVmFlVHRJN0VzQmp3LWZHWTlneDNGU0VINk1YLXJvSFNzZU9Lc2dMXzQ1TUNBeDlzek1taHg2c3ZvclpXLVltbWVZZWNnemVfMVhSZWtsY21rdlVCUkQ2Wk01SFh3X3FzM29NZ3huN2FseGRLR0FNQmRTc2h4V1dtRXJXTGNTRQ?oc=5",
+                    "published_at": "Sun, 27 Sep 2026 08:26:37 GMT",
+                    "source": "Europa Press",
+                    "category": "departure",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
                     "title": "Javi Muñoz, de fichaje del Almería a candidato al mejor jugador de septiembre de LaLiga - La Voz de Almería",
                     "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOQ2VkekVUUTJxX2k2Z2YtcWQ4QjdIbFRreTZQT3loeTdhX0hpOVZwNC1kX3FGLV9GMGw5Wi1rczlLVjJINXlzQTdJZVplT1dVZkhZdC1WTmZGLURnemE1NHBTbFpqRU81Z2pmVHJhMUI3TmM1VHdKaFFSemdxU1pkQXlYRE9lZXhmMl8yQ3RsaDYya2NpUXRpeFE5Mmh1NlVWOS1yWW04VGYxWV9RSkNQVDA4LUpHdUduT1NTOHJnUQ?oc=5",
                     "published_at": "Sat, 26 Sep 2026 10:23:17 GMT",
@@ -7525,28 +7516,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Renfe afirma que ya está trabajando para crear una autopista ferroviaria desde Almería que de salida a frutas y hortalizas - Fhalmeria",
-                    "link": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxObWx4ZjUySXdsOTBPRndvU2g5RzVJN0ZVS3AtUWF6aHFZUUcyQU1GTnVZNF9FblpRQkkzc1RJMTJNLVh2TW45UGFKNkNRZFZyZXBWRjdrLUl2Q1JnQ3lnMWltd0VibmVHaUUtUmtpbVRXcUpWaFBmSFd2U2djTXdnTks0U1JteHlDMGhTMlUwdWNVNllGVzF2MmZZaFZXRjhRNTRQZi0xb3BFRHNjMXBpLVUtMWRpTVdSU01yWV9XcHh0bElITUlPTS1LR2NBSnZzNkhpcmFUS1dmVERvc0taVjFaRkxNZG9laXJ2ajh0a0lEcThhS3AyXw?oc=5",
-                    "published_at": "Thu, 24 Sep 2026 07:40:43 GMT",
-                    "source": "Fhalmeria",
-                    "category": "departure",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "UD Almería - transfermarkt.es",
-                    "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQS2Nmb0g0S2x4Ujg0T0xHUUM1SGxERm5DZ1dza0RXNkc0RkdqX3ExQkhCUVlYdjh5NVlEMHB5NG9aQU9yamlZX2hHNmNtQ0tBd2JGSjMtODlQOUhaMWtyVFR2MzBxVFFuUEZnUEVIMllDTW9fc0pLQXhrV1F5S2xqbU9NS2wwLXV3UEJpREJJdw?oc=5",
-                    "published_at": "Tue, 22 Sep 2026 03:02:15 GMT",
-                    "source": "transfermarkt.es",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "UD Almería Juvenil B - transfermarkt.es",
+                    "title": "UD Almería Juvenil B - Transfermarkt",
                     "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPSi1obUF6OTdRZ0hjd1JRY1ZyTGZMWkRJX0FCT3VaVjYxeGZtMi1UQ2MxTmlBeDIxd01vMGFqNi1uUWl2M2xXd2FpWVd3aDVIZ2ktRWNxRFVUTmhxM3h1SVliMG1qVjhkczM2S1YzRi1vNTVSb2lTaXY3SU12R2habGZ0WQ?oc=5",
                     "published_at": "Sun, 20 Sep 2026 05:32:48 GMT",
-                    "source": "transfermarkt.es",
+                    "source": "Transfermarkt",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -7615,10 +7588,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Almería inicia el nuevo curso escolar con la ratio reducida a 22 alumnos en Infantil y un refuerzo docente - cope.es",
+                    "title": "Almería inicia el nuevo curso escolar con la ratio reducida a 22 alumnos en Infantil y un refuerzo docente - COPE",
                     "link": "https://news.google.com/rss/articles/CBMijwJBVV95cUxOQV9vWGVUT2lObzV0Q3cteU1yNkkzM19tSU9LREpZclhPRVg2bWNDNFNDZXgtYTQ0VlpHeUJwSU1iU0VsVUZHZ05DU3A5QVE0RGNVVEoxdWVyRnNyT08wR1pTdXBnUHJjSVlGNHpLbWVSdXNXZjJMUVgtZVVMSGItYVMtRm9WM0t0OEF5OGFIbkxtc0FYSG01ek11Vy05N2NLWGxtTHc1VWxKQ3Roam56eU9rbHNDemo5SFF1ajZBcWtsX21PSlRKMnBTY2NNTWJ0aUdTbFVMTm1ZMElRdi1tVGZlUEkyTVc4VGJXZlY2Wl9kTzMyTWNoNkw5RUU0ZmxHMFJBUXNaV3hmc0V4Z0VF0gGUAkFVX3lxTFBsUG9TZGtyYXVHcGMxQWo3ejRQQ1g0REk3Q0dyTDE1YWFZSHZpMWd0bGYwdzFhUi1fREplX0VSYmVfY3NlUnhfZTBlM0w1UHh2V1FUVDZKZjh3S2FWLXdEQV9vUFhBR3hNaFZhU3VzTUNZYTRia2J6UDNqNUI0eG8xck1QcVdhQ3YwVmxIVUJHODRsclU3eVlSODRDYXpjVnRDcXNfR2RpejlMME9TWDVHSWltSTBvMjVvVTVVT1hUUDlFVXlvTV9fYnJaaXJzUWRvRUdzaEs5WXRVcFhOa0ZtcEtSRURxVW90MVlBSFJMSFFlMzc0b0dXcmdDNVIzZnFINl95UzFtU2JrNktLS0I1SnUxOA?oc=5",
                     "published_at": "Wed, 09 Sep 2026 07:00:00 GMT",
-                    "source": "cope.es",
+                    "source": "COPE",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "high"
@@ -7631,6 +7604,15 @@
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "high"
+                  },
+                  {
+                    "title": "Otro Almería tras el cierre del mercado de fichajes... - La Voz de Almería",
+                    "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPbl9wSXpRTWRsMGM5RlQ3b012RHlsSmtpbFVGbF9jb1pwM25SSWpPU21IMWpBVFRXZ3NTTzUxdDkwZ0JTYy1ET1M2YncxVUZKMXpQbGNPV1hjMjA5ZWVwdUtjZWhXZ3hVWm90UkV5cWJyMWNZdFZmNm5YdGZDeFc2RGNFOTk?oc=5",
+                    "published_at": "Sun, 06 Sep 2026 07:00:00 GMT",
+                    "source": "La Voz de Almería",
+                    "category": "signing",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   }
                 ],
                 "summary": "temporada anterior: 3o con 74 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 5 posibles salidas"
@@ -7725,7 +7707,7 @@
                   {
                     "title": "Sergio Francisco, nuevo entrenador del Burgos CF - Burgos CF",
                     "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNZGt6OTQtU29keENDTGJzX0tjZFZCeEF0QXZEaGFNYlQtbW1rVmpVcVpXTFdSSW16eVJWOEhDb1lhSnFkN21IVE1LMUhpR3pPRy1ZbEhWTXQ0dFd6d2NraFNWb3dHUHUxVzZyRHAxMFo4eno5QnotdWhpLUdnMlB4Tm1pRFotQjQ?oc=5",
-                    "published_at": "Thu, 24 Sep 2026 06:08:17 GMT",
+                    "published_at": "Sat, 26 Sep 2026 11:23:04 GMT",
                     "source": "Burgos CF",
                     "category": "coach",
                     "fact_status": "reported",
@@ -7761,7 +7743,7 @@
                   {
                     "title": "Sergio Francisco, nuevo entrenador del Burgos CF - Burgos CF",
                     "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNZGt6OTQtU29keENDTGJzX0tjZFZCeEF0QXZEaGFNYlQtbW1rVmpVcVpXTFdSSW16eVJWOEhDb1lhSnFkN21IVE1LMUhpR3pPRy1ZbEhWTXQ0dFd6d2NraFNWb3dHUHUxVzZyRHAxMFo4eno5QnotdWhpLUdnMlB4Tm1pRFotQjQ?oc=5",
-                    "published_at": "Thu, 24 Sep 2026 06:08:17 GMT",
+                    "published_at": "Sat, 26 Sep 2026 11:23:04 GMT",
                     "source": "Burgos CF",
                     "category": "coach",
                     "fact_status": "reported",
@@ -7947,7 +7929,7 @@
               "source_items_checked": 8
             }
           },
-          "context_updated_at": "2026-09-27T21:27:55.726917+00:00",
+          "context_updated_at": "2026-09-28T01:24:25.964895+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -8157,10 +8139,10 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "El Sevilla FC pone el foco en dos jugadores del Cádiz CF - Fichajes.net",
+                    "title": "El Sevilla FC pone el foco en dos jugadores del Cádiz CF - fichajes.net",
                     "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNeFVFVGppY1ZNUk8wLXpRZ05KMzJPZXNNTUN2blFLZERWNDZmYUpJQU1sbTVzMVRUVjNVai05WURlNFA3aGdxM2poUnlobi10RjNRSFJGMlpJdlc5d1huR0lPLUZHdVpIZmhPOEp6aGp5LWc0UFFiUWcyaFpYeXJGV2hQdjJMX2lsZjhiOXJVcDg?oc=5",
                     "published_at": "Sat, 18 Jul 2026 07:00:00 GMT",
-                    "source": "Fichajes.net",
+                    "source": "fichajes.net",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -8186,13 +8168,13 @@
                 ],
                 "departures": [
                   {
-                    "title": "Nueva salida confirmada en el Cádiz: Joaquín, al Ceuta - Andalucía Información",
-                    "link": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPaEJUbmlYd3VZckJYMWozbmppbkZqblNGYXVIZVBJSWQyOVA3bHpkeGszNXlOT0g3bzlmX25aTnFTbEFnY1RuM3BVcldvcmxRY2VIaE1SZnBFQl9nOWZXSEM1cTF3aWpRbDMweWpUdGxEakMyV0ZCSWpaWVNMdWpnQ3Y1d2hPOWQ5V19VcGZMVTJhanFidFo0S2lkaXgzSEZNa3RDU3ZwT2t1RjhNd3V3UmlxS09WVk8xQm15RERIQXNmU1I1UTdManhQWdIB0AFBVV95cUxNTVRiSHhPS3liVklwVEdLM2VqczVaZlQyUWpkMW9FZmVOd2I1dE5CTHItSjRTWTJRRUxxZ1NGdXY0TUprYVQ5UUp1YlBsdU4za2xmTERpb2x4dmpRTlFYN293MGFiZ2J0Qjl4bUlOSmVLeW5vMm5qaTVwMFlfdm14RXYzZVExVzFRdUpfOHVNaV9pM2JtWTVyTmpqNEFoa1lacm9FSXNnSHladTFpRmlWWFdsQjhnXzM2Qkhpb1Zfd3J3enZxN2VQVE1sX2U0ZG1F?oc=5",
-                    "published_at": "Tue, 01 Sep 2026 07:00:00 GMT",
-                    "source": "Andalucía Información",
+                    "title": "Manuel Vizcaíno anuncia su salida del Cádiz CF - Onda Cádiz",
+                    "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPM3RaUDNaOGdNNXRMMG03SFBsZ1NDTnB5WWZGUXhkS1UtakJUbGN4UjRpdzVSckdWZ1FMemFHblFzQ01FNDhkRnlQa2h5R25WTjhJYnE2Z2lHUmNfS0gtOWhXS0NCXzF1aFZqQTZtTHhPNWVqWVRjVUlaLW5fTW13LU94eXM1ZDc1MVg4Wg?oc=5",
+                    "published_at": "Fri, 03 Jul 2026 07:00:00 GMT",
+                    "source": "Onda Cádiz",
                     "category": "departure",
                     "fact_status": "confirmed",
-                    "evidence_quality": "high"
+                    "evidence_quality": "medium"
                   }
                 ],
                 "departure_reports": [],
@@ -8242,10 +8224,10 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "El Sevilla FC pone el foco en dos jugadores del Cádiz CF - Fichajes.net",
+                    "title": "El Sevilla FC pone el foco en dos jugadores del Cádiz CF - fichajes.net",
                     "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNeFVFVGppY1ZNUk8wLXpRZ05KMzJPZXNNTUN2blFLZERWNDZmYUpJQU1sbTVzMVRUVjNVai05WURlNFA3aGdxM2poUnlobi10RjNRSFJGMlpJdlc5d1huR0lPLUZHdVpIZmhPOEp6aGp5LWc0UFFiUWcyaFpYeXJGV2hQdjJMX2lsZjhiOXJVcDg?oc=5",
                     "published_at": "Sat, 18 Jul 2026 07:00:00 GMT",
-                    "source": "Fichajes.net",
+                    "source": "fichajes.net",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -8296,6 +8278,15 @@
                     "evidence_quality": "high"
                   },
                   {
+                    "title": "Manuel Vizcaíno anuncia su salida del Cádiz CF - Onda Cádiz",
+                    "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPM3RaUDNaOGdNNXRMMG03SFBsZ1NDTnB5WWZGUXhkS1UtakJUbGN4UjRpdzVSckdWZ1FMemFHblFzQ01FNDhkRnlQa2h5R25WTjhJYnE2Z2lHUmNfS0gtOWhXS0NCXzF1aFZqQTZtTHhPNWVqWVRjVUlaLW5fTW13LU94eXM1ZDc1MVg4Wg?oc=5",
+                    "published_at": "Fri, 03 Jul 2026 07:00:00 GMT",
+                    "source": "Onda Cádiz",
+                    "category": "departure",
+                    "fact_status": "confirmed",
+                    "evidence_quality": "medium"
+                  },
+                  {
                     "title": "Imanol Idiakez, presentado como nuevo entrenador del Cádiz CF - Cádiz Club de Fútbol",
                     "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQVnBZZzVJbk5kRTZONFVmYmZjS1FLQkkyclpfN0VjZmd4Sm1JbjRQdDZ6Zi1MMW5YNFlyNzRBdGZoY2xOdWg5ckhLU0g3bFJvbEJjcnRiQVZ5OGp0Uy1JUkhxbU9QMTZQZWtUOTlpbDJkSmF1UHRqT3RneVBUd2d1cmQxUko2QkhGd1RVV1JBZFBoZDQtNzYzTQ?oc=5",
                     "published_at": "Fri, 25 Sep 2026 12:34:35 GMT",
@@ -8320,15 +8311,6 @@
                     "source": "Cadena SER",
                     "category": "signing",
                     "fact_status": "reported",
-                    "evidence_quality": "high"
-                  },
-                  {
-                    "title": "Nueva salida confirmada en el Cádiz: Joaquín, al Ceuta - Andalucía Información",
-                    "link": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPaEJUbmlYd3VZckJYMWozbmppbkZqblNGYXVIZVBJSWQyOVA3bHpkeGszNXlOT0g3bzlmX25aTnFTbEFnY1RuM3BVcldvcmxRY2VIaE1SZnBFQl9nOWZXSEM1cTF3aWpRbDMweWpUdGxEakMyV0ZCSWpaWVNMdWpnQ3Y1d2hPOWQ5V19VcGZMVTJhanFidFo0S2lkaXgzSEZNa3RDU3ZwT2t1RjhNd3V3UmlxS09WVk8xQm15RERIQXNmU1I1UTdManhQWdIB0AFBVV95cUxNTVRiSHhPS3liVklwVEdLM2VqczVaZlQyUWpkMW9FZmVOd2I1dE5CTHItSjRTWTJRRUxxZ1NGdXY0TUprYVQ5UUp1YlBsdU4za2xmTERpb2x4dmpRTlFYN293MGFiZ2J0Qjl4bUlOSmVLeW5vMm5qaTVwMFlfdm14RXYzZVExVzFRdUpfOHVNaV9pM2JtWTVyTmpqNEFoa1lacm9FSXNnSHladTFpRmlWWFdsQjhnXzM2Qkhpb1Zfd3J3enZxN2VQVE1sX2U0ZG1F?oc=5",
-                    "published_at": "Tue, 01 Sep 2026 07:00:00 GMT",
-                    "source": "Andalucía Información",
-                    "category": "departure",
-                    "fact_status": "confirmed",
                     "evidence_quality": "high"
                   },
                   {
@@ -8445,21 +8427,21 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Álvaro Morata explica su fichaje por el Leganés con dardo a los críticos: \"Les hubiera gustado tener mi carrera\" - El Desmarque",
-                    "link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOc19COG1BTFJBTkNhblhROE1rZnkzdFdLT01ZY0sxUFpoYmVIdkdoaWhidHltcmZwc0o0Y2hOdkxoejZHYTVKV2JLalVTLUI3a0Y4ZVJVakFmR0o3NzFzaWUwSXkxTHVnYWE4RW5XQTd4N1QxUHJ0TmRzRkZaaXBLTG1mUGZLRHNTWFhZcEpvMEF2anRxaElZamhZUl95ZkhfckNJQWRYU21sOVQtNEwxVnducEoxV09wSTN6cWlXMVpZMWxGVnpLY3VsaDMtNDQ?oc=5",
-                    "published_at": "Fri, 28 Aug 2026 07:00:00 GMT",
-                    "source": "El Desmarque",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
                     "title": "El Leganés hace oficial el fichaje de Álvaro Morata - EL PAÍS",
                     "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNcmhLcFFqbXVxYTZNSV81bEdYZEk1NGFHSmRNOTd0Z1VSVE5FTG9xNkxrcUlNNlJsLURrMVNhbjYxcElIa0Y4cjl0VTBWUWFqdDd3Rzk0cnFNN0hLdjVuRWp5WUdRZFhLSTdqWWlKVjg0dW1CeDYzRzFDekNNbllkaWJYQ3l0aFZLR09hRGVxM0o0MFFhTWh5M21Rbmp5ODB5Q3BwTdIBuAFBVV95cUxOeVh4WGhaakV0Q09ZbTdsSXdBcWgwd2JidDNuNkdhNFBlcW5FZzlidGF2clE5c01OYzdlZi1TYWtERG5DSWdIWDY3NGZiWHZUX3hKWEdRV24zVjNza0NFeGtMS0FjR194R21LN0RKM0hnSHl2N1FleXhENG9MdTFfUWZvcXJQdk1BOXJBUV9mM2RNcHdGRWp0TWI3aE82Q19zMjd1YzNsR2RSNGdzWnhRT05ob0tMSURH?oc=5",
                     "published_at": "Fri, 28 Aug 2026 07:00:00 GMT",
                     "source": "EL PAÍS",
                     "category": "signing",
                     "fact_status": "confirmed",
+                    "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Álvaro Morata explica su fichaje por el Leganés con dardo a los críticos: \"Les hubiera gustado tener mi carrera\" - El Desmarque",
+                    "link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOc19COG1BTFJBTkNhblhROE1rZnkzdFdLT01ZY0sxUFpoYmVIdkdoaWhidHltcmZwc0o0Y2hOdkxoejZHYTVKV2JLalVTLUI3a0Y4ZVJVakFmR0o3NzFzaWUwSXkxTHVnYWE4RW5XQTd4N1QxUHJ0TmRzRkZaaXBLTG1mUGZLRHNTWFhZcEpvMEF2anRxaElZamhZUl95ZkhfckNJQWRYU21sOVQtNEwxVnducEoxV09wSTN6cWlXMVpZMWxGVnpLY3VsaDMtNDQ?oc=5",
+                    "published_at": "Fri, 28 Aug 2026 07:00:00 GMT",
+                    "source": "El Desmarque",
+                    "category": "signing",
+                    "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
@@ -8485,15 +8467,6 @@
                     "link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOTU5UbWNkc01sS1RyZUk4T0RhUHBhVzJ2ZEpreEs1akpVdWdwWThsemFCMVo5OWpwRjBEVmU0V2c4aW1FTFNVbWVZMlhORnBEem1NYm80dFVkYm5uZ1M5U3BOWmMyR3djTUZPRVY3eTZBRjBNUE1xbEEteERhQ1plOHViSEYwM3FVRElYYzNQME9aT0tUZEdYdnljcE1hZmQ1Y2kxei14RUdod2RSWlowUjg3NWdZbTkwODFJbk5KQlpON1E4QnYtQnd2N1F1QnZrdzlqOTBQeU9iX2RUVDFza1d5TVc?oc=5",
                     "published_at": "Fri, 28 Aug 2026 07:00:00 GMT",
                     "source": "20Minutos",
-                    "category": "signing",
-                    "fact_status": "confirmed",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "El Leganés hace oficial el fichaje estrella de Álvaro Morata - Estadio Deportivo",
-                    "link": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOdU54ZDJFVkp0ZUFXYnQ1MVk4a3ZHRVZ0bjFBSVRnOEIwZXU1aEIxUFRFc2ZYZ3lySExIMHhBUUUxVE5JXzVuZkFGU3JRQmc0MVF0Nk9lX2YtdnBYX0RDTmJaWnY3NTFpTjJ6NFI5cWpkMjFuZXcwZzAtMnlyTmpldGY5TEo0UXNHZTRaUW4yRTc2T1NqSEhaSmllUmRhNlN0b0x1UTRqQU9TZjhiaG50c01YNDl1WURxZjN3OHdRZVpYZFI0ZVBMdjNBcktGUnM?oc=5",
-                    "published_at": "Fri, 28 Aug 2026 07:00:00 GMT",
-                    "source": "Estadio Deportivo",
                     "category": "signing",
                     "fact_status": "confirmed",
                     "evidence_quality": "medium"
@@ -8535,21 +8508,30 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Álvaro Morata puede volver a España: el Leganés negocia su fichaje con el Como - El Pespunte",
-                    "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPb29FYjZucjNpakJiOE52b1MtS01aMXBjd2kyUDN5T0FrN19taTRiYXpVdjN1cHpyUEFPU0NiWjluZlpEam5Tb0RHeTVLbzNnNUdic2szOG1TSXIyNzg4UnJJWmE5c3ZhbkZsVVpzUEIyTklheEJCcjYtQi1sQTVCZUxXSnd1VVB1WVc3N3ZSUDlTUHZyS0FYQVV2UENwSmJDMlNRb2h2ZU85cU53UFI0N0NCdDJLUDFhM1RzQVBSOGVvMENNUU9UaDFrUVBBSmlLUEliRDJn?oc=5",
-                    "published_at": "Wed, 26 Aug 2026 07:00:00 GMT",
-                    "source": "El Pespunte",
+                    "title": "El C.D. Leganés cierra la cesión de Álex Sancris - C.D. Leganés - Web Oficial - cd leganes",
+                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxONldObHN6Wkc5QXVxa1M5S2pLUndjdU5zOGtGVjdoeXQ3TEFad2twMElyUUtGazNBemtkbnV3UkN3RG5zcjExenN0WjQ3RWlUUGozdXZvVk0zNVVtSFdnQXlpNGNIUmRtSE5oUmtibGt0Z0ZVZk0zVHhobkZfX1JTVFNoSS0xT1BJcm1Lam1JZklmeVJQckV1ag?oc=5",
+                    "published_at": "Tue, 25 Aug 2026 07:00:00 GMT",
+                    "source": "cd leganes",
                     "category": "signing",
-                    "fact_status": "rumour",
+                    "fact_status": "confirmed",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "El C.D. Leganés cierra la cesión de Álex Sancris - C.D. Leganés - Web Oficial - cdleganes.com",
-                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxONldObHN6Wkc5QXVxa1M5S2pLUndjdU5zOGtGVjdoeXQ3TEFad2twMElyUUtGazNBemtkbnV3UkN3RG5zcjExenN0WjQ3RWlUUGozdXZvVk0zNVVtSFdnQXlpNGNIUmRtSE5oUmtibGt0Z0ZVZk0zVHhobkZfX1JTVFNoSS0xT1BJcm1Lam1JZklmeVJQckV1ag?oc=5",
-                    "published_at": "Tue, 25 Aug 2026 07:00:00 GMT",
-                    "source": "cdleganes.com",
+                    "title": "El Leganés ata el fichaje de Luca Zidane y dispara la presión en el caso de Juan Soriano - Diario AS",
+                    "link": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOemMtSmtTNE9MejNRRUVydlVCM2dlOEdxQWtnVHM2MHU0YTFQTk15OWE2TWlIYWV5dHk0SXI4bFpUZFI0dUZVYWlBbVB6R2RxMW4yNlhHZ2R0Zzg0b2FxM2ppcGRFdVZTYlQxemZaZk9yRUdLdjVYNzNNTW9Jdk9wTUlXRnJHcVFKd1NtdjlsUFd5SFJMcFowUjF4RnhJRG9BZ0FZWFJELXFwdThja3NOeVV6cjJoWUhEeTUyOTJ3VW1QLWNjLUhoV9IB3AFBVV95cUxQSXdXWFVzZ2hjSE8xVEVRWEFoV0FaY1puRndkdnZjVkpjTVQ1dW5jeFI3TzRNUHJmbFRQSk9fQU1EQVE1MVlTQVBJeTc2M00weldwZTVKNUNJTlNlZ3RxeGpKWE1VYlVEa0VPdVlid3JhVWhVSzI3empIWnNGRTdSZ2c2Ukl0SnY3emlvaFh3N0VSdy1JekMtN3lOWjdENXpNTkxWMk51cXFpVUpfVkhKbDA2UlJncG1oUGI5NXdkOHhFLTk2Vzk4Z2EwTXZJMllRcXFGYW05bmRKeXAx?oc=5",
+                    "published_at": "Fri, 07 Aug 2026 07:00:00 GMT",
+                    "source": "Diario AS",
                     "category": "signing",
-                    "fact_status": "confirmed",
+                    "fact_status": "reported",
+                    "evidence_quality": "high"
+                  },
+                  {
+                    "title": "El Leganés se frota las manos con el fichaje de Yan Diomande por el Real Madrid: sacará una suculenta tajada del millonario traspaso - 20Minutos",
+                    "link": "https://news.google.com/rss/articles/CBMigAJBVV95cUxQX1c0OVBzMWxUNVV1eHJWWGN2VzhULXhsRjZPN1I5Tm5OaDZkSzl2bVhvdzZ0c3Q5RE9rc2hKbkl1eWYtaEFiMTZUSHQ3aHlQSTRJQWZaZUF0dkR1SkphREhkQTJTckJYSEhKVmVuZ0ZaMzE2VUF4d2hMM0JpQjFHZnlMcjBGYzlaTXpXVDgzeVdjaWpndlBocE5xVVVZOVBnSGtDUmhsbGU5cHpvN2k4VjBlZ1dLYmNKamotX20zZVA5aG9hWEw1MUtmUC05VkduSnM1QVpLZHB6OU9PUEZ3eXZKMVZ6bDVFYlZhMGxWMVVtbG1BX0s3bGVYT0lDMmZZ?oc=5",
+                    "published_at": "Fri, 07 Aug 2026 07:00:00 GMT",
+                    "source": "20Minutos",
+                    "category": "signing",
+                    "fact_status": "reported",
                     "evidence_quality": "medium"
                   }
                 ],
@@ -8605,7 +8587,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-27T21:28:18.215049+00:00",
+          "context_updated_at": "2026-09-28T01:24:27.919181+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -9318,7 +9300,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-27T21:28:07.400083+00:00",
+          "context_updated_at": "2026-09-28T01:24:27.854638+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 69,
@@ -10041,7 +10023,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-27T21:28:36.061384+00:00",
+          "context_updated_at": "2026-09-28T01:24:32.208997+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -10287,10 +10269,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Una pretemporada con lupa en el Sporting de Gijón - Killer Asturias",
+                    "title": "Una pretemporada con lupa en el Sporting de Gijón - killerasturias.com",
                     "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPaE1mTlF4NzBON09MR2xlQkRhWmVleEd1cVhONVhTRlZ0UlhGX2gxNGNLYzhDN0xkd1ZOQzZtQmhvbDd6LXNUU1dFWU1LUXBrXzB0UXdETEJiWndQUExWYmM2Nkt5NXFVa0JqMnh1SGc3NE5TTHhNUGlkUUpmNzU0WkFxRzcxMEhUc1dKcmZB?oc=5",
                     "published_at": "Sat, 27 Jun 2026 07:00:00 GMT",
-                    "source": "Killer Asturias",
+                    "source": "killerasturias.com",
                     "category": "preseason",
                     "fact_status": "reported",
                     "evidence_quality": "high"
@@ -10373,10 +10355,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Una pretemporada con lupa en el Sporting de Gijón - Killer Asturias",
+                    "title": "Una pretemporada con lupa en el Sporting de Gijón - killerasturias.com",
                     "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPaE1mTlF4NzBON09MR2xlQkRhWmVleEd1cVhONVhTRlZ0UlhGX2gxNGNLYzhDN0xkd1ZOQzZtQmhvbDd6LXNUU1dFWU1LUXBrXzB0UXdETEJiWndQUExWYmM2Nkt5NXFVa0JqMnh1SGc3NE5TTHhNUGlkUUpmNzU0WkFxRzcxMEhUc1dKcmZB?oc=5",
                     "published_at": "Sat, 27 Jun 2026 07:00:00 GMT",
-                    "source": "Killer Asturias",
+                    "source": "killerasturias.com",
                     "category": "preseason",
                     "fact_status": "reported",
                     "evidence_quality": "high"
@@ -10685,10 +10667,10 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 6
+              "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-27T21:28:43.348099+00:00",
+          "context_updated_at": "2026-09-28T01:24:39.011961+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -11403,7 +11385,7 @@
               "source_items_checked": 24
             }
           },
-          "context_updated_at": "2026-09-27T21:37:22.811951+00:00",
+          "context_updated_at": "2026-09-28T01:28:41.563524+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -12135,7 +12117,7 @@
               "source_items_checked": 15
             }
           },
-          "context_updated_at": "2026-09-27T21:37:36.959335+00:00",
+          "context_updated_at": "2026-09-28T01:28:45.683017+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -12865,7 +12847,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-27T21:37:49.075215+00:00",
+          "context_updated_at": "2026-09-28T01:28:48.155109+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -13634,7 +13616,7 @@
               "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-09-27T21:37:59.668203+00:00",
+          "context_updated_at": "2026-09-28T01:28:50.628142+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -13840,10 +13822,10 @@
                 "promotion_history": [],
                 "squad_news": [
                   {
-                    "title": "Mayssa Baha jugadora más joven en marcar en Liga F con el FC Barcelona - Las Futbolistas",
+                    "title": "Mayssa Baha jugadora más joven en marcar en Liga F con el FC Barcelona - lasfutbolistas.com",
                     "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9LRVNtRndUb0JIaHYwTE9yLWVIOHJkY01WRmxBd3Y0c0JnWmZJSHM0Z25fbEtCMWc4OW9xV0lfNjFBMGhteUc0Um0xbENaMms0S2R1eGIwTmxmQk8yMkd3cXppYzFwcVpFWWE3QlpFOHY5Umk0TmI0S19wWU54Nmc?oc=5",
                     "published_at": "Sat, 26 Sep 2026 21:19:54 GMT",
-                    "source": "Las Futbolistas",
+                    "source": "lasfutbolistas.com",
                     "_signal": 1.7,
                     "category": "squad",
                     "fact_status": "reported",
@@ -13863,10 +13845,10 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Mayssa Baha jugadora más joven en marcar en Liga F con el FC Barcelona - Las Futbolistas",
+                    "title": "Mayssa Baha jugadora más joven en marcar en Liga F con el FC Barcelona - lasfutbolistas.com",
                     "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9LRVNtRndUb0JIaHYwTE9yLWVIOHJkY01WRmxBd3Y0c0JnWmZJSHM0Z25fbEtCMWc4OW9xV0lfNjFBMGhteUc0Um0xbENaMms0S2R1eGIwTmxmQk8yMkd3cXppYzFwcVpFWWE3QlpFOHY5Umk0TmI0S19wWU54Nmc?oc=5",
                     "published_at": "Sat, 26 Sep 2026 21:19:54 GMT",
-                    "source": "Las Futbolistas",
+                    "source": "lasfutbolistas.com",
                     "_signal": 1.7,
                     "category": "squad",
                     "fact_status": "reported",
@@ -13896,33 +13878,12 @@
                 "departures": [],
                 "departure_reports": [],
                 "coach_changes": [],
-                "availability": [
-                  {
-                    "title": "Dépor ABANCA – Real Madrid: horario, dónde ver, bajas y previa de la jornada 3 de Liga F - Las Futbolistas",
-                    "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQOEgtdUtlZ0taRVppd3l2Z2cyZjVZUlE1Y0xyUlQ0XzlrbXM0dVVTbklWckYwZWZ5bGtVWUZDNmttQ3hNUXBNWHV4VDNPdHBwcWYzaFFWS0lVZjRqRkFZNWFxWGN5NG5MTWEyem44bHRsdzg4ZGItVE9RbTFCOGhteXNzWlJhTC1WQzZYNg?oc=5",
-                    "published_at": "Fri, 11 Sep 2026 07:00:00 GMT",
-                    "source": "Las Futbolistas",
-                    "_signal": 4.7,
-                    "category": "availability",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
-                  }
-                ],
+                "availability": [],
                 "preseason": [],
                 "promotion_history": [],
                 "squad_news": [],
                 "morale": [],
                 "all_evidence": [
-                  {
-                    "title": "Dépor ABANCA – Real Madrid: horario, dónde ver, bajas y previa de la jornada 3 de Liga F - Las Futbolistas",
-                    "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQOEgtdUtlZ0taRVppd3l2Z2cyZjVZUlE1Y0xyUlQ0XzlrbXM0dVVTbklWckYwZWZ5bGtVWUZDNmttQ3hNUXBNWHV4VDNPdHBwcWYzaFFWS0lVZjRqRkFZNWFxWGN5NG5MTWEyem44bHRsdzg4ZGItVE9RbTFCOGhteXNzWlJhTC1WQzZYNg?oc=5",
-                    "published_at": "Fri, 11 Sep 2026 07:00:00 GMT",
-                    "source": "Las Futbolistas",
-                    "_signal": 4.7,
-                    "category": "availability",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
-                  },
                   {
                     "title": "Linda Caicedo y Real Madrid superaron 3-5 a la Real Sociedad, en compromiso de la Liga F - Noticias Caracol",
                     "link": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxOMWY4cEJaVFZIcmdkTVByR2JHb1hDekIyWHVRV1lleDFDMTJPa1JBRzRzdGlDUUJXdFdlRTZVM2ZkRkZucUFQRnIyMFdZUE5FejVlSzlFOVUxNVI1c2dBMkhYX3dyZ1JmVWxqR2N2VzhqTUVYMHRsMjNZX0x1ckotc3l1TTlqME0tc1kxVzBNT1ZNa19feFFWejJMaGtSa2hKNThhRGlIWmFXNHVUeWNnSllSVmhWYWxSS3BlbHRJaXhadDFMbTVyQUtmc0x1a21weS1LemFyVWgtVkpLSkZ6N0IzdGUzMW9PTGkySWJ3LUFVZ0xJ0gGCAkFVX3lxTE1fNmViVWZ4OE9wQ0RYUThjYUpJQ2xEMXRoQUtmR25GbVRtN2thUFRpeHowaDNCSnhhbXVxMGozamVWVVdjWUR1cnNHMm1naGJOUU1PNldsNjI2M21OYXZfZm1ZWTFtZ2hPM2lVMmNVV1FpU2xhbzdPVkdzYXd0ZzNybk8yX3Z3ZWt6Zk1NTnZ0ZmxFb19OTlZOcTZCYmRhWFA4S0JjaWgwQUg2RGRaMnRMV1dTeG4tMVRfVkFXME04dHIwSEQ2RVBYUUVkQzBCSG05SXY2NVVVMERiUzRudi1KOU1pbk94N1ZBRkNCOGVQSTVmN05QbW5kMm1Bck5KbXFZUQ?oc=5",
@@ -13934,20 +13895,30 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Liga F: La Real no encuentra premio ante el Real Madrid (3-5) - Noticias de Gipuzkoa",
+                    "title": "Liga F: La Real no encuentra premio ante el Real Madrid (3-5) - noticiasdegipuzkoa.eus",
                     "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQYlVQOVFEN0ZkNDRGeXZOLV80ZmFfZHV2MzRRMlpaOS1hLThQcVc4bVFPVGhQb2gxTF85N3Z1bm1KSmhMTGNlZUZUZGhpV0tXNGd5U0N2dnpjN2VVbDdjb3B2NHhhWTBrVVVhV2lFVlpCYS11Yjhnd2dpVE5ILVhTN2FLNmduMmxnaERlNXd0a25wX0h0OHNIVGtDZmxPOWpkZk41MdIBqgFBVV95cUxPdU10LTExTW1ubjEwRl9OZ2twMmxSaHdJRXlRWHhlRGI5RjVJbW5rLWpYT1hmQm9CVHUyaXg2dGw4X0RPUFlpX0Iyb2t6TFhRWHFsMVdsanFtcHJpTXlMR0k0RWp3OXpTNWxQVUp4MllTUHM0UjRMMk1uWjZINTZFWktVX3pvTlRfYnprTHBrNjRUcmNnbDFaMm1KMXZPWUxxWkp6aDNsSk0xQQ?oc=5",
                     "published_at": "Sat, 26 Sep 2026 13:15:43 GMT",
-                    "source": "Noticias de Gipuzkoa",
+                    "source": "noticiasdegipuzkoa.eus",
                     "_signal": 0.0,
                     "category": "",
                     "fact_status": "reported",
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Liga F: La Real afronta “un reto mayúsculo” ante el Real Madrid - Noticias de Gipuzkoa",
+                    "title": "Liga F: La Real afronta “un reto mayúsculo” ante el Real Madrid - noticiasdegipuzkoa.eus",
                     "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPUzZGWU9qelhDLUJlWGtIaUVjeGJOckd2NUU3MExnNFBYSWhwcHBIRXdJM1l1Yk41RFZxa0l5WVA1dE10MU5QRHRlMFZpZlF2SDJ1THZZSmlnQ2ZxLVRGMDNwSEs3WXhicGRXQURMejdiSmZHUlJlRDI5V3NKdy1BU3AxWFRBUE9OMUVSWTdFcnpLcXNoMkZna9IBngFBVV95cUxPbi15Y2x5SGd6Mk1QZ05vaGF1WnhwYUkwVkQwc3NiQXY5eEdvY05LZXhKbVhacmIwNTQyTWZRdlVEZlR0OFlTYnl6NW5lZzUtZGZ5U0ppdGxfQ3JyalcyMmhyUk11WVdqQWdUczlVTGFRWlg5M09GX21BREVpT1dnTFhEVHhrem5YbW1JaHZaQ0xub1YyaHlmZ2d0UXZvQQ?oc=5",
                     "published_at": "Fri, 25 Sep 2026 16:03:10 GMT",
-                    "source": "Noticias de Gipuzkoa",
+                    "source": "noticiasdegipuzkoa.eus",
+                    "_signal": 0.0,
+                    "category": "",
+                    "fact_status": "reported",
+                    "evidence_quality": "high"
+                  },
+                  {
+                    "title": "Claudia de la Cuerda cumple su sueño y debuta con el Real Madrid en Liga F - Cadena SER",
+                    "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPUmxCcjhzYjctYy1GZkFsRVd1NG9kSGxtZC03VU5aUWw1YnVxeVdPbVlNb0tKdHlzVnZ6anoxMWlkQXdwZDh5ZGdsVHJEeVZORnRPbi1sRHQxNGEwMzhsLVc4WHhQbnN1N0lrTVdYal9pUXZKQk5kbFJ1aWk5bmdyZUZ2d3hPWDJMWVo4M3FJdmtDYkVDYWs1bnJNa0psdlFrNjNmTk51YmpJa0dsTVVxc1h1U1dLZ3ZhZ2szdXlnMGJzYzc3d3VaNThUaXZuV3BLemfSAeYBQVVfeXFMT3JXcU5fU05ON3FnN2RXc1h5akZDdl8xejlvVkI1UmwxaHp3bWluNXRneTMwX3hpMmM0Q3dxU2JPSUw1aUZtdXdRczhHVk9kQ0NybG5yVlRUQUhNa3NyYWE0NVFrOW16WEl3Qk5QckxsZzNaVU9YUkdJNGdsT2FZbTgwWFdIVTNNZG04MmQ5MnBlZ0FFUUNZVVp1eVFPcnVKYnJOamhfaG1UYVJHaHRPLWxRanduSF9iN2ZoQWR3UHFfWTJVYTdHdWF4N0I0Q1NtQ18zUUdGS24zTGx6d0lRYV83Ry1yb2c?oc=5",
+                    "published_at": "Thu, 24 Sep 2026 11:24:21 GMT",
+                    "source": "Cadena SER",
                     "_signal": 0.0,
                     "category": "",
                     "fact_status": "reported",
@@ -13974,7 +13945,7 @@
                     "evidence_quality": "high"
                   }
                 ],
-                "summary": "temporada anterior: 2o con 63 pts en sportsdb_5106 25/26; 1 bajas/disponibilidad"
+                "summary": "temporada anterior: 2o con 63 pts en sportsdb_5106 25/26"
               },
               "evidence_count": 8,
               "analysis_priorities": [
@@ -14010,17 +13981,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 5
+              "source_items_checked": 8
             },
             "away": {
               "team": "Real Madrid",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 14
+              "source_items_checked": 17
             }
           },
-          "context_updated_at": "2026-09-27T21:38:02.331353+00:00",
+          "context_updated_at": "2026-09-28T01:29:03.103373+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -14041,18 +14012,18 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 3,
-              "official_items": 1,
+              "availability_items": 4,
+              "official_items": 7,
               "match_items": 0,
               "team_items": 13,
-              "season_transition_items": 3,
+              "season_transition_items": 2,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "sources_checked_no_confirmed_absence",
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: arranque de temporada: 2 jornadas disputadas. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 1o con 78 pts en sportsdb_5106 25/26; 1 posibles altas u operaciones; 1 noticias de plantilla | Visitante: temporada anterior: 2o con 63 pts en sportsdb_5106 25/26; 1 bajas/disponibilidad | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: arranque de temporada: 2 jornadas disputadas. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: 1o con 78 pts en sportsdb_5106 25/26; 1 posibles altas u operaciones; 1 noticias de plantilla | Visitante: temporada anterior: 2o con 63 pts en sportsdb_5106 25/26 | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -14312,10 +14283,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 9
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-27T21:38:37.993590+00:00",
+          "context_updated_at": "2026-09-28T01:29:08.687707+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 56,
@@ -14337,8 +14308,8 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 3,
-              "official_items": 4,
+              "availability_items": 2,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 2,
               "season_transition_items": 1,
@@ -14589,7 +14560,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-27T21:38:43.593032+00:00",
+          "context_updated_at": "2026-09-28T01:29:16.844739+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 42,
@@ -14876,7 +14847,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-27T21:38:50.165553+00:00",
+          "context_updated_at": "2026-09-28T01:29:24.257831+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -14928,9 +14899,9 @@
           "official_percent": {},
           "home_table": {
             "position": null,
-            "points": 3,
-            "form": "W",
-            "form_matches": 1
+            "points": null,
+            "form": "",
+            "form_matches": 0
           },
           "away_table": {
             "position": null,
@@ -14939,13 +14910,7 @@
             "form_matches": 0
           },
           "pressure": {
-            "home": {
-              "score": 38.04,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": null
-            },
+            "home": {},
             "away": {}
           },
           "fatigue": {
@@ -15345,7 +15310,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-27T21:39:01.802414+00:00",
+          "context_updated_at": "2026-09-28T01:29:30.725131+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -15737,6 +15702,15 @@
                     "evidence_quality": "high"
                   },
                   {
+                    "title": "El último fichaje de Xabi Alonso: Pep Chavarría deja el Rayo Vallecano y firma con el Chelsea hasta 2031 - El Confidencial",
+                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOQUF5TWpzVmlIWlZiYm1CQkVERjU0eG1ndHlfcGl5Rkw4ZE1KUV8wM3pULUg5WjhCQXFQcTFTT1c3dE4zRXFpdTZpY2xiSlRCekJvQ2NXTGRNUWxhV1R4emdWcGFVZVVQM09qT1daSGlGZnNobEpqaUJhRmE2dHpPQTJCX3NhME1mLUdiTXF5ZklRTzJBQ0JWeA?oc=5",
+                    "published_at": "Wed, 12 Aug 2026 07:00:00 GMT",
+                    "source": "El Confidencial",
+                    "category": "signing",
+                    "fact_status": "reported",
+                    "evidence_quality": "high"
+                  },
+                  {
                     "title": "El Rayo Vallecano hace oficial la salida de Pep Chavarría al Chelsea con un traspaso a repartir con el Zaragoza - El Desmarque",
                     "link": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxOeUxoTmNnNzdHOC0wQ1RIdDFMUm91UDlSSWxzNldQZmJOY0RpSTE5SW9pRU8tc2RyRmM1T1U2clNjNFFBMHVVbHc5WHFCQkJaTFRVLXVDcy1aZGJTTjU3dWdVQ1I3VU42R0trRU9MNjhCWHkyN2haNG9ZeGNrUG03ZGw1SmxsVkdtajBjM2ZCdm5FN1VKUjFVTEhzaFExMEkwVVdTX2FuTVJCcE1GbTVaTHhXM25oSVN5dmV1ZVdDdmJrMHFuVThjUmVHdnRiVTJneEFWOTd0NkhJSThQ?oc=5",
                     "published_at": "Wed, 12 Aug 2026 07:00:00 GMT",
@@ -15767,15 +15741,6 @@
                     "title": "Beñat San José da el visto bueno al fichaje de dos viejos conocidos por el Rayo Vallecano - La Razón",
                     "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOaUZkZEZmcHJpbW9IekJ5cFk1NnBCMUx3QkdDVE1uY3dCYUJGcU13T0d6T0E2eUdRNm10ZHpxaURjX1BMVU9NWFJRaHJfeGZOa3ZxTmM2VG5DY1hlTnVOZlBmSU1nazRNTkdCWW9RVkxxNFZtQU5aTGwtMU5sbmlqdE85b3RNMkp6ME94Zy16OGJxTjFjTlprX2FCbjZVT2FzeHBOcFRIUThMWTVRRFR1a2lfS3RSLVVCLWVxalRUUEpMMlk4S1MtQ2x1bDhFek5INWFBdDNjMGo4cXNZdlRYSk1UMDUwUdIB-gFBVV95cUxQMHlDQl9mMm1PRlFObVhHUHlrV3ZMSU1LOXRrRm5UeHVub2luWURtZkhyZ0FzOW9GV0RZM3NJbTBvLTU2S2F0ZU1ib3BQbHFiWG5mTDFmLVhkQ0xDUVpySy1xM0c3cnZleWtHOVJ6a2pWLWRTVDZNdWc4NmFheW9jOHNqNnNiaU1BNm9fUTdxSjh1WlZXZXFrSkJNSTZwbEJQTl9yZVJzUEs1NTMtZUVaX0xEU0YzRjA3UlJTc3Q2YmowNmdrU2JibkNqdENSampjTWRfTzE4djZpS0pmNkcyakc2RzRrMmZWOVZFc3BIMU9kcU14S2VzODBn?oc=5",
                     "published_at": "Fri, 03 Jul 2026 07:00:00 GMT",
-                    "source": "La Razón",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "El Rayo Vallecano encarrila el primer fichaje de la era Beñat San José - La Razón",
-                    "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOYkZlSy1LdlRVVC1VM3VqeUdyXy1KZVZ1dDVyNnBzWUY1ZS1jbGcwVUswOExFRS15Z3U1VE9ZeHdKX3FmUHlyUmk2amcxZm1FLU9FdXhPakdsNGhMMEVnX01pWUVBdm14WklwWlFXY3NRM3hIaWJMNU1HblZMYUZqcTJ6eGFqREVhRXBuZ0xvN2hwY0U4SjBIdVlJTXFUWlZFamd1RWUyNzlfbElaMnZNeG1jT1dqaDNSRGZzR2g3cXQwUXJrX2hqT1pYVmIyZUc1NEFhUkFR0gHqAUFVX3lxTFB1dWlZLVRwcVpxN0tlelpySmNwZVVlNXNYZnZaV083VUdKc2IzUGptNDRpV2FaX0g2Y2wzMlZRQTNaVVFTTndzN3dTQUgwWmpFa2Nnc0pNOWNhZFZqb3Q4U3dXZW9QNGczR1VOdkk4UFJtZ3YwNlhsZ2taZHUzV2NFQno5T1VMT3dyTjMxQmotbkhfWHpIMUJiQm03c0lsRzZsbmdfUTFHeDhqNVJvR1pXZEFTWFRBanI2STJuVkQ2Y0RBdjBQempHOE13dFhVRjVtY1AtYTc5a3RvaW52Tjd0YnQ0TF95WFhOQQ?oc=5",
-                    "published_at": "Sat, 27 Jun 2026 07:00:00 GMT",
                     "source": "La Razón",
                     "category": "signing",
                     "fact_status": "reported",
@@ -15956,9 +15921,9 @@
           },
           "travel_km": 323.5,
           "weather": {
-            "temperature_c": 18.3,
-            "precipitation_probability": 50,
-            "wind_speed_kmh": 0.5
+            "temperature_c": 20.0,
+            "precipitation_probability": 45,
+            "wind_speed_kmh": 3.1
           },
           "referee": {
             "name": "no confirmado",
@@ -15995,7 +15960,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-27T21:24:14.563629+00:00",
+          "context_updated_at": "2026-09-28T01:23:42.223498+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -16724,7 +16689,7 @@
               "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-09-27T21:34:47.509350+00:00",
+          "context_updated_at": "2026-09-28T01:27:55.829822+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -17444,7 +17409,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-27T21:34:47.636390+00:00",
+          "context_updated_at": "2026-09-28T01:27:55.959049+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -17662,10 +17627,10 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Elche CF Fútbol base - Fichajes 23/24 - transfermarkt.es",
+                    "title": "Elche CF Fútbol base - Fichajes 23/24 - Transfermarkt",
                     "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNVFA5UlhESVJPUEpVbWxvT21ZOWJlUGhXX1FxVHo4LTlNNGlFMW9MTGpzcFh2ZWdHX3JJdUFmQnZWUy1qYzNIbmpaRmJ1TTVHcXZxNnRRWXdycHhyMzlXX1NmZ1BKWDdURjUyV2FiM1ZBWU9uTHdjMVl0R2h0d1V5SW54LVE4UTJrT1E?oc=5",
                     "published_at": "Sun, 20 Sep 2026 12:47:25 GMT",
-                    "source": "transfermarkt.es",
+                    "source": "Transfermarkt",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -17705,15 +17670,6 @@
                 "availability": [],
                 "preseason": [
                   {
-                    "title": "El Elche CF arrancará la pretemporada el miércoles 1 de julio - Elche CF",
-                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxObVhuSThTRmpOZXoybEpaV3ZfWjN1U3JLd0swS2NYRUloejg3VVk0VFZsWjViMnk3Mkw1OVVBU2hWdUlvOU10QVdyUnVBamlQcmJVeHhnRXJuYU8xcmc2c0twU00zQ1ZNODljTVZBbXIyY1VJVTNzUTRXM0JqczBBYUMzTzlfZHZYbWdTX0dFMXhHaF8wM3Jnaw?oc=5",
-                    "published_at": "Thu, 24 Sep 2026 11:19:57 GMT",
-                    "source": "Elche CF",
-                    "category": "preseason",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
                     "title": "El Elche CF confirma dos amistosos de pretemporada ante Kaizer Chiefs y Al-Ain - Elche CF",
                     "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxObXFubVNEUWwxUzdIaGgzT1JoRThROEMwODlvbEthVDN5dzdWcEtvVWRUNl9kalRDY3FwQ010SHFhVkJaNkZ0eGVCajJnZFBhTHRxOW1oMDI3bHpYelVOTjZpcW9TS0VMMmtBZHduRkpBSEZ6Y196cjJyRm5PRlR2VG54bVV4OHBhZ3NYM19YVmxqUUNrLVVWeDE0bEpXd0h6azRTU1VTM0RpWE9TZ3JR?oc=5",
                     "published_at": "Fri, 10 Jul 2026 16:08:14 GMT",
@@ -17721,21 +17677,21 @@
                     "category": "preseason",
                     "fact_status": "confirmed",
                     "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "El Elche CF arrancará la pretemporada el miércoles 1 de julio - Elche CF",
+                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxObVhuSThTRmpOZXoybEpaV3ZfWjN1U3JLd0swS2NYRUloejg3VVk0VFZsWjViMnk3Mkw1OVVBU2hWdUlvOU10QVdyUnVBamlQcmJVeHhnRXJuYU8xcmc2c0twU00zQ1ZNODljTVZBbXIyY1VJVTNzUTRXM0JqczBBYUMzTzlfZHZYbWdTX0dFMXhHaF8wM3Jnaw?oc=5",
+                    "published_at": "Fri, 19 Jun 2026 10:00:56 GMT",
+                    "source": "Elche CF",
+                    "category": "preseason",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   }
                 ],
                 "promotion_history": [],
                 "squad_news": [],
                 "morale": [],
                 "all_evidence": [
-                  {
-                    "title": "El Elche CF arrancará la pretemporada el miércoles 1 de julio - Elche CF",
-                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxObVhuSThTRmpOZXoybEpaV3ZfWjN1U3JLd0swS2NYRUloejg3VVk0VFZsWjViMnk3Mkw1OVVBU2hWdUlvOU10QVdyUnVBamlQcmJVeHhnRXJuYU8xcmc2c0twU00zQ1ZNODljTVZBbXIyY1VJVTNzUTRXM0JqczBBYUMzTzlfZHZYbWdTX0dFMXhHaF8wM3Jnaw?oc=5",
-                    "published_at": "Thu, 24 Sep 2026 11:19:57 GMT",
-                    "source": "Elche CF",
-                    "category": "preseason",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
                   {
                     "title": "Y también se hace de día para Buonanotte con su fichaje por el Elche CF - Alicante Plaza",
                     "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNUnktYjJPWUV4cm9KUnVQVHIzQmw0cGFzaEZwR0pIZUJJdkNpQzUwWHExNXd3N1V6R2lDZDF5TThlRzlrcnVoNEpucEM3NVI0cXF5MkxiN2h2UHpGeGI0TUJIeXBUZ0NfR0ZuZjNRTWxiSXZNVTVLQXRkMjVaTzlybUFvYml1cnlkd09uN0xuOHA2cVN4YWJxOVBpY1RqMHZTVy1OanZBVEZMQnZLVy1zV3h6X05YYlRtb2hRQl9XYmp6LUdBU2c?oc=5",
@@ -17764,10 +17720,19 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Elche CF Fútbol base - Fichajes 23/24 - transfermarkt.es",
+                    "title": "El Elche CF arrancará la pretemporada el miércoles 1 de julio - Elche CF",
+                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxObVhuSThTRmpOZXoybEpaV3ZfWjN1U3JLd0swS2NYRUloejg3VVk0VFZsWjViMnk3Mkw1OVVBU2hWdUlvOU10QVdyUnVBamlQcmJVeHhnRXJuYU8xcmc2c0twU00zQ1ZNODljTVZBbXIyY1VJVTNzUTRXM0JqczBBYUMzTzlfZHZYbWdTX0dFMXhHaF8wM3Jnaw?oc=5",
+                    "published_at": "Fri, 19 Jun 2026 10:00:56 GMT",
+                    "source": "Elche CF",
+                    "category": "preseason",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Elche CF Fútbol base - Fichajes 23/24 - Transfermarkt",
                     "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNVFA5UlhESVJPUEpVbWxvT21ZOWJlUGhXX1FxVHo4LTlNNGlFMW9MTGpzcFh2ZWdHX3JJdUFmQnZWUy1qYzNIbmpaRmJ1TTVHcXZxNnRRWXdycHhyMzlXX1NmZ1BKWDdURjUyV2FiM1ZBWU9uTHdjMVl0R2h0d1V5SW54LVE4UTJrT1E?oc=5",
                     "published_at": "Sun, 20 Sep 2026 12:47:25 GMT",
-                    "source": "transfermarkt.es",
+                    "source": "Transfermarkt",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -17789,15 +17754,6 @@
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "high"
-                  },
-                  {
-                    "title": "El Elche CF es el sexto equipo que más ha invertido en fichajes este mercado - todoalicante.es",
-                    "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPOGhoM2lvS3VSMTZ1UTdLTUxjU0lILXE4MXFzM2ZQTm01d3ZuQ3ZWcG02SEFMR0ZxQklaWUQtSjh2dXM1WkN1SEt5bWdXb0ZJLWVCcnNGUFk4WUNuUW9EOHh5UGNqSVNyeVN0UEVPUWtaZ2hBcjR4MnFRU2NINGdvTUF6WDVsNWxDTXA2b3YyVl9zR3NHd29xaEpnWVE5U3pidTF1T1dTWDPSAa4BQVVfeXFMT3FlUlhScV9uOHBnX2F4QVBwUFd3U3lOWF85d0hLSnpOazZ5dk91YjFZLWludkk4b3BQQ3pzbV9MSlUzNkZzTVB4TlVVVTVCTUhDMVF6U2NjYndiZjNCNjdzWkF0aWFXeFlleS1QZ0o5S0hMZjNGU2MwclUyVUVHbEtiOXNNa0VoRkFDMk1uTGluYXA0UmlXcHhrWW1kb2lWalZkeVd1UkVTRHZmUjNB?oc=5",
-                    "published_at": "Wed, 02 Sep 2026 07:00:00 GMT",
-                    "source": "todoalicante.es",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
                   },
                   {
                     "title": "David Affengruber deja el Elche para fichar por el Fulham de Arbeloa - Superdeporte",
@@ -17852,6 +17808,15 @@
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "high"
+                  },
+                  {
+                    "title": "La línea a seguir por el Elche CF está clara, como también que debe matizar algunas cosas... y aprovechar el mercado de fichajes - Alicante Plaza",
+                    "link": "https://news.google.com/rss/articles/CBMijAJBVV95cUxPV1VhZzlGd0JyaHhnNXhudnhQckhtZGZQN2RZUlBydGluUUVyc3A4MW9vbm5kV2Y5YkJBY25sMGJaWXZiRS0wZXNNRzh0ejVPS3hXajNxdlhqZ0pRWjVDZ1Vibkh4dHRjUDhmNHRwRXM4WXk1TWdiN3h1cV96MWdNcXhIZ2IyaUJvNW1vUkFmblZTN1d2MGVGSjZIMFU2ZnUyd3dPZEZEQzQwdE8tS3BSNzhCVlBaNHlnUUFjRWY4NWNRalBoa3l1cFp6bF9jNWtDNHFPTGU2cXpoY3lqVnVodGI5R2s0ZkFhTzRRRnFnbkJsVzBGdmQ3S054ZmQ3N0gxNi1oUWJ5M2dUemhz?oc=5",
+                    "published_at": "Mon, 24 Aug 2026 07:00:00 GMT",
+                    "source": "Alicante Plaza",
+                    "category": "signing",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   }
                 ],
                 "summary": "temporada anterior: 13o con 43 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 posibles salidas; 2 señales de pretemporada"
@@ -17902,19 +17867,19 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Stefan Bajcetic retorna al Celta de Vigo - Fichajes.com",
-                    "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNQXJha252RnBobS12TERJc1ZoUUlOTERaSU1WLWFDdmY0XzNMTWJfOHZFaDFqc2gwc0hBUjJRT2p0blNfX0Q1UThZZmN2bGV6TDd6S3B6Qmc5dktEX0JqWnBfZVdCVE8zdURmMC0yXzRrc3NjNHI3T2pBYk1Cb3FpbTF1ZW93cTlIaGpXZFExUQ?oc=5",
-                    "published_at": "Mon, 31 Aug 2026 07:00:00 GMT",
-                    "source": "Fichajes.com",
+                    "title": "El Celta de Vigo cierra su sexto fichaje - La Razón",
+                    "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOZllvcG55U3daU0ZESUJ6ZWJ2OGp5dmpaeUxZM0JRQWRCMktxSzdld2xrZE1nT2ZyR01vd0pQTWVNUWhZd0ZZZEprcmNHeFpzd29uakdxcEFOdkZUYTJGUWFoM2l3SXRsWHZOMU9kYUlMaXpmMm0zWTZ2aVhCTWdLeHcwYzdmWkp3dGdkSlA4SlN4WkFTVUZzbXVFUV8yMHYza0U4TXdoNGRzekdiY1kyNjRn0gHGAUFVX3lxTFBkdHVtR0hRN0RaRFJBTUF4Y1NUTUxyX1AtdVZ0THBnQmdjcDVUSWE1Y24tbzFwd1FibXZnYmZvazYydTlKSXpuWHhzTW04SnZ4b0RuTGFraF9VTUEwaWduamxoZ1gyeDU4YUZoaVdYQndXS2tHdzFiMG40RlBZaEVvYU1kT1htMk56ZjZQWFNMQmR2SWREcXJhRUJHTlg2U2V2YUJxQkRXcTdQVUd4WU5heE81WU5jU2NRUHRrTEMzTkowV0NHZw?oc=5",
+                    "published_at": "Tue, 25 Aug 2026 07:00:00 GMT",
+                    "source": "La Razón",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "El Celta de Vigo cierra su sexto fichaje - La Razón",
-                    "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOZllvcG55U3daU0ZESUJ6ZWJ2OGp5dmpaeUxZM0JRQWRCMktxSzdld2xrZE1nT2ZyR01vd0pQTWVNUWhZd0ZZZEprcmNHeFpzd29uakdxcEFOdkZUYTJGUWFoM2l3SXRsWHZOMU9kYUlMaXpmMm0zWTZ2aVhCTWdLeHcwYzdmWkp3dGdkSlA4SlN4WkFTVUZzbXVFUV8yMHYza0U4TXdoNGRzekdiY1kyNjRn0gHGAUFVX3lxTFBkdHVtR0hRN0RaRFJBTUF4Y1NUTUxyX1AtdVZ0THBnQmdjcDVUSWE1Y24tbzFwd1FibXZnYmZvazYydTlKSXpuWHhzTW04SnZ4b0RuTGFraF9VTUEwaWduamxoZ1gyeDU4YUZoaVdYQndXS2tHdzFiMG40RlBZaEVvYU1kT1htMk56ZjZQWFNMQmR2SWREcXJhRUJHTlg2U2V2YUJxQkRXcTdQVUd4WU5heE81WU5jU2NRUHRrTEMzTkowV0NHZw?oc=5",
-                    "published_at": "Tue, 25 Aug 2026 07:00:00 GMT",
-                    "source": "La Razón",
+                    "title": "Couhaib Driouech, fichaje cerrado en el Celta de Vigo desde el PSV: las cifras de la operación - El Desmarque",
+                    "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOTF83THA0UG1GSmNBaWd3WURsSy16ZEktUW16NVc2azFHQmV3V2IzYWNBWkRGZm5BaEZZUUwyVHE3YjBaZmZEYkNXM055N216ZXpSMkVXWEpqSkh4TEhvc2NlbTN1ZDVoTWRpci1UaEFYMDFtVk8yRTZCYUxBeDlTNEJMQUxFODliM1Nlb2w5bWh4dFJ3RFpFR1pVMUl6bmVfLUNtR2ZsNkRvZk0taHllX0lPLXBkMHU2T1JlMW5n?oc=5",
+                    "published_at": "Sun, 23 Aug 2026 07:00:00 GMT",
+                    "source": "El Desmarque",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -17987,15 +17952,6 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Stefan Bajcetic retorna al Celta de Vigo - Fichajes.com",
-                    "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNQXJha252RnBobS12TERJc1ZoUUlOTERaSU1WLWFDdmY0XzNMTWJfOHZFaDFqc2gwc0hBUjJRT2p0blNfX0Q1UThZZmN2bGV6TDd6S3B6Qmc5dktEX0JqWnBfZVdCVE8zdURmMC0yXzRrc3NjNHI3T2pBYk1Cb3FpbTF1ZW93cTlIaGpXZFExUQ?oc=5",
-                    "published_at": "Mon, 31 Aug 2026 07:00:00 GMT",
-                    "source": "Fichajes.com",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
                     "title": "El Celta de Vigo cierra su sexto fichaje - La Razón",
                     "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOZllvcG55U3daU0ZESUJ6ZWJ2OGp5dmpaeUxZM0JRQWRCMktxSzdld2xrZE1nT2ZyR01vd0pQTWVNUWhZd0ZZZEprcmNHeFpzd29uakdxcEFOdkZUYTJGUWFoM2l3SXRsWHZOMU9kYUlMaXpmMm0zWTZ2aVhCTWdLeHcwYzdmWkp3dGdkSlA4SlN4WkFTVUZzbXVFUV8yMHYza0U4TXdoNGRzekdiY1kyNjRn0gHGAUFVX3lxTFBkdHVtR0hRN0RaRFJBTUF4Y1NUTUxyX1AtdVZ0THBnQmdjcDVUSWE1Y24tbzFwd1FibXZnYmZvazYydTlKSXpuWHhzTW04SnZ4b0RuTGFraF9VTUEwaWduamxoZ1gyeDU4YUZoaVdYQndXS2tHdzFiMG40RlBZaEVvYU1kT1htMk56ZjZQWFNMQmR2SWREcXJhRUJHTlg2U2V2YUJxQkRXcTdQVUd4WU5heE81WU5jU2NRUHRrTEMzTkowV0NHZw?oc=5",
                     "published_at": "Tue, 25 Aug 2026 07:00:00 GMT",
@@ -18017,6 +17973,15 @@
                     "title": "Un extremo para el Celta de Vigo - Fichajes.com",
                     "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOQmZucWZFRGFKcWdtaU9KOUtvNHByYUllZkVIRGxmSVJOWXl6Wk16eS0wd1lqZjhyLWpSdkFITDdSbzVqQTRmVmpXQS1Nb2FtdW1KeFpDRjVPZ2xocWw5SU1BSXczbnM1Q1dueGpITWpOd3VBVU5sbEtGWDJLa01qRkJuSjY?oc=5",
                     "published_at": "Sun, 23 Aug 2026 07:00:00 GMT",
+                    "source": "Fichajes.com",
+                    "category": "signing",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "El Celta de Vigo amplía la búsqueda del central - Fichajes.com",
+                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNS2lac3RoQl9KckdhaXVGRmNEbnU2VW05cEtmV2E2eE9ITUt6RXhSbDA4UnN0YkRteFlCcGE2dFo4bk5JTjhScXBfN0tSY0RQUDZMMlpWSHVVS194Z284OHB1OEc0QUcyWWxyZjgxODJ0akZ5b3Z0TUtEdE8xbXJyS2RjeHpuaUpHZ1VBcEg0ek9kUXBWQmdOeQ?oc=5",
+                    "published_at": "Sat, 22 Aug 2026 07:00:00 GMT",
                     "source": "Fichajes.com",
                     "category": "signing",
                     "fact_status": "reported",
@@ -18148,7 +18113,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-27T21:25:34.783972+00:00",
+          "context_updated_at": "2026-09-28T01:23:48.879004+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -18889,7 +18854,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-27T21:34:49.833764+00:00",
+          "context_updated_at": "2026-09-28T01:27:59.798860+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -18910,10 +18875,10 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 15,
+              "availability_items": 14,
               "official_items": 3,
               "match_items": 0,
-              "team_items": 44,
+              "team_items": 43,
               "season_transition_items": 28,
               "verified_teams": 1,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -19646,7 +19611,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-27T21:34:51.599630+00:00",
+          "context_updated_at": "2026-09-28T01:28:01.974063+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -19893,10 +19858,10 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Racing de Santander confirma la salida de Gustavo Puerta rumbo a Olympiacos - colombia.as.com",
+                    "title": "Racing de Santander confirma la salida de Gustavo Puerta rumbo a Olympiacos - AS Colombia",
                     "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNS3lwYTk4dmd5Vk1NRDFDNU5BZFN2WklyLWJIdHF6bG1TRVR5R1JpSmV0NzFjbE9aRzFtdDBwZ2U0VUNSRXAydUt5ODdrZVVhRmlTNFI1MzBJT3BITGN3NGZhUXlKTDNPMTRpREJyOFAyNEJycE1TTFlUaE4xdnVYSWRMQ0xRempfWEdLTENncWQ2cjVsX3dpRUJsdEhLQnlkZTFmTDg0cUdiSllOcTczZEVsdjRHeU50Y1gycnlKMzktVkN0UXltLW1NZmoxYXRtTFhTSGktUlJzQdIB7gFBVV95cUxPa1ZPc013RDFscWdFY2taVmVUckI2WFc4Q2ZGY1B4cEVYa0MtWWpQbVJRcnNSVHFPMVlGalI5cko1d3YwVFF1MTU0RjVzOGxnRnpqdTRpX1EtM3RTWWRzWTE5OUV0Z0NpWDBYQk5YT3ljbG0taHBoUjBvbTdCMHVrN0J6czVoZGVZVENZSmZ6aXJhbDA4bFJxTWljQXdGcG43OFp0TkEtWU52ZEdTQ3FlTE01X0x2bDF4RkZsM3NGaTlwTFN5VzRKeGw2cGg4QzVSRVJHNkNNeUowNVY2ZkU2OG5PUm5va2lOcG0wNG1n?oc=5",
                     "published_at": "Tue, 01 Sep 2026 07:00:00 GMT",
-                    "source": "colombia.as.com",
+                    "source": "AS Colombia",
                     "category": "departure",
                     "fact_status": "confirmed",
                     "evidence_quality": "high"
@@ -19922,10 +19887,10 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "André Almeida encuentra salida en el último momento: se marcha cedido al Racing de Santander y el Valencia CF cobra - El Desmarque",
-                    "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOUU1MTkdGSTlGMjZCOHkxMlFuVHdtUGhDOF9MZEtWMngtYkVpYzM4QXdpeDJtd2stWXlIVUlVMm5NcTVCbm9GRVdhMGEwWG5nVEFobGp2Nk96NThrN3E5dkxycXpEYjVmNWgwbktnYW5KZ3hCSjNVbklGX1k2WWpqemQ0VjBpamdGSWw1UlNMeXpmSVF1N0hWdUM5TGxTTG8wSFlKQl8xZU9QWkFhWUZyWHJvcnpmMnoyYkE?oc=5",
+                    "title": "Gustavo Puerta cambia de equipo en Europa: Racing de Santander confirmó su salida al Olympiacos - elpais.com.co",
+                    "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPX2ZPc3VqSHoyd01XdGplT0hNNFc5RWJfaWtGX3ZXX0tKcVN4bm9SQTBvRE43TXpfVFk5UlN1YVhyR0VmOXNOczBQU0FvbkVUb2FwNjZMc1RZdVBMN1N3WWd3RWRpR1FFUXpXS3doQXNOdE1oYkF2OTgtcFdDZ25YZVJsYnllckRrbURLbURaRGNRdjdCT3BlZllWUDVRakllc1RwVmR3ZzNEN1ZYNHNoMXhBR0pKYXZ5Zms2TC1wM0g3UWtOUzFqNlZtXzQzdVdUNmcySFRn0gHbAUFVX3lxTE1aLXZnWExaQ29NWFZzSTJ4VUkxejhyOTZRYWJ4Vm96MXBuSGk2Y20yYXFDYllQVWEyQ3VXNmMyR0pCamF0X203Nm5tQy10ZGo0ZmdDTnJCV2FqY1l0Vkl0eUkyd3pqbkVTRmRnUWhuaHUzNDZ4SWRPb1FqWjRvbmFJV0FtYzVLSHotN0loOGxkZzcwU3lTRmRiWWhsNWdCVVZTWTdzQy00aXFGYUNKXzVUTVJ6Z3hmZnY4YnFvYVFtSmRFaUMzZ2RWZ1lZWmEyb2l4VXBXYXhndHNnYw?oc=5",
                     "published_at": "Tue, 01 Sep 2026 07:00:00 GMT",
-                    "source": "El Desmarque",
+                    "source": "elpais.com.co",
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -19984,10 +19949,10 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Racing de Santander confirma la salida de Gustavo Puerta rumbo a Olympiacos - colombia.as.com",
+                    "title": "Racing de Santander confirma la salida de Gustavo Puerta rumbo a Olympiacos - AS Colombia",
                     "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNS3lwYTk4dmd5Vk1NRDFDNU5BZFN2WklyLWJIdHF6bG1TRVR5R1JpSmV0NzFjbE9aRzFtdDBwZ2U0VUNSRXAydUt5ODdrZVVhRmlTNFI1MzBJT3BITGN3NGZhUXlKTDNPMTRpREJyOFAyNEJycE1TTFlUaE4xdnVYSWRMQ0xRempfWEdLTENncWQ2cjVsX3dpRUJsdEhLQnlkZTFmTDg0cUdiSllOcTczZEVsdjRHeU50Y1gycnlKMzktVkN0UXltLW1NZmoxYXRtTFhTSGktUlJzQdIB7gFBVV95cUxPa1ZPc013RDFscWdFY2taVmVUckI2WFc4Q2ZGY1B4cEVYa0MtWWpQbVJRcnNSVHFPMVlGalI5cko1d3YwVFF1MTU0RjVzOGxnRnpqdTRpX1EtM3RTWWRzWTE5OUV0Z0NpWDBYQk5YT3ljbG0taHBoUjBvbTdCMHVrN0J6czVoZGVZVENZSmZ6aXJhbDA4bFJxTWljQXdGcG43OFp0TkEtWU52ZEdTQ3FlTE01X0x2bDF4RkZsM3NGaTlwTFN5VzRKeGw2cGg4QzVSRVJHNkNNeUowNVY2ZkU2OG5PUm5va2lOcG0wNG1n?oc=5",
                     "published_at": "Tue, 01 Sep 2026 07:00:00 GMT",
-                    "source": "colombia.as.com",
+                    "source": "AS Colombia",
                     "category": "departure",
                     "fact_status": "confirmed",
                     "evidence_quality": "high"
@@ -20038,15 +20003,6 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "André Almeida encuentra salida en el último momento: se marcha cedido al Racing de Santander y el Valencia CF cobra - El Desmarque",
-                    "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOUU1MTkdGSTlGMjZCOHkxMlFuVHdtUGhDOF9MZEtWMngtYkVpYzM4QXdpeDJtd2stWXlIVUlVMm5NcTVCbm9GRVdhMGEwWG5nVEFobGp2Nk96NThrN3E5dkxycXpEYjVmNWgwbktnYW5KZ3hCSjNVbklGX1k2WWpqemQ0VjBpamdGSWw1UlNMeXpmSVF1N0hWdUM5TGxTTG8wSFlKQl8xZU9QWkFhWUZyWHJvcnpmMnoyYkE?oc=5",
-                    "published_at": "Tue, 01 Sep 2026 07:00:00 GMT",
-                    "source": "El Desmarque",
-                    "category": "departure",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
                     "title": "Gustavo Puerta cambia de equipo en Europa: Racing de Santander confirmó su salida al Olympiacos - elpais.com.co",
                     "link": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPX2ZPc3VqSHoyd01XdGplT0hNNFc5RWJfaWtGX3ZXX0tKcVN4bm9SQTBvRE43TXpfVFk5UlN1YVhyR0VmOXNOczBQU0FvbkVUb2FwNjZMc1RZdVBMN1N3WWd3RWRpR1FFUXpXS3doQXNOdE1oYkF2OTgtcFdDZ25YZVJsYnllckRrbURLbURaRGNRdjdCT3BlZllWUDVRakllc1RwVmR3ZzNEN1ZYNHNoMXhBR0pKYXZ5Zms2TC1wM0g3UWtOUzFqNlZtXzQzdVdUNmcySFRn0gHbAUFVX3lxTE1aLXZnWExaQ29NWFZzSTJ4VUkxejhyOTZRYWJ4Vm96MXBuSGk2Y20yYXFDYllQVWEyQ3VXNmMyR0pCamF0X203Nm5tQy10ZGo0ZmdDTnJCV2FqY1l0Vkl0eUkyd3pqbkVTRmRnUWhuaHUzNDZ4SWRPb1FqWjRvbmFJV0FtYzVLSHotN0loOGxkZzcwU3lTRmRiWWhsNWdCVVZTWTdzQy00aXFGYUNKXzVUTVJ6Z3hmZnY4YnFvYVFtSmRFaUMzZ2RWZ1lZWmEyb2l4VXBXYXhndHNnYw?oc=5",
                     "published_at": "Tue, 01 Sep 2026 07:00:00 GMT",
@@ -20060,6 +20016,15 @@
                     "link": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQWkRyX0QwS1I2ckRHajUya3dXMEU1eGNkUnpTOS1vdjQ0TkpqeF9IN1JjcWdUMy1wSVBmZ3lKREVHaEgyaWtjYjhnTmxBUk1PanNkTktQcXJDM1FNbmZ5am51WE9XM1hIZ1lPdTcwVU5YSDdUUzhLQkVGUWxmY3FJNGxDZWVoSzBJMkk2TGd1RDduWmtrOUVBV04yTEhyelpBVlFfdlVGb1M2dFpsWHRZNmgzSkpzOWNSU0pSRFdmLUZTT010UDVoMlNqVUhrQXAzUUc2bFBhUnpGeUtUN2VV0gHkAUFVX3lxTE82LWExVUZCZ2EzVkRQR0I2b3RRLVpEWE5RcGRKVnZ1bVNtbUV5RHh3NFliX1hhT1dyR3pMUGRsREdzd0xYSEdNWmJwZ0lNVXBidUVraEF0aWwxdE9XaXduakF2OHU1bWNsSnBEODhUQ2NuOV9GbjJmdW1FU2tqNGFqUXFfX0ptNWNscEVXSkdrVzBlVWFRUzVGalljNjlNckUzTkYzaXpoT3RYRVpNdXFUTzZLUkV6VjE0M19DZnZfSFNsWUV4cFJpNncxWjBFVVJNMGNnTTFSN04xd2VLZGd4c2cyQQ?oc=5",
                     "published_at": "Tue, 01 Sep 2026 07:00:00 GMT",
                     "source": "Revista Semana",
+                    "category": "signing",
+                    "fact_status": "confirmed",
+                    "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Acuerdo con el Racing de Santander para el traspaso de Iker Luque - Página oficial del Atlético de Madrid",
+                    "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNa09UQlJycW1LLUdZUDVqLVdOMS1jendoQzAzVUJxQUR6b0VreFlvY1lUYVpJVkJENDdjTDlDR0JJb1l2RjNiUThvSWlQcHBFam9JTEhqeE45RlRSMVp2RnlSR1NQRlhPLWFpVTlFS1RzYl9ZY2J5d1M4ZGJleTR1N2w3Smw5TjlIWFV6ZzRxT1VFTGJKcEpNVVhkckNJcHNyUG5qTkFpR2Jzakk?oc=5",
+                    "published_at": "Mon, 31 Aug 2026 07:00:00 GMT",
+                    "source": "Página oficial del Atlético de Madrid",
                     "category": "signing",
                     "fact_status": "confirmed",
                     "evidence_quality": "medium"
@@ -20093,15 +20058,6 @@
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "7 fichajes mexicanos que podría llevar Vasco Aguirre al Valencia - MARCA",
-                    "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNcHRnMV9zWXI2ZmctUG1IMzZfZXpFZmozOXJRcVEtekVvVkdJMmpUMUNEdHpZMDJkbDN4R0NmSEVaaHhQdTJEaGw0d3BXNm8wSDNkbVFfZVJ0anRQUlg4YmFyTDh3YnEwbl9xandBajVBc0FGT3JWTUVfV3gyOXpPc0hzV21rZzNYTTJmN1JXQ1c3Z0JzSl9PTG1PSlZia3pvOGpoaE5lWHBhWjlycXp6SDNDNzFXdzNfZ3BxZi130gG-AUFVX3lxTFBsRzZTbEp4ZDd4ZFNlbUlKcE1uZ3BqenlHbFRvT2FBWXZQMGZ1NmFXbzdjaENRNXhMOHhKcE4zVzdaQmtzU19jS3VVdHlVQVRERmd0Ry1vVDAtVUNFanNydF9GR05hSUtxZGRPR2dNakJhZVlxSFc2Nl9ieUFCZkpnajNYWnhvdEFlNVhQVzFwY085NHBOdFlGWDREc25LcEJyVUc2cnE1cXJVUnlnbFI0cl95eXk2N3Z4NUNxVmc?oc=5",
-                    "published_at": "Wed, 23 Sep 2026 23:06:52 GMT",
-                    "source": "MARCA",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
                   }
                 ],
                 "departures": [],
@@ -20136,6 +20092,15 @@
                     "evidence_quality": "high"
                   },
                   {
+                    "title": "JAVIER AGUIRRE ES NUEVO ENTRENADOR DEL VALENCIA - El Heraldo de San Luis Potosí.",
+                    "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNSFZTcWU4dE9qSlBuaHoyX3ZSOTFxUGVTQzY2a21uSkRoOUxKbGdKZGRRZTFzZ2ZOa2xoU3hvRWlrc2YyYTVjNWt5UEtLb2FJNlpmdlljcHVLTmFpSGUzWXZtME04aTc5VjA0R0JPYVVCV0VpYXAwMi1EMEs0akswN2hEbVYzX2tFaEJhQnRoc0tSQUk3YXc?oc=5",
+                    "published_at": "Wed, 23 Sep 2026 18:50:41 GMT",
+                    "source": "El Heraldo de San Luis Potosí.",
+                    "category": "coach",
+                    "fact_status": "reported",
+                    "evidence_quality": "high"
+                  },
+                  {
                     "title": "Javier Aguirre es el nuevo entrenador del Valencia FC - Noticias Radiorama",
                     "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQSWhMR0V4N1RTem9jR1ZJbENFd0NSMXNmVDdVb2lxc242Q0hrWXY1UlNhM1hPeXpIdi1idmFwZ19uU1ZrSzhILXQxZnNpNjBqUlNET2lfc01BVEhWMjdjVFVPUDVxb0dFNkg4bVZIZ3VjN3llMENUOXJ6Ym9aUURVOV9qT20yMjROa3M5VmdUeFM2RFlMaUpsSURpb1VKNk9NQTdmV1NjZ2ZmQQ?oc=5",
                     "published_at": "Wed, 23 Sep 2026 18:03:59 GMT",
@@ -20145,18 +20110,9 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Javier Aguirre es nuevo entrenador del Valencia - ESPN Guatemala",
-                    "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPUTRTUkRtTkVSa2xjQnZHUFVNQzF2UzJWSzNfRkU1YlNKcTc3SUxlLWFIUmRCbUxWc1BKUnEyUFpKZU14OTMwQV81NU5yQ2xSa0djVkkzV1JTaW1iRGl1RXkzOVNiVnR6NVVQNjlLb2kzUktjMDkwYk5KNUZXRThtak1jNEhSdW1mazNXWVdqM1R6Z2lfY1cwUWdFeklFMVdKOXdXaFRqcw?oc=5",
-                    "published_at": "Wed, 23 Sep 2026 15:08:06 GMT",
-                    "source": "ESPN Guatemala",
-                    "category": "coach",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
                     "title": "Otra misión de rescate: Javier Aguirre ya es nuevo entrenador del Valencia - Sports Illustrated",
                     "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPYTFxM251N1ViWUpLX1FGSndWd0ZhemdpV2ZXaUp0YmNXaG9fR3VHX3ZVdVlLM3pOc0gyZ21zQlZXRHBVb0RWemhtaVRKVWlKSU1TSUZnT1pfNWY1VGUxbjRaUDRUNjg0aUNFZ3dKYmxjUllIdm93ellUMm5IZEI2N2Z6Sk14ZHlnQ3ZZcC1tQi16aEhzY2l5cjk4QQ?oc=5",
-                    "published_at": "Wed, 23 Sep 2026 14:55:31 GMT",
+                    "published_at": "Wed, 23 Sep 2026 15:03:07 GMT",
                     "source": "Sports Illustrated",
                     "category": "coach",
                     "fact_status": "reported",
@@ -20168,7 +20124,7 @@
                 "promotion_history": [
                   {
                     "title": "Javier Aguirre opina sobre el ascenso y descenso en el fútbol mexicano antes de dirigir al Valencia - Diario AS",
-                    "link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNMC1GVVRmc3FzRHdpd0QzdWc2dTdhaVhsTHU3Nm1xc216aVhyUVVpYVNWWTRLVHBMZFdtZUNLalR1X0Njc21yUk05N0ozcG9JVHh4M3RhQUZDUXRGQ1NzY3lfdUhlUXRyZTV5a1ZhWTIwUzVvdjdZR09QZzBkQXBmNEpUTDJfWDV3UTduYm51UVBWZUUtTFRFLWcyNkx1U3kwbGJXQXRIS1VTVmdkakI4Y1RJTFYweHl5Y29IRWRiNmVkU1NYUFRnd1VHQzdwMFRBcXJZTjBQWjkwTUl2M3F1MGlsUGvSAeQBQVVfeXFMTTAtRlVUZnNxc0R3aXdEM3VnNnU3YWlYbEx1NzZtcXNtemlYclFVaWFTVlk0S1RwTGRXbWVDS2pUdV9DY3NtclJNOTdKM3BvSVR4eDN0YUFGQ1F0RkNTc2N5X3VIZVF0cmU1eWtWYVkyMFM1b3Y3WUdPUGcwZEFwZjRKVEwyX1g1d1E3bmJudVFQVmVFLUxURS1nMjZMdVN5MGxiV0F0SEtVU1ZnZGpCOGNUSUxWMHh5eWNvSEVkYjZlZFNTWFBUZ3dVR0M3cDBUQXFyWU4wUFo5ME1JdjNxdTBpbFBr?oc=5",
+                    "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQZW5TSGlpMFBDLXlzdy1RSmZqRXQ2bHV4QUJ4cnNBSUJENkVKdW40aVhWcnB1MWJKcU9fV1NWOVRfLVFQLUdCUVRwNVUzSUE1eVJyM0EwSDJqTHdoWFY5MlpsNDdkTndMNFVvVldqVGZQSWR0RVY0a1pDMmxJcXA2NUp0YTZYTHdIYlRjSGg0Q01LSXN3bFBsVXlzWGp1aVo4VDRzX3I2X1pDUTlOMU5walQ5eHlDb2RVOXlGNlZTM1I3UlVNOUVxRzdVejBHVEZ10gHkAUFVX3lxTE0wLUZVVGZzcXNEd2l3RDN1ZzZ1N2FpWGxMdTc2bXFzbXppWHJRVWlhU1ZZNEtUcExkV21lQ0tqVHVfQ2NzbXJSTTk3SjNwb0lUeHgzdGFBRkNRdEZDU3NjeV91SGVRdHJlNXlrVmFZMjBTNW92N1lHT1BnMGRBcGY0SlRMMl9YNXdRN25ibnVRUFZlRS1MVEUtZzI2THVTeTBsYldBdEhLVVNWZ2RqQjhjVElMVjB4eXljb0hFZGI2ZWRTU1hQVGd3VUdDN3AwVEFxcllOMFBaOTBNSXYzcXUwaWxQaw?oc=5",
                     "published_at": "Wed, 23 Sep 2026 20:31:57 GMT",
                     "source": "Diario AS",
                     "category": "promotion_history",
@@ -20198,17 +20154,8 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "7 fichajes mexicanos que podría llevar Vasco Aguirre al Valencia - MARCA",
-                    "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNcHRnMV9zWXI2ZmctUG1IMzZfZXpFZmozOXJRcVEtekVvVkdJMmpUMUNEdHpZMDJkbDN4R0NmSEVaaHhQdTJEaGw0d3BXNm8wSDNkbVFfZVJ0anRQUlg4YmFyTDh3YnEwbl9xandBajVBc0FGT3JWTUVfV3gyOXpPc0hzV21rZzNYTTJmN1JXQ1c3Z0JzSl9PTG1PSlZia3pvOGpoaE5lWHBhWjlycXp6SDNDNzFXdzNfZ3BxZi130gG-AUFVX3lxTFBsRzZTbEp4ZDd4ZFNlbUlKcE1uZ3BqenlHbFRvT2FBWXZQMGZ1NmFXbzdjaENRNXhMOHhKcE4zVzdaQmtzU19jS3VVdHlVQVRERmd0Ry1vVDAtVUNFanNydF9GR05hSUtxZGRPR2dNakJhZVlxSFc2Nl9ieUFCZkpnajNYWnhvdEFlNVhQVzFwY085NHBOdFlGWDREc25LcEJyVUc2cnE1cXJVUnlnbFI0cl95eXk2N3Z4NUNxVmc?oc=5",
-                    "published_at": "Wed, 23 Sep 2026 23:06:52 GMT",
-                    "source": "MARCA",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
-                  },
-                  {
                     "title": "Javier Aguirre opina sobre el ascenso y descenso en el fútbol mexicano antes de dirigir al Valencia - Diario AS",
-                    "link": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNMC1GVVRmc3FzRHdpd0QzdWc2dTdhaVhsTHU3Nm1xc216aVhyUVVpYVNWWTRLVHBMZFdtZUNLalR1X0Njc21yUk05N0ozcG9JVHh4M3RhQUZDUXRGQ1NzY3lfdUhlUXRyZTV5a1ZhWTIwUzVvdjdZR09QZzBkQXBmNEpUTDJfWDV3UTduYm51UVBWZUUtTFRFLWcyNkx1U3kwbGJXQXRIS1VTVmdkakI4Y1RJTFYweHl5Y29IRWRiNmVkU1NYUFRnd1VHQzdwMFRBcXJZTjBQWjkwTUl2M3F1MGlsUGvSAeQBQVVfeXFMTTAtRlVUZnNxc0R3aXdEM3VnNnU3YWlYbEx1NzZtcXNtemlYclFVaWFTVlk0S1RwTGRXbWVDS2pUdV9DY3NtclJNOTdKM3BvSVR4eDN0YUFGQ1F0RkNTc2N5X3VIZVF0cmU1eWtWYVkyMFM1b3Y3WUdPUGcwZEFwZjRKVEwyX1g1d1E3bmJudVFQVmVFLUxURS1nMjZMdVN5MGxiV0F0SEtVU1ZnZGpCOGNUSUxWMHh5eWNvSEVkYjZlZFNTWFBUZ3dVR0M3cDBUQXFyWU4wUFo5ME1JdjNxdTBpbFBr?oc=5",
+                    "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQZW5TSGlpMFBDLXlzdy1RSmZqRXQ2bHV4QUJ4cnNBSUJENkVKdW40aVhWcnB1MWJKcU9fV1NWOVRfLVFQLUdCUVRwNVUzSUE1eVJyM0EwSDJqTHdoWFY5MlpsNDdkTndMNFVvVldqVGZQSWR0RVY0a1pDMmxJcXA2NUp0YTZYTHdIYlRjSGg0Q01LSXN3bFBsVXlzWGp1aVo4VDRzX3I2X1pDUTlOMU5walQ5eHlDb2RVOXlGNlZTM1I3UlVNOUVxRzdVejBHVEZ10gHkAUFVX3lxTE0wLUZVVGZzcXNEd2l3RDN1ZzZ1N2FpWGxMdTc2bXFzbXppWHJRVWlhU1ZZNEtUcExkV21lQ0tqVHVfQ2NzbXJSTTk3SjNwb0lUeHgzdGFBRkNRdEZDU3NjeV91SGVRdHJlNXlrVmFZMjBTNW92N1lHT1BnMGRBcGY0SlRMMl9YNXdRN25ibnVRUFZlRS1MVEUtZzI2THVTeTBsYldBdEhLVVNWZ2RqQjhjVElMVjB4eXljb0hFZGI2ZWRTU1hQVGd3VUdDN3AwVEFxcllOMFBaOTBNSXYzcXUwaWxQaw?oc=5",
                     "published_at": "Wed, 23 Sep 2026 20:31:57 GMT",
                     "source": "Diario AS",
                     "category": "promotion_history",
@@ -20234,6 +20181,15 @@
                     "evidence_quality": "high"
                   },
                   {
+                    "title": "JAVIER AGUIRRE ES NUEVO ENTRENADOR DEL VALENCIA - El Heraldo de San Luis Potosí.",
+                    "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNSFZTcWU4dE9qSlBuaHoyX3ZSOTFxUGVTQzY2a21uSkRoOUxKbGdKZGRRZTFzZ2ZOa2xoU3hvRWlrc2YyYTVjNWt5UEtLb2FJNlpmdlljcHVLTmFpSGUzWXZtME04aTc5VjA0R0JPYVVCV0VpYXAwMi1EMEs0akswN2hEbVYzX2tFaEJhQnRoc0tSQUk3YXc?oc=5",
+                    "published_at": "Wed, 23 Sep 2026 18:50:41 GMT",
+                    "source": "El Heraldo de San Luis Potosí.",
+                    "category": "coach",
+                    "fact_status": "reported",
+                    "evidence_quality": "high"
+                  },
+                  {
                     "title": "Javier Aguirre es el nuevo entrenador del Valencia FC - Noticias Radiorama",
                     "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQSWhMR0V4N1RTem9jR1ZJbENFd0NSMXNmVDdVb2lxc242Q0hrWXY1UlNhM1hPeXpIdi1idmFwZ19uU1ZrSzhILXQxZnNpNjBqUlNET2lfc01BVEhWMjdjVFVPUDVxb0dFNkg4bVZIZ3VjN3llMENUOXJ6Ym9aUURVOV9qT20yMjROa3M5VmdUeFM2RFlMaUpsSURpb1VKNk9NQTdmV1NjZ2ZmQQ?oc=5",
                     "published_at": "Wed, 23 Sep 2026 18:03:59 GMT",
@@ -20243,30 +20199,12 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Javier Aguirre es nuevo entrenador del Valencia - ESPN Guatemala",
-                    "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPUTRTUkRtTkVSa2xjQnZHUFVNQzF2UzJWSzNfRkU1YlNKcTc3SUxlLWFIUmRCbUxWc1BKUnEyUFpKZU14OTMwQV81NU5yQ2xSa0djVkkzV1JTaW1iRGl1RXkzOVNiVnR6NVVQNjlLb2kzUktjMDkwYk5KNUZXRThtak1jNEhSdW1mazNXWVdqM1R6Z2lfY1cwUWdFeklFMVdKOXdXaFRqcw?oc=5",
-                    "published_at": "Wed, 23 Sep 2026 15:08:06 GMT",
-                    "source": "ESPN Guatemala",
-                    "category": "coach",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
                     "title": "Otra misión de rescate: Javier Aguirre ya es nuevo entrenador del Valencia - Sports Illustrated",
                     "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPYTFxM251N1ViWUpLX1FGSndWd0ZhemdpV2ZXaUp0YmNXaG9fR3VHX3ZVdVlLM3pOc0gyZ21zQlZXRHBVb0RWemhtaVRKVWlKSU1TSUZnT1pfNWY1VGUxbjRaUDRUNjg0aUNFZ3dKYmxjUllIdm93ellUMm5IZEI2N2Z6Sk14ZHlnQ3ZZcC1tQi16aEhzY2l5cjk4QQ?oc=5",
-                    "published_at": "Wed, 23 Sep 2026 14:55:31 GMT",
+                    "published_at": "Wed, 23 Sep 2026 15:03:07 GMT",
                     "source": "Sports Illustrated",
                     "category": "coach",
                     "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "¡Es OFICIAL! Javier Aguirre es el nuevo entrenador del Valencia: ¿Por cuánto tiempo firmó ‘El Vasco’? - El Financiero",
-                    "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQQ0JGSU9WYUJ6YkFSNEUycVFIRURpdlJ6SURIZnI4S04tUEF3X0FMa01xYko2ckVsWnlCcW05TU9RTmgwYnVPVDNsbl9vUGg4UDdpejJHZ0d0SVFYVzdXRWhuZTlIWFBxLXFzTkE3MHRPeUFRQ1hGQV9va1g1eDRidk9zSWotbThvcHZobnl6aHkyejl6SkJXblhlckppeVVwRHpoM3lB?oc=5",
-                    "published_at": "Wed, 23 Sep 2026 14:36:35 GMT",
-                    "source": "El Financiero",
-                    "category": "coach",
-                    "fact_status": "confirmed",
                     "evidence_quality": "medium"
                   },
                   {
@@ -20304,9 +20242,27 @@
                     "category": "coach",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Javier Aguirre vuelve a LaLiga: nuevo entrenador del Valencia para intentar sacarlo del descenso - antena3.com",
+                    "link": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxPcHBGcmtvZlo2X01hN1JENEk5aGFwQlBfVG4tUkpENDhVR3FQcGdsX0Z0RDlTRjBfaWVDMXRsRHVNOG5ON2ZSbFZmYjVRcHR3S1ItU3VLWThORC1faG5HV09nZVVfMVJPMEtERWJqSkJabUIxN1RuYlQ4Rl95TEhGSUpwbkx6ektCOFFWSS1QeVRNaEhUb1VfMUtmQWdfTjVEb0l4MzZGOTRvMjRlOEUxUjUwbHVVTDlqT2FmTEJBdUw2c1dYVE1welhkRzZoV1RWUEZCQ0VNTm52REg2SG5xbXFUNTl6clYzaFNqSkFCNGgzQkctYjUxc2xsY9IB-wFBVV95cUxOZ0Y4UGMycmp2eVI4MzNlQ0xBNVRoTFBmVlpqTW0xVEVmbnRxc0I4dC0ya1A3WkY0Yzl5X2VBUGJpVHQwM3hjVkoxT1dTUnB1RkhuN21KbVJOWC1qMVBXZzNVcURnRXdpUklydzVDZGlpTUxQaDQyMWtGdUZmNll5eEpYdktzY3dEQVI1NHJQbzhQNnJ0WDNSazEwanpJcXZkOVlFWnJBbHBEcUdoSkFuQURPQm00RjdzQlJuTGlSWE8wdDEyazJ1N0N6dVdoc0tyMU82QjBEb19hbXZyV3ViV2toYWR6WFhOcTU2NWJMQngyNnpteV9Sb0txYw?oc=5",
+                    "published_at": "Wed, 23 Sep 2026 12:27:22 GMT",
+                    "source": "antena3.com",
+                    "category": "coach",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Javier Aguirre vuelve a LaLiga: el ‘Vasco’ ya es nuevo técnico del Valencia - Infobae",
+                    "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNR3AyQmR0bzY1ZWZ5QW1Gbzh0MXdycnQzLVBMQ3lTaVNpZTEtVUdjUjdTcFJtc3hheU1TRlAtb1ZVMWU0dEx1TGdkTlFvQ3VCOWlSWGR6VVVFX2JQNHgtdFZPaGR2WG9VcUMtaXZhSUl5OVRnQnc4SDRUNVpwdDR6SnBPUEljMktyWndXaHRoNy0tVnFQM2hMaGNDZ0RieXYtcEdLeXZKVEVveEk2a0VINzRuVFFOQdIB0AFBVV95cUxQZzAyZ0JXQzQyajgxRVBULWRLR3gwMUZKTmR0Z3A5Tm5sNUxuRV82bDRwb1otd2J2YXd6ZWstMUttdGdmWWcxTkZPYjZSQ3BSeTN3RWZFVlNEeFlDdlYyNTJzSzdwaExHdkFJRjB6VU5oNWd1SThBZjI0cXllV0NxdEdNckd5cmx4blNRaGRMVjlGaWgzdERxS2RtaXZuZGxoM2pXanZRLV9zZ3NybjFjX1huVDNRX29UOFB3NHBjcXZ3ZWVWTVJWMDFpNGhGd0tW?oc=5",
+                    "published_at": "Wed, 23 Sep 2026 12:24:00 GMT",
+                    "source": "Infobae",
+                    "category": "coach",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   }
                 ],
-                "summary": "temporada anterior: 9o con 49 pts en LaLiga 25/26; 2 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 1 señales de ascenso/descenso"
+                "summary": "temporada anterior: 9o con 49 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 1 señales de ascenso/descenso"
               },
               "evidence_count": 28,
               "analysis_priorities": [
@@ -20358,7 +20314,7 @@
               "source_items_checked": 10
             }
           },
-          "context_updated_at": "2026-09-27T21:26:02.074259+00:00",
+          "context_updated_at": "2026-09-28T01:23:58.834472+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -20389,7 +20345,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (42.4%). | muestra corta (7 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: ascendido: 1o con 82 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 salidas confirmadas; 3 posibles salidas | Visitante: temporada anterior: 9o con 49 pts en LaLiga 25/26; 2 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 1 señales de ascenso/descenso | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (22 vs 21 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (42.4%). | muestra corta (7 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: ascendido: 1o con 82 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 2 salidas confirmadas; 3 posibles salidas | Visitante: temporada anterior: 9o con 49 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 1 señales de ascenso/descenso | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (22 vs 21 días).",
           "analysis_ready": true
         },
         {
@@ -20555,18 +20511,18 @@
                     "category": "signing",
                     "fact_status": "confirmed",
                     "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Oficial: Axel Tape, octavo fichaje del Levante - MARCA",
+                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQeVZjZHlva0xPXy0zRXMyejBMMmpNQ3JYUUNvc2pKdXduT2tuVkhtdUZOdkxLQ1BaMWh3Rnhzb2FBMW5tS19OZkZ3VUdhYXQwTFU5YUdFQm04Ym5iUlhwSlUyYlI2Z2tqVVczMkx2bFhkcjBxQnRNckxsZWR6bjQ4SlRwOXhQdTNFWlRUTnI1ZFliWUpsUHRSVdIBmAFBVV95cUxOeF9zLXlfTXZJX0t3OFRkQnRSNWNOZ0RxbHhGVkw5YndMNi1qdjU3OXk3R1IxOExfSjRSRURhMmNRX0xaSFpGaEV0dkpCalVRc2Y1X1NHTzA5TDd6enBIdGxkd2lVSjF3b2pNT1BzN0p5NHpmUm41Nm85TmhRNjJuYnhHSjhiNXlEMXZQTEFVTzJFRjQ2U0ljYw?oc=5",
+                    "published_at": "Sun, 30 Aug 2026 07:00:00 GMT",
+                    "source": "MARCA",
+                    "category": "signing",
+                    "fact_status": "confirmed",
+                    "evidence_quality": "high"
                   }
                 ],
                 "transfer_reports": [
-                  {
-                    "title": "Rueda de prensa de Funes en la previa del Málaga CF - Levante: rival, mercado de fichajes, lesionados... - La Opinión de Málaga",
-                    "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQLXFzNjIyaGdVajFnMGxzWUEtdEh0Y3ZmMVJqNTNzaXlLRjM0QU50TVpnOXhRM3dPUlNrNG11cURzeFBZMFFNT2JJUndaWm9hQWlQcVRSZkVlTkpEWkcwSFZsWUVmV1pNdUZVTXJVb202VHV1blQ0X0duOUxBTHE1VGJxWW1GMDM3cGw0eUxxcVU2c1NDd3ZicU9tN3BUcEpWTGFfZVRFWXFoTUhU0gGyAUFVX3lxTE9XVU82T05FbUlaQS1hVTY5LVlJOWRNQ2plakN4Q3VhcXVsclpWVURJaUJKNzVxeGlLbThNUzFKZS1ZWVlPc1Rib3BlYThWcGNXX1Ryd080aElnX0lDa3BDUWNEU0JGTmx3N3FrRmxncDk4WlVFUXZuTXlpZGgyamZYemZ1X2NSTnhnamlxaGg4UnZaTk9YbUtTb2g1NFljMldPUTdNa0E3TW9USW01ZUNrU2c?oc=5",
-                    "published_at": "Fri, 04 Sep 2026 07:00:00 GMT",
-                    "source": "La Opinión de Málaga",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
                   {
                     "title": "El delantero Petar Ratkov, undécimo fichaje del Levante - MARCA",
                     "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNREprMGJSR0ZxYW12bTZmU0lITVJMY240YnlJZUJWbTVTVTczcFVOeXVtRkRXcEhWWHJvaHZKSDdVeEtmNzBVME44Mm5uS0VXZ3FyeW04UjBwWDNjS0hvZUFBRlA1X3N0c2U5OEJvSHVTdmdzWGVWZ2JYd2xVMGNUc3ItX2FuU3o2bl9QLWFxWEdhVW42eEhMSWFPNUp3LUlTaHfSAaIBQVVfeXFMT0RtNTdpYVlOMjhXeXFaLWhHbFk4Q0xlaExkQm5sWFhzM1lLZnBwV0o2LXh3U1J4X2RHZFpXdzRNOWNtanR4YVNtaUpWUlQzYWhXRnV2OTNmenNtWllYWXFqYm1sbzc4UzM2V2lvYXVxbXVNMS13VGV6Zm1zM0lxaGtFN0dnT0F2anhwYUpmLWZBZ0d4dk5iTElSekctLVp6eXVB?oc=5",
@@ -20586,13 +20542,13 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Roger Brugué y la labor de Carlos Espí en el Levante que desencadenó su fichaje por el Real Madrid: \"Nos ayudó a salvar al equipo en gran parte\" - DAZN",
-                    "link": "https://news.google.com/rss/articles/CBMihgJBVV95cUxOWElhWW8yY2xPRVkyQ2g0c2prTEJFSFdyMVRXNHUwdUNMOWlzR0NES1R0QmEyX21uNnVGdEVGOThCRFoxSjVPTTA3M2xSblNWTFRSZGM5dFg0NHBrRDRwcXY2RDdRbWJiVzI2TWdEUmlGQk1tRzlHU1FLM3o5ZWlCRHBtQTZzQjhQak1FbU5fdmlmeGw3UE5ZWk44cmVkYzA1WVRRblpkdW0zbjdTOWl6WEVVMVVkTWZLRnoteHpWR0diVVV0OTZ3aG8wdVpnaThVTk4xWVhyd3YyZ2M3ZkxZb1ZrQVZ4UmQzT1FoOWhfMHlsNUdyYmhQMFI5enVTdzZueUFLUHdn?oc=5",
-                    "published_at": "Mon, 31 Aug 2026 07:00:00 GMT",
-                    "source": "DAZN",
+                    "title": "El Levante refuerza su medular con el fichaje de Axel Tape - Cadena SER",
+                    "link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNTzVXOXNzZkpEeUtNSkVfbGI3MUc5a2p0ejNQWExjNHNvUmdMb1dBTUU3YmRuUk91bElLTEpzazA3VTIxeGFIVFdXWEJjaERpNG9HREJ5M0JoYnRxdFZzN3VNZHN3eGFqbENNSW11dFVvVENtVHY4QWR4NFpHakNZZmNRSlFzbWpMdWFqR0Y2aXg4OXlKSGZaQm9aZktMNEw0dFV0Mk1NZEZJZURFcW9Yand6R05za2I2RDNBZ2wzZEQ3Qm9tWGxZ0gHbAUFVX3lxTE9XckhJbjZseGlrY0s5WGYzTk9wYXdmTndob21yYjRmaG1jdlV6aFdrRmFZZTBCdEhYYWFoV2cxaU1UNlN3czBfRGNuU24wWGo3eGh4WGhQdGNIWGxMMktDc3ZUQm1BQ0VzQ1hPY1Y1SU1SN3lTRGZ3aVJzQXhDMkxWSzFCd2xJWlZ0Z19ucjFMenRUVHZ6WnF2YTlfdzRkN2pjanpyM3JkMTVIWDdvQm4xX2thcnNndkM0ZGR2bkZ4QnYyMThkZFNqUm9qZ3NHSFBka0tjMFJqdzlQdw?oc=5",
+                    "published_at": "Sat, 29 Aug 2026 07:00:00 GMT",
+                    "source": "Cadena SER",
                     "category": "signing",
                     "fact_status": "reported",
-                    "evidence_quality": "medium"
+                    "evidence_quality": "high"
                   }
                 ],
                 "departures": [],
@@ -20623,6 +20579,15 @@
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Los 2 futbolistas a los que va a inscribir el Levante con la salida de Kevin Arriaga al AEK - La Razón",
+                    "link": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPZlUyOTIzaDZ3cmZJLTZyWVowY2dOMDVJWHZzZ1lxYmZGSUZJbDRwMG1abjRXc1VPWjFYYkZ1cElFMGxSSC1pbUZSTnVWZnpfTWFtYnVMOHVKTWdpazIwWjNNZTFTTnVlRGljUWJkdWJveVdKZ3V0TS0zckRvZXJRMzY5UnhMYlU3NHlxeTE2WEhraF9Sa1VMcmRnZnNSUmFhWkNDYVNzaE9vSnRrUW9LWUxOZGRubkZjQUJxajVLZmh0QzRRRVU0WmxMUnJDT1haV0o5WlZsemfSAewBQVVfeXFMTmZqRTU0TUNobExRSWw4aG1xX255SUN3a1RMYXJGRjZGbzJZYzRZZUZzQ0dfdlBoT0NxLTQ1MEdteGxpSEhBNVBoUEZyNUxmYXJPWGMybVBhSFlaek42UzkzVTVObjc0UndBdm9Uc2VuYU96WUlyNVdPYzM2c2pwandVN0RyOGFWd2lrdmxLS3Vmc281X2stQjVuVTlQM3U3a1h0eV84SlJNU3R1R29XcVVTc2czWWtjZnZyZ2s1S29UYWNkR1ZlOTJ1bkkxdU9PVWtXTjFyNEE3YUN3N2FMbkF5eWNHTzB3T1RnNi0?oc=5",
+                    "published_at": "Sun, 16 Aug 2026 07:00:00 GMT",
+                    "source": "La Razón",
+                    "category": "departure",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   }
                 ],
                 "coach_changes": [
@@ -20648,10 +20613,10 @@
                 "availability": [],
                 "preseason": [
                   {
-                    "title": "El Levante UD anuncia sus dos primeros amistosos de pretemporada - levanteud.com",
+                    "title": "El Levante UD anuncia sus dos primeros amistosos de pretemporada - Levante UD",
                     "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNV0Qxdkl4bVlxUTJMdERIbGE3ZUU4T1lNVlZYVTdaUUUxcEJodzh1U3dIbVdEOW1CVm9NLVhRVzFiQW5vTXNGaHpNTDNmMG45WndWRFk5cFZLNVFCUkRSYVV5N1lva2RoVGJsUFhrR0dCQ1NvWWVsaUo1Nml6eEQzMW9zQUsxV01lTFVxbEYwWmNkUlM1TTloUnoyMXA0ckNR?oc=5",
                     "published_at": "Mon, 21 Sep 2026 23:55:11 GMT",
-                    "source": "levanteud.com",
+                    "source": "Levante UD",
                     "category": "preseason",
                     "fact_status": "confirmed",
                     "evidence_quality": "medium"
@@ -20662,10 +20627,10 @@
                 "morale": [],
                 "all_evidence": [
                   {
-                    "title": "El Levante UD anuncia sus dos primeros amistosos de pretemporada - levanteud.com",
+                    "title": "El Levante UD anuncia sus dos primeros amistosos de pretemporada - Levante UD",
                     "link": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNV0Qxdkl4bVlxUTJMdERIbGE3ZUU4T1lNVlZYVTdaUUUxcEJodzh1U3dIbVdEOW1CVm9NLVhRVzFiQW5vTXNGaHpNTDNmMG45WndWRFk5cFZLNVFCUkRSYVV5N1lva2RoVGJsUFhrR0dCQ1NvWWVsaUo1Nml6eEQzMW9zQUsxV01lTFVxbEYwWmNkUlM1TTloUnoyMXA0ckNR?oc=5",
                     "published_at": "Mon, 21 Sep 2026 23:55:11 GMT",
-                    "source": "levanteud.com",
+                    "source": "Levante UD",
                     "category": "preseason",
                     "fact_status": "confirmed",
                     "evidence_quality": "medium"
@@ -20685,15 +20650,6 @@
                     "published_at": "Thu, 17 Sep 2026 07:00:00 GMT",
                     "source": "Levante-EMV",
                     "category": "coach",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "Rueda de prensa de Funes en la previa del Málaga CF - Levante: rival, mercado de fichajes, lesionados... - La Opinión de Málaga",
-                    "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQLXFzNjIyaGdVajFnMGxzWUEtdEh0Y3ZmMVJqNTNzaXlLRjM0QU50TVpnOXhRM3dPUlNrNG11cURzeFBZMFFNT2JJUndaWm9hQWlQcVRSZkVlTkpEWkcwSFZsWUVmV1pNdUZVTXJVb202VHV1blQ0X0duOUxBTHE1VGJxWW1GMDM3cGw0eUxxcVU2c1NDd3ZicU9tN3BUcEpWTGFfZVRFWXFoTUhU0gGyAUFVX3lxTE9XVU82T05FbUlaQS1hVTY5LVlJOWRNQ2plakN4Q3VhcXVsclpWVURJaUJKNzVxeGlLbThNUzFKZS1ZWVlPc1Rib3BlYThWcGNXX1Ryd080aElnX0lDa3BDUWNEU0JGTmx3N3FrRmxncDk4WlVFUXZuTXlpZGgyamZYemZ1X2NSTnhnamlxaGg4UnZaTk9YbUtTb2g1NFljMldPUTdNa0E3TW9USW01ZUNrU2c?oc=5",
-                    "published_at": "Fri, 04 Sep 2026 07:00:00 GMT",
-                    "source": "La Opinión de Málaga",
-                    "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
@@ -20725,13 +20681,13 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Roger Brugué y la labor de Carlos Espí en el Levante que desencadenó su fichaje por el Real Madrid: \"Nos ayudó a salvar al equipo en gran parte\" - DAZN",
-                    "link": "https://news.google.com/rss/articles/CBMihgJBVV95cUxOWElhWW8yY2xPRVkyQ2g0c2prTEJFSFdyMVRXNHUwdUNMOWlzR0NES1R0QmEyX21uNnVGdEVGOThCRFoxSjVPTTA3M2xSblNWTFRSZGM5dFg0NHBrRDRwcXY2RDdRbWJiVzI2TWdEUmlGQk1tRzlHU1FLM3o5ZWlCRHBtQTZzQjhQak1FbU5fdmlmeGw3UE5ZWk44cmVkYzA1WVRRblpkdW0zbjdTOWl6WEVVMVVkTWZLRnoteHpWR0diVVV0OTZ3aG8wdVpnaThVTk4xWVhyd3YyZ2M3ZkxZb1ZrQVZ4UmQzT1FoOWhfMHlsNUdyYmhQMFI5enVTdzZueUFLUHdn?oc=5",
-                    "published_at": "Mon, 31 Aug 2026 07:00:00 GMT",
-                    "source": "DAZN",
+                    "title": "Oficial: Axel Tape, octavo fichaje del Levante - MARCA",
+                    "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQeVZjZHlva0xPXy0zRXMyejBMMmpNQ3JYUUNvc2pKdXduT2tuVkhtdUZOdkxLQ1BaMWh3Rnhzb2FBMW5tS19OZkZ3VUdhYXQwTFU5YUdFQm04Ym5iUlhwSlUyYlI2Z2tqVVczMkx2bFhkcjBxQnRNckxsZWR6bjQ4SlRwOXhQdTNFWlRUTnI1ZFliWUpsUHRSVdIBmAFBVV95cUxOeF9zLXlfTXZJX0t3OFRkQnRSNWNOZ0RxbHhGVkw5YndMNi1qdjU3OXk3R1IxOExfSjRSRURhMmNRX0xaSFpGaEV0dkpCalVRc2Y1X1NHTzA5TDd6enBIdGxkd2lVSjF3b2pNT1BzN0p5NHpmUm41Nm85TmhRNjJuYnhHSjhiNXlEMXZQTEFVTzJFRjQ2U0ljYw?oc=5",
+                    "published_at": "Sun, 30 Aug 2026 07:00:00 GMT",
+                    "source": "MARCA",
                     "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
+                    "fact_status": "confirmed",
+                    "evidence_quality": "high"
                   },
                   {
                     "title": "El Levante refuerza su medular con el fichaje de Axel Tape - Cadena SER",
@@ -20786,9 +20742,18 @@
                     "category": "departure",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Los 2 futbolistas a los que va a inscribir el Levante con la salida de Kevin Arriaga al AEK - La Razón",
+                    "link": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPZlUyOTIzaDZ3cmZJLTZyWVowY2dOMDVJWHZzZ1lxYmZGSUZJbDRwMG1abjRXc1VPWjFYYkZ1cElFMGxSSC1pbUZSTnVWZnpfTWFtYnVMOHVKTWdpazIwWjNNZTFTTnVlRGljUWJkdWJveVdKZ3V0TS0zckRvZXJRMzY5UnhMYlU3NHlxeTE2WEhraF9Sa1VMcmRnZnNSUmFhWkNDYVNzaE9vSnRrUW9LWUxOZGRubkZjQUJxajVLZmh0QzRRRVU0WmxMUnJDT1haV0o5WlZsemfSAewBQVVfeXFMTmZqRTU0TUNobExRSWw4aG1xX255SUN3a1RMYXJGRjZGbzJZYzRZZUZzQ0dfdlBoT0NxLTQ1MEdteGxpSEhBNVBoUEZyNUxmYXJPWGMybVBhSFlaek42UzkzVTVObjc0UndBdm9Uc2VuYU96WUlyNVdPYzM2c2pwandVN0RyOGFWd2lrdmxLS3Vmc281X2stQjVuVTlQM3U3a1h0eV84SlJNU3R1R29XcVVTc2czWWtjZnZyZ2s1S29UYWNkR1ZlOTJ1bkkxdU9PVWtXTjFyNEE3YUN3N2FMbkF5eWNHTzB3T1RnNi0?oc=5",
+                    "published_at": "Sun, 16 Aug 2026 07:00:00 GMT",
+                    "source": "La Razón",
+                    "category": "departure",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   }
                 ],
-                "summary": "temporada anterior: 18o con 42 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 3 posibles salidas; 2 cambios de entrenador; 1 señales de pretemporada"
+                "summary": "temporada anterior: 18o con 42 pts en LaLiga 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 4 posibles salidas; 2 cambios de entrenador; 1 señales de pretemporada"
               },
               "away": {
                 "team": "Sevilla",
@@ -20819,6 +20784,15 @@
                 ],
                 "transfer_reports": [
                   {
+                    "title": "Así se gestó el fichaje de Juan Iglesias por el Sevilla: \"Fue una decisión fácil\" - El Desmarque",
+                    "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNZ25WTFRiTFlaaktUM1VBczNfOXhQU3dQX2Z5OXNOMVhJR2tWRnBUbVdmYVlKeEZLY2ZaeENyc1I2Y05QaGs3Nkc0blJ1MTNWLXNFeVhHRWZ1LWRvWmZWblozdzFOZmxJSk9xYVdzbEx1XzlJcVVmMVJrVDN1VWppZ3BnUWx0TkxNbzUxZm05WHZMdEtzcF9qWlg1TFVLUEJFc2o0elByR1c5dEk1VW1KVklycFNTUVZ3YklETUowWQ?oc=5",
+                    "published_at": "Mon, 21 Sep 2026 06:46:34 GMT",
+                    "source": "El Desmarque",
+                    "category": "signing",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
                     "title": "Sevilla - Valencia, las notas de los jugadores: Iglesias, paradigma de unos fichajes que le han cambiado la cara al Sevilla FC - ABC",
                     "link": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNUWNvOHVYdjFoZTlXV2NjREs2SW9EdVJ5cjB1Ymo3Y0xBY24xelJEb1J6RmRVbFloWG1Qd0pHT0U1S0lKZEU0Y1pTMkM0WEVxdk5HN1c4c3VaSDVxeEtxOTlPbGtvNktheDJab1RNNlV4UzRjWF9XU0VYWHNjcFpwUFhHV2N4Qk0xX1JJYS1UQzZncWE4bFF2cmw5cjd3Y0djYURlWUlzdEppOHR4WG5fRkhoRXBOYkFWWXFSTm9xS3FhSzlfVUdyQlh1NUtjR1VhTmhpQVFQNWY5S3VpMEdWZklib9IB6AFBVV95cUxOMWdFSmpUc2VWVTl5V01ZWFlBa2VBOE9jSEpLejVqS05acWlPa2FEM21UeU5lSDNUcEdCazktT3RjRzZONGVReFZtSVk3MnB3WWdEb3VZMF9uNWE3Z28yTVV0OVlSOEN1NlozcHd2OXBhZ0MyLVp2RDdpTGtaQkZFNV9FTFQwcVRJOWp2UGdMVC1HZFFBSExFRUpNRmVnTEF6X29jckozdVczSllnMkRLNW5fMVZCWVU5amZwTURDOENTVmIxc0lWQ1BJMnFvaHhVeXFWd204OG8waVY0c09nTXlhc1VOMUww?oc=5",
                     "published_at": "Sat, 12 Sep 2026 07:00:00 GMT",
@@ -20844,15 +20818,6 @@
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "Así se gestó el fichaje de Fofana por el Sevilla FC: rápida negociación con el Milan más el interés añadido del Betis - ABC",
-                    "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNSXZSakZKdGxYZUdVN2tDTDNaVVlBbncyRm5LMDJUNnVFRWpkeGRkYlA2bkVDM1NaMGhTQi14ZUUwMFh0SWZmcEZ5RmxWcFgxclg0U0dZUHNZRUo1R28tU2piejNOaHpQbEYyNDJyaERNN1ZSaTA1Y3dQU19zbmIyVkpFOXllZGFXcUpSQUtrT0ZCdkRaZmlsZHRZazBxTkE5YjlkcFVwaW1GdVQzVUhXQnQwb3M3Sm9qSlVoTjFjQXg3NTBoeEZfdWFpUzRjUENFeHB6anRsNkQtZ9IB3wFBVV95cUxPT2xUVmF2UUItRlR0WDZ5S1JMQzJ0REJpdTh0Y0xjS3h3b3FSbm1WeGdDaS1LdkR0cEI4XzBZdW9Bdl9BTWhUUV9PTnU0NndFOHoxZUxnaXAtdjFFSzFuWWVTRFVoU2dkMFRKYnVCdnFYcWt2QlRIR3F1Nlp3UXV6dVhVTEpDb1g4SlhIcFoycGRDZG0wM1ZIa1JpcVFTYnpDWGRTemdDcHMtdHR3ZFhhYks4ZlNCei1XNWxqR0RpMGJCbjFSajgyMVpyTEtOa21lRDM3eW1GdGhsSkNNWG9J?oc=5",
-                    "published_at": "Thu, 03 Sep 2026 07:00:00 GMT",
-                    "source": "ABC",
-                    "category": "signing",
-                    "fact_status": "rumour",
-                    "evidence_quality": "high"
                   }
                 ],
                 "departures": [],
@@ -20869,17 +20834,7 @@
                 ],
                 "coach_changes": [],
                 "availability": [],
-                "preseason": [
-                  {
-                    "title": "EL PRIMER EQUIPO COMPLETA LA SEMANA DE TRABAJO CON UN AMISTOSO ANTE EL SEVILLA ATLÉTICO - sevillafc.es",
-                    "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQZ1lXRlIzNDN6d3NqLTRFUktkSFBBNUxSeUtDSUp5N2Rha3h0RWcxN3drQ2lpTHE4S2h5bWtMakJLcEJ4N2plamxZa1NMWmVSaVd1N3FlancxMzZfaWo0RzN4Mk5EQW1MYVdLTDFLMXY0MFdIMlIxSURwR09XZWNhdGs1OVBxWF9JVmlVcXZpRlYyTTlDYTUzd014b1IzeUZudEN3d21nRHc5YWlTYTYw?oc=5",
-                    "published_at": "Thu, 24 Sep 2026 10:29:10 GMT",
-                    "source": "sevillafc.es",
-                    "category": "preseason",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  }
-                ],
+                "preseason": [],
                 "promotion_history": [],
                 "squad_news": [
                   {
@@ -20895,11 +20850,11 @@
                 "morale": [],
                 "all_evidence": [
                   {
-                    "title": "EL PRIMER EQUIPO COMPLETA LA SEMANA DE TRABAJO CON UN AMISTOSO ANTE EL SEVILLA ATLÉTICO - sevillafc.es",
-                    "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQZ1lXRlIzNDN6d3NqLTRFUktkSFBBNUxSeUtDSUp5N2Rha3h0RWcxN3drQ2lpTHE4S2h5bWtMakJLcEJ4N2plamxZa1NMWmVSaVd1N3FlancxMzZfaWo0RzN4Mk5EQW1MYVdLTDFLMXY0MFdIMlIxSURwR09XZWNhdGs1OVBxWF9JVmlVcXZpRlYyTTlDYTUzd014b1IzeUZudEN3d21nRHc5YWlTYTYw?oc=5",
-                    "published_at": "Thu, 24 Sep 2026 10:29:10 GMT",
-                    "source": "sevillafc.es",
-                    "category": "preseason",
+                    "title": "Así se gestó el fichaje de Juan Iglesias por el Sevilla: \"Fue una decisión fácil\" - El Desmarque",
+                    "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNZ25WTFRiTFlaaktUM1VBczNfOXhQU3dQX2Z5OXNOMVhJR2tWRnBUbVdmYVlKeEZLY2ZaeENyc1I2Y05QaGs3Nkc0blJ1MTNWLXNFeVhHRWZ1LWRvWmZWblozdzFOZmxJSk9xYVdzbEx1XzlJcVVmMVJrVDN1VWppZ3BnUWx0TkxNbzUxZm05WHZMdEtzcF9qWlg1TFVLUEJFc2o0elByR1c5dEk1VW1KVklycFNTUVZ3YklETUowWQ?oc=5",
+                    "published_at": "Mon, 21 Sep 2026 06:46:34 GMT",
+                    "source": "El Desmarque",
+                    "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
                   },
@@ -20985,15 +20940,6 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "El Sevilla prepara su partido frente al Español incorporando a sus nuevos fichajes - ABC",
-                    "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNdVRjMXRBdXQ5Yk51TjhSSVJRQ2JiMlhSZVd2c3JyeGZRY29lLUlwUUhsS1dQck1sU2dhNmVtVkhraEZRR0JkUktvVklNajlUMVl5T3VIUDgzWlhVMmRybXhqSUR0X3NlcHFKcEdGbkw1dkI2NVFCQWVGYXdhOVlrQlYxdU92d3RZbnZRRThTaW1UOHNVOE5TUFZWRkVpVVBPNUNmd3QzTi1SX1R0SS1iaTVLcGZZcGc?oc=5",
-                    "published_at": "Wed, 02 Sep 2026 07:00:00 GMT",
-                    "source": "ABC",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
-                  },
-                  {
                     "title": "Cuánto dinero gana el Sevilla tras el fichaje de Carlos Álvarez por Club América - El Desmarque",
                     "link": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQQjFtcXB3MEtWYUVSNlpzdVFON3NsWGxfWW9PRWVwQ0hVTXR1Q2hUbEw1cTMyUzhvSXZvck9CZUJVVjNhU2s1UEVCbWZVV2hBcmdlZDB3RGZhMTltYkZrcWlhQ0xBRjBVY3RBRW5VTHRQNDhhSkhvemZYN3U2T2FIMmFkQ3VueFZWVlQ4ZGU3NmRZNXFYQ2VCdEhKcHRacXZ0N2cxeVY0T0xUbnhjV2NvTkl5aW9xVjl5dkdZZ2JqMXlRb3h4SVdiRWV4aDg?oc=5",
                     "published_at": "Wed, 02 Sep 2026 07:00:00 GMT",
@@ -21019,9 +20965,18 @@
                     "category": "signing",
                     "fact_status": "confirmed",
                     "evidence_quality": "high"
+                  },
+                  {
+                    "title": "El Sevilla cierra al filo de la medianoche la cesión de Youssouf Fofana - Mundo Deportivo",
+                    "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPRVdJSVlnalRhem9mcHZiMXdZVVZxdGRMaVU3T1ByR1hLaWM4WGItd2ZxX1YtYmJPSGhaTFVyazhvd1ZGeXE4OTIyNkpmWmF2cTlYNmpGWXYwd0xHdlVvR0xQWXI1UXV2RWk5cV9BTHh6alhkMjdvUFV3LXByS01yMWVXaHN0QS1NdUJ4aTQxNjhoZVBQdHlHckJ0LUc0WURxcWtzakxyRDJBOHBna3VjUDNIMGQ2OEg2ZjlYOVpaYkMzQdIBzwFBVV95cUxNZFFMLXZSd1U5NEtxRW4tTlBNMjZyZmFfOTBZTEx4Tkctcl9uZDl1ZjBkM0VXeW1tQzUzQXZNVzRaVG5TQUFVVzFpZmFicTRSVmVURWVWeHNBZF9Vamg5WE9MRGZJV3hnS3l2S3NQSTZxN2NSejZ0QzRlbG1qek5tMG5WbVYzOE5pQ0xLam44WTNCZk9GTUJ5WTA2di1KYWphZ25KcENtVl9nTEdDRlQtTVdWX01yNHNFSjBBN0NyVVFWYmJSbEJpc2FWR2VfZHM?oc=5",
+                    "published_at": "Wed, 02 Sep 2026 07:00:00 GMT",
+                    "source": "Mundo Deportivo",
+                    "category": "signing",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   }
                 ],
-                "summary": "temporada anterior: 15o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 posibles salidas; 1 señales de pretemporada; 1 noticias de plantilla"
+                "summary": "temporada anterior: 15o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 posibles salidas; 1 noticias de plantilla"
               },
               "evidence_count": 28,
               "analysis_priorities": [
@@ -21073,7 +21028,7 @@
               "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-09-27T21:26:19.632206+00:00",
+          "context_updated_at": "2026-09-28T01:24:02.746701+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -21093,7 +21048,7 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 16,
+              "availability_items": 17,
               "official_items": 2,
               "match_items": 4,
               "team_items": 45,
@@ -21104,7 +21059,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (35.6%). | muestra corta (7 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 18o con 42 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 3 posibles salidas; 2 cambios de entrenador; 1 señales de pretemporada | Visitante: temporada anterior: 15o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 posibles salidas; 1 señales de pretemporada; 1 noticias de plantilla | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (22 vs 23 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (35.6%). | muestra corta (7 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 18o con 42 pts en LaLiga 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 4 posibles salidas; 2 cambios de entrenador; 1 señales de pretemporada | Visitante: temporada anterior: 15o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 posibles salidas; 1 noticias de plantilla | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (22 vs 23 días).",
           "analysis_ready": true
         },
         {
@@ -21275,10 +21230,10 @@
                 ],
                 "departures": [
                   {
-                    "title": "El Eldense anuncia a Javi Calleja como nuevo entrenador tras la salida de Claudio Barragán - IUSPORT",
+                    "title": "El Eldense anuncia a Javi Calleja como nuevo entrenador tras la salida de Claudio Barragán - iusport.com",
                     "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPQUl6UjVPcEdFT0RaMDlhM3VNSGlHZ0JENDVLWUtWMnRfZUFHYXBadUhqNjJPRzA3bTFDT0RhampJY3JDQzJsRGxYdXZfUUs2WGlfVkp2dl9fN0tLZ2ZLMXdLb2hpeHFUVzBVVDlxZUpCLVpHdlhFZ0NLQ25NLVpWTVAzemprcFRBejRZdXVzVm5aaTlQNXUxM1c5N3dyVk1yeHE3dUExVHE1M2YwMlhvd2d2SHgwcE9YamQ0Y3hB?oc=5",
                     "published_at": "Wed, 16 Sep 2026 17:31:39 GMT",
-                    "source": "IUSPORT",
+                    "source": "iusport.com",
                     "category": "departure",
                     "fact_status": "confirmed",
                     "evidence_quality": "medium"
@@ -21286,24 +21241,6 @@
                 ],
                 "departure_reports": [],
                 "coach_changes": [
-                  {
-                    "title": "Presentación de Javi Calleja, nuevo entrenador del CD Eldense - cdeldense.es",
-                    "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxONnBGTUEyNGFFNDNNd0pSeUNqckgxWEJudnZjZy1YWjdnMS1aNkdLV1dhUVZ1OFp3OFJrWkhEVzF3aFpIZldHZUxnUjlkdmlqQWJ2aHdEbVpYT0NaUEhQQnk5VktIRGctSzh0ck1hVEk4cG9QWTVKSFp1R2paeFdJVWJjdkVWSVA1Y01odVRvakU3SG9iRWw2Y1V3?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 16:32:47 GMT",
-                    "source": "cdeldense.es",
-                    "category": "coach",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "Javi Calleja, nuevo entrenador del Eldense: \"Que esté Messi es una garantía\" - LNE",
-                    "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNWDlVc2dqNVN0dnhFMFV0MkxTZ2dPSDRmUGZMS3VCa3hhaXJsQ2tMYUtyLW0zYkM1X2xrdHNZMUMxYjBxTThTa3ZKTllJVEFNNmFoOURQbzhzdXJUbjI4MHcxTkV2ZnVmLXk5M1kzWVA4WjJ1WFBfYnRMaVVpN2cyMU02bDJPSjNkb0ZIbmhVM2pRTTJNRHBtMUJ30gGfAUFVX3lxTFBYRHpRS3RHUVhSV2pQdkVaS2tVaHpYWjMtLWxkWGx4R2dnWE50TmdMS3dQYmlSQUtKMVllY2tsSWNYV3NRQXRYVmJZLW1LRDMwNkd2dVpqNEN0M3NnRkZWbzg5ZzRfcTVZMWxMSHh0a0dxUG5xbTJzeV82YzBHRjMxLTh0N3RTVnZKZG9lMWlyckhiY29WOGEwLWlHaS1HWQ?oc=5",
-                    "published_at": "Thu, 17 Sep 2026 16:31:00 GMT",
-                    "source": "LNE",
-                    "category": "coach",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
                   {
                     "title": "Javi Calleja, nuevo entrenador del Eldense: \"La llegada de Messi me llena de motivación y me ilusiona\" - Cadena SER",
                     "link": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxOeWJjekx1VmpRTGRxdEwyTDY2S0lZbk9fSVpSS1B2S0V2M3BibWk3TllTUnBsd3NDc3puNWY0QnpDSnlSZk9sUUlUckZfRjNCeWNZNTFBY1gyNXBUc2V5bWhBeEdEUVJWSFFZZGk2ckJ4Z0dsRXM2UWVRZVhzV2lDQWozVmx6RUtmTFZuOWZ4TE5GV19CUDB2SVRtSWlNNTFsSy1SWTdfeFgyMWhBQ1hIbGVJTTEwVDBmRkhobnhmS0dDQjJtcXRxdFkxQ0czSUtObWpwUGtaeTRZQ3JjZ19BUFZwZ1c1dUUtWm1ma2ZtTG9IVWlNOVFz0gGLAkFVX3lxTFBaSG83QlozaFJnb2dVYU03elJ1U01SQm9MdnBzLV9COFdWUG9mU3lzWFlOTFlRdXU3UU82UXRadllOWUs1alp4NVVMcUY0SzhvazFxMVZYeXlnLXZOcW95bmdCamJpLVdlTG1EX3RzUHhjR1ZJSGJjWWZWdkZSS3NvWnpGcXBUYll2WVpHSjJ1S0xDOTlHRTFScTBuR3VfRnc1UnpHWUd3YnpxSXM3Vl9LUGRHZkNpMHZUbTA5M3ZTSVpob3JmTUxnV1Q4MElpcG8wNmhuSTVVVmFJWVVTaE43QVV0dHFMbndtVTRZQzItYTN3WWFWR2tYRFVyNDZoWmR2U1I5V3pNT25QUQ?oc=5",
@@ -21314,13 +21251,31 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Acuerdo cerrado: Javi Calleja es nuevo entrenador del Eldense - informacion.es",
+                    "title": "Javi Calleja, nuevo entrenador del Eldense: \"Que esté Messi es una garantía\" - LNE",
+                    "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNWDlVc2dqNVN0dnhFMFV0MkxTZ2dPSDRmUGZMS3VCa3hhaXJsQ2tMYUtyLW0zYkM1X2xrdHNZMUMxYjBxTThTa3ZKTllJVEFNNmFoOURQbzhzdXJUbjI4MHcxTkV2ZnVmLXk5M1kzWVA4WjJ1WFBfYnRMaVVpN2cyMU02bDJPSjNkb0ZIbmhVM2pRTTJNRHBtMUJ30gGfAUFVX3lxTFBYRHpRS3RHUVhSV2pQdkVaS2tVaHpYWjMtLWxkWGx4R2dnWE50TmdMS3dQYmlSQUtKMVllY2tsSWNYV3NRQXRYVmJZLW1LRDMwNkd2dVpqNEN0M3NnRkZWbzg5ZzRfcTVZMWxMSHh0a0dxUG5xbTJzeV82YzBHRjMxLTh0N3RTVnZKZG9lMWlyckhiY29WOGEwLWlHaS1HWQ?oc=5",
+                    "published_at": "Thu, 17 Sep 2026 07:00:00 GMT",
+                    "source": "LNE",
+                    "category": "coach",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Acuerdo cerrado: Javi Calleja es nuevo entrenador del Eldense - Información",
                     "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPWXhkVnM3c2lWRk96ZThSYlR2VHFEZ1RGOHF5em9HMF81TENpenQ1N3hBc000RnR3VFV1ejlTMkg0RGxmanBhbnQwRWFiTWFLVENRNjB2Wl9Da0pnZjZZMkhkenBMZnJmVkRvbDVDY0lsb0ZBMDM3X2llRTVRQndwSS14cDFwV19xQktqUHRqZ0tScHVJRHhYNnpQTjZUQVkxUVlpS2JyYlZNZ2fSAbABQVVfeXFMTVlUR21TUDM4Z3ZkTWllWS1OS1ktd2FPTkRMSHdqUXh6N2NXRURXbzJzYXItYldEa0FRVFNrLWhJMzZBWVN4Uk5IcjE2aUludlF4QmdYQVJlY3dMa08zVlZkcjhEQjlIdDhFa1F6dVU1OUo5R0pVb0dFQlF4UVdFeExwbkhGNTlDNGJfVkV2TUhPcTVVNTZ4OWt6OUJpYklyNEY4UUJab3ZVMF9lZlpMalE?oc=5",
                     "published_at": "Thu, 17 Sep 2026 07:00:00 GMT",
-                    "source": "informacion.es",
+                    "source": "Información",
                     "category": "coach",
                     "fact_status": "reported",
                     "evidence_quality": "high"
+                  },
+                  {
+                    "title": "Presentación de Javi Calleja, nuevo entrenador del CD Eldense - CD Eldense",
+                    "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxONnBGTUEyNGFFNDNNd0pSeUNqckgxWEJudnZjZy1YWjdnMS1aNkdLV1dhUVZ1OFp3OFJrWkhEVzF3aFpIZldHZUxnUjlkdmlqQWJ2aHdEbVpYT0NaUEhQQnk5VktIRGctSzh0ck1hVEk4cG9QWTVKSFp1R2paeFdJVWJjdkVWSVA1Y01odVRvakU3SG9iRWw2Y1V3?oc=5",
+                    "published_at": "Thu, 17 Sep 2026 07:00:00 GMT",
+                    "source": "CD Eldense",
+                    "category": "coach",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   },
                   {
                     "title": "Javi Calleja, nuevo entrenador del Eldense de Messi - Ideal",
@@ -21338,24 +21293,6 @@
                 "squad_news": [],
                 "morale": [],
                 "all_evidence": [
-                  {
-                    "title": "Presentación de Javi Calleja, nuevo entrenador del CD Eldense - cdeldense.es",
-                    "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxONnBGTUEyNGFFNDNNd0pSeUNqckgxWEJudnZjZy1YWjdnMS1aNkdLV1dhUVZ1OFp3OFJrWkhEVzF3aFpIZldHZUxnUjlkdmlqQWJ2aHdEbVpYT0NaUEhQQnk5VktIRGctSzh0ck1hVEk4cG9QWTVKSFp1R2paeFdJVWJjdkVWSVA1Y01odVRvakU3SG9iRWw2Y1V3?oc=5",
-                    "published_at": "Fri, 18 Sep 2026 16:32:47 GMT",
-                    "source": "cdeldense.es",
-                    "category": "coach",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "Javi Calleja, nuevo entrenador del Eldense: \"Que esté Messi es una garantía\" - LNE",
-                    "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNWDlVc2dqNVN0dnhFMFV0MkxTZ2dPSDRmUGZMS3VCa3hhaXJsQ2tMYUtyLW0zYkM1X2xrdHNZMUMxYjBxTThTa3ZKTllJVEFNNmFoOURQbzhzdXJUbjI4MHcxTkV2ZnVmLXk5M1kzWVA4WjJ1WFBfYnRMaVVpN2cyMU02bDJPSjNkb0ZIbmhVM2pRTTJNRHBtMUJ30gGfAUFVX3lxTFBYRHpRS3RHUVhSV2pQdkVaS2tVaHpYWjMtLWxkWGx4R2dnWE50TmdMS3dQYmlSQUtKMVllY2tsSWNYV3NRQXRYVmJZLW1LRDMwNkd2dVpqNEN0M3NnRkZWbzg5ZzRfcTVZMWxMSHh0a0dxUG5xbTJzeV82YzBHRjMxLTh0N3RTVnZKZG9lMWlyckhiY29WOGEwLWlHaS1HWQ?oc=5",
-                    "published_at": "Thu, 17 Sep 2026 16:31:00 GMT",
-                    "source": "LNE",
-                    "category": "coach",
-                    "fact_status": "reported",
-                    "evidence_quality": "medium"
-                  },
                   {
                     "title": "La primera gran decisión que tomará Messi en el CD Eldense más allá del fichaje de Calleja - Nostresport",
                     "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQZjduRWhDLWFFVzZHbDQ1Ym1tajM1T0JKWUxzV0xzMEViU0lkUnNDSlNuOEg3bFlFa2ZPLTZpWWVzUG5KTkxOUDN3LTVhVFBkaTRLUXcxVUduTUd2NXZXNTRMWFRHUUFCTy1XMllrQVduSl9UQzUzYTREa2NfaEY2cTI5eVo5TDQtQkJwTzVISjA5UjNvQWdBMEQ4LVA5bkhGTXhqR0lsMGFOeHozZUU2VUhCd0Q1QQ?oc=5",
@@ -21375,13 +21312,31 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Acuerdo cerrado: Javi Calleja es nuevo entrenador del Eldense - informacion.es",
+                    "title": "Javi Calleja, nuevo entrenador del Eldense: \"Que esté Messi es una garantía\" - LNE",
+                    "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNWDlVc2dqNVN0dnhFMFV0MkxTZ2dPSDRmUGZMS3VCa3hhaXJsQ2tMYUtyLW0zYkM1X2xrdHNZMUMxYjBxTThTa3ZKTllJVEFNNmFoOURQbzhzdXJUbjI4MHcxTkV2ZnVmLXk5M1kzWVA4WjJ1WFBfYnRMaVVpN2cyMU02bDJPSjNkb0ZIbmhVM2pRTTJNRHBtMUJ30gGfAUFVX3lxTFBYRHpRS3RHUVhSV2pQdkVaS2tVaHpYWjMtLWxkWGx4R2dnWE50TmdMS3dQYmlSQUtKMVllY2tsSWNYV3NRQXRYVmJZLW1LRDMwNkd2dVpqNEN0M3NnRkZWbzg5ZzRfcTVZMWxMSHh0a0dxUG5xbTJzeV82YzBHRjMxLTh0N3RTVnZKZG9lMWlyckhiY29WOGEwLWlHaS1HWQ?oc=5",
+                    "published_at": "Thu, 17 Sep 2026 07:00:00 GMT",
+                    "source": "LNE",
+                    "category": "coach",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
+                  },
+                  {
+                    "title": "Acuerdo cerrado: Javi Calleja es nuevo entrenador del Eldense - Información",
                     "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPWXhkVnM3c2lWRk96ZThSYlR2VHFEZ1RGOHF5em9HMF81TENpenQ1N3hBc000RnR3VFV1ejlTMkg0RGxmanBhbnQwRWFiTWFLVENRNjB2Wl9Da0pnZjZZMkhkenBMZnJmVkRvbDVDY0lsb0ZBMDM3X2llRTVRQndwSS14cDFwV19xQktqUHRqZ0tScHVJRHhYNnpQTjZUQVkxUVlpS2JyYlZNZ2fSAbABQVVfeXFMTVlUR21TUDM4Z3ZkTWllWS1OS1ktd2FPTkRMSHdqUXh6N2NXRURXbzJzYXItYldEa0FRVFNrLWhJMzZBWVN4Uk5IcjE2aUludlF4QmdYQVJlY3dMa08zVlZkcjhEQjlIdDhFa1F6dVU1OUo5R0pVb0dFQlF4UVdFeExwbkhGNTlDNGJfVkV2TUhPcTVVNTZ4OWt6OUJpYklyNEY4UUJab3ZVMF9lZlpMalE?oc=5",
                     "published_at": "Thu, 17 Sep 2026 07:00:00 GMT",
-                    "source": "informacion.es",
+                    "source": "Información",
                     "category": "coach",
                     "fact_status": "reported",
                     "evidence_quality": "high"
+                  },
+                  {
+                    "title": "Presentación de Javi Calleja, nuevo entrenador del CD Eldense - CD Eldense",
+                    "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxONnBGTUEyNGFFNDNNd0pSeUNqckgxWEJudnZjZy1YWjdnMS1aNkdLV1dhUVZ1OFp3OFJrWkhEVzF3aFpIZldHZUxnUjlkdmlqQWJ2aHdEbVpYT0NaUEhQQnk5VktIRGctSzh0ck1hVEk4cG9QWTVKSFp1R2paeFdJVWJjdkVWSVA1Y01odVRvakU3SG9iRWw2Y1V3?oc=5",
+                    "published_at": "Thu, 17 Sep 2026 07:00:00 GMT",
+                    "source": "CD Eldense",
+                    "category": "coach",
+                    "fact_status": "reported",
+                    "evidence_quality": "medium"
                   },
                   {
                     "title": "Javi Calleja, nuevo entrenador del Eldense de Messi - Ideal",
@@ -21393,19 +21348,19 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Presentación de Javi Calleja, nuevo entrenador del Eldense - informacion.es",
+                    "title": "Presentación de Javi Calleja, nuevo entrenador del Eldense - Información",
                     "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQUHdZQmFFLVRUUGZmOUg4UXlOZjRXV0FiZ2xPcDItMEd6bVNzVVJqRmtkelpvS2Y3N3BXMmUwUWdZYkg2VEtONXI4RlhRYW9iNWZER2lRMTVtc2NzV0hxSEFDY2tSenEwOWR4WktXUUd2dm5zU1VHZVBPaGsyY2U0YzVYckJDN1ZtcWFnaTJFblZCaGNPT2Zra3dZdC1BU05VR0N5Z2N1TUtieWdoU213?oc=5",
                     "published_at": "Thu, 17 Sep 2026 07:00:00 GMT",
-                    "source": "informacion.es",
+                    "source": "Información",
                     "category": "coach",
                     "fact_status": "reported",
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "El Eldense anuncia a Javi Calleja como nuevo entrenador tras la salida de Claudio Barragán - IUSPORT",
+                    "title": "El Eldense anuncia a Javi Calleja como nuevo entrenador tras la salida de Claudio Barragán - iusport.com",
                     "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPQUl6UjVPcEdFT0RaMDlhM3VNSGlHZ0JENDVLWUtWMnRfZUFHYXBadUhqNjJPRzA3bTFDT0RhampJY3JDQzJsRGxYdXZfUUs2WGlfVkp2dl9fN0tLZ2ZLMXdLb2hpeHFUVzBVVDlxZUpCLVpHdlhFZ0NLQ25NLVpWTVAzemprcFRBejRZdXVzVm5aaTlQNXUxM1c5N3dyVk1yeHE3dUExVHE1M2YwMlhvd2d2SHgwcE9YamQ0Y3hB?oc=5",
                     "published_at": "Wed, 16 Sep 2026 17:31:39 GMT",
-                    "source": "IUSPORT",
+                    "source": "iusport.com",
                     "category": "departure",
                     "fact_status": "confirmed",
                     "evidence_quality": "medium"
@@ -21420,10 +21375,10 @@
                     "evidence_quality": "high"
                   },
                   {
-                    "title": "Javi Calleja, nuevo entrenador del CD Eldense hasta el 30 de junio de 2028 - cdeldense.es",
+                    "title": "Javi Calleja, nuevo entrenador del CD Eldense hasta el 30 de junio de 2028 - CD Eldense",
                     "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQenNLM3FpN0k3OTVGWURTWDZyZ1ozaHFsbjU1el91QjdMLWVNVDdYd3BSSXB4eXVrU2d5aWpfWkwzeHRhNC1xYXJNQ3JEdllKU01QNk4zX1l4WU1lSmpoQXpLX2hDdHFfZEdnXzNrU1M5NnBRWjJqUS1BQnZhejFzemVKRWE?oc=5",
                     "published_at": "Wed, 16 Sep 2026 07:00:00 GMT",
-                    "source": "cdeldense.es",
+                    "source": "CD Eldense",
                     "category": "coach",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
@@ -21823,7 +21778,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-27T21:35:47.282755+00:00",
+          "context_updated_at": "2026-09-28T01:28:17.232239+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -22483,7 +22438,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-27T21:36:04.319576+00:00",
+          "context_updated_at": "2026-09-28T01:28:23.121272+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -23160,7 +23115,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-27T21:36:18.009263+00:00",
+          "context_updated_at": "2026-09-28T01:28:24.833912+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -23862,7 +23817,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-27T21:36:33.551239+00:00",
+          "context_updated_at": "2026-09-28T01:28:26.558011+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -24599,10 +24554,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 13
+              "source_items_checked": 12
             }
           },
-          "context_updated_at": "2026-09-27T21:36:49.969142+00:00",
+          "context_updated_at": "2026-09-28T01:28:28.188596+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -24624,7 +24579,7 @@
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
               "availability_items": 14,
-              "official_items": 3,
+              "official_items": 2,
               "match_items": 2,
               "team_items": 46,
               "season_transition_items": 28,
@@ -25342,10 +25297,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 12
+              "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-09-27T21:37:03.534695+00:00",
+          "context_updated_at": "2026-09-28T01:28:31.401559+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -25367,7 +25322,7 @@
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
               "availability_items": 9,
-              "official_items": 3,
+              "official_items": 2,
               "match_items": 2,
               "team_items": 36,
               "season_transition_items": 28,
@@ -26266,7 +26221,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-27T21:35:07.976687+00:00",
+          "context_updated_at": "2026-09-28T01:28:03.604627+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 96,
@@ -26353,7 +26308,7 @@
     "ok": true,
     "degraded": false,
     "degraded_reason": "",
-    "provider_failures": 1282,
+    "provider_failures": 1297,
     "focus_matches": 15,
     "checked_evidence": 149,
     "invalid_evidence_count": 0,
