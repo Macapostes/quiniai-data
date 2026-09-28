@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-28T11:31:02.510550+00:00",
-  "snapshot_generated_at": "2026-09-28T11:30:57.448877+00:00",
+  "generated_at": "2026-09-28T13:39:47.978784+00:00",
+  "snapshot_generated_at": "2026-09-28T13:39:43.043973+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -20,8 +20,8 @@
     "structured_focus_matches": 60,
     "structured_referees": 21,
     "focus_valid_tables": 8,
-    "focus_rosters_checked": 4,
-    "focus_rosters_checked_partial": 8,
+    "focus_rosters_checked": 2,
+    "focus_rosters_checked_partial": 10,
     "focus_referees_confirmed": 0,
     "focus_season_transition_covered": 14,
     "focus_season_transition_evidence": 149,
@@ -31,7 +31,7 @@
     "teams": 129,
     "matches": 146,
     "referees": 21,
-    "last_pruned_at": "2026-09-28T11:30:57.441480+00:00"
+    "last_pruned_at": "2026-09-28T13:39:43.036723+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -39,15 +39,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-09-27T13:08:20.968316+00:00",
-      "finished_at": "2026-09-27T13:30:19.557103+00:00",
-      "ok": true,
-      "duration_seconds": 1318.59,
-      "monitored_matches": 194,
-      "tracked_matches": 60,
-      "current_jornada": 10
-    },
     {
       "started_at": "2026-09-27T15:08:22.249912+00:00",
       "finished_at": "2026-09-27T15:38:12.461260+00:00",
@@ -143,6 +134,15 @@
       "finished_at": "2026-09-28T11:31:02.509672+00:00",
       "ok": true,
       "duration_seconds": 1349.16,
+      "monitored_matches": 183,
+      "tracked_matches": 60,
+      "current_jornada": 10
+    },
+    {
+      "started_at": "2026-09-28T13:08:33.938815+00:00",
+      "finished_at": "2026-09-28T13:39:47.977963+00:00",
+      "ok": true,
+      "duration_seconds": 1874.04,
       "monitored_matches": 183,
       "tracked_matches": 60,
       "current_jornada": 10
@@ -568,9 +568,9 @@
           },
           "travel_km": 17033.1,
           "weather": {
-            "temperature_c": 22.5,
-            "precipitation_probability": 87,
-            "wind_speed_kmh": 5.1
+            "temperature_c": 24.0,
+            "precipitation_probability": 82,
+            "wind_speed_kmh": 1.7
           },
           "referee": {
             "name": "no confirmado",
@@ -597,7 +597,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 3
+              "source_items_checked": 1
             },
             "away": {
               "team": "ISLANDIA",
@@ -607,7 +607,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-28T11:29:03.680048+00:00",
+          "context_updated_at": "2026-09-28T13:35:59.932101+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 65,
@@ -631,7 +631,7 @@
               "roster_status": "partial_verification",
               "injury_items": 0,
               "availability_items": 4,
-              "official_items": 3,
+              "official_items": 1,
               "match_items": 0,
               "team_items": 17,
               "season_transition_items": 16,
@@ -875,8 +875,8 @@
               "team": "Slovakia",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 1
+              "verification_status": "not_verified",
+              "source_items_checked": 0
             },
             "away": {
               "team": "Kazakhstan",
@@ -886,10 +886,10 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-28T11:23:55.043593+00:00",
+          "context_updated_at": "2026-09-28T13:26:52.057933+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 86,
+            "score": 83,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -902,18 +902,19 @@
             "faltan": [
               "mas fuentes sobre altas, salidas y pretemporada",
               "H2H",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "sources_checked_no_confirmed_absence",
+              "roster_status": "partial_verification",
               "injury_items": 0,
               "availability_items": 1,
-              "official_items": 2,
+              "official_items": 1,
               "match_items": 0,
               "team_items": 2,
               "season_transition_items": 1,
-              "verified_teams": 2,
-              "home_roster_status": "sources_checked_no_confirmed_absence",
+              "verified_teams": 1,
+              "home_roster_status": "not_verified",
               "away_roster_status": "sources_checked_no_confirmed_absence",
               "referee_confirmed": false
             }
@@ -1140,9 +1141,9 @@
           },
           "travel_km": 8303.1,
           "weather": {
-            "temperature_c": 32.3,
-            "precipitation_probability": 8,
-            "wind_speed_kmh": 27.3
+            "temperature_c": 32.6,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 22.8
           },
           "referee": {
             "name": "no confirmado",
@@ -1183,7 +1184,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T11:29:12.495786+00:00",
+          "context_updated_at": "2026-09-28T13:36:09.517467+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 58,
@@ -1400,9 +1401,9 @@
           },
           "travel_km": 8065.6,
           "weather": {
-            "temperature_c": 13.6,
+            "temperature_c": 13.4,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 7.0
+            "wind_speed_kmh": 6.7
           },
           "referee": {
             "name": "no confirmado",
@@ -1439,7 +1440,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T11:29:27.459996+00:00",
+          "context_updated_at": "2026-09-28T13:37:02.818219+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -1831,7 +1832,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T11:23:44.486397+00:00",
+          "context_updated_at": "2026-09-28T13:26:28.152325+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -2401,7 +2402,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-28T11:23:42.716362+00:00",
+          "context_updated_at": "2026-09-28T13:26:10.830885+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 90,
@@ -2639,9 +2640,9 @@
           },
           "travel_km": 6563.1,
           "weather": {
-            "temperature_c": 18.5,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 5.3
+            "temperature_c": 20.1,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 3.0
           },
           "referee": {
             "name": "no confirmado",
@@ -2668,7 +2669,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "source_items_checked": 4
             },
             "away": {
               "team": "Switzerland",
@@ -2678,7 +2679,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T11:23:56.646253+00:00",
+          "context_updated_at": "2026-09-28T13:27:06.417401+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 83,
@@ -2700,8 +2701,8 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 1,
-              "official_items": 2,
+              "availability_items": 2,
+              "official_items": 4,
               "match_items": 0,
               "team_items": 1,
               "season_transition_items": 1,
@@ -3062,20 +3063,10 @@
           "availability": {
             "home": {
               "team": "AZERBAIYAN",
-              "items": [
-                {
-                  "player_name": "Colapinto",
-                  "verificado": false,
-                  "status": "suspended",
-                  "headline": "Colapinto recibió una dura sanción tras el choque en Azerbaiyan - 0223.com.ar",
-                  "source": "0223.com.ar",
-                  "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPbGpBYkhqU1RMUnZkR1hTSlJzN0FBYjJHTTVTcU1oaUNRWHJxNjZQQ18wbUtVQmRUSU9XdWFYeTg4VlNqZUt5Y29GdWxVUTVhYmFZTkQ5MUZudHNqNTlSckV1d0poRTdCSjhDSm5CLU92UnVkeXFMOUpZTmtTRHlWcy1vWThUMnpiT0hrbzFocjBKYnR6MWFhV3pWY3otQU11Ylk5LWw4UTZBeThIbEE?oc=5",
-                  "published_at": "Sat, 26 Sep 2026 22:01:00 GMT"
-                }
-              ],
-              "count": 1,
-              "verification_status": "confirmed_absences",
-              "source_items_checked": 2
+              "items": [],
+              "count": 0,
+              "verification_status": "not_verified",
+              "source_items_checked": 1
             },
             "away": {
               "team": "LIECHTENSTEIN",
@@ -3085,10 +3076,10 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-28T11:29:32.871641+00:00",
+          "context_updated_at": "2026-09-28T13:37:23.654895+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 81,
+            "score": 75,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "referencia 1X2 sin cuotas reales",
@@ -3101,18 +3092,19 @@
             "faltan": [
               "cuotas reales",
               "H2H",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "confirmed_absences",
-              "injury_items": 1,
-              "availability_items": 3,
+              "roster_status": "partial_verification",
+              "injury_items": 0,
+              "availability_items": 2,
               "official_items": 3,
               "match_items": 0,
-              "team_items": 10,
+              "team_items": 9,
               "season_transition_items": 8,
-              "verified_teams": 2,
-              "home_roster_status": "confirmed_absences",
+              "verified_teams": 1,
+              "home_roster_status": "not_verified",
               "away_roster_status": "sources_checked_no_confirmed_absence",
               "referee_confirmed": false
             }
@@ -3559,9 +3551,9 @@
           },
           "travel_km": 2967.4,
           "weather": {
-            "temperature_c": 19.4,
-            "precipitation_probability": 100,
-            "wind_speed_kmh": 1.0
+            "temperature_c": 19.9,
+            "precipitation_probability": 57,
+            "wind_speed_kmh": 2.0
           },
           "referee": {
             "name": "no confirmado",
@@ -3582,7 +3574,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 6
+              "source_items_checked": 7
             },
             "away": {
               "team": "Netherlands",
@@ -3600,8 +3592,8 @@
                   "player_name": "Malen",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Malen ruled out of Netherlands’ squad with injury - sports.yahoo.com",
-                  "source": "sports.yahoo.com",
+                  "headline": "Malen ruled out of Netherlands’ squad with injury - Yahoo Sports",
+                  "source": "Yahoo Sports",
                   "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNQWpRdGVzeEN6N1RRdVMySGd1WjBCYXpIaGJnWXhHVllwWlJ4a1RNLVBvTFVETVhWOWgxbW05ZjRUUmpMMWYxbFdLZzYza1RvN2pYR0tPV3VfWklEZUpKbTFxV0w4SUVJLTloZHU4Q3puQi1Td3dKYlFiNGI0MkRDSUhUM2JFMXd1dFNXMjJn?oc=5",
                   "published_at": "Sun, 20 Sep 2026 20:25:00 GMT"
                 },
@@ -3609,8 +3601,8 @@
                   "player_name": "Klopp",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Klopp provides injury updates on Havertz and Musiala after Netherlands draw - sports.yahoo.com",
-                  "source": "sports.yahoo.com",
+                  "headline": "Klopp provides injury updates on Havertz and Musiala after Netherlands draw - Yahoo Sports",
+                  "source": "Yahoo Sports",
                   "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOQ2VDZzBBOG0wZW1SY0RZZ25iYnI2Y3ZrY1c3aHM5dUZnSVRlX1ZKUU12TkFGb2NVbF94c01oSVhPSzNJcjZGYkEtcHhaVFNmTHlYYlhmMC1PUGgyYUdXaG5SUXRqeHJYUWhPcG84RC1NYlM3LUNmRHdwUjFvbkNfTmFFUDZvS2VsTldsb0hqQQ?oc=5",
                   "published_at": "Thu, 24 Sep 2026 21:40:00 GMT"
                 },
@@ -3618,8 +3610,8 @@
                   "player_name": "Havertz",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Klopp provides injury updates on Havertz and Musiala after Netherlands draw - sports.yahoo.com",
-                  "source": "sports.yahoo.com",
+                  "headline": "Klopp provides injury updates on Havertz and Musiala after Netherlands draw - Yahoo Sports",
+                  "source": "Yahoo Sports",
                   "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOQ2VDZzBBOG0wZW1SY0RZZ25iYnI2Y3ZrY1c3aHM5dUZnSVRlX1ZKUU12TkFGb2NVbF94c01oSVhPSzNJcjZGYkEtcHhaVFNmTHlYYlhmMC1PUGgyYUdXaG5SUXRqeHJYUWhPcG84RC1NYlM3LUNmRHdwUjFvbkNfTmFFUDZvS2VsTldsb0hqQQ?oc=5",
                   "published_at": "Thu, 24 Sep 2026 21:40:00 GMT"
                 },
@@ -3627,18 +3619,18 @@
                   "player_name": "Musiala",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Klopp provides injury updates on Havertz and Musiala after Netherlands draw - sports.yahoo.com",
-                  "source": "sports.yahoo.com",
+                  "headline": "Klopp provides injury updates on Havertz and Musiala after Netherlands draw - Yahoo Sports",
+                  "source": "Yahoo Sports",
                   "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOQ2VDZzBBOG0wZW1SY0RZZ25iYnI2Y3ZrY1c3aHM5dUZnSVRlX1ZKUU12TkFGb2NVbF94c01oSVhPSzNJcjZGYkEtcHhaVFNmTHlYYlhmMC1PUGgyYUdXaG5SUXRqeHJYUWhPcG84RC1NYlM3LUNmRHdwUjFvbkNfTmFFUDZvS2VsTldsb0hqQQ?oc=5",
                   "published_at": "Thu, 24 Sep 2026 21:40:00 GMT"
                 }
               ],
               "count": 5,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 6
+              "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-28T11:29:45.183574+00:00",
+          "context_updated_at": "2026-09-28T13:38:18.345978+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 81,
@@ -3659,10 +3651,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 5,
-              "availability_items": 8,
-              "official_items": 6,
+              "availability_items": 9,
+              "official_items": 7,
               "match_items": 0,
-              "team_items": 21,
+              "team_items": 22,
               "season_transition_items": 16,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -4108,8 +4100,8 @@
                   "player_name": "Kai Havertz",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Kai Havertz injury update: Germany's Arsenal man leaves game vs Netherlands - sports.yahoo.com",
-                  "source": "sports.yahoo.com",
+                  "headline": "Kai Havertz injury update: Germany's Arsenal man leaves game vs Netherlands - Yahoo Sports",
+                  "source": "Yahoo Sports",
                   "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPeEVVTkFQZGxpc0syakxUcXVkWHBKVEZ0VHc0anF3bDA5dVE1dGhzZFRzdHAzUmdoX0VhcmRlR0tlZXlNekVuemlJRTZBdVZpWTByRFFwUGozT3BsN0I3d3dEMC1YNG1ZRTZ1LWlFQi1vRGllUlBrM1lwYy02RDNPeHA0SWozRUdiLVJtTA?oc=5",
                   "published_at": "Thu, 24 Sep 2026 19:31:09 GMT"
                 },
@@ -4135,8 +4127,8 @@
                   "player_name": "Havertz",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Havertz sent for scan after picking up injury playing for Germany - sports.yahoo.com",
-                  "source": "sports.yahoo.com",
+                  "headline": "Havertz sent for scan after picking up injury playing for Germany - Yahoo Sports",
+                  "source": "Yahoo Sports",
                   "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQeW1Va19kNVdOZzEzaXhtSGJ1YWozMlVSeTZxblpZLW5LNG55QkVWYktsRGdGRjYtS0pUeDAxLWR3N0VMQ3ZqUF8wM1RCN00wMnVoeUo2RnZ0clJZZkZCX21RM0hCaGpkdXlWMjdEblQ5ZGh3SGkzM3VTTzFrRGxneGQwalB4SnRB?oc=5",
                   "published_at": "Fri, 25 Sep 2026 07:39:55 GMT"
                 }
@@ -4153,7 +4145,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T11:24:07.008576+00:00",
+          "context_updated_at": "2026-09-28T13:27:51.114329+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 90,
@@ -4638,7 +4630,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-28T11:29:49.995558+00:00",
+          "context_updated_at": "2026-09-28T13:38:37.268748+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 64,
@@ -4957,7 +4949,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T11:24:08.976831+00:00",
+          "context_updated_at": "2026-09-28T13:28:07.233866+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 83,
@@ -5506,7 +5498,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-28T11:30:03.014723+00:00",
+          "context_updated_at": "2026-09-28T13:39:02.661614+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 75,
@@ -6040,10 +6032,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 20
+              "source_items_checked": 19
             }
           },
-          "context_updated_at": "2026-09-28T11:24:05.042474+00:00",
+          "context_updated_at": "2026-09-28T13:27:22.520610+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 98,
@@ -6062,10 +6054,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 24,
+              "availability_items": 23,
               "official_items": 4,
               "match_items": 0,
-              "team_items": 33,
+              "team_items": 32,
               "season_transition_items": 16,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -6552,7 +6544,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T11:23:53.129812+00:00",
+          "context_updated_at": "2026-09-28T13:26:38.194665+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -7269,7 +7261,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-28T11:23:31.466872+00:00",
+          "context_updated_at": "2026-09-28T13:24:31.089621+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -7998,10 +7990,10 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 6
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-28T11:23:33.473592+00:00",
+          "context_updated_at": "2026-09-28T13:24:35.628872+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -8025,7 +8017,7 @@
               "availability_items": 3,
               "official_items": 1,
               "match_items": 0,
-              "team_items": 37,
+              "team_items": 35,
               "season_transition_items": 28,
               "verified_teams": 1,
               "home_roster_status": "confirmed_absences",
@@ -8649,17 +8641,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 7
+              "source_items_checked": 8
             },
             "away": {
               "team": "Leganés",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 1
+              "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-28T11:23:36.146027+00:00",
+          "context_updated_at": "2026-09-28T13:25:28.926428+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -8679,9 +8671,9 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 3,
+              "availability_items": 4,
               "official_items": 3,
-              "match_items": 1,
+              "match_items": 3,
               "team_items": 30,
               "season_transition_items": 28,
               "verified_teams": 2,
@@ -9372,7 +9364,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T11:23:35.457981+00:00",
+          "context_updated_at": "2026-09-28T13:25:17.274954+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 69,
@@ -10095,7 +10087,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-28T11:23:38.590552+00:00",
+          "context_updated_at": "2026-09-28T13:25:50.271577+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -10742,7 +10734,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-28T11:23:40.517135+00:00",
+          "context_updated_at": "2026-09-28T13:25:53.909040+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -11439,15 +11431,15 @@
                   "player_name": "Policía Local",
                   "verificado": false,
                   "status": "out",
-                  "headline": "La criminalidad baja un 5,3% en Castellón y aumentan un 8,5% las actuaciones de la Policía Local - Cadena SER",
-                  "source": "Cadena SER",
+                  "headline": "La criminalidad baja un 5,3% en Castellón y aumentan un 8,5% las actuaciones de la Policía Local - cadenaser.com",
+                  "source": "cadenaser.com",
                   "link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxQZjBhMUZQUFdXMG1GX1FPaHA4VDVxUm5fa3VCV1BlOUJSRmtsbWxidDZaeU16VjN1QU9mRUFBb0lET1VUeXB5R1o2NzdLVGhqbE1vdVV5R2ZxbnpyOW13US1YVVAyc1Z1bTkxeTJhTmhiSUhaMjkyVWNVMDdkNW1Ddk9UMlljZG5IUndsekk4QUZRd1NkMWZKRkpyRDhNWkQ5UF9TMHh5cUhDRDFORzdFTHg2RU5wMm5Hb0lMMHZ2MHBORWdZSlFlQnhYOWl0M0d2anFfT2lkYVoyTDl2SzE3UDZqTHVjYnM1RWZnajRVQ3g1TUhyZVHSAYoCQVVfeXFMTVd6Z1hPTERsbzZXY0tJQzVEcGROUllXT3lfeklvN3VsbGZCdjVKZUZoUG0tSFBobndBYzFNWEJ4MmRjalRKUVg2S2RGd1Y4V3ZiQnd2SFhvNWFFbzlnbUxpRFZHSjZyTFk2TDZSOHBiU0R2VjBmMFFPTS0tdFI4T0thRHY2TWlfM1Vhb1R6aDJwejBrSWxIdFA4a2l1N0d3RkxmY3M0Ui05Tkd4MHlqZlV0SDV2QkNWajMyX2lIZmlRalpzb3dzaVJWQmhBa19zY2lVc3hqYnljTmdsYkMwUXRZYVlQRlRvNzNjWEtrZmF3cmtWZTFZMzZDbXVJRXRJNjFpTFZSODl1M1E?oc=5",
                   "published_at": "Sat, 26 Sep 2026 09:40:18 GMT"
                 }
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 10
+              "source_items_checked": 12
             },
             "away": {
               "team": "CEUTA",
@@ -11457,7 +11449,7 @@
               "source_items_checked": 26
             }
           },
-          "context_updated_at": "2026-09-28T11:27:50.632891+00:00",
+          "context_updated_at": "2026-09-28T13:34:14.071743+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -11478,10 +11470,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 1,
-              "availability_items": 21,
+              "availability_items": 20,
               "official_items": 2,
-              "match_items": 3,
-              "team_items": 47,
+              "match_items": 4,
+              "team_items": 48,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -12150,9 +12142,9 @@
           },
           "travel_km": 1790.3,
           "weather": {
-            "temperature_c": 28.2,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 9.1
+            "temperature_c": 26.2,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 14.8
           },
           "referee": {
             "name": "no confirmado",
@@ -12179,17 +12171,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 14
+              "source_items_checked": 15
             },
             "away": {
               "team": "VALLADOLID",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 14
+              "source_items_checked": 15
             }
           },
-          "context_updated_at": "2026-09-28T11:27:55.141238+00:00",
+          "context_updated_at": "2026-09-28T13:34:28.364023+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -12210,9 +12202,9 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 10,
+              "availability_items": 11,
               "official_items": 3,
-              "match_items": 6,
+              "match_items": 7,
               "team_items": 39,
               "season_transition_items": 28,
               "verified_teams": 2,
@@ -12919,7 +12911,7 @@
               "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-28T11:27:57.248386+00:00",
+          "context_updated_at": "2026-09-28T13:34:42.266082+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -13678,17 +13670,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 7
+              "source_items_checked": 8
             },
             "away": {
               "team": "TENERIFE",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 14
+              "source_items_checked": 15
             }
           },
-          "context_updated_at": "2026-09-28T11:27:59.326801+00:00",
+          "context_updated_at": "2026-09-28T13:34:54.079400+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -13709,10 +13701,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 9,
+              "availability_items": 13,
               "official_items": 5,
-              "match_items": 4,
-              "team_items": 36,
+              "match_items": 5,
+              "team_items": 38,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -14053,17 +14045,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 5
+              "source_items_checked": 8
             },
             "away": {
               "team": "Real Madrid",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 14
+              "source_items_checked": 17
             }
           },
-          "context_updated_at": "2026-09-28T11:28:02.664400+00:00",
+          "context_updated_at": "2026-09-28T13:35:01.114409+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -14084,8 +14076,8 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 2,
-              "official_items": 1,
+              "availability_items": 4,
+              "official_items": 7,
               "match_items": 0,
               "team_items": 13,
               "season_transition_items": 2,
@@ -14355,10 +14347,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 9
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-28T11:28:10.503115+00:00",
+          "context_updated_at": "2026-09-28T13:35:06.623101+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 56,
@@ -14380,8 +14372,8 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 3,
-              "official_items": 4,
+              "availability_items": 2,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 2,
               "season_transition_items": 1,
@@ -14632,7 +14624,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T11:28:15.247098+00:00",
+          "context_updated_at": "2026-09-28T13:35:11.614370+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 42,
@@ -14880,9 +14872,9 @@
           },
           "travel_km": 1994.4,
           "weather": {
-            "temperature_c": 26.3,
-            "precipitation_probability": 8,
-            "wind_speed_kmh": 10.9
+            "temperature_c": 23.7,
+            "precipitation_probability": 12,
+            "wind_speed_kmh": 12.5
           },
           "referee": {
             "name": "no confirmado",
@@ -14909,7 +14901,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 3
+              "source_items_checked": 2
             },
             "away": {
               "team": "LOGROÑO",
@@ -14919,7 +14911,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-28T11:28:19.272211+00:00",
+          "context_updated_at": "2026-09-28T13:35:17.770934+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -14943,10 +14935,10 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 3,
+              "availability_items": 2,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 3,
+              "team_items": 2,
               "season_transition_items": 1,
               "verified_teams": 1,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -14971,9 +14963,9 @@
           "official_percent": {},
           "home_table": {
             "position": null,
-            "points": null,
-            "form": "",
-            "form_matches": 0
+            "points": 3,
+            "form": "W",
+            "form_matches": 1
           },
           "away_table": {
             "position": null,
@@ -14982,7 +14974,13 @@
             "form_matches": 0
           },
           "pressure": {
-            "home": {},
+            "home": {
+              "score": 38.04,
+              "label": "medium",
+              "future_difficulty": 0.0,
+              "hard_window_matches": 0,
+              "gap_to_drop_zone": null
+            },
             "away": {}
           },
           "fatigue": {
@@ -15382,7 +15380,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T11:28:51.003514+00:00",
+          "context_updated_at": "2026-09-28T13:35:31.944457+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -16022,17 +16020,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "source_items_checked": 1
             },
             "away": {
               "team": "Athletic Bilbao",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 6
+              "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-28T11:22:14.029491+00:00",
+          "context_updated_at": "2026-09-28T13:21:34.647703+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -16052,9 +16050,9 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 5,
+              "availability_items": 4,
               "official_items": 4,
-              "match_items": 1,
+              "match_items": 0,
               "team_items": 23,
               "season_transition_items": 21,
               "verified_teams": 2,
@@ -16761,7 +16759,7 @@
               "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-09-28T11:27:19.556354+00:00",
+          "context_updated_at": "2026-09-28T13:32:03.075267+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -17481,7 +17479,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T11:27:19.684147+00:00",
+          "context_updated_at": "2026-09-28T13:32:03.767619+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -18164,8 +18162,8 @@
               "team": "Elche CF",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 1
+              "verification_status": "not_verified",
+              "source_items_checked": 0
             },
             "away": {
               "team": "Celta Vigo",
@@ -18174,8 +18172,8 @@
                   "player_name": "Bernard Somuah",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Bernard Somuah, ante la peor noticia posible: parte médico y tiempo de baja del jugador del Celta Fortuna - Metropolitano.gal",
-                  "source": "Metropolitano.gal",
+                  "headline": "Bernard Somuah, ante la peor noticia posible: parte médico y tiempo de baja del jugador del Celta Fortuna - metropolitano.gal",
+                  "source": "metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNeFpsV0Qyby1QOTI4WEV2WDFlWGRiMElCUkFzSjhMUUF2RXVZM2Nkek0zT1RNcUNhWWJUWXdMYlZpNW9jYXVCNlVIazFfTU1SVHJWVVBJbTZFREtHZ0NMbmRzWWVrcnk5LVpxbUVSWmZXS3dBZDVXQ1NJV3VsYkt5dkRTLXFNRFFCcWNralZPVWlSTHpTZGJoQWVNQ09hcU9xanpTalF3b0JTUXFDQjRYblozc01sNWd1YUN1MTV3aDlnYzZvMjRVdUtSWFpTbGQwRXfSAdcBQVVfeXFMUEpZN1p6YmNfaGZ4TFpPa0ItQ2R6QUs1U1oxeUpWa3VGUi1PWkJtdlBiMjhEYVVrR3RSTkV4M2c1M3dEYXh6VGZ1Y3VnN3ZNQ21WbFEzY25HSEcyakt5REFrUlNja2RhZmRyZTRHYnpLOWFzLXEtaVBsMThBMDBXNFBram56WWw0ZGdfNVRqRUJPOUFwS3hWc0hZLU00cFZjcU15VHVNVWJwZEpPLUdTN3NDWmhZY3AtSDFCU0UxTDBMSW9IUi1iY3BjYkZtNlVjcEgycUxiQWs?oc=5",
                   "published_at": "Wed, 23 Sep 2026 19:29:10 GMT"
                 }
@@ -18185,10 +18183,10 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-28T11:23:14.709364+00:00",
+          "context_updated_at": "2026-09-28T13:21:53.122630+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 91,
+            "score": 85,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -18200,18 +18198,19 @@
             ],
             "faltan": [
               "porcentajes de quiniela",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "confirmed_absences",
+              "roster_status": "partial_verification",
               "injury_items": 1,
-              "availability_items": 4,
+              "availability_items": 3,
               "official_items": 2,
               "match_items": 0,
-              "team_items": 31,
+              "team_items": 30,
               "season_transition_items": 28,
-              "verified_teams": 2,
-              "home_roster_status": "sources_checked_no_confirmed_absence",
+              "verified_teams": 1,
+              "home_roster_status": "not_verified",
               "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
@@ -18916,7 +18915,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 13
+              "source_items_checked": 12
             },
             "away": {
               "team": "Deportivo La Coruña",
@@ -18926,7 +18925,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-28T11:27:23.487526+00:00",
+          "context_updated_at": "2026-09-28T13:32:07.810252+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -19668,7 +19667,7 @@
                   "headline": "Lesión de Marc Bartra: qué tiene, parte médico y posible tiempo de baja con el Betis - El Desmarque",
                   "source": "El Desmarque",
                   "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNeFN1YVVxVUt6eERiQnY5Q0h6am9FUkx2c0Qwak1PWkhmcnBHNmdaQlJERGYtZ0hyQWp4bTRyX3EzWGZ1S3lESU03d3c4MThzOUs1NWRtUHg3ektjb0ZxWk1uSHhQeVV6aUlLb0FYWjVCaE1RZ1hXUDd6TEMtQ0lKVDRVd19tZW5lMEJ3cXlZTTUwWVJlS0NfNnE5SWY4Q0ZhUVZuQ0kxVDRlVjZtZjIwd05wVmYwWmVHUV83V25ZN00?oc=5",
-                  "published_at": "Sun, 20 Sep 2026 19:13:54 GMT"
+                  "published_at": "Sun, 20 Sep 2026 07:00:00 GMT"
                 }
               ],
               "count": 4,
@@ -19683,7 +19682,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-28T11:27:25.047105+00:00",
+          "context_updated_at": "2026-09-28T13:32:09.343654+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -19703,10 +19702,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 4,
-              "availability_items": 10,
+              "availability_items": 8,
               "official_items": 2,
               "match_items": 0,
-              "team_items": 39,
+              "team_items": 37,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -20376,17 +20375,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "source_items_checked": 1
             },
             "away": {
               "team": "Valencia",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 10
+              "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-28T11:23:22.117814+00:00",
+          "context_updated_at": "2026-09-28T13:22:42.930925+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -20409,7 +20408,7 @@
               "availability_items": 4,
               "official_items": 1,
               "match_items": 0,
-              "team_items": 39,
+              "team_items": 36,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -21090,17 +21089,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 17
+              "source_items_checked": 16
             },
             "away": {
               "team": "Sevilla",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 12
+              "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-09-28T11:23:23.048838+00:00",
+          "context_updated_at": "2026-09-28T13:23:00.989456+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -21120,10 +21119,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 18,
+              "availability_items": 16,
               "official_items": 2,
               "match_items": 5,
-              "team_items": 45,
+              "team_items": 42,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -21840,17 +21839,17 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 15
+              "source_items_checked": 18
             },
             "away": {
               "team": "CÓRDOBA",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 7
+              "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-28T11:27:28.986734+00:00",
+          "context_updated_at": "2026-09-28T13:32:30.656039+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -21871,10 +21870,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 2,
-              "availability_items": 6,
+              "availability_items": 8,
               "official_items": 6,
-              "match_items": 4,
-              "team_items": 32,
+              "match_items": 6,
+              "team_items": 33,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -22499,18 +22498,18 @@
                   "player_name": "Policía Local",
                   "verificado": false,
                   "status": "out",
-                  "headline": "La criminalidad baja un 5,3% en Castellón y aumentan un 8,5% las actuaciones de la Policía Local - Cadena SER",
-                  "source": "Cadena SER",
+                  "headline": "La criminalidad baja un 5,3% en Castellón y aumentan un 8,5% las actuaciones de la Policía Local - cadenaser.com",
+                  "source": "cadenaser.com",
                   "link": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxQZjBhMUZQUFdXMG1GX1FPaHA4VDVxUm5fa3VCV1BlOUJSRmtsbWxidDZaeU16VjN1QU9mRUFBb0lET1VUeXB5R1o2NzdLVGhqbE1vdVV5R2ZxbnpyOW13US1YVVAyc1Z1bTkxeTJhTmhiSUhaMjkyVWNVMDdkNW1Ddk9UMlljZG5IUndsekk4QUZRd1NkMWZKRkpyRDhNWkQ5UF9TMHh5cUhDRDFORzdFTHg2RU5wMm5Hb0lMMHZ2MHBORWdZSlFlQnhYOWl0M0d2anFfT2lkYVoyTDl2SzE3UDZqTHVjYnM1RWZnajRVQ3g1TUhyZVHSAYoCQVVfeXFMTVd6Z1hPTERsbzZXY0tJQzVEcGROUllXT3lfeklvN3VsbGZCdjVKZUZoUG0tSFBobndBYzFNWEJ4MmRjalRKUVg2S2RGd1Y4V3ZiQnd2SFhvNWFFbzlnbUxpRFZHSjZyTFk2TDZSOHBiU0R2VjBmMFFPTS0tdFI4T0thRHY2TWlfM1Vhb1R6aDJwejBrSWxIdFA4a2l1N0d3RkxmY3M0Ui05Tkd4MHlqZlV0SDV2QkNWajMyX2lIZmlRalpzb3dzaVJWQmhBa19zY2lVc3hqYnljTmdsYkMwUXRZYVlQRlRvNzNjWEtrZmF3cmtWZTFZMzZDbXVJRXRJNjFpTFZSODl1M1E?oc=5",
                   "published_at": "Sat, 26 Sep 2026 09:40:18 GMT"
                 }
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 7
+              "source_items_checked": 8
             }
           },
-          "context_updated_at": "2026-09-28T11:27:34.250004+00:00",
+          "context_updated_at": "2026-09-28T13:32:48.727796+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -22535,7 +22534,7 @@
               "availability_items": 4,
               "official_items": 2,
               "match_items": 0,
-              "team_items": 28,
+              "team_items": 29,
               "season_transition_items": 25,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
@@ -23187,7 +23186,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-28T11:27:35.950254+00:00",
+          "context_updated_at": "2026-09-28T13:33:04.232696+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -23879,17 +23878,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 10
+              "source_items_checked": 11
             },
             "away": {
               "team": "LAS PALMAS",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 9
+              "source_items_checked": 10
             }
           },
-          "context_updated_at": "2026-09-28T11:27:37.648090+00:00",
+          "context_updated_at": "2026-09-28T13:33:20.634823+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -23910,9 +23909,9 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 6,
+              "availability_items": 7,
               "official_items": 5,
-              "match_items": 4,
+              "match_items": 5,
               "team_items": 34,
               "season_transition_items": 28,
               "verified_teams": 2,
@@ -24590,9 +24589,9 @@
           },
           "travel_km": 573.0,
           "weather": {
-            "temperature_c": 15.9,
+            "temperature_c": 16.1,
             "precipitation_probability": 33,
-            "wind_speed_kmh": 6.9
+            "wind_speed_kmh": 5.9
           },
           "referee": {
             "name": "no confirmado",
@@ -24619,17 +24618,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 15
+              "source_items_checked": 16
             },
             "away": {
               "team": "GRANADA",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 14
+              "source_items_checked": 15
             }
           },
-          "context_updated_at": "2026-09-28T11:27:39.441549+00:00",
+          "context_updated_at": "2026-09-28T13:33:38.447522+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -24650,9 +24649,9 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 16,
+              "availability_items": 17,
               "official_items": 1,
-              "match_items": 3,
+              "match_items": 4,
               "team_items": 48,
               "season_transition_items": 28,
               "verified_teams": 2,
@@ -25335,7 +25334,7 @@
           "weather": {
             "temperature_c": 17.2,
             "precipitation_probability": 28,
-            "wind_speed_kmh": 3.0
+            "wind_speed_kmh": 0.9
           },
           "referee": {
             "name": "no confirmado",
@@ -25362,7 +25361,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 3
+              "source_items_checked": 4
             },
             "away": {
               "team": "EIBAR",
@@ -25372,7 +25371,7 @@
               "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-28T11:27:41.125517+00:00",
+          "context_updated_at": "2026-09-28T13:33:53.426027+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -25393,10 +25392,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 8,
+              "availability_items": 9,
               "official_items": 2,
               "match_items": 1,
-              "team_items": 35,
+              "team_items": 36,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -26284,7 +26283,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-28T11:27:25.322170+00:00",
+          "context_updated_at": "2026-09-28T13:32:09.593028+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 96,
@@ -26371,7 +26370,7 @@
     "ok": true,
     "degraded": false,
     "degraded_reason": "",
-    "provider_failures": 1264,
+    "provider_failures": 1181,
     "focus_matches": 15,
     "checked_evidence": 149,
     "invalid_evidence_count": 0,
