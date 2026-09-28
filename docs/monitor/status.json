@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-28T09:30:27.184292+00:00",
-  "snapshot_generated_at": "2026-09-28T09:30:22.072316+00:00",
+  "generated_at": "2026-09-28T11:31:02.510550+00:00",
+  "snapshot_generated_at": "2026-09-28T11:30:57.448877+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -31,7 +31,7 @@
     "teams": 129,
     "matches": 146,
     "referees": 21,
-    "last_pruned_at": "2026-09-28T09:30:22.064912+00:00"
+    "last_pruned_at": "2026-09-28T11:30:57.441480+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -39,15 +39,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-09-27T11:08:20.162816+00:00",
-      "finished_at": "2026-09-27T11:30:39.366805+00:00",
-      "ok": true,
-      "duration_seconds": 1339.2,
-      "monitored_matches": 187,
-      "tracked_matches": 60,
-      "current_jornada": 10
-    },
     {
       "started_at": "2026-09-27T13:08:20.968316+00:00",
       "finished_at": "2026-09-27T13:30:19.557103+00:00",
@@ -146,6 +137,15 @@
       "monitored_matches": 183,
       "tracked_matches": 60,
       "current_jornada": 10
+    },
+    {
+      "started_at": "2026-09-28T11:08:33.349409+00:00",
+      "finished_at": "2026-09-28T11:31:02.509672+00:00",
+      "ok": true,
+      "duration_seconds": 1349.16,
+      "monitored_matches": 183,
+      "tracked_matches": 60,
+      "current_jornada": 10
     }
   ],
   "public_jornadas": [
@@ -168,8 +168,16 @@
           "kickoff": "2026-09-29T18:45:00Z",
           "bookmaker": "",
           "odds": {},
-          "normalized_percent": {},
-          "official_percent": {},
+          "normalized_percent": {
+            "1": 36.0,
+            "X": 26.0,
+            "2": 38.0
+          },
+          "official_percent": {
+            "1": 36.0,
+            "X": 26.0,
+            "2": 38.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -599,22 +607,21 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-28T09:29:00.404986+00:00",
+          "context_updated_at": "2026-09-28T11:29:03.680048+00:00",
           "data_confidence": {
             "nivel": "media",
-            "score": 45,
+            "score": 65,
             "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
+              "referencia 1X2 sin cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "temporada anterior de ambos equipos",
-              "mercado, plantilla y pretemporada investigados",
-              "una plantilla investigada en fuentes recientes"
+              "temporada anterior de ambos equipos"
             ],
             "faltan": [
-              "cuotas/referencia 1X2",
-              "porcentajes de quiniela",
+              "cuotas reales",
               "calendario próximo",
               "H2H",
               "bajas/convocatorias del otro equipo",
@@ -634,7 +641,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 1 posibles salidas | Visitante: temporada anterior: sin registro en 25/26; 2 bajas/disponibilidad; 5 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | No hay cuotas reales fiables. La referencia disponible favorece al visitante (38.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 1 posibles salidas | Visitante: temporada anterior: sin registro en 25/26; 2 bajas/disponibilidad; 5 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -656,7 +663,11 @@
             "X": 18.47,
             "2": 8.87
           },
-          "official_percent": {},
+          "official_percent": {
+            "1": 71.0,
+            "X": 17.0,
+            "2": 12.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -875,21 +886,20 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-28T09:22:49.888374+00:00",
+          "context_updated_at": "2026-09-28T11:23:55.043593+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 76,
+            "score": 86,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos"
+              "calendario próximo"
             ],
             "faltan": [
-              "porcentajes de quiniela",
               "mas fuentes sobre altas, salidas y pretemporada",
               "H2H",
               "arbitro confirmado"
@@ -908,7 +918,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (72.7%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (72.7%) y el publico de Loterias lo refleja de forma similar (71.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
           "analysis_ready": true
         },
         {
@@ -921,8 +931,16 @@
           "kickoff": "2026-09-29T18:45:00Z",
           "bookmaker": "",
           "odds": {},
-          "normalized_percent": {},
-          "official_percent": {},
+          "normalized_percent": {
+            "1": 16.0,
+            "X": 16.0,
+            "2": 68.0
+          },
+          "official_percent": {
+            "1": 16.0,
+            "X": 16.0,
+            "2": 68.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -1165,22 +1183,21 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T09:29:14.226043+00:00",
+          "context_updated_at": "2026-09-28T11:29:12.495786+00:00",
           "data_confidence": {
-            "nivel": "baja",
-            "score": 38,
-            "resumen": "Confianza baja: análisis orientativo; faltan datos clave.",
+            "nivel": "media",
+            "score": 58,
+            "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
+              "referencia 1X2 sin cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "temporada anterior de ambos equipos",
-              "contexto parcial de plantilla/pretemporada",
-              "una plantilla investigada en fuentes recientes"
+              "temporada anterior de ambos equipos"
             ],
             "faltan": [
-              "cuotas/referencia 1X2",
-              "porcentajes de quiniela",
+              "cuotas reales",
               "calendario próximo",
               "mas fuentes sobre altas, salidas y pretemporada",
               "H2H",
@@ -1201,7 +1218,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza baja: análisis orientativo; faltan datos clave. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: tabla incompleta o inexistente. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Visitante: temporada anterior: sin registro en 25/26; 1 bajas/disponibilidad | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | No hay cuotas reales fiables. La referencia disponible favorece al visitante (68.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | sin clasificacion util: tabla incompleta o inexistente. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Visitante: temporada anterior: sin registro en 25/26; 1 bajas/disponibilidad | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -1214,8 +1231,16 @@
           "kickoff": "2026-09-29T18:45:00Z",
           "bookmaker": "",
           "odds": {},
-          "normalized_percent": {},
-          "official_percent": {},
+          "normalized_percent": {
+            "1": 61.0,
+            "X": 23.0,
+            "2": 16.0
+          },
+          "official_percent": {
+            "1": 61.0,
+            "X": 23.0,
+            "2": 16.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -1414,21 +1439,21 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T09:29:27.706480+00:00",
+          "context_updated_at": "2026-09-28T11:29:27.459996+00:00",
           "data_confidence": {
-            "nivel": "baja",
-            "score": 37,
-            "resumen": "Confianza baja: análisis orientativo; faltan datos clave.",
+            "nivel": "media",
+            "score": 57,
+            "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
+              "referencia 1X2 sin cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos"
+              "calendario próximo"
             ],
             "faltan": [
-              "cuotas/referencia 1X2",
-              "porcentajes de quiniela",
+              "cuotas reales",
               "altas, salidas, entrenador y pretemporada verificadas",
               "H2H",
               "noticias y bajas verificadas",
@@ -1448,7 +1473,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza baja: análisis orientativo; faltan datos clave. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26 | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (low). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | No hay cuotas reales fiables. La referencia disponible favorece al local (61.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26 | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (low). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -1470,7 +1495,11 @@
             "X": 26.46,
             "2": 16.72
           },
-          "official_percent": {},
+          "official_percent": {
+            "1": 54.0,
+            "X": 26.0,
+            "2": 20.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -1802,21 +1831,20 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T09:22:45.923636+00:00",
+          "context_updated_at": "2026-09-28T11:23:44.486397+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 79,
+            "score": 89,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos"
+              "calendario próximo"
             ],
             "faltan": [
-              "porcentajes de quiniela",
               "H2H",
               "bajas/convocatorias verificadas",
               "arbitro confirmado"
@@ -1835,7 +1863,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (56.8%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 2 salidas confirmadas | Visitante: temporada anterior: sin registro en 25/26; 1 altas/refuerzos confirmados; 2 posibles salidas; 1 cambios de entrenador | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (56.8%) y el publico de Loterias lo refleja de forma similar (54.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 2 salidas confirmadas | Visitante: temporada anterior: sin registro en 25/26; 1 altas/refuerzos confirmados; 2 posibles salidas; 1 cambios de entrenador | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
           "analysis_ready": true
         },
         {
@@ -1857,7 +1885,11 @@
             "X": 7.84,
             "2": 89.25
           },
-          "official_percent": {},
+          "official_percent": {
+            "1": 17.0,
+            "X": 15.0,
+            "2": 68.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -2369,21 +2401,20 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-28T09:22:43.601526+00:00",
+          "context_updated_at": "2026-09-28T11:23:42.716362+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 80,
+            "score": 90,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos"
+              "calendario próximo"
             ],
             "faltan": [
-              "porcentajes de quiniela",
               "H2H",
               "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
@@ -2402,7 +2433,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (89.2%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 5 posibles salidas; 2 señales de pretemporada | Visitante: temporada anterior: sin registro en 25/26; 4 posibles salidas; 3 señales de pretemporada | Calendario futuro con 1 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (89.2%), pero el publico de Loterias lo infravalora (68.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 5 posibles salidas; 2 señales de pretemporada | Visitante: temporada anterior: sin registro en 25/26; 4 posibles salidas; 3 señales de pretemporada | Calendario futuro con 1 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
           "analysis_ready": true
         },
         {
@@ -2424,7 +2455,11 @@
             "X": 27.4,
             "2": 49.16
           },
-          "official_percent": {},
+          "official_percent": {
+            "1": 31.0,
+            "X": 29.0,
+            "2": 40.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -2643,21 +2678,20 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T09:22:52.087103+00:00",
+          "context_updated_at": "2026-09-28T11:23:56.646253+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 73,
+            "score": 83,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos"
+              "calendario próximo"
             ],
             "faltan": [
-              "porcentajes de quiniela",
               "mas fuentes sobre altas, salidas y pretemporada",
               "H2H",
               "bajas/convocatorias del otro equipo",
@@ -2677,7 +2711,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (49.2%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (49.2%), pero el publico de Loterias lo infravalora (40.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Carga física: local low, visitante medium. Tiempo de descanso similar (3 vs 3 días).",
           "analysis_ready": true
         },
         {
@@ -2690,8 +2724,16 @@
           "kickoff": "2026-09-24T16:00:00Z",
           "bookmaker": "",
           "odds": {},
-          "normalized_percent": {},
-          "official_percent": {},
+          "normalized_percent": {
+            "1": 64.0,
+            "X": 19.0,
+            "2": 17.0
+          },
+          "official_percent": {
+            "1": 64.0,
+            "X": 19.0,
+            "2": 17.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -3043,22 +3085,21 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-28T09:29:32.375869+00:00",
+          "context_updated_at": "2026-09-28T11:29:32.871641+00:00",
           "data_confidence": {
-            "nivel": "media",
-            "score": 61,
-            "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
+            "nivel": "alta",
+            "score": 81,
+            "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
+              "referencia 1X2 sin cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos",
-              "mercado, plantilla y pretemporada investigados"
+              "calendario próximo"
             ],
             "faltan": [
-              "cuotas/referencia 1X2",
-              "porcentajes de quiniela",
+              "cuotas reales",
               "H2H",
               "arbitro confirmado"
             ],
@@ -3076,7 +3117,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: tabla incompleta o inexistente. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 4 posibles salidas; 1 bajas/disponibilidad | Visitante: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | No hay cuotas reales fiables. La referencia disponible favorece al local (64.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | sin clasificacion util: tabla incompleta o inexistente. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 4 posibles salidas; 1 bajas/disponibilidad | Visitante: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones | Calendario próximo sin rivales especialmente exigentes. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -3089,8 +3130,16 @@
           "kickoff": "2026-09-24T18:45:00Z",
           "bookmaker": "",
           "odds": {},
-          "normalized_percent": {},
-          "official_percent": {},
+          "normalized_percent": {
+            "1": 20.0,
+            "X": 20.0,
+            "2": 60.0
+          },
+          "official_percent": {
+            "1": 20.0,
+            "X": 20.0,
+            "2": 60.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -3589,22 +3638,21 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T09:29:43.222116+00:00",
+          "context_updated_at": "2026-09-28T11:29:45.183574+00:00",
           "data_confidence": {
-            "nivel": "media",
-            "score": 61,
-            "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
+            "nivel": "alta",
+            "score": 81,
+            "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
+              "referencia 1X2 sin cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos",
-              "mercado, plantilla y pretemporada investigados"
+              "calendario próximo"
             ],
             "faltan": [
-              "cuotas/referencia 1X2",
-              "porcentajes de quiniela",
+              "cuotas reales",
               "H2H",
               "arbitro confirmado"
             ],
@@ -3622,7 +3670,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: tabla incompleta o inexistente. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas; 3 cambios de entrenador | Visitante: temporada anterior: sin registro en 25/26; 1 cambios de entrenador; 1 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | No hay cuotas reales fiables. La referencia disponible favorece al visitante (60.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | sin clasificacion util: tabla incompleta o inexistente. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas; 3 cambios de entrenador | Visitante: temporada anterior: sin registro en 25/26; 1 cambios de entrenador; 1 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -3644,7 +3692,11 @@
             "X": 16.73,
             "2": 9.68
           },
-          "official_percent": {},
+          "official_percent": {
+            "1": 76.0,
+            "X": 13.0,
+            "2": 11.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -4098,24 +4150,23 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 1
+              "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T09:23:03.720672+00:00",
+          "context_updated_at": "2026-09-28T11:24:07.008576+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 80,
+            "score": 90,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos"
+              "calendario próximo"
             ],
             "faltan": [
-              "porcentajes de quiniela",
               "H2H",
               "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
@@ -4134,7 +4185,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (73.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 5 señales de pretemporada | Calendario futuro con 2 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (4 vs 4 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (73.6%) y el publico de Loterias lo refleja de forma similar (76.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 5 señales de pretemporada | Calendario futuro con 2 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (4 vs 4 días).",
           "analysis_ready": true
         },
         {
@@ -4147,8 +4198,16 @@
           "kickoff": "2026-09-24T18:45:00Z",
           "bookmaker": "",
           "odds": {},
-          "normalized_percent": {},
-          "official_percent": {},
+          "normalized_percent": {
+            "1": 27.0,
+            "X": 28.0,
+            "2": 45.0
+          },
+          "official_percent": {
+            "1": 27.0,
+            "X": 28.0,
+            "2": 45.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -4579,21 +4638,21 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-28T09:29:47.573380+00:00",
+          "context_updated_at": "2026-09-28T11:29:49.995558+00:00",
           "data_confidence": {
-            "nivel": "baja",
-            "score": 44,
-            "resumen": "Confianza baja: análisis orientativo; faltan datos clave.",
+            "nivel": "media",
+            "score": 64,
+            "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
+              "referencia 1X2 sin cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "calendario próximo",
               "temporada anterior de ambos equipos",
-              "mercado, plantilla y pretemporada investigados",
-              "noticias de equipo limitadas"
+              "mercado, plantilla y pretemporada investigados"
             ],
             "faltan": [
-              "cuotas/referencia 1X2",
-              "porcentajes de quiniela",
+              "cuotas reales",
               "clima",
               "viaje",
               "H2H",
@@ -4614,7 +4673,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza baja: análisis orientativo; faltan datos clave. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: tabla incompleta o inexistente. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 2 posibles altas u operaciones; 5 posibles salidas; 5 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
+          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | No hay cuotas reales fiables. La referencia disponible favorece al visitante (45.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | sin clasificacion util: tabla incompleta o inexistente. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26 | Visitante: temporada anterior: sin registro en 25/26; 2 posibles altas u operaciones; 5 posibles salidas; 5 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Medium).",
           "analysis_ready": true
         },
         {
@@ -4636,7 +4695,11 @@
             "X": 24.65,
             "2": 53.64
           },
-          "official_percent": {},
+          "official_percent": {
+            "1": 21.0,
+            "X": 19.0,
+            "2": 60.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -4894,21 +4957,20 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T09:23:05.377639+00:00",
+          "context_updated_at": "2026-09-28T11:24:08.976831+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 73,
+            "score": 83,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos"
+              "calendario próximo"
             ],
             "faltan": [
-              "porcentajes de quiniela",
               "mas fuentes sobre altas, salidas y pretemporada",
               "H2H",
               "bajas/convocatorias del otro equipo",
@@ -4928,7 +4990,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (53.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 señales de pretemporada | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario futuro con 1 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (4 vs 4 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (53.6%) y el publico de Loterias lo refleja de forma similar (60.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 señales de pretemporada | Visitante: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones | Calendario futuro con 1 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (4 vs 4 días).",
           "analysis_ready": true
         },
         {
@@ -4941,8 +5003,16 @@
           "kickoff": "2026-09-24T18:45:00Z",
           "bookmaker": "",
           "odds": {},
-          "normalized_percent": {},
-          "official_percent": {},
+          "normalized_percent": {
+            "1": 64.0,
+            "X": 21.0,
+            "2": 15.0
+          },
+          "official_percent": {
+            "1": 64.0,
+            "X": 21.0,
+            "2": 15.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -5436,22 +5506,21 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-28T09:29:57.781953+00:00",
+          "context_updated_at": "2026-09-28T11:30:03.014723+00:00",
           "data_confidence": {
-            "nivel": "media",
-            "score": 55,
-            "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
+            "nivel": "alta",
+            "score": 75,
+            "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
+              "referencia 1X2 sin cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos",
-              "mercado, plantilla y pretemporada investigados"
+              "calendario próximo"
             ],
             "faltan": [
-              "cuotas/referencia 1X2",
-              "porcentajes de quiniela",
+              "cuotas reales",
               "H2H",
               "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
@@ -5470,7 +5539,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza media: análisis útil, pero con datos incompletos. | Sin suficientes datos de mercado para generar insight. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 1 señales de ascenso/descenso | Visitante: temporada anterior: sin registro en 25/26; 4 posibles altas u operaciones; 5 posibles salidas; 1 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | No hay cuotas reales fiables. La referencia disponible favorece al local (64.0%), pero esta lectura debe tratarse como apoyo de cobertura, no como señal fuerte de mercado. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 3 posibles altas u operaciones; 1 señales de ascenso/descenso | Visitante: temporada anterior: sin registro en 25/26; 4 posibles altas u operaciones; 5 posibles salidas; 1 señales de pretemporada | Calendario próximo equilibrado, sin presión de conservar fuerzas. | El visitante llega con mayor carga física (high) frente al local (medium). Ventaja física para el equipo local.",
           "analysis_ready": true
         },
         {
@@ -5492,7 +5561,11 @@
             "X": 26.71,
             "2": 46.58
           },
-          "official_percent": {},
+          "official_percent": {
+            "1": 26.0,
+            "X": 25.0,
+            "2": 49.0
+          },
           "home_table": {
             "position": null,
             "points": null,
@@ -5970,28 +6043,27 @@
               "source_items_checked": 20
             }
           },
-          "context_updated_at": "2026-09-28T09:22:53.550276+00:00",
+          "context_updated_at": "2026-09-28T11:24:05.042474+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 88,
+            "score": 98,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
+              "porcentajes de quiniela",
               "liga identificada",
               "clima",
               "viaje",
-              "calendario próximo",
-              "temporada anterior de ambos equipos"
+              "calendario próximo"
             ],
             "faltan": [
-              "porcentajes de quiniela",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 22,
-              "official_items": 2,
+              "availability_items": 24,
+              "official_items": 4,
               "match_items": 0,
               "team_items": 33,
               "season_transition_items": 16,
@@ -6001,7 +6073,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (46.6%), pero el publico de Loterias lo infravalora (0.0%). El favorito podría estar infravalorado en la quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 1 bajas/disponibilidad | Visitante: temporada anterior: sin registro en 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 1 noticias de plantilla | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (4 vs 4 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (46.6%) y el publico de Loterias lo refleja de forma similar (49.0%). Sin gran divergencia entre mercado y quiniela. | sin clasificacion util: arranque de temporada: 1 jornada disputada. No hay ni lider, ni descenso, ni puestos europeos que perseguir | Local: temporada anterior: sin registro en 25/26; 1 posibles altas u operaciones; 1 bajas/disponibilidad | Visitante: temporada anterior: sin registro en 25/26; 2 altas/refuerzos confirmados; 3 posibles altas u operaciones; 1 posibles salidas; 5 cambios de entrenador; 1 noticias de plantilla | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Carga física: local low, visitante medium. Tiempo de descanso similar (4 vs 4 días).",
           "analysis_ready": true
         },
         {
@@ -6480,7 +6552,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T09:22:47.821300+00:00",
+          "context_updated_at": "2026-09-28T11:23:53.129812+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -7197,7 +7269,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-28T09:22:26.146919+00:00",
+          "context_updated_at": "2026-09-28T11:23:31.466872+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -7880,9 +7952,9 @@
           },
           "travel_km": 621.2,
           "weather": {
-            "temperature_c": 28.7,
-            "precipitation_probability": 13,
-            "wind_speed_kmh": 10.0
+            "temperature_c": 29.1,
+            "precipitation_probability": 20,
+            "wind_speed_kmh": 11.2
           },
           "referee": {
             "name": "no confirmado",
@@ -7929,7 +8001,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T09:22:28.085345+00:00",
+          "context_updated_at": "2026-09-28T11:23:33.473592+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -8548,9 +8620,9 @@
           },
           "travel_km": 492.9,
           "weather": {
-            "temperature_c": 29.2,
-            "precipitation_probability": 17,
-            "wind_speed_kmh": 32.2
+            "temperature_c": 28.4,
+            "precipitation_probability": 19,
+            "wind_speed_kmh": 26.7
           },
           "referee": {
             "name": "no confirmado",
@@ -8577,7 +8649,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 6
+              "source_items_checked": 7
             },
             "away": {
               "team": "Leganés",
@@ -8587,7 +8659,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-28T09:22:31.733744+00:00",
+          "context_updated_at": "2026-09-28T11:23:36.146027+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -9300,7 +9372,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T09:22:31.669272+00:00",
+          "context_updated_at": "2026-09-28T11:23:35.457981+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 69,
@@ -10023,7 +10095,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-09-28T09:22:33.956580+00:00",
+          "context_updated_at": "2026-09-28T11:23:38.590552+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -10670,7 +10742,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-28T09:22:40.999325+00:00",
+          "context_updated_at": "2026-09-28T11:23:40.517135+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 80,
@@ -11385,7 +11457,7 @@
               "source_items_checked": 26
             }
           },
-          "context_updated_at": "2026-09-28T09:27:36.341331+00:00",
+          "context_updated_at": "2026-09-28T11:27:50.632891+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -12117,7 +12189,7 @@
               "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-09-28T09:27:41.577720+00:00",
+          "context_updated_at": "2026-09-28T11:27:55.141238+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -12847,7 +12919,7 @@
               "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-28T09:27:44.741286+00:00",
+          "context_updated_at": "2026-09-28T11:27:57.248386+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -13616,7 +13688,7 @@
               "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-09-28T09:27:47.026405+00:00",
+          "context_updated_at": "2026-09-28T11:27:59.326801+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -13991,7 +14063,7 @@
               "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-09-28T09:27:56.644092+00:00",
+          "context_updated_at": "2026-09-28T11:28:02.664400+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -14283,10 +14355,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 5
+              "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-28T09:28:25.751683+00:00",
+          "context_updated_at": "2026-09-28T11:28:10.503115+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 56,
@@ -14308,8 +14380,8 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 2,
-              "official_items": 0,
+              "availability_items": 3,
+              "official_items": 4,
               "match_items": 0,
               "team_items": 2,
               "season_transition_items": 1,
@@ -14560,7 +14632,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T09:28:33.128088+00:00",
+          "context_updated_at": "2026-09-28T11:28:15.247098+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 42,
@@ -14847,7 +14919,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-28T09:28:39.515578+00:00",
+          "context_updated_at": "2026-09-28T11:28:19.272211+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 48,
@@ -14899,9 +14971,9 @@
           "official_percent": {},
           "home_table": {
             "position": null,
-            "points": 3,
-            "form": "W",
-            "form_matches": 1
+            "points": null,
+            "form": "",
+            "form_matches": 0
           },
           "away_table": {
             "position": null,
@@ -14910,13 +14982,7 @@
             "form_matches": 0
           },
           "pressure": {
-            "home": {
-              "score": 38.04,
-              "label": "medium",
-              "future_difficulty": 0.0,
-              "hard_window_matches": 0,
-              "gap_to_drop_zone": null
-            },
+            "home": {},
             "away": {}
           },
           "fatigue": {
@@ -15316,7 +15382,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-09-28T09:28:47.563193+00:00",
+          "context_updated_at": "2026-09-28T11:28:51.003514+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -15966,7 +16032,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T09:22:07.237335+00:00",
+          "context_updated_at": "2026-09-28T11:22:14.029491+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -16619,9 +16685,9 @@
           },
           "travel_km": 269.1,
           "weather": {
-            "temperature_c": 17.5,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 6.1
+            "temperature_c": 17.3,
+            "precipitation_probability": 31,
+            "wind_speed_kmh": 0.5
           },
           "referee": {
             "name": "no confirmado",
@@ -16695,7 +16761,7 @@
               "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-09-28T09:26:55.531243+00:00",
+          "context_updated_at": "2026-09-28T11:27:19.556354+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -17357,9 +17423,9 @@
           },
           "travel_km": 506.7,
           "weather": {
-            "temperature_c": 21.0,
-            "precipitation_probability": 39,
-            "wind_speed_kmh": 3.7
+            "temperature_c": 21.2,
+            "precipitation_probability": 52,
+            "wind_speed_kmh": 3.1
           },
           "referee": {
             "name": "no confirmado",
@@ -17415,7 +17481,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-09-28T09:26:55.662007+00:00",
+          "context_updated_at": "2026-09-28T11:27:19.684147+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -17435,10 +17501,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 2,
-              "availability_items": 12,
+              "availability_items": 11,
               "official_items": 2,
-              "match_items": 2,
-              "team_items": 37,
+              "match_items": 3,
+              "team_items": 35,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -18070,9 +18136,9 @@
           },
           "travel_km": 809.6,
           "weather": {
-            "temperature_c": 21.9,
-            "precipitation_probability": 8,
-            "wind_speed_kmh": 2.6
+            "temperature_c": 22.6,
+            "precipitation_probability": 13,
+            "wind_speed_kmh": 1.8
           },
           "referee": {
             "name": "no confirmado",
@@ -18119,7 +18185,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-09-28T09:22:11.028496+00:00",
+          "context_updated_at": "2026-09-28T11:23:14.709364+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -18821,9 +18887,9 @@
           },
           "travel_km": 520.1,
           "weather": {
-            "temperature_c": 20.2,
-            "precipitation_probability": 29,
-            "wind_speed_kmh": 4.2
+            "temperature_c": 21.2,
+            "precipitation_probability": 38,
+            "wind_speed_kmh": 6.4
           },
           "referee": {
             "name": "no confirmado",
@@ -18857,10 +18923,10 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 2
+              "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-09-28T09:26:59.075508+00:00",
+          "context_updated_at": "2026-09-28T11:27:23.487526+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -19541,9 +19607,9 @@
           },
           "travel_km": 710.3,
           "weather": {
-            "temperature_c": 26.1,
-            "precipitation_probability": 18,
-            "wind_speed_kmh": 4.8
+            "temperature_c": 26.7,
+            "precipitation_probability": 11,
+            "wind_speed_kmh": 0.8
           },
           "referee": {
             "name": "no confirmado",
@@ -19617,7 +19683,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-28T09:27:00.637329+00:00",
+          "context_updated_at": "2026-09-28T11:27:25.047105+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -20281,9 +20347,9 @@
           },
           "travel_km": 528.0,
           "weather": {
-            "temperature_c": 18.7,
-            "precipitation_probability": 19,
-            "wind_speed_kmh": 5.2
+            "temperature_c": 19.7,
+            "precipitation_probability": 36,
+            "wind_speed_kmh": 0.9
           },
           "referee": {
             "name": "no confirmado",
@@ -20320,7 +20386,7 @@
               "source_items_checked": 10
             }
           },
-          "context_updated_at": "2026-09-28T09:22:17.610220+00:00",
+          "context_updated_at": "2026-09-28T11:23:22.117814+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -20995,9 +21061,9 @@
           },
           "travel_km": 539.6,
           "weather": {
-            "temperature_c": 22.6,
-            "precipitation_probability": 28,
-            "wind_speed_kmh": 2.7
+            "temperature_c": 22.1,
+            "precipitation_probability": 35,
+            "wind_speed_kmh": 2.9
           },
           "referee": {
             "name": "no confirmado",
@@ -21034,7 +21100,7 @@
               "source_items_checked": 12
             }
           },
-          "context_updated_at": "2026-09-28T09:22:17.788431+00:00",
+          "context_updated_at": "2026-09-28T11:23:23.048838+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -21784,7 +21850,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-28T09:27:09.391515+00:00",
+          "context_updated_at": "2026-09-28T11:27:28.986734+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -22444,7 +22510,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-09-28T09:27:14.717527+00:00",
+          "context_updated_at": "2026-09-28T11:27:34.250004+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -23121,7 +23187,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-09-28T09:27:16.400091+00:00",
+          "context_updated_at": "2026-09-28T11:27:35.950254+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -23823,7 +23889,7 @@
               "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-28T09:27:18.096653+00:00",
+          "context_updated_at": "2026-09-28T11:27:37.648090+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -24563,7 +24629,7 @@
               "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-09-28T09:27:19.701534+00:00",
+          "context_updated_at": "2026-09-28T11:27:39.441549+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -25303,10 +25369,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 10
+              "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-09-28T09:27:26.143202+00:00",
+          "context_updated_at": "2026-09-28T11:27:41.125517+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 63,
@@ -25328,7 +25394,7 @@
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
               "availability_items": 8,
-              "official_items": 3,
+              "official_items": 2,
               "match_items": 1,
               "team_items": 35,
               "season_transition_items": 28,
@@ -25971,9 +26037,9 @@
           },
           "travel_km": 310.6,
           "weather": {
-            "temperature_c": 19.5,
-            "precipitation_probability": 45,
-            "wind_speed_kmh": 3.3
+            "temperature_c": 20.5,
+            "precipitation_probability": 46,
+            "wind_speed_kmh": 2.4
           },
           "referee": {
             "name": "Kylian Mbappé",
@@ -26010,6 +26076,15 @@
                 {
                   "player_name": "Mbappé",
                   "verificado": false,
+                  "status": "watch",
+                  "headline": "Real Madrid confirmó la lesión de Mbappé - elcaribe.com.do",
+                  "source": "elcaribe.com.do",
+                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOT1YtV1VUbDhNZHE1dkswbG5BZzh5S2JJNzl0a1hxbFAwaXRCOUtzREtPTHNlQ181WlJ1RFZhR085V3NGNHFOOWpJVUNGTzJCUXI5RXdUVHFyY2s0V1g0d1FUUjNZZk9rMlNKM0lQWDJ0a1RwTFRGd2VSc2stVi1iVkVmYzFhVnFDQTcxSnVST0FOOG1ZM1J2RVpUZ1NRaXprZ25ud3Z2ZWYtdw?oc=5",
+                  "published_at": "Mon, 28 Sep 2026 04:18:47 GMT"
+                },
+                {
+                  "player_name": "Mbappé",
+                  "verificado": false,
                   "status": "out",
                   "headline": "Lo sufre Real Madrid: se confirmó el tiempo de baja de Mbappé por su lesión con Francia - RPP Noticias",
                   "source": "RPP Noticias",
@@ -26042,15 +26117,6 @@
                   "source": "Tribuna de Salamanca.",
                   "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPRG05OHAyS05PNThVczNjSGFWOFFJazM1dFlzUUdrZnlxYm1mckJoMXVaYVQ4NFNkWEhnVnhuZm9EMTZMSGZuTEZvTDh4X1JTdW9DTkg5cFFZZV9hTS1mZnJOa0ZRN0c3bm9wNEFnWG5TcUhtckJOQUhuZGFXQVRfLXJTZTRyYkUtNzBmd2Zhb0ZQWmltajEtQ21YV056SUtxQ0lmWWRIb3JHa2xaYzk1YloyVTVyOWhyU0oxTjgyY0U4cy04?oc=5",
                   "published_at": "Sun, 27 Sep 2026 17:13:00 GMT"
-                },
-                {
-                  "player_name": "Francés Kylian Mbappé",
-                  "verificado": false,
-                  "status": "watch",
-                  "headline": "Se pendió las alarmas: El Real Madrid conoce el alcance de la lesión del delantero Francés Kylian Mbappé - Noticias Barquisimeto",
-                  "source": "Noticias Barquisimeto",
-                  "link": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOdS02aUs5QzVsNVdFNnVJVWFCbXBKbndLRG5VVTF3ZFV3dzBfSzkwTk5PTUFKQ0hmb08zRGpheDFwSkhLcG55MUdSU2JrQzc2d1BpT2Utc29qaGhfV1ZZZVA0X0I5QmU1LXY1M3Z5RFFMZ2RXeXFHN2gzNl9CdVBld1RYcEs3cGQtcU5vTTdUSFZhb1NJakVqMFZFRmQ3VFBjazFHRVQ4Qzl4MVpaMVpFaG14aXRXSjVtUndWMk1TRzNZQ2FUaUhHUlFPeGp1RFFtYV9RWUtJcjY?oc=5",
-                  "published_at": "Sun, 27 Sep 2026 17:07:12 GMT"
                 },
                 {
                   "player_name": "Kylian Mbappé",
@@ -26179,15 +26245,6 @@
                   "published_at": "Fri, 25 Sep 2026 21:53:04 GMT"
                 },
                 {
-                  "player_name": "Konaté",
-                  "verificado": false,
-                  "status": "watch",
-                  "headline": "Lesión de Konaté: parte médico oficial, qué tiene y cuántos partidos se perderá con el Real Madrid - SPORT",
-                  "source": "SPORT",
-                  "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOTTFvblV4dU55ak1nRHhRdC04Vk4ya3hMajdzMGNhcTR4RjVvOTBlQ1FMSG9Ob2NqeDdPRjhfMHBoR2cxT0pIaDAxWFdlLXdiSWIzcTlVQml0WDIxbk5sdHVOYjBvM1JPWWNUTVVEWkdDNklvbmF3a0NRZkJENXZGU2d1LXNyVHcyRzI4VXZjWENkUTDSAZMBQVVfeXFMTjZRcG0wRlNSTFNKUTF2cEZuaktUVWNWM0R0Z2VWYWdDV3dReUlxVE9HUE8tWWxkX1UtSXlaclhaTlkxdjFxZHRqUFJtbjJRRmM4VHZVbllvUV83S1V4WlRmOXJrOVc4Q3lRb1lIZW5sWWhNZnotcHBrbzRJYnBlbHcyMXRaTVkxVnBMd2VRYkFSaFhF?oc=5",
-                  "published_at": "Thu, 24 Sep 2026 16:21:41 GMT"
-                },
-                {
                   "player_name": "Cuándo",
                   "verificado": false,
                   "status": "watch",
@@ -26215,9 +26272,9 @@
                   "published_at": "Sat, 26 Sep 2026 19:43:00 GMT"
                 }
               ],
-              "count": 24,
+              "count": 23,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 35
+              "source_items_checked": 31
             },
             "away": {
               "team": "Villarreal",
@@ -26227,7 +26284,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-09-28T09:27:01.689839+00:00",
+          "context_updated_at": "2026-09-28T11:27:25.322170+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 96,
@@ -26245,11 +26302,11 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 24,
-              "availability_items": 30,
+              "injury_items": 23,
+              "availability_items": 29,
               "official_items": 0,
               "match_items": 4,
-              "team_items": 53,
+              "team_items": 50,
               "season_transition_items": 28,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -26314,7 +26371,7 @@
     "ok": true,
     "degraded": false,
     "degraded_reason": "",
-    "provider_failures": 1246,
+    "provider_failures": 1264,
     "focus_matches": 15,
     "checked_evidence": 149,
     "invalid_evidence_count": 0,
