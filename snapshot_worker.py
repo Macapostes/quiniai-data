@@ -8,6 +8,7 @@ import hashlib
 import html
 import io
 import json
+import statistics
 import logging
 import math
 import os
@@ -46,6 +47,8 @@ from fuentes_espn import (
     fila_de as _espn_fila_de,
     mediana_jugados as _espn_mediana_jugados,
     slugs_para_partido as _espn_slugs_para_partido,
+    ESPN_SLUG_LIGA_F,
+    descanso_desde_forma as _espn_descanso_desde_forma,
 )
 
 import requests
@@ -406,6 +409,7 @@ LEAGUE_FOOTBALL_DATA_CODES = {
 }
 
 LEAGUE_DISPLAY_NAMES = {
+    "sportsdb_5106": "Liga F",
     "soccer_spain_la_liga": "LaLiga",
     "soccer_spain_segunda_division": "Segunda Division",
     "soccer_epl": "English Premier League",
@@ -442,8 +446,12 @@ def _league_display_name(league_key: object, fallback: object = "") -> str:
     raw_fallback = str(fallback or "").strip()
     if configured:
         return configured
-    if raw_fallback and raw_fallback not in {"_No League Soccer", "league_unresolved"}:
+    if raw_fallback and raw_fallback not in {"_No League Soccer", "league_unresolved"} and not raw_fallback.startswith("sportsdb_"):
         return raw_fallback
+    if key.startswith("sportsdb_"):
+        # Un id interno ("sportsdb_5106") no es un nombre: se colaba tal cual en
+        # el resumen de temporada ("1o con 78 pts en sportsdb_5106 25/26").
+        return "Liga no resuelta"
     return "Liga no resuelta" if key == "league_unresolved" else (key or "-")
 
 # El camino de vuelta: del codigo que trae cada fila de football-data ("SP2") a
@@ -4056,6 +4064,20 @@ def _monitor_league_label(match: dict) -> str:
     )
 
 
+def _fatiga_con_descanso(indice: dict, calendario: dict | None) -> dict:
+    """Indice de fatiga con los dias de descanso y los partidos en 14 dias.
+
+    El backend los ensena ("descanso local: 3 dias, 4 partidos en 14 dias");
+    sin ellos solo veia "fatiga low", que no dice nada.
+    """
+    salida = dict(indice or {})
+    calendario = calendario if isinstance(calendario, dict) else {}
+    for clave in ("days_since_last_match", "matches_last_14_days", "rest_source"):
+        if calendario.get(clave) is not None:
+            salida[clave] = calendario[clave]
+    return salida
+
+
 def _positions_publishable(competition: dict) -> bool:
     reliability = (competition or {}).get("table_reliability") or {}
     if reliability:
@@ -4093,6 +4115,8 @@ def _monitor_match_payload(match: dict) -> dict:
         "kickoff": match.get("kickoff", ""),
         "bookmaker": match.get("bookmaker", ""),
         "odds": match.get("odds", {}),
+        "odds_source": match.get("odds_source", ""),
+        "odds_femenino": bool(match.get("odds_femenino")),
         "normalized_percent": market.get("normalized_percent", {}),
         "official_percent": (
             market.get("official_percent")
@@ -4118,8 +4142,8 @@ def _monitor_match_payload(match: dict) -> dict:
             "away": analytics.get("away_pressure_index", {}),
         },
         "fatigue": {
-            "home": analytics.get("home_fatigue_index", {}),
-            "away": analytics.get("away_fatigue_index", {}),
+            "home": _fatiga_con_descanso(analytics.get("home_fatigue_index", {}), (match.get("schedule_context") or {}).get("home")),
+            "away": _fatiga_con_descanso(analytics.get("away_fatigue_index", {}), (match.get("schedule_context") or {}).get("away")),
         },
         "competitive_context": {
             "season_context_phase": competition.get("season_context_phase", {}),
@@ -12607,13 +12631,79 @@ def _season_preview_context(
     }
 
 
+TRANSFER_RUMOUR_MAX_AGE_DAYS = max(
+    3, int(os.getenv("QUINIAI_TRANSFER_RUMOUR_MAX_AGE_DAYS", "21") or 21)
+)
+_CATEGORIAS_DE_MERCADO = {"signing", "departure"}
+
+
+def _rumor_caducado(item: dict, ahora: datetime | None = None) -> str:
+    """Motivo por el que un rumor de fichaje ya no vale, o "" si vale.
+
+    Solo afecta a operaciones NO confirmadas (altas y salidas): un fichaje
+    oficial es un hecho y se queda. Un rumor caduca si:
+    - tiene mas de TRANSFER_RUMOUR_MAX_AGE_DAYS dias (21 por defecto), o
+    - se publico con la ventana de fichajes abierta y la ventana ya cerro: si
+      no se confirmo entonces, ya no puede pasar hasta la siguiente.
+    En la J11 llegaban al contexto "fichaje inminente" de finales de julio y
+    agosto con el mercado cerrado desde el 1 de septiembre.
+    """
+    if not isinstance(item, dict) or item.get("category") not in _CATEGORIAS_DE_MERCADO:
+        return ""
+    if item.get("fact_status") == "confirmed":
+        return ""
+    publicado = _parse_published_at(str(item.get("published_at", "")).strip())
+    if publicado is None:
+        return ""
+    ahora = ahora or datetime.now(timezone.utc)
+    edad = (ahora - publicado).total_seconds() / 86400.0
+    if edad > TRANSFER_RUMOUR_MAX_AGE_DAYS:
+        return f"rumor de {int(edad)} dias (maximo {TRANSFER_RUMOUR_MAX_AGE_DAYS})"
+    ventana_entonces = _transfer_window_state(publicado)
+    ventana_ahora = _transfer_window_state(ahora)
+    if ventana_entonces.get("open") and not ventana_ahora.get("open"):
+        return f"rumor de la ventana de {ventana_entonces.get('phase')} ya cerrada"
+    return ""
+
+
+def _sin_rumores_caducados(items: list, ahora: datetime | None = None) -> tuple[list, int]:
+    buenos = [item for item in items or [] if not _rumor_caducado(item, ahora)]
+    return buenos, len(items or []) - len(buenos)
+
+
+def _quitar_rumores_caducados(match: dict, ahora: datetime | None = None) -> int:
+    """Lo mismo para un partido ya guardado, que no vuelve a enriquecerse."""
+    transicion = ((match.get("competition_context") or {}).get("season_transition") or {})
+    quitados = 0
+    for side in ("home", "away"):
+        lado = transicion.get(side)
+        if isinstance(lado, dict):
+            for clave in ("transfer_reports", "departure_reports", "all_evidence"):
+                if isinstance(lado.get(clave), list):
+                    buenos, n = _sin_rumores_caducados(lado[clave], ahora)
+                    if n:
+                        lado[clave] = buenos
+                        quitados += n if clave != "all_evidence" else 0
+            if isinstance(lado.get("all_evidence"), list):
+                lado["evidence_count"] = len(lado["all_evidence"])
+        contexto = match.get(f"{side}_team_context") or {}
+        noticias = contexto.get("season_transition_news")
+        if isinstance(noticias, dict) and isinstance(noticias.get("items"), list):
+            buenos, n = _sin_rumores_caducados(noticias["items"], ahora)
+            if n:
+                noticias["items"] = buenos
+    if quitados:
+        _rehacer_briefing_de_plantillas(match)
+    return quitados
+
+
 def _build_team_season_transition(
     team_name: str,
     previous_season: dict,
     news_payload: dict,
 ) -> dict:
     """Combina rendimiento previo y hechos recientes sin rellenar huecos."""
-    items = list((news_payload or {}).get("items") or [])
+    items, rumores_caducados = _sin_rumores_caducados(list((news_payload or {}).get("items") or []))
     grouped = {
         category: [item for item in items if item.get("category") == category][:5]
         for category in [
@@ -12683,6 +12773,7 @@ def _build_team_season_transition(
         "squad_news": grouped["squad"],
         "morale": grouped["morale"],
         "all_evidence": items[:SEASON_TRANSITION_NEWS_ITEMS],
+        "stale_rumours_dropped": rumores_caducados,
         "summary": "; ".join(facts)
         if facts
         else (
@@ -14551,7 +14642,7 @@ def _similitud_espn(pedido: str, candidato: str) -> float:
 
 
 def _espn_eventos_del_dia(slug: str, dia: str) -> list[dict]:
-    clave = f"espn:marcador:v1:{slug}:{dia}"
+    clave = f"espn:marcador:v2:{slug}:{dia}"
     cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, ESPN_MARCADOR_TTL_SECONDS)
     if cached is not None:
         return list(cached)
@@ -14701,6 +14792,10 @@ def _aplicar_evento_espn(match: dict, evento: dict, selecciones: bool) -> list[s
         ev["venue_source"] = "espn-fixture"
     if not ev.get("league") and evento.get("league_name"):
         ev["league"] = evento["league_name"]
+    try:
+        cambios.extend(_cuotas_de_respaldo_espn(match, evento))
+    except Exception as exc:  # contraste: nunca tumba el partido
+        print(f"[espn] cuotas {match.get('local','')} - {match.get('visitante','')}: {exc}")
     liga = _canonical_league_key(match.get("league") or "")
     if selecciones and evento.get("slug") == "uefa.nations" and (
         not liga or liga == "league_unresolved" or "world_cup" in liga or liga.startswith("sportsdb_")
@@ -14728,6 +14823,115 @@ def _aplicar_evento_espn(match: dict, evento: dict, selecciones: bool) -> list[s
                 match.setdefault("match_signals", {})["weather_risk"] = _weather_risk(meteo)
                 cambios.append(f"meteo recalculada en {ciudad_nueva}")
     return cambios
+
+
+def _cuotas_validas(odds: object) -> bool:
+    if not isinstance(odds, dict):
+        return False
+    try:
+        return all(1.01 <= float(odds.get(k) or 0) <= 100 for k in ("1", "X", "2"))
+    except (TypeError, ValueError):
+        return False
+
+
+def _cuotas_de_respaldo_espn(match: dict, evento: dict) -> list[str]:
+    """Cuotas 1X2 de la casa que publica ESPN (DraftKings) si el partido no tiene.
+
+    Nunca pisa las de The Odds API. En Liga F ESPN no publica cuotas, asi que
+    alli no cambia nada; si algun dia las publica, van marcadas como femeninas
+    para que el backend las acepte en un cruce (F).
+    """
+    cuotas = evento.get("odds") if isinstance(evento.get("odds"), dict) else {}
+    if not cuotas or _cuotas_validas(match.get("odds")):
+        return []
+    bloque = {k: float(cuotas[k]) for k in ("1", "X", "2")}
+    if not _cuotas_validas(bloque):
+        return []
+    match["odds"] = bloque
+    match["bookmaker"] = f"{cuotas.get('bookmaker') or 'ESPN'} (via ESPN)"
+    match["odds_source"] = "espn-scoreboard"
+    if evento.get("slug") == ESPN_SLUG_LIGA_F:
+        match["odds_femenino"] = True
+    mercado = match.setdefault("market_context", {})
+    oficial = mercado.get("official_percent")
+    mercado.update(_odds_probabilities(bloque))
+    if oficial:
+        mercado["official_percent"] = oficial
+    return [f"cuotas de respaldo {match['bookmaker']}: {bloque['1']}/{bloque['X']}/{bloque['2']}"]
+
+
+def _descanso_con_espn(match: dict, evento: dict) -> list[str]:
+    """Dias de descanso y partidos en 14 dias con los ultimos cinco de ESPN.
+
+    Los ultimos cinco de /summary son de TODAS las competiciones, asi que un
+    partido de Champions entre semana cuenta. Solo se rellena lo que falta o
+    lo que ESPN demuestra que esta desfasado (un partido mas reciente).
+    """
+    forma = _espn_forma_del_partido(evento.get("slug", ""), evento.get("espn_event_id", ""))
+    kickoff = _parse_iso_datetime(match.get("kickoff", ""))
+    if not forma or kickoff is None:
+        return []
+    calendario = match.setdefault("schedule_context", {})
+    analitica = match.setdefault("analytics_context", {})
+    viaje = _safe_float((match.get("travel_context") or {}).get("distance_km"))
+    cambios = []
+    for clave, nombre_espn in (("home", evento.get("local", "")), ("away", evento.get("visitante", ""))):
+        datos = _espn_descanso_desde_forma(forma.get(nombre_espn) or [], kickoff)
+        if not datos:
+            continue
+        actual = calendario.get(clave) if isinstance(calendario.get(clave), dict) else {}
+        dias_actuales = _safe_int(actual.get("days_since_last_match"), None)
+        if dias_actuales is not None and dias_actuales <= datos["days_since_last_match"]:
+            continue
+        nuevo = dict(actual)
+        nuevo.update(datos)
+        nuevo["rest_source"] = "espn-summary"
+        nuevo["fatigue"] = _fatigue_rating(datos["days_since_last_match"], datos["matches_last_14_days"])
+        indice = _fatigue_index(
+            datos["days_since_last_match"], datos["matches_last_14_days"], viaje if clave == "away" else None
+        )
+        nuevo["fatigue_index"] = indice
+        calendario[clave] = nuevo
+        analitica[f"{clave}_fatigue_index"] = indice
+        cambios.append(
+            f"descanso {clave}: {datos['days_since_last_match']} dias, "
+            f"{datos['matches_last_14_days']} partidos en 14 dias"
+        )
+    return cambios
+
+
+def _recalcular_regimen_con_espn(match: dict, tabla: dict, liga: str) -> list[str]:
+    """Si ESPN lleva mas jornadas que la tabla con la que se decidio el regimen,
+    el regimen se recalcula con la de ESPN.
+
+    Liga F, J11: TheSportsDB decia 2 jornadas y ESPN 5. El contexto ocultaba
+    posiciones y decia "arranque, 2 jornadas disputadas" mientras la forma del
+    mismo partido decia "ultimos 5: 15 pts".
+    """
+    competicion = match.setdefault("competition_context", {})
+    anterior = competicion.get("table_reliability") if isinstance(competicion.get("table_reliability"), dict) else {}
+    nueva = _table_reliability(tabla, liga)
+    if float(nueva.get("median_played") or 0) <= float(anterior.get("median_played") or 0):
+        return []
+    nueva["source"] = "espn-standings"
+    competicion["table_reliability"] = nueva
+    historia = match.get("history_context") or {}
+    fila_local = ((historia.get("home") or {}).get("table") or {}) if isinstance(historia, dict) else {}
+    competicion["season_context_phase"] = _season_context_phase(
+        _parse_iso_datetime(match.get("kickoff", "")),
+        tabla,
+        fila_local,
+        _expected_league_teams(liga, tabla),
+    )
+    preview = competicion.get("season_preview")
+    if isinstance(preview, dict) and preview:
+        preview["regime"] = nueva.get("regime", preview.get("regime"))
+        preview["reason"] = nueva.get("reason", "")
+        preview["matchdays_played"] = nueva.get("median_played", 0)
+    return [
+        f"regimen de tabla {anterior.get('regime') or '-'} ({anterior.get('median_played', '-')} jornadas) -> "
+        f"{nueva.get('regime')} ({nueva.get('median_played')} jornadas, ESPN)"
+    ]
 
 
 def _refrescar_tabla_con_espn(match: dict, slug: str) -> list[str]:
@@ -14787,7 +14991,16 @@ def _refrescar_tabla_con_espn(match: dict, slug: str) -> list[str]:
         "refreshed": parcheados,
         "stale_sides": desfasados,
     }
-    return [f"tabla ESPN: {p}" for p in parcheados] + [f"tabla desfasada ({d})" for d in desfasados]
+    try:
+        regimen = _recalcular_regimen_con_espn(match, tabla, liga)
+    except Exception as exc:
+        regimen = []
+        print(f"[espn] regimen {match.get('local','')} - {match.get('visitante','')}: {exc}")
+    return (
+        [f"tabla ESPN: {p}" for p in parcheados]
+        + [f"tabla desfasada ({d})" for d in desfasados]
+        + regimen
+    )
 
 
 def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[str]:
@@ -14826,6 +15039,10 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
         cambios.extend(_aplicar_evento_espn(match, evento, selecciones))
         if selecciones:
             cambios.extend(_forma_de_selecciones_con_espn(match, evento))
+        try:
+            cambios.extend(_descanso_con_espn(match, evento))
+        except Exception as exc:  # contraste: nunca tumba el partido
+            print(f"[espn] descanso {match.get('local','')} - {match.get('visitante','')}: {exc}")
     elif selecciones:
         meteo = match.get("weather_context")
         if isinstance(meteo, dict) and meteo and not meteo.get("location_basis"):
@@ -14833,7 +15050,10 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
             meteo["location_basis"] = "capital_aproximada"
             meteo["approximate"] = True
     if not selecciones and slugs[0] in SLUGS_CON_CLASIFICACION:
-        cambios.extend(_refrescar_tabla_con_espn(match, slugs[0]))
+        try:
+            cambios.extend(_refrescar_tabla_con_espn(match, slugs[0]))
+        except Exception as exc:  # la tabla de contraste no puede dejar el resto a medias
+            print(f"[espn] tabla {match.get('local','')} - {match.get('visitante','')}: {exc}")
     if cambios:
         match["espn_checked"] = {"at": _now_iso(), "changes": cambios}
     return cambios
@@ -15164,26 +15384,62 @@ def _focus_match_ai_briefing(match: dict) -> dict:
     }
 
 
-def _best_h2h(bookmakers: list, home_team: str, away_team: str) -> tuple[dict, str]:
-    best = {}
-    book_name = ""
+_CASAS_AFILADAS = ("pinnacle",)
+
+
+def _h2h_por_casa(bookmakers: list, home_team: str, away_team: str) -> list[tuple[str, str, dict]]:
+    """[(clave, titulo, {home, Draw, away})] de cada casa con los tres precios validos."""
+    salida = []
     for book in bookmakers or []:
-        markets = book.get("markets") or []
-        for market in markets:
-            if market.get("key") != "h2h":
+        if not isinstance(book, dict):
+            continue
+        for market in book.get("markets") or []:
+            if not isinstance(market, dict) or market.get("key") != "h2h":
                 continue
-            outcomes = market.get("outcomes") or []
             current = {}
-            for outcome in outcomes:
+            for outcome in market.get("outcomes") or []:
+                if not isinstance(outcome, dict):
+                    continue
                 name = str(outcome.get("name", "")).strip()
-                price = outcome.get("price")
-                if name and price is not None:
+                try:
+                    price = float(outcome.get("price"))
+                except (TypeError, ValueError):
+                    continue
+                if name and 1.01 <= price <= 100:
                     current[name] = price
-            if home_team in current and away_team in current:
-                best = current
-                book_name = str(book.get("title", "")).strip()
-                return best, book_name
-    return best, book_name
+            if home_team in current and away_team in current and "Draw" in current:
+                salida.append(
+                    (
+                        str(book.get("key", "")).strip().lower(),
+                        str(book.get("title", "") or book.get("key", "")).strip(),
+                        {home_team: current[home_team], "Draw": current["Draw"], away_team: current[away_team]},
+                    )
+                )
+            break
+    return salida
+
+
+def _best_h2h(bookmakers: list, home_team: str, away_team: str) -> tuple[dict, str]:
+    """Cuotas de consenso del partido y de donde salen.
+
+    Antes era la PRIMERA casa del listado con los dos equipos, asi que la cuota
+    dependia del orden en que The Odds API devolviese las casas. Ahora:
+    Pinnacle si esta (la referencia afilada del mercado); si no, la mediana de
+    cada signo entre todas las casas con los tres precios; con una sola, esa.
+    """
+    casas = _h2h_por_casa(bookmakers, home_team, away_team)
+    if not casas:
+        return {}, ""
+    for clave, titulo, cuotas in casas:
+        if clave in _CASAS_AFILADAS or titulo.lower() in _CASAS_AFILADAS:
+            return dict(cuotas), titulo or "Pinnacle"
+    if len(casas) == 1:
+        return dict(casas[0][2]), casas[0][1]
+    consenso = {
+        nombre: round(statistics.median(c[2][nombre] for c in casas), 2)
+        for nombre in (home_team, "Draw", away_team)
+    }
+    return consenso, f"mediana de {len(casas)} casas"
 
 
 def fetch_repo_odds() -> list:
@@ -16968,10 +17224,12 @@ def build_snapshot(raw_matches: list) -> dict:
     # filtro de categoria hay que aplicarselo aqui o no les llega jamas.
     noticias_retiradas = 0
     tablas_retiradas = 0
+    rumores_retirados = 0
     for jornada in quiniela_jornadas:
         for match in jornada.get("matches", []):
             noticias_retiradas += _limpiar_noticias_de_otra_categoria(match)
             tablas_retiradas += _quitar_tablas_de_otra_liga(match)
+            rumores_retirados += _quitar_rumores_caducados(match)
             if ESPN_ENABLED:
                 try:
                     cambios_espn = _aplicar_fuentes_espn(match)
@@ -16982,6 +17240,8 @@ def build_snapshot(raw_matches: list) -> dict:
                     print(f"[espn] {match.get('local','')} - {match.get('visitante','')}: " + "; ".join(cambios_espn))
     if tablas_retiradas:
         print(f"[tabla] {tablas_retiradas} clasificaciones de otra liga retiradas de partidos guardados")
+    if rumores_retirados:
+        print(f"[mercado] {rumores_retirados} rumores de fichaje caducados retirados de partidos guardados")
     if noticias_retiradas:
         print(
             f"[categoria] {noticias_retiradas} titulares de otra categoria "

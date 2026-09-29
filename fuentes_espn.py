@@ -116,9 +116,76 @@ def eventos_del_marcador(payload: dict) -> list[dict]:
                 "league_name": liga,
                 "status": str(estado.get("name") or ""),
                 "completed": bool(estado.get("completed")),
+                "odds": cuotas_de_competicion(comp),
             }
         )
     return out
+
+
+def americana_a_decimal(valor: object) -> float | None:
+    """"+165" -> 2.65, "-215" -> 1.47. None si no es una cuota americana valida."""
+    texto = str(valor or "").strip().replace("−", "-")
+    if texto.upper() in {"", "EVEN", "EV"}:
+        return 2.0 if texto.upper() in {"EVEN", "EV"} else None
+    try:
+        n = float(texto)
+    except ValueError:
+        return None
+    if n >= 100:
+        dec = 1.0 + n / 100.0
+    elif n <= -100:
+        dec = 1.0 + 100.0 / abs(n)
+    else:
+        return None
+    return round(dec, 2) if 1.01 <= dec <= 100 else None
+
+
+def cuotas_de_competicion(comp: dict) -> dict:
+    """1X2 de la casa que publique ESPN en el marcador (DraftKings), en decimal.
+
+    Se usa la linea de cierre (la vigente) y, si no la hay, la de apertura.
+    ESPN no publica cuotas de Liga F (odds: [null]); ahi devuelve {}.
+    """
+    for bloque in (comp or {}).get("odds") or []:
+        if not isinstance(bloque, dict):
+            continue
+        ml = bloque.get("moneyline") or {}
+        precios = {}
+        for signo, lado in (("1", "home"), ("X", "draw"), ("2", "away")):
+            datos = ml.get(lado) or {}
+            precio = None
+            for momento in ("close", "current", "open"):
+                precio = americana_a_decimal((datos.get(momento) or {}).get("odds"))
+                if precio:
+                    break
+            if precio is None and signo == "X":
+                precio = americana_a_decimal((bloque.get("drawOdds") or {}).get("moneyLine"))
+            if precio is None:
+                break
+            precios[signo] = precio
+        if len(precios) == 3:
+            casa = ((bloque.get("provider") or {}).get("name") or "ESPN").strip()
+            return {**precios, "bookmaker": casa}
+    return {}
+
+
+def descanso_desde_forma(partidos: list[dict], kickoff: datetime | None) -> dict:
+    """Dias desde el ultimo partido y partidos en los 14 dias previos.
+
+    `partidos` son los de forma_de_resumen: ultimos cinco en TODAS las
+    competiciones, que es lo que cuenta para el cansancio (un partido de
+    Champions a mitad de semana no sale en el historico de liga).
+    """
+    if kickoff is None:
+        return {}
+    fechas = sorted(
+        f for f in (_parse_fecha(p.get("date")) for p in partidos or []) if f is not None and f < kickoff
+    )
+    if not fechas:
+        return {}
+    dias = max(0, int((kickoff - fechas[-1]).total_seconds() // 86400))
+    en14 = sum(1 for f in fechas if (kickoff - f).total_seconds() <= 14 * 86400)
+    return {"days_since_last_match": dias, "matches_last_14_days": en14, "last_match_date": fechas[-1].isoformat()}
 
 
 def elegir_partido(

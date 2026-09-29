@@ -212,6 +212,8 @@ class AplicarEspnTests(unittest.TestCase):
             mock.patch.object(w, "_espn_eventos_del_dia", side_effect=self._eventos),
             mock.patch.object(w, "_espn_clasificacion", side_effect=lambda slug: {"esp.w.1": LIGA_F, "esp.2": SEGUNDA}.get(slug, {})),
             mock.patch.object(w, "_espn_calendario_equipo", return_value=[]),
+            # Sin red en los tests: el descanso con ESPN tiene sus propios tests.
+            mock.patch.object(w, "_espn_forma_del_partido", return_value={}),
             mock.patch.object(w, "_geocode_location", return_value={"latitude": 43.36, "longitude": -5.85}),
             mock.patch.object(w, "fetch_weather_context", return_value={"timezone": "Europe/Madrid", "temperature_c": 16.0}),
         ]
