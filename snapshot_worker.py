@@ -30,6 +30,23 @@ from zoneinfo import ZoneInfo
 
 import filtros_feed
 from selecciones_uefa import SELECCIONES_UEFA
+from fuentes_espn import (
+    ESPN_SCOREBOARD_URL,
+    ESPN_STANDINGS_URL,
+    ESPN_SUMMARY_URL,
+    ESPN_TEAM_SCHEDULE_URL,
+    forma_de_resumen as _espn_forma_de_resumen,
+    metricas_de_forma as _espn_metricas_de_forma,
+    SLUGS_CON_CLASIFICACION,
+    filas_de_calendario as _espn_filas_de_calendario,
+    clasificacion as _espn_parse_clasificacion,
+    elegir_partido as _espn_elegir_partido,
+    eventos_del_marcador as _espn_parse_eventos,
+    fechas_a_consultar as _espn_fechas,
+    fila_de as _espn_fila_de,
+    mediana_jugados as _espn_mediana_jugados,
+    slugs_para_partido as _espn_slugs_para_partido,
+)
 
 import requests
 from dotenv import load_dotenv
@@ -10350,12 +10367,98 @@ def _table_snapshot(rows: list[dict]) -> dict:
         table.values(),
         key=lambda row: (-row["points"], -row["goal_diff"], -row["goals_for"], row["team"]),
     )
+    if _division_de_las_filas(rows) in DIVISIONES_CON_DESEMPATE_DIRECTO:
+        ordered = _desempatar_por_enfrentamiento_directo(ordered, rows)
     positions = {}
     for position, row in enumerate(ordered, start=1):
         enriched = dict(row)
         enriched["position"] = position
         positions[row["team"]] = enriched
     return positions
+
+
+# En LaLiga (y en Segunda) un empate a puntos NO se resuelve por la diferencia
+# de goles general sino por los partidos entre los empatados, siempre que se
+# hayan jugado todos. La tabla final 25/26 tenia a Osasuna, Mallorca y Levante
+# con 42 puntos: por diferencia general salia Mallorca 17o y el feed decia
+# "descendido: 17o", un descendido en puesto de salvacion. Con la liguilla
+# entre los tres (Levante 7, Osasuna 5, Mallorca 3) Mallorca es 18o.
+DIVISIONES_CON_DESEMPATE_DIRECTO = {"SP1", "SP2", "I1", "I2"}
+
+
+def _division_de_las_filas(rows: list[dict]) -> str:
+    """Codigo de division de football-data ("SP1"...) de las filas, o "".
+
+    Filas de otras fuentes (TheSportsDB, openfootball) no traen Div: sin el
+    codigo no se aplica ningun desempate especial.
+    """
+    for row in rows or []:
+        if isinstance(row, dict):
+            codigo = _row_division_code(row)
+            if codigo:
+                return codigo
+    return ""
+
+
+def _desempatar_por_enfrentamiento_directo(ordered: list[dict], rows: list[dict]) -> list[dict]:
+    """Reordena cada grupo empatado a puntos por la liguilla entre ellos.
+
+    Criterios: puntos entre los empatados, diferencia de goles entre ellos,
+    diferencia general y goles a favor. Si falta algun partido entre ellos
+    (temporada en curso) se deja el orden por diferencia general, que es lo
+    que dice el reglamento mientras no se hayan jugado todos.
+    """
+    resultado: list[dict] = []
+    i = 0
+    while i < len(ordered):
+        j = i
+        while j < len(ordered) and ordered[j]["points"] == ordered[i]["points"]:
+            j += 1
+        grupo = ordered[i:j]
+        if len(grupo) > 1:
+            grupo = _ordenar_grupo_empatado(grupo, rows)
+        resultado.extend(grupo)
+        i = j
+    return resultado
+
+
+def _ordenar_grupo_empatado(grupo: list[dict], rows: list[dict]) -> list[dict]:
+    equipos = {row["team"] for row in grupo}
+    mini = {team: {"pts": 0, "gd": 0} for team in equipos}
+    jugados = set()
+    for row in rows or []:
+        local = str(row.get("HomeTeam", "")).strip()
+        visitante = str(row.get("AwayTeam", "")).strip()
+        if local not in equipos or visitante not in equipos or local == visitante:
+            continue
+        try:
+            gl = int(row.get("FTHG", 0) or 0)
+            gv = int(row.get("FTAG", 0) or 0)
+        except (TypeError, ValueError):
+            continue
+        jugados.add((local, visitante))
+        mini[local]["gd"] += gl - gv
+        mini[visitante]["gd"] += gv - gl
+        if gl > gv:
+            mini[local]["pts"] += 3
+        elif gl < gv:
+            mini[visitante]["pts"] += 3
+        else:
+            mini[local]["pts"] += 1
+            mini[visitante]["pts"] += 1
+    necesarios = {(a, b) for a in equipos for b in equipos if a != b}
+    if not necesarios.issubset(jugados):
+        return grupo
+    return sorted(
+        grupo,
+        key=lambda row: (
+            -mini[row["team"]]["pts"],
+            -mini[row["team"]]["gd"],
+            -row["goal_diff"],
+            -row["goals_for"],
+            row["team"],
+        ),
+    )
 
 
 def _table_quality_snapshot(
@@ -12324,7 +12427,8 @@ def _final_table_for_season(league_key: str, season_code: str) -> dict:
           }
 }
 
-    cache_key = f"final-table:{_canonical_league_key(league_key)}:{season_code}"
+    # v2: desempate por enfrentamiento directo en LaLiga/Segunda.
+    cache_key = f"final-table:v2:{_canonical_league_key(league_key)}:{season_code}"
     cached = _cache_get(HISTORY_CACHE, cache_key, HISTORY_CACHE_TTL_SECONDS)
     if cached is not None:
         return cached
@@ -14420,6 +14524,319 @@ def _quitar_tablas_de_otra_liga(match: dict) -> int:
             bloque["table"] = {}
             quitadas += 1
     return quitadas
+
+
+ESPN_ENABLED = os.getenv("QUINIAI_ESPN", "1").strip().lower() not in {"0", "false", "no", "off"}
+ESPN_MARCADOR_TTL_SECONDS = 3 * 3600
+ESPN_TABLA_TTL_SECONDS = 2 * 3600
+# Pais tal como lo escribe ESPN -> codigo, para geocodificar la ciudad de la
+# sede sin que "Oviedo" acabe en Florida.
+_PAIS_ESPN_A_CODIGO = {
+    **{nombre.lower(): codigo for nombre, codigo, *_ in SELECCIONES_UEFA},
+    "spain": "ES", "czechia": "CZ", "turkiye": "TR", "türkiye": "TR",
+    "united kingdom": "GB", "northern ireland": "GB", "ireland": "IE",
+}
+
+
+def _similitud_espn(pedido: str, candidato: str) -> float:
+    """_team_similarity_score con las formas de ESPN para los filiales.
+
+    ESPN escribe "Real Sociedad II" donde el boleto dice "R.SOCIEDAD B".
+    """
+    base = _team_similarity_score(pedido, candidato)
+    alterno = re.sub(r"\bII\b", "B", str(candidato or ""))
+    if alterno != candidato:
+        base = max(base, _team_similarity_score(pedido, alterno))
+    return base
+
+
+def _espn_eventos_del_dia(slug: str, dia: str) -> list[dict]:
+    clave = f"espn:marcador:v1:{slug}:{dia}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, ESPN_MARCADOR_TTL_SECONDS)
+    if cached is not None:
+        return list(cached)
+    try:
+        data = _request_json(ESPN_SCOREBOARD_URL.format(slug=slug), params={"dates": dia}, timeout=15)
+    except Exception as exc:
+        print(f"[espn] marcador {slug} {dia}: {exc}")
+        return list(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or [])
+    eventos = _espn_parse_eventos(data if isinstance(data, dict) else {})
+    _cache_set(EXTERNAL_FEEDS_CACHE, clave, eventos)
+    return eventos
+
+
+def _espn_clasificacion(slug: str) -> dict:
+    clave = f"espn:tabla:v1:{slug}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, ESPN_TABLA_TTL_SECONDS)
+    if cached is not None:
+        return dict(cached)
+    try:
+        data = _request_json(ESPN_STANDINGS_URL.format(slug=slug), timeout=15)
+    except Exception as exc:
+        print(f"[espn] clasificacion {slug}: {exc}")
+        return dict(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or {})
+    tabla = _espn_parse_clasificacion(data if isinstance(data, dict) else {})
+    if tabla:
+        _cache_set(EXTERNAL_FEEDS_CACHE, clave, tabla)
+    return tabla
+
+
+def _espn_calendario_equipo(slug: str, team_id: str) -> list[dict]:
+    if not team_id:
+        return []
+    clave = f"espn:calendario:v1:{slug}:{team_id}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, ESPN_TABLA_TTL_SECONDS)
+    if cached is not None:
+        return list(cached)
+    try:
+        data = _request_json(ESPN_TEAM_SCHEDULE_URL.format(slug=slug, team_id=team_id), timeout=15)
+    except Exception as exc:
+        print(f"[espn] calendario {slug} {team_id}: {exc}")
+        return list(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or [])
+    filas = _espn_filas_de_calendario(data if isinstance(data, dict) else {})
+    _cache_set(EXTERNAL_FEEDS_CACHE, clave, filas)
+    return filas
+
+
+def _refrescar_forma_con_espn(bloque: dict, fila: dict, slug: str, kickoff_dt: datetime | None) -> bool:
+    """Si la racha guardada tiene menos partidos de los que ya lleva el equipo,
+    se rehace con sus resultados de ESPN (misma liga y temporada)."""
+    objetivo = min(5, int(fila.get("played") or 0))
+    reciente = bloque.get("recent_all") if isinstance(bloque.get("recent_all"), dict) else {}
+    if objetivo <= 0 or int(reciente.get("matches") or 0) >= objetivo:
+        return False
+    filas = _espn_calendario_equipo(slug, fila.get("espn_team_id", ""))
+    if kickoff_dt is not None:
+        filas = [f for f in filas if (_parse_iso_datetime(f.get("KickoffUTC", "")) or kickoff_dt) < kickoff_dt]
+    nombre = fila.get("espn_team") or fila.get("team") or ""
+    todas = _recent_form_metrics(filas, nombre, 5)
+    if int((todas or {}).get("matches") or 0) <= int(reciente.get("matches") or 0):
+        return False
+    bloque["recent_all"] = todas
+    bloque["recent_home"] = _recent_form_metrics([f for f in filas if f.get("HomeTeam") == nombre], nombre, 5)
+    bloque["recent_away"] = _recent_form_metrics([f for f in filas if f.get("AwayTeam") == nombre], nombre, 5)
+    bloque["streak"] = {**(bloque.get("streak") or {}), "sequence": todas.get("form", "")}
+    bloque["form_source"] = "espn-schedule"
+    return True
+
+
+def _espn_forma_del_partido(slug: str, event_id: str) -> dict:
+    if not event_id:
+        return {}
+    clave = f"espn:forma:v1:{slug}:{event_id}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, ESPN_MARCADOR_TTL_SECONDS)
+    if cached is not None:
+        return dict(cached)
+    try:
+        data = _request_json(ESPN_SUMMARY_URL.format(slug=slug), params={"event": event_id}, timeout=15)
+    except Exception as exc:
+        print(f"[espn] resumen {slug} {event_id}: {exc}")
+        return dict(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or {})
+    forma = _espn_forma_de_resumen(data if isinstance(data, dict) else {})
+    _cache_set(EXTERNAL_FEEDS_CACHE, clave, forma)
+    return forma
+
+
+def _forma_de_selecciones_con_espn(match: dict, evento: dict) -> list[str]:
+    """Racha de cada seleccion (ultimos 5, cualquier competicion) si no la hay.
+
+    El historico de Nations League no trae partidos de esta temporada, asi que
+    en las jornadas 10 y 11 ninguna seleccion tenia forma. Solo se rellena lo
+    que falta; lo que ya hubiera no se toca.
+    """
+    forma = _espn_forma_del_partido(evento.get("slug", ""), evento.get("espn_event_id", ""))
+    if not forma:
+        return []
+    ko = _parse_iso_datetime(match.get("kickoff", ""))
+    historia = match.setdefault("history_context", {})
+    cambios = []
+    for clave, nombre_espn in (("home", evento.get("local", "")), ("away", evento.get("visitante", ""))):
+        partidos = forma.get(nombre_espn) or []
+        if ko is not None:
+            partidos = [p for p in partidos if (_parse_iso_datetime(p.get("date", "")) or ko) < ko]
+        bloque = historia.get(clave) if isinstance(historia.get(clave), dict) else {}
+        if not partidos or ((bloque.get("recent_all") or {}).get("form")):
+            continue
+        metricas = _espn_metricas_de_forma(partidos[-5:])
+        bloque = dict(bloque)
+        bloque.setdefault("resolved_name", nombre_espn)
+        bloque["recent_all"] = metricas
+        bloque["recent_home"] = _espn_metricas_de_forma([p for p in partidos if p["home"]][-5:])
+        bloque["recent_away"] = _espn_metricas_de_forma([p for p in partidos if not p["home"]][-5:])
+        bloque["streak"] = {"sequence": metricas["form"]}
+        bloque["form_source"] = "espn-summary"
+        bloque.setdefault("league_scope", "international")
+        historia[clave] = bloque
+        cambios.append(f"racha {clave} de ESPN: {metricas['form']}")
+    if cambios:
+        historia["supported"] = True
+    return cambios
+
+
+def _nombres_del_lado(match: dict, lado: str) -> list[str]:
+    bloque = ((match.get("history_context") or {}).get("home" if lado == "local" else "away")) or {}
+    nombres = [
+        _nombre_para_el_proveedor(match, lado),
+        match.get(f"{lado}_lae") or "",
+        match.get(lado) or "",
+        bloque.get("resolved_name") or "",
+    ]
+    return [n for n in dict.fromkeys(str(n).strip() for n in nombres) if n]
+
+
+def _aplicar_evento_espn(match: dict, evento: dict, selecciones: bool) -> list[str]:
+    """Sede, ciudad y competicion del partido confirmado en el calendario."""
+    cambios: list[str] = []
+    estructurado = match.setdefault("structured_context", {})
+    ev = estructurado.setdefault("event_context", {})
+    ev["espn_event_id"] = evento.get("espn_event_id", "")
+    ev["espn_league"] = evento.get("league_name", "")
+    ciudad = ", ".join(p for p in (evento.get("city"), evento.get("country")) if p)
+    ciudad_anterior = str(ev.get("stadium_city") or "")
+    if evento.get("venue"):
+        if ev.get("venue") != evento["venue"]:
+            cambios.append(f"sede {ev.get('venue') or '-'} -> {evento['venue']}")
+        ev["venue"] = evento["venue"]
+        ev["stadium_city"] = ciudad or ev.get("stadium_city", "")
+        ev["venue_source"] = "espn-fixture"
+    if not ev.get("league") and evento.get("league_name"):
+        ev["league"] = evento["league_name"]
+    liga = _canonical_league_key(match.get("league") or "")
+    if selecciones and evento.get("slug") == "uefa.nations" and (
+        not liga or liga == "league_unresolved" or "world_cup" in liga or liga.startswith("sportsdb_")
+    ):
+        match["league_feed_original"] = match.get("league", "")
+        match["league"] = "soccer_uefa_nations_league"
+        match["league_name"] = evento.get("league_name") or "UEFA Nations League"
+        match["league_source"] = "espn-fixture"
+        cambios.append("competicion tomada del calendario: UEFA Nations League")
+    # Meteo en la ciudad de la sede. Si no se puede, la que hubiera se queda,
+    # marcada como aproximada si era la de la capital de una seleccion.
+    ciudad_nueva = str(evento.get("city") or "").strip()
+    if ciudad_nueva and ciudad_nueva.lower() not in ciudad_anterior.lower():
+        codigo = _PAIS_ESPN_A_CODIGO.get(str(evento.get("country") or "").strip().lower())
+        if not codigo and selecciones:
+            codigo = NATIONAL_TEAM_COUNTRY_HINTS.get(_clave_seleccion(_canonical_team_name(match.get("local", ""))))
+        punto = _geocode_location(ciudad_nueva, codigo) if codigo else {}
+        if punto.get("latitude") is not None and punto.get("longitude") is not None:
+            meteo = fetch_weather_context(punto, match.get("kickoff", ""))
+            if meteo:
+                meteo = dict(meteo)
+                meteo["location_basis"] = "venue"
+                meteo["location_city"] = ciudad_nueva
+                match["weather_context"] = meteo
+                match.setdefault("match_signals", {})["weather_risk"] = _weather_risk(meteo)
+                cambios.append(f"meteo recalculada en {ciudad_nueva}")
+    return cambios
+
+
+def _refrescar_tabla_con_espn(match: dict, slug: str) -> list[str]:
+    """Pone al dia la clasificacion de los dos equipos con la de ESPN.
+
+    Solo sube: si ESPN lleva menos partidos que la tabla propia, se queda la
+    propia. Si un equipo no se encuentra en ESPN y la liga va claramente por
+    delante de su fila, se marca como desfasado para que nadie lo lea como
+    dato fresco.
+    """
+    tabla = _espn_clasificacion(slug)
+    historia = match.get("history_context")
+    if not tabla or not isinstance(historia, dict):
+        return []
+    liga = _canonical_league_key(match.get("league") or "")
+    mediana = _espn_mediana_jugados(tabla)
+    parcheados, desfasados, nombres_espn = [], [], {}
+    for lado, clave in (("local", "home"), ("visitante", "away")):
+        bloque = historia.get(clave)
+        if not isinstance(bloque, dict):
+            continue
+        actual = bloque.get("table") if isinstance(bloque.get("table"), dict) else {}
+        fila = _espn_fila_de(tabla, _nombres_del_lado(match, lado), _similitud_espn)
+        jugados = _safe_int(actual.get("played"), None)
+        if not fila:
+            if jugados is not None and mediana is not None and jugados < mediana - 1:
+                desfasados.append(clave)
+            continue
+        nombres_espn[clave] = fila["team"]
+        if jugados is not None and fila["played"] < jugados:
+            continue
+        nueva = dict(fila)
+        nueva["espn_team"] = fila["team"]
+        nueva["team"] = actual.get("team") or bloque.get("resolved_name") or fila["team"]
+        # La tabla es la de la liga del partido, aunque la ficha del equipo diga
+        # otra (el FC Andorra figura en la liga andorrana en TheSportsDB).
+        nueva["league_key"] = liga or actual.get("league_key") or bloque.get("league_key")
+        if jugados is not None and jugados != fila["played"]:
+            nueva["provider_played_before_refresh"] = jugados
+        if (jugados, _safe_int(actual.get("points"), None), _safe_int(actual.get("position"), None)) != (
+            fila["played"], fila["points"], fila["position"]
+        ):
+            parcheados.append(f"{clave} {jugados}->{fila['played']} jugados, {actual.get('position')}->{fila['position']}o")
+        bloque["table"] = nueva
+        if _refrescar_forma_con_espn(bloque, nueva, slug, _parse_iso_datetime(match.get("kickoff", ""))):
+            parcheados.append(f"{clave} racha rehecha con {bloque['recent_all'].get('matches')} partidos")
+    if len(nombres_espn) == 2:
+        calidad = _table_quality_snapshot(tabla, nombres_espn["home"], nombres_espn["away"], liga)
+        if isinstance(calidad, dict) and calidad:
+            calidad["source"] = "espn-standings"
+            historia["table_quality"] = calidad
+    historia["table_freshness"] = {
+        "source": "espn-standings",
+        "slug": slug,
+        "checked_at": _now_iso(),
+        "league_median_played": mediana,
+        "refreshed": parcheados,
+        "stale_sides": desfasados,
+    }
+    return [f"tabla ESPN: {p}" for p in parcheados] + [f"tabla desfasada ({d})" for d in desfasados]
+
+
+def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[str]:
+    """Contrasta un partido que aun no se ha jugado con el calendario y la tabla de ESPN."""
+    if not isinstance(match, dict):
+        return []
+    ahora = ahora or datetime.now(timezone.utc)
+    kickoff_dt = _parse_iso_datetime(match.get("kickoff", ""))
+    if kickoff_dt is None or kickoff_dt < ahora - timedelta(hours=3) or kickoff_dt > ahora + timedelta(days=12):
+        return []
+    liga = _canonical_league_key(match.get("league") or "")
+    selecciones = _es_partido_de_selecciones(match)
+    femenino = _categoria_del_partido(match) == "female"
+    slugs = _espn_slugs_para_partido(liga, femenino=femenino, selecciones=selecciones)
+    if not slugs:
+        return []
+    cambios: list[str] = []
+    evento = {}
+    for slug in slugs:
+        eventos = []
+        for dia in _espn_fechas(kickoff_dt):
+            eventos.extend(_espn_eventos_del_dia(slug, dia))
+        local = _nombres_del_lado(match, "local")
+        visitante = _nombres_del_lado(match, "visitante")
+        for nombre_l in local:
+            for nombre_v in visitante:
+                evento = _espn_elegir_partido(eventos, nombre_l, nombre_v, kickoff_dt, _similitud_espn)
+                if evento:
+                    break
+            if evento:
+                break
+        if evento:
+            evento["slug"] = slug
+            break
+    if evento:
+        cambios.extend(_aplicar_evento_espn(match, evento, selecciones))
+        if selecciones:
+            cambios.extend(_forma_de_selecciones_con_espn(match, evento))
+    elif selecciones:
+        meteo = match.get("weather_context")
+        if isinstance(meteo, dict) and meteo and not meteo.get("location_basis"):
+            # Sin partido confirmado, la meteo es la de la capital del local.
+            meteo["location_basis"] = "capital_aproximada"
+            meteo["approximate"] = True
+    if not selecciones and slugs[0] in SLUGS_CON_CLASIFICACION:
+        cambios.extend(_refrescar_tabla_con_espn(match, slugs[0]))
+    if cambios:
+        match["espn_checked"] = {"at": _now_iso(), "changes": cambios}
+    return cambios
 
 
 def _limpiar_noticias_de_otra_categoria(match: dict) -> int:
@@ -16555,6 +16972,14 @@ def build_snapshot(raw_matches: list) -> dict:
         for match in jornada.get("matches", []):
             noticias_retiradas += _limpiar_noticias_de_otra_categoria(match)
             tablas_retiradas += _quitar_tablas_de_otra_liga(match)
+            if ESPN_ENABLED:
+                try:
+                    cambios_espn = _aplicar_fuentes_espn(match)
+                except Exception as exc:  # una fuente de contraste no puede tumbar el ciclo
+                    cambios_espn = []
+                    print(f"[espn] {match.get('local','')} - {match.get('visitante','')}: {exc}")
+                if cambios_espn:
+                    print(f"[espn] {match.get('local','')} - {match.get('visitante','')}: " + "; ".join(cambios_espn))
     if tablas_retiradas:
         print(f"[tabla] {tablas_retiradas} clasificaciones de otra liga retiradas de partidos guardados")
     if noticias_retiradas:
