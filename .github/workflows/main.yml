@@ -60,13 +60,13 @@ jobs:
           git commit -m "Actualizar cuotas (1 vez al dia)"
           git push
 
-      - name: Enviar snapshot a la IA
-        env:
-          QUINIAI_ADMIN_KEY: ${{ secrets.QUINIAI_ADMIN_KEY }}
-          QUINIAI_BACKEND_URL: ${{ secrets.QUINIAI_BACKEND_URL }}
-        run: |
-          curl -X POST "${QUINIAI_BACKEND_URL}/admin/ia-feed" \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${QUINIAI_ADMIN_KEY}" \
-            -H "x-admin-key: ${QUINIAI_ADMIN_KEY}" \
-            -d @cuotas.json
+      # Aqui habia un paso "Enviar snapshot a la IA" que hacia
+      #   curl -X POST $QUINIAI_BACKEND_URL/admin/ia-feed -d @cuotas.json
+      # cuotas.json es una LISTA de cuotas crudas de The Odds API y el endpoint
+      # espera el snapshot del worker (objeto con generated_at y matches). El
+      # backend respondia 422 "Input should be a valid dictionary" todos los
+      # dias (el curl sin --fail lo daba por bueno) y nunca llego a escribir
+      # nada. El snapshot bueno lo sube el worker; las cuotas del repo las lee
+      # el backend de raw.githubusercontent.com/.../main/cuotas.json. Por eso el paso se quita en vez de
+      # "arreglarlo": subir cuotas crudas ahi SI pisaria el snapshot si algun
+      # dia pasaran la validacion.
