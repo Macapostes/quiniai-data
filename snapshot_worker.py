@@ -28,6 +28,9 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import filtros_feed
+from selecciones_uefa import SELECCIONES_UEFA
+
 import requests
 from dotenv import load_dotenv
 
@@ -1229,6 +1232,34 @@ TEAM_LOCATION_OVERRIDES = {
     "if gnistan": {"query": "Helsinki, Finland", "city": "Helsinki", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
     "kups kuopio": {"query": "Kuopio, Finland", "city": "Kuopio", "country": "Finland", "country_code": "FI", "timezone": "Europe/Helsinki"},
 }
+
+# Selecciones UEFA con su nombre del boleto (ver selecciones_uefa.py). Con solo
+# ocho selecciones conocidas, LUXEMBURGO se geocodificaba en Honduras y GRECIA
+# se resolvia al club de Grecia (Costa Rica). El override lleva force=True:
+# para una seleccion manda la tabla, no lo que devuelva el geocodificador.
+def _clave_seleccion(nombre: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]+", " ", nombre.lower())).strip()
+
+
+for _nombre, _codigo, _ciudad, _huso, _lat, _lon, _alias in SELECCIONES_UEFA:
+    _clave = _clave_seleccion(_nombre)
+    NATIONAL_TEAM_COUNTRY_HINTS.setdefault(_clave, _codigo)
+    TEAM_NAME_ALIASES.setdefault(_clave, _nombre)
+    for _a in _alias:
+        TEAM_NAME_ALIASES.setdefault(_a, _nombre)
+    TEAM_LOCATION_OVERRIDES[_clave] = {
+        "query": f"{_nombre} national football team",
+        "city": _ciudad,
+        "country": _nombre if _codigo != "GB" else "United Kingdom",
+        "country_code": _codigo,
+        "timezone": _huso,
+        "latitude": _lat,
+        "longitude": _lon,
+        "force": True,
+    }
+# El FC Andorra juega en Segunda; "andorra" a secas NO se toca (ver arriba).
+TEAM_NAME_ALIASES.setdefault("andorra fc", "FC Andorra")
+TEAM_NAME_ALIASES.setdefault("fc andorra", "FC Andorra")
 
 AMBIGUOUS_GEO_TEAM_TOKENS = {
     "valencia",
@@ -2631,6 +2662,14 @@ def _passes_season_transition_quality(item: dict, team_name: str) -> bool:
     if not title or not _season_transition_category(title, source):
         return False
     normalized_title = _normalize_ascii(title).lower()
+    if filtros_feed.motivo_titular_ajeno(title, source, team_name):
+        return False
+    if _es_seleccion(team_name) and not filtros_feed.noticia_valida_para_seleccion(
+        title, _season_transition_category(title, source)
+    ):
+        # Una seleccion no ficha: "Barcelona confirms signing of Spain captain
+        # Rodri" es mercado de clubes, no noticia de Espana.
+        return False
     if _is_opponent_only_transition_title(title, team_name):
         return False
     if title.count("#") >= 2:
@@ -2795,6 +2834,8 @@ def _passes_team_news_quality(item: dict, team_name: str, require_signal: bool =
     source = str(item.get("source", "")).strip()
     domain = _safe_url_host(str(item.get("link", "")).strip())
     if not title:
+        return False
+    if filtros_feed.motivo_titular_ajeno(title, source, team_name):
         return False
     if _titular_de_otra_categoria(title, team_name):
         return False
@@ -3480,6 +3521,37 @@ def _parece_entrenador(headline: object, candidate: object) -> bool:
     return any(p in ventana for p in _PALABRAS_DE_ENTRENADOR)
 
 
+def _somos_el_rival_en_ingles(headline: object, team_name: object) -> bool:
+    """Como _somos_el_rival_en_el_titular, con marcas en ingles.
+
+    Una mencion seguida de squad/camp/team es del propio equipo ("ruled out of
+    Netherlands' squad") aunque vaya detras de una preposicion.
+    """
+    titular = _norm_persona(headline)
+    nombres = {
+        _norm_persona(team_name),
+        _norm_persona(_canonical_team_name(str(team_name or ""))),
+    }
+    menciones = []
+    for nombre in nombres:
+        if not nombre:
+            continue
+        for m in re.finditer(rf"\b{re.escape(nombre)}\b", titular):
+            menciones.append((m.start(), m.end()))
+    if not menciones:
+        return False
+    for inicio, fin in menciones:
+        previo = titular[max(0, inicio - 18):inicio].strip()
+        siguiente = (titular[fin:].split() or [""])[0]
+        es_rival = any(
+            previo == marca or previo.endswith(" " + marca)
+            for marca in filtros_feed.MARCAS_DE_RIVAL_EN
+        )
+        if not es_rival or siguiente in {"squad", "camp", "team", "side", "s", "national"}:
+            return False
+    return True
+
+
 def _build_injury_entities(
     team_name: str, items: list[dict], rival: str = ""
 ) -> list[dict]:
@@ -3514,11 +3586,14 @@ def _build_injury_entities(
     ignored_people = {
         "predicted", "relegation", "foxes", "saints", "pompey", "swans", "status",
         "siste", "veckans", "skaderapport", "skadeuppdatering", "ackreditering", "billetter",
+        "biglietteria",
     }
     for item in items:
         title = str(item.get("title", "")).strip()
         source_name = str(item.get("source", "")).strip()
-        if not _contains_injury_signal(title):
+        if not _contains_injury_signal(re.sub(r"sold[\s-]*out", " ", title, flags=re.IGNORECASE)):
+            continue
+        if filtros_feed.motivo_titular_ajeno(title, source_name, team_name):
             continue
         normalized_title = _normalize_ascii(title).lower()
         tokens_a_ignorar = (
@@ -3545,8 +3620,17 @@ def _build_injury_entities(
             for token in re.findall(r"[a-z]+", _normalize_ascii(source_name).lower())
             if len(token) > 3
         }
+        # "Klopp ... after Netherlands draw", "fear of Norway": en ingles el
+        # equipo tambien aparece solo como rival.
+        if _somos_el_rival_en_ingles(title, team_name):
+            continue
         people = []
         for candidate in _extract_person_candidates(title):
+            candidate = filtros_feed.limpiar_candidato(candidate)
+            if len(candidate) < 4 or filtros_feed.no_es_un_nombre(candidate):
+                continue
+            if filtros_feed.es_quien_habla(title, candidate):
+                continue
             candidate_tokens = [
                 token
                 for token in re.findall(r"[a-z]+", _normalize_ascii(candidate).lower())
@@ -3601,7 +3685,9 @@ def _build_injury_entities(
             continue
         seen.add(key)
         deduped.append(entity)
-    return deduped
+    # La misma baja en dos titulares ("Malen" en FotMob y en Yahoo) contaba
+    # como dos en "2 bajas reportadas".
+    return filtros_feed.deduplicar_por_apellido(deduped)
 
 
 def _build_referee_candidates(items: list[dict]) -> list[dict]:
@@ -6072,6 +6158,14 @@ def _club_api_for_history(team_name: str, team_api: dict | None) -> dict:
     return api
 
 
+def _es_seleccion(team_name: object) -> bool:
+    return _normalize_team_name(_canonical_team_name(str(team_name or ""))) in NATIONAL_TEAM_COUNTRY_HINTS
+
+
+def _es_partido_de_selecciones(match: dict) -> bool:
+    return _es_seleccion(match.get("local", "")) and _es_seleccion(match.get("visitante", ""))
+
+
 def _guess_country_hint(team_name: str, fallback: str | None = None) -> str | None:
     canonical = _canonical_team_name(team_name)
     normalized = _normalize_team_name(canonical)
@@ -6223,6 +6317,13 @@ def _apply_location_override_fields(profile: dict, team_name: str) -> dict:
     enriched = dict(profile or {})
     override = _team_location_override(team_name)
     if not override:
+        return enriched
+    if override.get("force"):
+        # Seleccion: la ficha del proveedor o la cache pueden venir de un
+        # homonimo (Grecia, Costa Rica). Se pisa todo, huso incluido.
+        for field in ["city", "country", "country_code", "timezone", "latitude", "longitude"]:
+            enriched[field] = override.get(field)
+        enriched["location_hint"] = override.get("query", "")
         return enriched
     for field in ["city", "country", "country_code", "timezone", "latitude", "longitude"]:
         if override.get(field) not in {None, ""} and (
@@ -8481,6 +8582,10 @@ def _sportsdb_event_match_score(event: dict, home_team: str, away_team: str, kic
     event_dt = _parse_iso_datetime(_sportsdb_event_kickoff(event))
     if kickoff_dt and event_dt:
         delta_hours = abs((event_dt - kickoff_dt).total_seconds()) / 3600.0
+        if delta_hours > 96:
+            # Los mismos dos equipos en otra fecha son OTRO partido (ida/vuelta,
+            # otra competicion): su sede, ronda y liga no son las de este.
+            return 0.0
         if delta_hours <= 3:
             score += 1.1
         elif delta_hours <= 30:
@@ -8532,7 +8637,10 @@ def _resolve_sportsdb_event(
             best_score = score
             best_event = event
     if not best_event:
-        best_event = dict(away_next or home_next or {})
+        # Antes se cogia aqui el "proximo partido" de uno de los dos equipos,
+        # fuera cual fuera. Asi entraban en la J10 la liga "FIFA World Cup", la
+        # sede, la ciudad y la fecha de otro partido en cruces de Nations League.
+        return {}
     if best_event:
         best_event.setdefault("strHomeTeam", home_team)
         best_event.setdefault("strAwayTeam", away_team)
@@ -13185,6 +13293,11 @@ def _enrich_quiniela_match(match: dict) -> None:
         int(((match.get("history_context") or {}).get("home") or {}).get("table", {}).get("played", 0) or 0),
         int(((match.get("history_context") or {}).get("away") or {}).get("table", {}).get("played", 0) or 0),
     ) + 1
+    partido_de_selecciones = _es_partido_de_selecciones(match)
+    if partido_de_selecciones:
+        # En Nations League/clasificacion la "tabla" es un grupo de 4 y la
+        # ronda no sale de sumar partidos: salia "ronda 1" en la jornada 2.
+        inferred_round = None
     sportsdb_event = _resolve_sportsdb_event(
         match["local"],
         match["visitante"],
@@ -13195,10 +13308,13 @@ def _enrich_quiniela_match(match: dict) -> None:
     ) or {
         "strHomeTeam": match["local"],
         "strAwayTeam": match["visitante"],
-        "idLeague": home_team_api.get("idLeague", "") or away_team_api.get("idLeague", ""),
-        "strLeague": home_team_api.get("strLeague", "") or away_team_api.get("strLeague", ""),
+        # Sin evento, la liga de la ficha solo vale para clubes: la de una
+        # seleccion en TheSportsDB es "FIFA World Cup", y de ahi salia el
+        # "Mundial" en partidos de Nations League.
+        "idLeague": "" if partido_de_selecciones else (home_team_api.get("idLeague", "") or away_team_api.get("idLeague", "")),
+        "strLeague": "" if partido_de_selecciones else (home_team_api.get("strLeague", "") or away_team_api.get("strLeague", "")),
         "strSeason": _season_tag_for(_parse_iso_datetime(match.get("kickoff", ""))),
-        "intRound": str(inferred_round),
+        "intRound": str(inferred_round) if inferred_round else "",
     }
     event_league_id = str(sportsdb_event.get("idLeague", "")).strip()
     home_team_api = _event_team_api_if_better(
@@ -13215,7 +13331,12 @@ def _enrich_quiniela_match(match: dict) -> None:
         event_league_id,
         league_country_hint,
     )
-    _apply_dynamic_league_metadata(match, sportsdb_event, home_team_api, away_team_api)
+    if _es_partido_de_selecciones(match) and not str(sportsdb_event.get("idEvent", "")).strip():
+        # Dos selecciones comparten "liga" en su ficha (el Mundial): no dice
+        # nada de este partido. La liga se queda la que diga el mercado.
+        _apply_dynamic_league_metadata(match, sportsdb_event)
+    else:
+        _apply_dynamic_league_metadata(match, sportsdb_event, home_team_api, away_team_api)
 
     home_profile = _repair_profile_location(
         match["local"],
@@ -13547,8 +13668,14 @@ def _enrich_quiniela_match(match: dict) -> None:
             "sportsdb_event_id": sportsdb_event.get("idEvent", ""),
             "sportsdb_home_team_id": home_team_api.get("idTeam", ""),
             "sportsdb_away_team_id": away_team_api.get("idTeam", ""),
-            "venue": sportsdb_event.get("strVenue", "") or home_team_api.get("strStadium", ""),
-            "stadium_city": sportsdb_event.get("strCity", "") or home_team_api.get("strLocation", ""),
+            # Una seleccion no tiene estadio fijo: sin evento confirmado, el de
+            # su ficha (el Bernabeu para Espana) no es la sede del partido.
+            "venue": sportsdb_event.get("strVenue", "") or (
+                "" if _es_partido_de_selecciones(match) else home_team_api.get("strStadium", "")
+            ),
+            "stadium_city": sportsdb_event.get("strCity", "") or (
+                "" if _es_partido_de_selecciones(match) else home_team_api.get("strLocation", "")
+            ),
             "league": sportsdb_event.get("strLeague", ""),
             "round": sportsdb_event.get("intRound", ""),
             "status": sportsdb_event.get("strStatus", ""),
@@ -14723,10 +14850,41 @@ def _is_confident_slot_match(home_team: str, away_team: str, match: dict) -> boo
     return home_score >= 0.7 and away_score >= 0.7 and total_score >= 1.55
 
 
-def _find_match_by_teams(matches: list[dict], home_team: str, away_team: str) -> dict | None:
+def _aplicar_horario_oficial(match: dict, slot: dict) -> None:
+    """La hora del boleto (Losilla /proximas) manda sobre la de cuotas o cache.
+
+    Antes solo rellenaba un hueco: un partido cacheado o emparejado con cuotas
+    conservaba su hora vieja, y la J11 salio con el Barca-Madrid femenino el
+    sabado 16:00 cuando se juega el domingo 17:00. La meteo se calcula despues
+    con esta hora.
+    """
+    oficial = str(slot.get("kickoff") or "").strip()
+    oficial_dt = _parse_iso_datetime(oficial)
+    if not oficial_dt:
+        return
+    actual_dt = _parse_iso_datetime(str(match.get("kickoff", "")).strip())
+    if actual_dt and abs((actual_dt - oficial_dt).total_seconds()) <= 15 * 60:
+        return
+    if actual_dt:
+        match["kickoff_previo"] = match.get("kickoff", "")
+        match.pop("weather_context", None)
+    match["kickoff"] = oficial
+    match["kickoff_source"] = "quiniela_oficial"
+
+
+def _find_match_by_teams(
+    matches: list[dict], home_team: str, away_team: str, kickoff: str = ""
+) -> dict | None:
     best_match = None
     best_score = 0.0
+    slot_dt = _parse_iso_datetime(str(kickoff or "").strip())
     for match in matches:
+        if slot_dt:
+            # El mismo cruce en otra fecha es otro partido: el Grecia-Paises
+            # Bajos del 01/10 salia con la hora del 24/09.
+            match_dt = _parse_iso_datetime(str(match.get("kickoff", "")).strip())
+            if match_dt and abs((match_dt - slot_dt).total_seconds()) > 4 * 86400:
+                continue
         home_score, away_score, score = _match_similarity_breakdown(home_team, away_team, match)
         if home_score < 0.7 or away_score < 0.7:
             continue
@@ -15106,7 +15264,9 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
             position = _safe_int(slot.get("position"))
             if not position:
                 continue
-            match = _find_match_by_teams(matches, slot.get("local", ""), slot.get("visitante", ""))
+            match = _find_match_by_teams(
+                matches, slot.get("local", ""), slot.get("visitante", ""), slot.get("kickoff", "")
+            )
             if not match:
                 cached_match = _find_cached_quiniela_match(
                     jornada_num,
@@ -15115,14 +15275,14 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
                     slot_visitante=slot.get("visitante", ""),
                 )
                 placeholder = _build_quiniela_placeholder(slot, jornada_num, cached_match=cached_match)
-                if slot.get("kickoff") and not placeholder.get("kickoff"):
-                    placeholder["kickoff"] = slot.get("kickoff", "")
+                _aplicar_horario_oficial(placeholder, slot)
                 jornada_matches.append(placeholder)
                 if not cached_match:
                     unmatched_slots.append(dict(slot))
                 continue
             slot["pleno15"] = position == 15
             _apply_quiniela_slot(match, jornada_num, slot)
+            _aplicar_horario_oficial(match, slot)
             match_key = _match_key(
                 match.get("league", ""),
                 match.get("local", ""),
@@ -15375,7 +15535,10 @@ def _bootstrap_quiniela_placeholder(
             )
             match["gender_mismatch"] = descartes
 
-    inferred_league = match.get("league", "") or _dynamic_league_key_from_sportsdb(home_team_api, away_team_api)
+    # La "liga" de la ficha de una seleccion es el Mundial: no vale para
+    # etiquetar un partido de Nations League (J10: REP.CHECA-INGLATERRA).
+    fichas_de_liga = () if _es_partido_de_selecciones(match) else (home_team_api, away_team_api)
+    inferred_league = match.get("league", "") or _dynamic_league_key_from_sportsdb(*fichas_de_liga)
     kickoff = str(match.get("kickoff", "")).strip()
     sportsdb_event = _resolve_sportsdb_event(home_team, away_team, kickoff, home_team_api, away_team_api) or {}
     event_league_id = str(sportsdb_event.get("idLeague", "")).strip()
@@ -15392,8 +15555,13 @@ def _bootstrap_quiniela_placeholder(
     if not match.get("league") and inferred_league:
         match["league"] = inferred_league
     if not match.get("league"):
-        match["league"] = _dynamic_league_key_from_sportsdb(sportsdb_event, home_team_api, away_team_api)
-    _apply_dynamic_league_metadata(match, sportsdb_event, home_team_api, away_team_api)
+        match["league"] = _dynamic_league_key_from_sportsdb(sportsdb_event, *fichas_de_liga)
+    if _es_partido_de_selecciones(match) and not str(sportsdb_event.get("idEvent", "")).strip():
+        # Dos selecciones comparten "liga" en su ficha (el Mundial): no dice
+        # nada de este partido. La liga se queda la que diga el mercado.
+        _apply_dynamic_league_metadata(match, sportsdb_event)
+    else:
+        _apply_dynamic_league_metadata(match, sportsdb_event, home_team_api, away_team_api)
     if match.get("dynamic_league"):
         sportsdb_home_profile = _sportsdb_location_profile(home_team, home_team_api, sportsdb_event)
         sportsdb_away_profile = _sportsdb_location_profile(away_team, away_team_api, sportsdb_event)
