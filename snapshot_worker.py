@@ -300,6 +300,9 @@ WORKER_LOG_PATH = LOG_DIR / "worker_events.log"
 SUPERVISOR_LOG_PATH = LOG_DIR / "worker_supervisor.log"
 WORKER_LOCK_PATH = CACHE_DIR / "snapshot_worker.lock"
 MANUAL_REFRESH_FLAG_PATH = CACHE_DIR / "manual_refresh.flag"
+# Parada a proposito (DETENER_WORKER.md): el worker sale limpio en su siguiente
+# espera y el supervisor (run_worker.ps1) no lo relanza mientras exista.
+STOP_FLAG_PATH = CACHE_DIR / "stop_worker.flag"
 
 DEFAULT_HEADERS = {
     "User-Agent": "QuiniAI-Context-Worker/3.0 (+https://github.com/Macapostes/quiniai-data)"
@@ -1973,6 +1976,14 @@ def _acquire_worker_lock() -> None:
     )
     os.fsync(LOCK_FD)
     atexit.register(_release_worker_lock)
+
+
+def _stop_requested() -> bool:
+    """Hay orden de parada a proposito. No se borra: el supervisor tambien la lee."""
+    try:
+        return STOP_FLAG_PATH.exists()
+    except OSError:
+        return False
 
 
 def _consume_manual_refresh_flag() -> bool:
@@ -17558,6 +17569,9 @@ def run_forever() -> None:
             step = min(5, remaining)
             time.sleep(step)
             remaining -= step
+            if _stop_requested():
+                _log_cycle_event("info", "worker_stop_requested", flag=str(STOP_FLAG_PATH))
+                return
             if _consume_manual_refresh_flag():
                 _log_cycle_event("info", "manual_refresh_triggered")
                 break
@@ -17608,6 +17622,9 @@ def run_forever() -> None:
             step = min(5, remaining)
             time.sleep(step)
             remaining -= step
+            if _stop_requested():
+                _log_cycle_event("info", "worker_stop_requested", flag=str(STOP_FLAG_PATH))
+                return
             if _consume_manual_refresh_flag():
                 _log_cycle_event("info", "manual_refresh_triggered")
                 break

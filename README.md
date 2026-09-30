@@ -20,6 +20,10 @@ QUINIAI_DATA_URL=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/
 1. Doble clic en `Iniciar QuiniAI Worker.cmd` para arrancarlo ahora.
 2. Doble clic en `Activar Autoarranque QuiniAI Worker.cmd` para que se lance solo al iniciar sesion.
 
+El supervisor (`run_worker.ps1`) relanza el worker siempre, tambien cuando sale
+con codigo 0. Para pararlo a proposito: doble clic en `Detener QuiniAI Worker.cmd`
+(crea `cache\stop_worker.flag`). Detalles en [DETENER_WORKER.md](DETENER_WORKER.md).
+
 ## Que hace ahora mismo
 
 1. Descarga las cuotas publicadas en `quiniai-data`.

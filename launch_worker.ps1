@@ -15,6 +15,18 @@ $workerLog = Join-Path $PSScriptRoot "logs\\worker_events.log"
 $supervisorLog = Join-Path $PSScriptRoot "logs\\worker_supervisor.log"
 $manualRefreshFlag = Join-Path $PSScriptRoot "cache\\manual_refresh.flag"
 $workerLock = Join-Path $PSScriptRoot "cache\\snapshot_worker.lock"
+$stopFlag = Join-Path $PSScriptRoot "cache\\stop_worker.flag"
+
+function Start-WorkerSupervisor {
+    # Si ya hay un supervisor vivo, el nuevo lo detecta (mutex) y sale solo.
+    Start-Process -FilePath "powershell.exe" -ArgumentList @(
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "`"$supervisor`""
+    ) -WindowStyle Hidden
+}
 
 function Get-WorkerFromLock {
     if (-not (Test-Path $workerLock)) {
@@ -71,6 +83,12 @@ foreach ($line in $bootLines) {
 
 Write-Host ""
 
+# Arrancar es querer que funcione: se retira una orden de parada anterior.
+if (Test-Path $stopFlag) {
+    Remove-Item -Path $stopFlag -Force -ErrorAction SilentlyContinue
+    Write-Host "  Orden de parada anterior retirada (cache\stop_worker.flag)." -ForegroundColor Yellow
+}
+
 if (-not (Test-Path $python)) {
     Write-Host "  ERROR: no existe el entorno virtual." -ForegroundColor Red
     Start-Sleep -Seconds 8
@@ -98,6 +116,9 @@ if ($alreadyRunning) {
     Set-Content -Path $manualRefreshFlag -Value (Get-Date).ToString("o") -Encoding UTF8
     Write-Host "  Worker en segundo plano: ya estaba activo." -ForegroundColor Green
     Write-Host "  He dejado una orden de refresco manual para el siguiente ciclo inmediato." -ForegroundColor Green
+    # Puede ser un worker sin supervisor (el anterior murio): se asegura que
+    # haya uno vigilando. Si ya lo hay, el nuevo sale sin duplicar.
+    Start-WorkerSupervisor
 } else {
     & $python $worker --once --pretty
     $exitCode = $LASTEXITCODE
@@ -106,17 +127,11 @@ if ($alreadyRunning) {
         Write-Host ""
         Write-Host "  ERROR: la pasada manual ha fallado." -ForegroundColor Red
         Write-Host "  Revisa Estado QuiniAI.txt o worker_events.log" -ForegroundColor Yellow
+        Write-Host "  El worker en segundo plano se arranca igual y lo reintentara." -ForegroundColor Yellow
         Start-Sleep -Seconds 10
-        exit $exitCode
     }
 
-    Start-Process -FilePath "powershell.exe" -ArgumentList @(
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        "`"$supervisor`""
-    ) -WindowStyle Hidden
+    Start-WorkerSupervisor
     Write-Host "  Worker en segundo plano: supervisor iniciado correctamente." -ForegroundColor Green
 }
 
