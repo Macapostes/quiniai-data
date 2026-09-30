@@ -43,6 +43,7 @@ from fuentes_espn import (
     SLUGS_CON_CLASIFICACION,
     filas_de_calendario as _espn_filas_de_calendario,
     clasificacion as _espn_parse_clasificacion,
+    clasificacion_por_grupos as _espn_parse_grupos,
     elegir_partido as _espn_elegir_partido,
     eventos_del_marcador as _espn_parse_eventos,
     fechas_a_consultar as _espn_fechas,
@@ -4079,6 +4080,11 @@ def _monitor_extract_upcoming(match: dict, side: str) -> list[dict]:
 
 
 def _monitor_future_summary(match: dict, side: str) -> str:
+    # El resumen ya etiquetado con la competicion de cada partido manda: es el
+    # mismo que lee el backend.
+    etiquetado = str(match.get(f"future_{side}") or "").strip()
+    if etiquetado:
+        return etiquetado
     upcoming = _monitor_extract_upcoming(match, side)
     if not upcoming:
         return "sin calendario detectado"
@@ -11523,6 +11529,7 @@ def _upcoming_sportsdb_next_fixtures(
                 "opponent_position": (table_snapshot.get(resolved_opponent) or {}).get("position"),
                 "opponent_points": (table_snapshot.get(resolved_opponent) or {}).get("points"),
                 "league": str(event.get("strLeague", "")).strip(),
+                "league_id": str(event.get("idLeague", "")).strip(),
                 "round": str(event.get("intRound", "")).strip(),
                 "stage": str(event.get("strRound", "")).strip(),
                 "source": "sportsdb-next",
@@ -13432,6 +13439,364 @@ def _fixture_competition_label(fixture: dict) -> str:
         "soccer_uefa_europa_conference_league": "UEFA Conference League",
     }
     return labels.get(normalized, raw or "competicion europea/copera")
+
+
+# ---------------------------------------------------------------------------
+# Proximos partidos: cada uno con SU competicion.
+#
+# J11, España - Chequia (Nations League): "proximos local: fuera vs Croatia
+# (22º) | casa vs England (42º)". Esos puestos salian de una tabla unica con
+# las 54 selecciones de la Nations League (ligas A a D mezcladas), y se le
+# ponian a cualquier proximo partido. En Liga F pasaba otra cosa: el feed de
+# cuotas solo tiene competiciones masculinas y "Barcelona" casaba con el
+# Barcelona masculino, asi que los proximos de BARCELONA (F) eran Getafe,
+# Galatasaray y Betis -los del masculino- y a "Real Sociedad" le caia el 15º de
+# la Liga F.
+#
+# Regla: primero se decide de que competicion es cada partido. Un puesto solo
+# se muestra si sale de la tabla verificada de ESA competicion, y siempre con
+# su nombre ("Nations League, 2º grupo A3"). Si no, la competicion sin puesto.
+# Un numero suelto que pueda leerse como otra cosa no se muestra nunca.
+# ---------------------------------------------------------------------------
+
+# Competiciones que se juegan por grupos: el puesto que vale es el del grupo, y
+# sale de la clasificacion de ESPN.
+COMPETICIONES_POR_GRUPOS = {
+    "soccer_uefa_nations_league": "uefa.nations",
+    "soccer_fifa_world_cup_qualifiers_europe": "fifa.worldq.uefa",
+    "soccer_uefa_euro_qualification": "uefa.euroq",
+}
+
+# Nombre de competicion tal como lo escriben las fuentes -> clave del worker.
+_ALIAS_COMPETICION = {
+    "uefa nations league": "soccer_uefa_nations_league",
+    "nations league": "soccer_uefa_nations_league",
+    "fifa world cup qualifying uefa": "soccer_fifa_world_cup_qualifiers_europe",
+    "world cup qualifying uefa": "soccer_fifa_world_cup_qualifiers_europe",
+    "fifa world cup qualifying": "soccer_fifa_world_cup_qualifiers_europe",
+    "world cup qualification uefa": "soccer_fifa_world_cup_qualifiers_europe",
+    "uefa european championship qualifying": "soccer_uefa_euro_qualification",
+    "uefa euro qualifying": "soccer_uefa_euro_qualification",
+    "euro qualifying": "soccer_uefa_euro_qualification",
+    "international friendly": "soccer_international_friendlies",
+    "international friendlies": "soccer_international_friendlies",
+    "friendly international": "soccer_international_friendlies",
+    "amistoso internacional": "soccer_international_friendlies",
+    "spanish laliga 2": "soccer_spain_segunda_division",
+    "spanish la liga 2": "soccer_spain_segunda_division",
+    "laliga hypermotion": "soccer_spain_segunda_division",
+    "spanish liga f": "sportsdb_5106",
+    "spanish liga f women": "sportsdb_5106",
+    "liga f": "sportsdb_5106",
+    "spanish primera division women": "sportsdb_5106",
+    "spanish primera division femenina": "sportsdb_5106",
+    "primera division femenina": "sportsdb_5106",
+    "spanish copa del rey": "soccer_spain_copa_del_rey",
+    "copa del rey": "soccer_spain_copa_del_rey",
+    "spanish copa de la reina": "soccer_spain_copa_de_la_reina",
+    "copa de la reina": "soccer_spain_copa_de_la_reina",
+    "uefa women s champions league": "soccer_uefa_womens_champions_league",
+    "uefa womens champions league": "soccer_uefa_womens_champions_league",
+    "women s champions league": "soccer_uefa_womens_champions_league",
+}
+
+_NOMBRE_CORTO_COMPETICION = {
+    "soccer_spain_la_liga": "LaLiga",
+    "soccer_spain_segunda_division": "Segunda División",
+    "soccer_uefa_nations_league": "Nations League",
+    "soccer_fifa_world_cup_qualifiers_europe": "Clasificación Mundial (UEFA)",
+    "soccer_uefa_euro_qualification": "Clasificación Eurocopa",
+    "soccer_international_friendlies": "amistoso",
+    "soccer_spain_copa_del_rey": "Copa del Rey",
+    "soccer_spain_copa_de_la_reina": "Copa de la Reina",
+    "soccer_uefa_womens_champions_league": "Champions femenina",
+}
+
+# De donde vienen los partidos sin campo de liga: solo de las filas de la
+# propia liga del partido (historico/calendario de esa competicion, rondas de
+# esa liga, feed de cuotas de esa liga). Otra fuente sin liga = no se sabe.
+_FUENTES_DE_LA_PROPIA_LIGA = {"football-data", "sportsdb-rounds", "odds-feed"}
+
+
+def _competicion_de_proximo(fixture: dict, liga_partido: str) -> tuple[str, str]:
+    """(clave, nombre) de la competicion de un proximo partido; ("", "") si no se sabe."""
+    bruto = str(fixture.get("league") or "").strip()
+    clave = ""
+    normalizado = _normalize_team_name(bruto)
+    if bruto:
+        if bruto.startswith(("soccer_", "sportsdb_")) or bruto.isdigit():
+            clave = _canonical_league_key(bruto)
+        else:
+            clave = _ALIAS_COMPETICION.get(normalizado, "") or _infer_league_key_from_sportsdb(
+                {"strLeague": bruto, "idLeague": str(fixture.get("league_id") or "")}
+            )
+            if not clave and str(fixture.get("league_id") or "").strip():
+                clave = _canonical_league_key(str(fixture.get("league_id")).strip())
+        if not clave:
+            # Se sabe como se llama aunque no tengamos clave: se muestra el nombre.
+            return f"nombre:{normalizado}", bruto
+    else:
+        fuentes = {f for f in str(fixture.get("source") or "").split("+") if f}
+        if fuentes and fuentes <= _FUENTES_DE_LA_PROPIA_LIGA and liga_partido:
+            clave = liga_partido
+    if not clave:
+        return "", ""
+    nombre = _NOMBRE_CORTO_COMPETICION.get(clave) or _league_display_name(clave, bruto)
+    if nombre in {"Liga no resuelta", "-"}:
+        nombre = bruto or ""
+    return clave, nombre
+
+
+def _competicion_es_femenina(clave: str, nombre: str) -> bool | None:
+    """True/False si la competicion sella la categoria; None si no se sabe."""
+    if not clave:
+        return None
+    if clave in {"sportsdb_5106", "soccer_spain_copa_de_la_reina", "soccer_uefa_womens_champions_league"}:
+        return True
+    texto = f"{clave} {nombre}".lower()
+    if _MARCAS_FEMENINAS_RE.search(texto) or "liga f" in texto:
+        return True
+    if clave.startswith("soccer_"):
+        # Las claves soccer_* del feed de cuotas son todas masculinas.
+        return False
+    return None
+
+
+def _espn_clasificacion_por_grupos(slug: str) -> dict:
+    clave = f"espn:grupos:v1:{slug}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, 2 * 3600)
+    if cached is not None:
+        return dict(cached)
+    if not ESPN_ENABLED:
+        return dict(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or {})
+    try:
+        data = _request_json(ESPN_STANDINGS_URL.format(slug=slug), timeout=15)
+    except Exception as exc:
+        print(f"[espn] grupos {slug}: {exc}")
+        return dict(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or {})
+    tabla = _espn_parse_grupos(data if isinstance(data, dict) else {})
+    if tabla:
+        _cache_set(EXTERNAL_FEEDS_CACHE, clave, tabla)
+    return tabla
+
+
+# Como escribe ESPN algunas selecciones que las demas fuentes llaman distinto.
+_ALIAS_SELECCION_ESPN = {
+    "czech republic": "Czechia",
+    "rep checa": "Czechia",
+    "republica checa": "Czechia",
+    "turkey": "Türkiye",
+    "turquia": "Türkiye",
+    "bosnia and herzegovina": "Bosnia-Herzegovina",
+    "bosnia herzegovina": "Bosnia-Herzegovina",
+    "ireland": "Republic of Ireland",
+    "irlanda": "Republic of Ireland",
+    "macedonia": "North Macedonia",
+    "fyr macedonia": "North Macedonia",
+    "faroe islands": "Faroe Islands",
+    "islas feroe": "Faroe Islands",
+}
+
+
+def _fila_de_grupo(grupos: dict, nombres: list[str]) -> dict:
+    nombres = [n for n in dict.fromkeys(str(x or "").strip() for x in nombres) if n]
+    ampliados = list(nombres)
+    for n in nombres:
+        for extra in (_canonical_team_name(n), _ALIAS_SELECCION_ESPN.get(_normalize_team_name(n), "")):
+            if extra and extra not in ampliados:
+                ampliados.append(extra)
+    for n in list(ampliados):
+        alias = _ALIAS_SELECCION_ESPN.get(_normalize_team_name(n), "")
+        if alias and alias not in ampliados:
+            ampliados.append(alias)
+    return _espn_fila_de(grupos, ampliados, _similitud_espn) if grupos and ampliados else {}
+
+
+def _etiqueta_de_proximo(fixture: dict) -> str:
+    rival = str(fixture.get("opponent") or "").strip()
+    sede = "casa" if str(fixture.get("venue") or "").strip().lower() == "home" else "fuera"
+    etiqueta = str(fixture.get("position_label") or "").strip() or str(fixture.get("competition") or "").strip()
+    return f"{sede} vs {rival} ({etiqueta})" if etiqueta else f"{sede} vs {rival}"
+
+
+def _proximos_con_su_competicion(match: dict) -> dict:
+    """Etiqueta cada proximo partido con su competicion y deja solo puestos verificados.
+
+    Tambien quita, en un cruce femenino, los partidos de competiciones
+    masculinas (y al reves): son del otro equipo del club. Deja en el partido
+    `future_home`/`future_away` ya redactados, que el backend usa tal cual.
+    Devuelve un resumen de lo que ha cambiado.
+    """
+    if not isinstance(match, dict):
+        return {}
+    competicion = match.get("competition_context")
+    if not isinstance(competicion, dict):
+        return {}
+    liga = _canonical_league_key(match.get("league") or "")
+    selecciones = _es_partido_de_selecciones(match)
+    femenino = _categoria_del_partido(match) == "female"
+    historia = match.get("history_context") if isinstance(match.get("history_context"), dict) else {}
+    kickoff = str(match.get("kickoff") or "")
+    grupos_por_slug: dict[str, dict] = {}
+    resumen = {"puestos_quitados": 0, "puestos_de_grupo": 0, "de_otra_categoria": 0}
+    for lado, clave_lado in (("local", "home"), ("visitante", "away")):
+        proximos = competicion.get(f"{clave_lado}_upcoming")
+        if not isinstance(proximos, list):
+            continue
+        nombres_equipo = _nombres_del_lado(match, lado)
+        limpios = []
+        quitados = []
+        for original in proximos:
+            if not isinstance(original, dict):
+                continue
+            fx = dict(original)
+            clave, nombre = _competicion_de_proximo(fx, liga)
+            fx["competition_key"] = clave
+            fx["competition"] = nombre
+            es_fem = _competicion_es_femenina(clave, nombre)
+            if es_fem is not None and es_fem != femenino:
+                quitados.append(fx)
+                resumen["de_otra_categoria"] += 1
+                continue
+            puesto = _safe_int(fx.get("opponent_position"), None)
+            for campo in ("position_label", "opponent_group", "opponent_group_position", "opponent_group_points", "opponent_group_played", "position_omitted"):
+                fx.pop(campo, None)
+            slug = COMPETICIONES_POR_GRUPOS.get(clave)
+            if slug:
+                if slug not in grupos_por_slug:
+                    grupos_por_slug[slug] = _espn_clasificacion_por_grupos(slug)
+                grupos = grupos_por_slug[slug]
+                fila_rival = _fila_de_grupo(grupos, [fx.get("opponent")])
+                fila_equipo = _fila_de_grupo(grupos, nombres_equipo)
+                # El puesto de grupo nunca va en opponent_position: esa es la
+                # escala de una liga (1-20) y la dificultad del calendario la
+                # usa como tal.
+                fx["opponent_position"] = None
+                fx["opponent_points"] = None
+                if fila_rival and fila_equipo and fila_rival.get("group") == fila_equipo.get("group"):
+                    fx["opponent_group"] = fila_rival.get("group")
+                    fx["opponent_group_position"] = fila_rival.get("position")
+                    fx["opponent_group_points"] = fila_rival.get("points")
+                    fx["opponent_group_played"] = fila_rival.get("played")
+                    fx["position_source"] = "espn-standings"
+                    fx["position_label"] = f"{nombre}, {fila_rival.get('position')}º grupo {fila_rival.get('group')}"
+                    resumen["puestos_de_grupo"] += 1
+                else:
+                    fx["position_omitted"] = "sin clasificacion de grupo verificada"
+                    if puesto:
+                        resumen["puestos_quitados"] += 1
+            elif clave and clave == liga and not selecciones and not _is_non_domestic_competition(liga):
+                # Mismo torneo que el partido: la tabla con la que se calculo el
+                # puesto es la de esa liga.
+                if puesto:
+                    fx["position_label"] = f"{nombre}, {puesto}º"
+                    fx["position_source"] = "tabla de la liga del partido"
+            else:
+                if puesto or fx.get("opponent_points") is not None:
+                    fx["position_omitted"] = "otra competicion" if clave else "competicion sin confirmar"
+                    if puesto:
+                        resumen["puestos_quitados"] += 1
+                fx["opponent_position"] = None
+                fx["opponent_points"] = None
+            limpios.append(fx)
+        competicion[f"{clave_lado}_upcoming"] = limpios
+        competicion[f"{clave_lado}_future_difficulty"] = _future_schedule_difficulty(limpios)
+        rotacion = competicion.get(f"{clave_lado}_rotation_context")
+        if quitados and isinstance(rotacion, dict):
+            siguiente = rotacion.get("next_high_importance_fixture") or {}
+            if siguiente and any(
+                _same_future_fixture(siguiente, q) for q in quitados if isinstance(siguiente, dict)
+            ):
+                equipo = (historia.get(clave_lado) or {}).get("resolved_name") or match.get(lado, "")
+                competicion[f"{clave_lado}_rotation_context"] = _rotation_context_from_upcoming(
+                    equipo, limpios, kickoff, {}
+                )
+        texto = " | ".join(_etiqueta_de_proximo(fx) for fx in limpios[:5] if str(fx.get("opponent") or "").strip())
+        if texto:
+            match[f"future_{clave_lado}"] = texto
+        else:
+            match.pop(f"future_{clave_lado}", None)
+    grupo = _tabla_de_grupo_del_partido(match, liga, grupos_por_slug)
+    if grupo:
+        resumen["tabla_de_grupo"] = grupo
+    return resumen
+
+
+def _tabla_de_grupo_del_partido(match: dict, liga: str, grupos_por_slug: dict | None = None) -> str:
+    """En una competicion por grupos, la tabla del partido es la del grupo.
+
+    La de antes era una tabla unica con las 54 selecciones (y ademas con un
+    partido menos que ESPN). Si los dos equipos estan en el mismo grupo de la
+    clasificacion de ESPN, se usa esa, con el grupo escrito; si no, no se
+    muestra ningun puesto.
+    """
+    slug = COMPETICIONES_POR_GRUPOS.get(liga)
+    historia = match.get("history_context")
+    if not slug or not isinstance(historia, dict):
+        return ""
+    grupos_por_slug = grupos_por_slug if grupos_por_slug is not None else {}
+    if slug not in grupos_por_slug:
+        grupos_por_slug[slug] = _espn_clasificacion_por_grupos(slug)
+    grupos = grupos_por_slug[slug]
+    filas = {}
+    for lado, clave_lado in (("local", "home"), ("visitante", "away")):
+        fila = _fila_de_grupo(grupos, _nombres_del_lado(match, lado))
+        if fila:
+            filas[clave_lado] = fila
+    mismo_grupo = len(filas) == 2 and filas["home"].get("group") == filas["away"].get("group")
+    nombre = _NOMBRE_CORTO_COMPETICION.get(liga) or _league_display_name(liga)
+    for clave_lado in ("home", "away"):
+        bloque = historia.get(clave_lado)
+        if not isinstance(bloque, dict):
+            continue
+        actual = bloque.get("table") if isinstance(bloque.get("table"), dict) else {}
+        if not mismo_grupo:
+            if actual.get("position") is not None and actual.get("scope") != "group":
+                actual = dict(actual)
+                actual["position"] = None
+                actual["position_omitted"] = "sin clasificacion de grupo verificada"
+                bloque["table"] = actual
+            continue
+        fila = filas[clave_lado]
+        nueva = dict(fila)
+        nueva["espn_team"] = fila.get("team")
+        nueva["team"] = bloque.get("resolved_name") or actual.get("team") or fila.get("team")
+        nueva["league_key"] = liga
+        nueva["competition"] = nombre
+        nueva["position_label"] = f"{nombre}, {fila.get('position')}º grupo {fila.get('group')}"
+        bloque["table"] = nueva
+    if not mismo_grupo:
+        return ""
+    g = filas["home"]
+    historia["table_scope"] = {
+        "type": "group",
+        "competition": nombre,
+        "group": g.get("group"),
+        "group_size": g.get("group_size"),
+        "source": "espn-standings",
+    }
+    # El aviso anterior ("la tabla del proveedor no incluye el ultimo
+    # resultado") era de la tabla unica que ya no se usa.
+    historia["table_caveat"] = (
+        f"puestos del grupo {g.get('group')} de la {nombre} "
+        f"({g.get('group_size')} selecciones, clasificacion de ESPN), no de una tabla unica"
+    )
+    calidad = historia.get("table_quality") if isinstance(historia.get("table_quality"), dict) else {}
+    calidad = dict(calidad)
+    jugados = sorted(int(f.get("played") or 0) for f in grupos.values() if f.get("group") == g.get("group"))
+    calidad.update(
+        {
+            "teams": g.get("group_size"),
+            "scope": "group",
+            "group": g.get("group"),
+            "median_played": float(jugados[len(jugados) // 2]) if jugados else calidad.get("median_played"),
+            "home_played": filas["home"].get("played"),
+            "away_played": filas["away"].get("played"),
+            "source": "espn-standings",
+        }
+    )
+    historia["table_quality"] = calidad
+    return f"grupo {g.get('group')}"
 
 
 def _rotation_context_from_upcoming(team_name: str, fixtures: list[dict], kickoff: str, news_signals: dict) -> dict:
@@ -17342,6 +17707,16 @@ def build_snapshot(raw_matches: list) -> dict:
                     print(f"[espn] {match.get('local','')} - {match.get('visitante','')}: {exc}")
                 if cambios_espn:
                     print(f"[espn] {match.get('local','')} - {match.get('visitante','')}: " + "; ".join(cambios_espn))
+            try:
+                proximos = _proximos_con_su_competicion(match)
+            except Exception as exc:  # el calendario no puede tumbar el ciclo
+                proximos = {}
+                print(f"[proximos] {match.get('local','')} - {match.get('visitante','')}: {exc}")
+            if any(proximos.values()):
+                print(
+                    f"[proximos] {match.get('local','')} - {match.get('visitante','')}: "
+                    + ", ".join(f"{k}={v}" for k, v in proximos.items() if v)
+                )
     if tablas_retiradas:
         print(f"[tabla] {tablas_retiradas} clasificaciones de otra liga retiradas de partidos guardados")
     if rumores_retirados:

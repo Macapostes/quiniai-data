@@ -19,6 +19,8 @@ quien lo llama, con `pedir_json(url)`. Asi se prueba sin red.
 """
 from __future__ import annotations
 
+import re
+
 from datetime import datetime, timedelta, timezone
 from typing import Callable, Iterable
 
@@ -265,6 +267,36 @@ def clasificacion(payload: dict) -> dict:
             "season_label": str(grupo.get("abbreviation") or grupo.get("name") or ""),
             "espn_team_id": str(equipo.get("id") or ""),
         }
+    return tabla
+
+
+def clasificacion_por_grupos(payload: dict) -> dict:
+    """Clasificacion de una competicion por grupos como {nombre: fila}.
+
+    Cada fila lleva su grupo ("A3") y el tamano del grupo. `position` es el
+    puesto DENTRO del grupo: es lo unico que significa algo. Una tabla unica con
+    las 54 selecciones de la Nations League mezcla ligas A-D y daba cosas como
+    "Inglaterra 42a".
+    """
+    if not isinstance(payload, dict):
+        return {}
+    tabla = {}
+    for grupo in payload.get("children") or []:
+        if not isinstance(grupo, dict):
+            continue
+        nombre_grupo = str(grupo.get("name") or grupo.get("abbreviation") or "").strip()
+        codigo = re.sub(r"^(group|grupo)\s+", "", nombre_grupo, flags=re.IGNORECASE).strip()
+        filas = clasificacion({"name": payload.get("name"), "children": [grupo]})
+        for nombre, fila in filas.items():
+            if nombre in tabla:
+                # La misma seleccion en dos grupos: la tabla no es fiable.
+                return {}
+            fila = dict(fila)
+            fila["scope"] = "group"
+            fila["group"] = codigo
+            fila["group_name"] = nombre_grupo
+            fila["group_size"] = len(filas)
+            tabla[nombre] = fila
     return tabla
 
 
