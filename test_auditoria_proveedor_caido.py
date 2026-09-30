@@ -145,8 +145,16 @@ class QueCuentaComoAveriaTests(unittest.TestCase):
 
     def setUp(self):
         sw._reiniciar_fallos_sportsdb()
+        # El cliente comun espacia las peticiones y espera tras un 429; aqui se
+        # prueba la contabilidad, no el temporizador.
+        self._dormir = sw._SPORTSDB_CLIENTE.dormir
+        sw._SPORTSDB_CLIENTE.dormir = lambda _s: None
 
     def tearDown(self):
+        sw._SPORTSDB_CLIENTE.dormir = self._dormir
+        # El 429 falso aplaza el siguiente turno un minuto de reloj real: sin
+        # esto, la siguiente prueba que pida esperaria ese minuto de verdad.
+        sw._SPORTSDB_CLIENTE._proximo_turno = 0.0
         sw._reiniciar_fallos_sportsdb()
 
     def _pedir(self, url, codigo):

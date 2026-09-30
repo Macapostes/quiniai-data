@@ -31,6 +31,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import filtros_feed
+from sportsdb_cliente import ClienteSportsDB, SportsDBCircuitoAbierto, SportsDBError
 from selecciones_uefa import SELECCIONES_UEFA
 from fuentes_espn import (
     ESPN_SCOREBOARD_URL,
@@ -219,12 +220,24 @@ def _marcar_fallo_sportsdb() -> None:
 
 
 def _reiniciar_fallos_sportsdb() -> None:
-    """Se llama al empezar cada ciclo: el estado del proveedor no se hereda."""
+    """Se llama al empezar cada ciclo: el estado del proveedor no se hereda.
+
+    Tampoco la memoria de la pasada ni el circuito del cliente: lo que fallo en
+    el ciclo anterior se vuelve a intentar en este.
+    """
     global _SPORTSDB_FALLOS_CICLO
     _SPORTSDB_FALLOS_CICLO = 0
+    cliente = globals().get("_SPORTSDB_CLIENTE")
+    if cliente is not None:
+        cliente.nueva_pasada()
 
 
 def _sportsdb_degradado() -> bool:
+    # Con el circuito abierto el proveedor no nos atiende, aunque el contador
+    # vaya por detras: el cliente anota una vez por consulta, no por reintento.
+    cliente = globals().get("_SPORTSDB_CLIENTE")
+    if cliente is not None and cliente.circuito_abierto:
+        return True
     return _SPORTSDB_FALLOS_CICLO >= SPORTSDB_FALLOS_PARA_DEGRADADO
 BBC_FOOTBALL_RSS_URL = "https://feeds.bbci.co.uk/sport/football/rss.xml"
 GUARDIAN_FOOTBALL_RSS_URL = "https://feeds.theguardian.com/theguardian/football/rss"
@@ -1794,6 +1807,10 @@ def _flush_caches() -> None:
         _save_cache(WEATHER_CACHE_PATH, WEATHER_CACHE)
         _save_cache(HISTORY_CACHE_PATH, HISTORY_CACHE)
         _save_cache(THESPORTSDB_CACHE_PATH, THESPORTSDB_CACHE)
+        try:
+            _SPORTSDB_CLIENTE.guardar()
+        except Exception as exc:
+            print(f"[sportsdb] no se pudo guardar la cache HTTP: {exc}")
         _save_cache(EXTERNAL_FEEDS_CACHE_PATH, EXTERNAL_FEEDS_CACHE)
         _save_cache(OFFICIAL_SITE_CACHE_PATH, OFFICIAL_SITE_CACHE)
         _save_cache(RFEF_CACHE_PATH, RFEF_CACHE)
@@ -2101,6 +2118,20 @@ def _season_tag_for(date_value: datetime | None = None) -> str:
 
 
 def _request_json(url: str, params: dict | None = None, timeout: int = 30) -> dict | list:
+    if url.startswith(_THESPORTSDB_BASE):
+        # TheSportsDB va siempre por el cliente comun: ritmo global, memoria de
+        # la pasada, cache en disco, 429 con espera y circuito. El cliente sigue
+        # anotando los 429/5xx en _marcar_fallo_sportsdb (una vez por consulta).
+        # Si el llamador aparto cupo con _frenar_sportsdb() y la respuesta sale
+        # de cache, el cupo se devuelve: solo gastan las peticiones de verdad.
+        ticket = getattr(_SPORTSDB_TICKET, "pendiente", False)
+        _SPORTSDB_TICKET.pendiente = False
+        return _SPORTSDB_CLIENTE.get_json(
+            url,
+            params=params,
+            timeout=timeout,
+            sin_red=_devolver_cupo_sportsdb if ticket else None,
+        )
     response = requests.get(url, params=params, headers=DEFAULT_HEADERS, timeout=timeout)
     # Se anota aqui, antes de levantar, porque este es el unico punto por el que
     # pasan todas las llamadas al proveedor. Solo cuentan el 429 y los 5xx: un
@@ -3299,7 +3330,7 @@ def _plantilla_de_equipo(team_name: str) -> list[str]:
         )
     except Exception as exc:
         # Falla abierto a proposito: sin plantilla no se descarta a nadie.
-        print(f"[plantilla] {team_name}: no disponible ({exc})")
+        _avisar_sportsdb(f"[plantilla] {team_name}: no disponible ({exc})", exc)
         return []
     jugadores = [
         str(j.get("strPlayer") or "").strip()
@@ -7910,12 +7941,58 @@ def fetch_match_referee_news(home_team: str, away_team: str) -> list[dict]:
     return items
 
 
-_SPORTSDB_ULTIMA_PETICION = 0.0
-_SPORTSDB_PAUSA_SEGUNDOS = float(os.getenv("QUINIAI_SPORTSDB_PAUSA", "0.5") or 0.5)
+# Ritmo de TheSportsDB. La guia oficial (thesportsdb.com/docs_api_guide) da
+# 30 peticiones/minuto por IP con la clave gratuita y 100 con la premium; con
+# 0,5 s el worker iba a ~120/min y se comia cientos de 429 por pasada. 2,2 s son
+# ~27/min: por debajo del limite con margen. Con la clave gratuita no se baja de
+# 2 s aunque el .env diga otra cosa.
+_SPORTSDB_PAUSA_SEGUNDOS = float(os.getenv("QUINIAI_SPORTSDB_PAUSA", "2.2") or 2.2)
+if THESPORTSDB_KEY == "123":
+    _SPORTSDB_PAUSA_SEGUNDOS = max(2.0, _SPORTSDB_PAUSA_SEGUNDOS)
+THESPORTSDB_HTTP_CACHE_PATH = CACHE_DIR / "thesportsdb_http_cache.json"
+_SPORTSDB_CLIENTE = ClienteSportsDB(
+    intervalo=_SPORTSDB_PAUSA_SEGUNDOS,
+    ruta_cache=THESPORTSDB_HTTP_CACHE_PATH,
+    cabeceras=DEFAULT_HEADERS,
+    umbral_circuito=max(1, int(os.getenv("QUINIAI_SPORTSDB_UMBRAL_429", "3") or 3)),
+    al_fallar=_marcar_fallo_sportsdb,
+)
+_SPORTSDB_TICKET = threading.local()
+_SPORTSDB_CUPO_LOCK = threading.Lock()
+
+
+def _avisar_sportsdb(texto: str, exc: BaseException) -> None:
+    """Imprime un fallo de TheSportsDB una sola vez por pasada.
+
+    Lo que se relanza desde la memoria de la pasada ya se aviso la primera vez,
+    y con el circuito abierto el cliente ya lo dijo en una linea: el resto va al
+    resumen del final en vez de llenar el log con cientos de lineas iguales.
+    """
+    if getattr(exc, "repetido", False) or isinstance(exc, SportsDBCircuitoAbierto):
+        return
+    print(texto)
+
+
+def _resumir_sportsdb() -> None:
+    cliente = _SPORTSDB_CLIENTE
+    if not cliente.stats.get("llamadas"):
+        return
+    print(cliente.resumen())
+    _log_cycle_event(
+        "info",
+        "sportsdb_resumen",
+        circuito_abierto=cliente.circuito_abierto,
+        cupo_gastado=_SPORTSDB_PETICIONES_CICLO,
+        **{clave: (round(valor, 1) if isinstance(valor, float) else valor) for clave, valor in cliente.stats.items()},
+    )
+
 
 # El limite de la clave publica es por minuto, no diario: esperando se abre.
 # Tres intentos separados llegan al minuto largo, que es lo que suele hacer
-# falta. No se reintenta nada que no sea un 429.
+# falta. No se reintenta nada que no sea un 429. Las peticiones que pasan por
+# el cliente comun ya llegan con esa espera hecha (Retry-After o 20 s + 40 s), y
+# repetirlas aqui solo alargaria la pasada: el reintento de aqui queda para lo
+# que no venga del cliente.
 _ESPERAS_REINTENTO_TEMPORADA = (20.0, 45.0, 0.0)
 
 
@@ -7973,23 +8050,29 @@ def _sportsdb_hay_cupo(reserva: int = 0) -> bool:
 
 def _reiniciar_cupo_sportsdb() -> None:
     global _SPORTSDB_PETICIONES_CICLO
-    _SPORTSDB_PETICIONES_CICLO = 0
+    with _SPORTSDB_CUPO_LOCK:
+        _SPORTSDB_PETICIONES_CICLO = 0
 
 
 def _frenar_sportsdb() -> None:
-    """Espacia las consultas al proveedor y consume cupo del ciclo.
+    """Aparta cupo del ciclo para la siguiente consulta al proveedor.
 
-    Con la cache fria hay que resolver una veintena de equipos y cada uno puede
-    probar varias formas del nombre. Sin freno eso son decenas de peticiones en
-    segundos y el proveedor responde 429 a todo lo demas de la jornada.
+    El ritmo (una peticion cada _SPORTSDB_PAUSA_SEGUNDOS, para todos los hilos)
+    lo pone el cliente comun dentro de _request_json. Si la respuesta sale de la
+    memoria de la pasada o de la cache en disco, el cupo se devuelve: solo
+    gastan cupo las peticiones que llegan de verdad al proveedor.
     """
     global _SPORTSDB_PETICIONES_CICLO
-    _SPORTSDB_PETICIONES_CICLO += 1
-    global _SPORTSDB_ULTIMA_PETICION
-    espera = _SPORTSDB_PAUSA_SEGUNDOS - (time.monotonic() - _SPORTSDB_ULTIMA_PETICION)
-    if espera > 0:
-        time.sleep(espera)
-    _SPORTSDB_ULTIMA_PETICION = time.monotonic()
+    with _SPORTSDB_CUPO_LOCK:
+        _SPORTSDB_PETICIONES_CICLO += 1
+    _SPORTSDB_TICKET.pendiente = True
+
+
+def _devolver_cupo_sportsdb() -> None:
+    global _SPORTSDB_PETICIONES_CICLO
+    with _SPORTSDB_CUPO_LOCK:
+        if _SPORTSDB_PETICIONES_CICLO > 0:
+            _SPORTSDB_PETICIONES_CICLO -= 1
 
 
 LIGA_F_KEY = "sportsdb_5106"
@@ -8066,7 +8149,7 @@ def _ficha_por_nombre_exacto(nombre: str) -> dict:
         _frenar_sportsdb()
         data = _request_json(THESPORTSDB_SEARCH_TEAM_URL, params={"t": nombre}, timeout=20)
     except Exception as exc:
-        print(f"[sportsdb] consulta exacta {nombre!r} fallida: {exc}")
+        _avisar_sportsdb(f"[sportsdb] consulta exacta {nombre!r} fallida: {exc}", exc)
         return vieja or {}
     for candidato in (data or {}).get("teams") or []:
         if str(candidato.get("strSport", "")).strip().lower() != "soccer":
@@ -8150,7 +8233,7 @@ def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> 
         except Exception as exc:
             # Un 429 o un timeout no significan "este equipo no existe". Si se
             # cachea como vacio, el equipo queda ilocalizable una semana.
-            print(f"[sportsdb] consulta {query!r} fallida: {exc}")
+            _avisar_sportsdb(f"[sportsdb] consulta {query!r} fallida: {exc}", exc)
             data = {}
         teams.extend((data or {}).get("teams") or [])
         if teams:
@@ -9398,12 +9481,15 @@ def _eventos_de_temporada_completa(league_id: str, etiqueta: str) -> list[dict]:
             )
             break
         except Exception as exc:
-            limitado = "429" in str(exc) or "Too Many" in str(exc)
+            # Lo que viene del cliente comun ya se espero alli (y si el 429
+            # sigue, el circuito esta abierto): no se vuelve a esperar aqui.
+            limitado = ("429" in str(exc) or "Too Many" in str(exc)) and not isinstance(exc, SportsDBError)
             ultimo = intento >= len(_ESPERAS_REINTENTO_TEMPORADA)
             if not limitado or ultimo:
-                print(
+                _avisar_sportsdb(
                     f"[sportsdb] temporada {etiqueta} de la liga {league_id} "
-                    f"no disponible: {exc}"
+                    f"no disponible: {exc}",
+                    exc,
                 )
                 return []
             print(
@@ -9689,6 +9775,8 @@ def _fetch_sportsdb_league_history(
         for etiqueta in _etiquetas_de_temporada(season):
             eventos = _eventos_de_temporada_completa(league_id, etiqueta)
             if not eventos:
+                if _SPORTSDB_CLIENTE.circuito_abierto:
+                    break
                 continue
             for event in eventos:
                 row = _sportsdb_event_to_history_row(event, season)
@@ -10753,7 +10841,7 @@ def fetch_the_sportsdb_last_events(team_id: str) -> list[dict]:
         _frenar_sportsdb()
         data = _request_json(THESPORTSDB_EVENTS_LAST_URL, params={"id": team_id}, timeout=20)
     except Exception as exc:
-        print(f"[sportsdb] eventslast {team_id}: {exc}")
+        _avisar_sportsdb(f"[sportsdb] eventslast {team_id}: {exc}", exc)
         return list(vieja)
     events = (data or {}).get("results") or (data or {}).get("events") or []
     payload = events if isinstance(events, list) else []
@@ -10778,7 +10866,7 @@ def fetch_the_sportsdb_lookup_table(league_id: str, season_label: str) -> list[d
             timeout=20,
         )
     except Exception as exc:
-        print(f"[sportsdb] lookuptable {league_id} {season_label}: {exc}")
+        _avisar_sportsdb(f"[sportsdb] lookuptable {league_id} {season_label}: {exc}", exc)
         return list(vieja)
     rows = (data or {}).get("table") or []
     payload = rows if isinstance(rows, list) else []
@@ -10842,6 +10930,10 @@ def _sportsdb_domestic_fallback(
             raw_table = fetch_the_sportsdb_lookup_table(league_id, etiqueta)
             if raw_table:
                 table = _lookup_table_to_snapshot(raw_table)
+                break
+            if _SPORTSDB_CLIENTE.circuito_abierto:
+                # La primera etiqueta no fallo por no existir sino porque el
+                # proveedor nos limita: la segunda correria la misma suerte.
                 break
     return rows, table
 
@@ -17483,7 +17575,11 @@ def run_once(print_summary: bool = False) -> dict:
     _reiniciar_fallos_sportsdb()
     _reiniciar_cupo_sportsdb()
     _reiniciar_memo_openfootball()
-    snapshot = fetch_snapshot()
+    try:
+        snapshot = fetch_snapshot()
+    finally:
+        # Una linea por pasada en vez de cientos de avisos sueltos.
+        _resumir_sportsdb()
     transition_audit = snapshot.get("season_transition_audit") or {}
     if transition_audit.get("degraded"):
         # No frena el ciclo, pero tiene que quedar escrito: si esto se repite
