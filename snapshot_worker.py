@@ -13745,6 +13745,7 @@ def _tabla_de_grupo_del_partido(match: dict, liga: str, grupos_por_slug: dict | 
             filas[clave_lado] = fila
     mismo_grupo = len(filas) == 2 and filas["home"].get("group") == filas["away"].get("group")
     nombre = _NOMBRE_CORTO_COMPETICION.get(liga) or _league_display_name(liga)
+    _fase_de_grupos_del_partido(match, liga, grupos if mismo_grupo else {}, filas if mismo_grupo else {})
     for clave_lado in ("home", "away"):
         bloque = historia.get(clave_lado)
         if not isinstance(bloque, dict):
@@ -13796,7 +13797,296 @@ def _tabla_de_grupo_del_partido(match: dict, liga: str, grupos_por_slug: dict | 
         }
     )
     historia["table_quality"] = calidad
+    competicion = match.get("competition_context")
+    fiabilidad = competicion.get("table_reliability") if isinstance(competicion, dict) else None
+    if isinstance(fiabilidad, dict) and jugados:
+        # Las cuentas de muestra, del grupo: con las 54 juntas, la Liga D (4
+        # partidos) hacia saltar "hay equipos con un partido menos".
+        fiabilidad.update(
+            {
+                "scope": "group",
+                "group": g.get("group"),
+                "teams_ranked": len(jugados),
+                "expected_teams": g.get("group_size"),
+                "median_played": float(jugados[len(jugados) // 2]),
+                "min_played": jugados[0],
+            }
+        )
     return f"grupo {g.get('group')}"
+
+
+# Formatos de competicion por grupos verificados con la fuente oficial. Solo
+# lo que esta aqui se dice como "que se juega" cada puesto; una competicion por
+# grupos sin formato verificado se queda en el puesto, los puntos y los
+# partidos jugados.
+#
+# Nations League 2026-27: UEFA, "Promotion and relegation between the 2026/27
+# and 2028/29 editions of the UEFA Nations League" (15-09-2026) y reglamento
+# 2026/27. Ligas A-C con 4 grupos de 4 (6 partidos), Liga D con 2 grupos de 3
+# (4 partidos). Fase de liga del 24-09 al 17-11-2026; cuartos y play-offs A/B y
+# B/C en marzo de 2027.
+FORMATOS_DE_GRUPOS = {
+    "soccer_uefa_nations_league": {
+        "edition": "2026-27",
+        "league_phase_from": "2026-09-24",
+        "league_phase_to": "2026-11-17",
+        "source": "UEFA: promotion and relegation UNL 2026/27 (15-09-2026) y reglamento 2026/27",
+        "leagues": {
+            "A": {
+                "group_size": 4,
+                "games": 6,
+                "rule": (
+                    "en la Liga A, 1º y 2º de cada grupo van a cuartos (marzo 2027); los 2 mejores "
+                    "3º de los cuatro grupos siguen en la A y los 2 peores juegan el play-off A/B; "
+                    "los 2 mejores 4º juegan el play-off A/B y los 2 peores descienden a la Liga B"
+                ),
+                "positions": {
+                    1: "puesto de cuartos",
+                    2: "puesto de cuartos",
+                    3: "seguir en la Liga A o play-off A/B, segun la comparacion entre terceros de los 4 grupos",
+                    4: "play-off A/B o descenso directo, segun la comparacion entre cuartos de los 4 grupos",
+                },
+            },
+            "B": {
+                "group_size": 4,
+                "games": 6,
+                "rule": (
+                    "en la Liga B, el 1º de cada grupo asciende a la A, el 2º juega el play-off A/B, "
+                    "el 3º sigue en la B y el 4º juega el play-off B/C"
+                ),
+                "positions": {
+                    1: "puesto de ascenso a la Liga A",
+                    2: "puesto de play-off A/B",
+                    3: "puesto de permanencia en la Liga B",
+                    4: "puesto de play-off B/C",
+                },
+            },
+            "C": {
+                "group_size": 4,
+                "games": 6,
+                "rule": (
+                    "en la Liga C, el 1º de cada grupo asciende a la B, el 2º juega el play-off B/C "
+                    "y 3º y 4º siguen en la C (en esta edicion no hay descenso desde la C)"
+                ),
+                "positions": {
+                    1: "puesto de ascenso a la Liga B",
+                    2: "puesto de play-off B/C",
+                    3: "sigue en la Liga C",
+                    4: "sigue en la Liga C",
+                },
+            },
+            "D": {
+                "group_size": 3,
+                "games": 4,
+                "rule": "en la Liga D todas las selecciones ascienden a la C (la Liga D desaparece en 2028-29)",
+                "positions": {1: "asciende en cualquier caso", 2: "asciende en cualquier caso", 3: "asciende en cualquier caso"},
+            },
+        },
+    },
+}
+
+_CODIGO_DE_GRUPO = re.compile(r"^([A-D])([1-9])$")
+
+
+def _formato_del_grupo(liga: str, grupo: str, tamano: int | None, kickoff: str) -> dict:
+    """El formato verificado que aplica a este grupo y a esta fecha, o {}."""
+    formato = FORMATOS_DE_GRUPOS.get(liga)
+    m = _CODIGO_DE_GRUPO.match(str(grupo or "").strip().upper())
+    if not formato or not m:
+        return {}
+    dia = str(kickoff or "")[:10]
+    # Fuera de la fase de liga (cuartos, play-offs, otra edicion) el grupo ya no
+    # es lo que se juega.
+    if not dia or not (formato["league_phase_from"] <= dia <= formato["league_phase_to"]):
+        return {}
+    liga_letra = m.group(1)
+    datos = formato["leagues"].get(liga_letra)
+    if not datos or _safe_int(tamano, None) != datos["group_size"]:
+        return {}
+    return {**datos, "league": liga_letra, "edition": formato["edition"], "source": formato["source"]}
+
+
+def _nombre_de_seleccion(match: dict, clave_lado: str, fila: dict) -> str:
+    historia = match.get("history_context") if isinstance(match.get("history_context"), dict) else {}
+    bloque = historia.get(clave_lado) if isinstance(historia.get(clave_lado), dict) else {}
+    return str(bloque.get("resolved_name") or fila.get("team") or "").strip()
+
+
+def _fase_de_grupos_del_partido(match: dict, liga: str, grupos: dict, filas: dict) -> None:
+    """Fase y "que se juega" de un partido de una competicion por grupos.
+
+    J11 #15 (España - Chequia, Nations League) decia "fase liga europea (1
+    jornada disputada) ... No hay octavos, play-off ni eliminacion": salia de la
+    tabla unica de 54 selecciones y del texto de la Champions. Aqui todo sale del
+    grupo de ESPN (puesto, puntos, jugados) y, si el formato esta verificado
+    para esa edicion, de lo que significa cada puesto. Sin grupo verificado no
+    se dice nada de objetivos. Los clubes no pasan por aqui.
+    """
+    if liga not in COMPETICIONES_POR_GRUPOS:
+        return
+    competicion = match.get("competition_context")
+    if not isinstance(competicion, dict):
+        return
+    nombre = _NOMBRE_CORTO_COMPETICION.get(liga) or _league_display_name(liga)
+    # Los objetivos de una tabla unica (titulo, Europa, descenso) no existen
+    # en una competicion por grupos: fuera siempre.
+    motivo = "competicion por grupos: los objetivos de una tabla unica no aplican"
+    for clave in ("home_objective", "away_objective"):
+        competicion[clave] = {}
+    for clave in ("home_relegation", "away_relegation"):
+        competicion[clave] = {"available": False, "reason": motivo}
+    competicion["direct_rivalry"] = {"is_direct_rivalry": False, "direct_rivalry_index": 0}
+    previa = competicion.get("season_preview")
+    if isinstance(previa, dict) and previa.get("active"):
+        # "sin registro en 25/26" es de clubes: una seleccion no tiene temporada pasada.
+        competicion["season_preview"] = {**previa, "active": False, "reason": "competicion de selecciones"}
+    if not filas:
+        anterior = competicion.get("group_phase")
+        historia = match.get("history_context") if isinstance(match.get("history_context"), dict) else {}
+        sigue = isinstance(anterior, dict) and all(
+            ((historia.get(c) or {}).get("table") or {}).get("scope") == "group" for c in ("home", "away")
+        )
+        if not sigue:
+            competicion.pop("group_phase", None)
+            competicion["competitive_stakes_label"] = ""
+        _stakes_de_grupo_en_el_resto(match, competicion)
+        return
+    g = filas["home"]
+    grupo = str(g.get("group") or "")
+    tamano = _safe_int(g.get("group_size"), None)
+    formato = _formato_del_grupo(liga, grupo, tamano, match.get("kickoff", ""))
+    del_grupo = sorted(
+        (f for f in grupos.values() if f.get("group") == grupo),
+        key=lambda f: _safe_int(f.get("position"), 99),
+    )
+    jugados_grupo = sorted(_safe_int(f.get("played"), 0) or 0 for f in del_grupo)
+    mediana = jugados_grupo[len(jugados_grupo) // 2] if jugados_grupo else None
+    puntos_por_puesto = {_safe_int(f.get("position"), None): _safe_int(f.get("points"), None) for f in del_grupo}
+    lados = {}
+    textos = []
+    for clave_lado, etiqueta in (("home", "local"), ("away", "visitante")):
+        fila = filas[clave_lado]
+        puesto = _safe_int(fila.get("position"), None)
+        puntos = _safe_int(fila.get("points"), None)
+        jugados = _safe_int(fila.get("played"), None)
+        lado = {
+            "team": _nombre_de_seleccion(match, clave_lado, fila),
+            "espn_team": fila.get("team"),
+            "position": puesto,
+            "points": puntos,
+            "played": jugados,
+        }
+        detalle = [f"{puntos} pts" if puntos is not None else "", f"{jugados} jugados" if jugados is not None else ""]
+        if formato and jugados is not None:
+            restantes = max(0, formato["games"] - jugados)
+            lado["remaining"] = restantes
+            detalle.append(f"le quedan {restantes}")
+            significado = formato["positions"].get(puesto, "")
+            if significado:
+                lado["position_meaning"] = significado
+        # Distancias solo con puntos del mismo grupo de ESPN.
+        if formato and puntos is not None and puesto is not None:
+            corte = 2 if formato["league"] in {"A", "B", "C"} else None
+            if corte and puesto <= corte and puntos_por_puesto.get(corte + 1) is not None:
+                ventaja = puntos - puntos_por_puesto[corte + 1]
+                lado["points_over_next"] = ventaja
+                detalle.append(f"{ventaja} pts sobre el {corte + 1}º")
+            elif corte and puesto > corte and puntos_por_puesto.get(corte) is not None:
+                distancia = puntos_por_puesto[corte] - puntos
+                lado["points_to_cut"] = distancia
+                detalle.append(f"a {distancia} pts del {corte}º")
+        lados[clave_lado] = lado
+        texto = f"{etiqueta} {lado['team']} {puesto}º ({', '.join(d for d in detalle if d)})"
+        if lado.get("position_meaning"):
+            texto += f": {lado['position_meaning']}"
+        textos.append(texto)
+    cabecera = f"{nombre}"
+    if formato:
+        cabecera += f" {formato['edition']}, Liga {formato['league']}, grupo {grupo}"
+        cabecera += f" ({tamano} selecciones, {formato['games']} partidos cada una)"
+    else:
+        cabecera += f", grupo {grupo} ({tamano} selecciones)"
+    if mediana is not None:
+        cabecera += f" tras {mediana} jornada{'s' if mediana != 1 else ''}"
+    etiqueta = f"{cabecera}: " + "; ".join(textos)
+    if formato:
+        etiqueta += f". Formato: {formato['rule']}"
+    else:
+        etiqueta += ". Formato de la competicion sin verificar: sin objetivos por puesto"
+    fase = {
+        "competition": nombre,
+        "competition_key": liga,
+        "group": grupo,
+        "group_size": tamano,
+        "matchdays_played": mediana,
+        "home": lados["home"],
+        "away": lados["away"],
+        "source": "espn-standings",
+        "format_verified": bool(formato),
+        "label": etiqueta,
+    }
+    if formato:
+        fase.update(
+            {
+                "edition": formato["edition"],
+                "league": formato["league"],
+                "games_per_team": formato["games"],
+                "format_rule": formato["rule"],
+                "format_source": formato["source"],
+            }
+        )
+    competicion["group_phase"] = fase
+    competicion["competitive_stakes_label"] = etiqueta
+    competicion["season_context_phase"] = {
+        "key": "group_stage",
+        "label": f"fase de grupos, grupo {grupo}",
+        "played": mediana,
+        "total_rounds": formato["games"] if formato else None,
+        "progress": round(mediana / formato["games"], 3) if formato and mediana is not None else None,
+        "source": "espn-standings",
+    }
+    _stakes_de_grupo_en_el_resto(match, competicion)
+
+
+def _stakes_de_grupo_en_el_resto(match: dict, competicion: dict) -> None:
+    """Las copias de fase y stakes (senales, briefing) dicen lo mismo que el bloque."""
+    etiqueta = competicion.get("competitive_stakes_label", "")
+    fase = competicion.get("season_context_phase") or {}
+    senales = match.get("match_signals")
+    if isinstance(senales, dict):
+        senales["competitive_stakes_label"] = etiqueta
+        senales["season_context_phase"] = fase.get("key", "") if isinstance(fase, dict) else ""
+        for clave in ("home_must_win_index", "away_must_win_index", "home_must_not_lose_index", "away_must_not_lose_index", "direct_rivalry_index"):
+            if clave in senales:
+                senales[clave] = 0
+    analitica = match.get("analytics_context")
+    if isinstance(analitica, dict):
+        for clave in (
+            "home_must_win_index", "away_must_win_index", "home_must_not_lose_index",
+            "away_must_not_lose_index", "direct_rivalry_index", "home_objective_swing_if_win",
+            "home_objective_swing_if_lose", "away_objective_swing_if_win", "away_objective_swing_if_lose",
+        ):
+            if clave in analitica:
+                analitica[clave] = 0
+    briefing = match.get("focus_ai_briefing")
+    if isinstance(briefing, dict):
+        deportivo = briefing.get("contexto_deportivo")
+        if isinstance(deportivo, dict):
+            deportivo["fase_temporada"] = fase.get("label", "") if isinstance(fase, dict) else ""
+            deportivo["contexto_competitivo"] = etiqueta
+            deportivo["objetivo_local"] = ""
+            deportivo["objetivo_visitante"] = ""
+        avanzado = briefing.get("contexto_competitivo_avanzado")
+        if isinstance(avanzado, dict):
+            avanzado.update(
+                {
+                    "season_context_phase": fase,
+                    "competitive_stakes_label": etiqueta,
+                    "direct_rivalry": competicion.get("direct_rivalry", {}),
+                    "home_objective": {},
+                    "away_objective": {},
+                }
+            )
 
 
 def _rotation_context_from_upcoming(team_name: str, fixtures: list[dict], kickoff: str, news_signals: dict) -> dict:
