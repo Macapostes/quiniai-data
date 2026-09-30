@@ -4,6 +4,7 @@ import csv
 import ctypes
 import difflib
 import email.utils
+import faulthandler
 import hashlib
 import html
 import io
@@ -17630,22 +17631,78 @@ def run_forever() -> None:
                 break
 
 
-if __name__ == "__main__":
+_FAULTHANDLER_FILE = None
+
+
+def _instrumentar_proceso() -> None:
+    """Rastro en logs/ aunque stdout se pierda: arranque, salida y caídas.
+
+    Si en worker_events.log hay worker_process_started sin su
+    worker_process_exit, al proceso lo mató alguien desde fuera (no fue una
+    excepción de Python: esas quedan como cycle_failed o worker_crashed).
+    """
+    global _FAULTHANDLER_FILE
+    _log_cycle_event(
+        "info", "worker_process_started",
+        pid=os.getpid(), parent_pid=os.getppid(), argv=sys.argv[1:], python=sys.executable,
+    )
+    atexit.register(_registrar_salida_del_proceso)
+    try:
+        LOG_DIR.mkdir(parents=True, exist_ok=True)
+        _FAULTHANDLER_FILE = open(LOG_DIR / "worker_faulthandler.log", "a", encoding="utf-8")
+        faulthandler.enable(file=_FAULTHANDLER_FILE, all_threads=True)
+    except Exception as exc:
+        _log_cycle_event("warning", "faulthandler_unavailable", error=str(exc))
+    threading.excepthook = _registrar_excepcion_de_hilo
+
+
+def _registrar_salida_del_proceso() -> None:
+    _log_cycle_event("info", "worker_process_exit", pid=os.getpid())
+
+
+def _registrar_excepcion_de_hilo(args) -> None:
+    _log_cycle_event(
+        "error", "thread_exception",
+        thread=getattr(args.thread, "name", "?"),
+        error=repr(args.exc_value)[:500],
+        traceback="".join(traceback.format_exception(args.exc_type, args.exc_value, args.exc_traceback))[-4000:],
+    )
+
+
+def main() -> None:
     if "--audit-current" in sys.argv:
         current_snapshot = _load_cache(SNAPSHOT_OUTPUT_PATH)
         current_audit = _audit_season_transition_snapshot(current_snapshot)
         print(json.dumps(current_audit, ensure_ascii=False, indent=2))
         raise SystemExit(0 if current_audit.get("ok") else 2)
-    if "--once" in sys.argv and _request_manual_refresh_if_locked():
-        raise SystemExit(0)
-    _acquire_worker_lock()
-    if "--once" in sys.argv:
-        snapshot = run_once(print_summary="--pretty" in sys.argv)
-        if "--pretty" not in sys.argv:
-            print(
-                f"[snapshot-worker] ok monitored={snapshot['coverage']['monitored_matches']} "
-                f"jornada={snapshot['coverage']['quiniela_current_jornada']} "
-                f"generated_at={snapshot['generated_at']}"
-            )
-    else:
-        run_forever()
+    _instrumentar_proceso()
+    try:
+        if "--once" in sys.argv and _request_manual_refresh_if_locked():
+            raise SystemExit(0)
+        _acquire_worker_lock()
+        if "--once" in sys.argv:
+            snapshot = run_once(print_summary="--pretty" in sys.argv)
+            if "--pretty" not in sys.argv:
+                print(
+                    f"[snapshot-worker] ok monitored={snapshot['coverage']['monitored_matches']} "
+                    f"jornada={snapshot['coverage']['quiniela_current_jornada']} "
+                    f"generated_at={snapshot['generated_at']}"
+                )
+        else:
+            run_forever()
+    except SystemExit as exc:
+        _log_cycle_event(
+            "info" if exc.code in (0, None) else "warning",
+            "worker_process_exit_requested", code=str(exc.code),
+        )
+        raise
+    except BaseException as exc:
+        _log_cycle_event(
+            "error", "worker_crashed",
+            pid=os.getpid(), error=repr(exc)[:500], traceback=traceback.format_exc(limit=30)[-6000:],
+        )
+        raise
+
+
+if __name__ == "__main__":
+    main()

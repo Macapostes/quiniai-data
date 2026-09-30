@@ -63,16 +63,36 @@ Remove-Item cache\stop_worker.flag -ErrorAction SilentlyContinue
 powershell -NoProfile -ExecutionPolicy Bypass -File .\run_worker.ps1
 ```
 
+`run_worker.ps1` se relanza a sí mismo fuera del proceso que lo llama (con
+`Win32_Process.Create`) y sale al momento. Así, cerrar la consola, el asistente
+o el programa que lo lanzó no se lleva por delante al supervisor ni al worker.
+Para depurar en primer plano, en esa misma consola: `.\run_worker.ps1 -NoDetach`.
+
 ## Comprobar el estado
 
-- `logs\worker_supervisor.log`: arranques, códigos de salida, relanzamientos.
-- `logs\worker_events.log`: ciclos (`cycle_completed`), esperas
-  (`startup_skipped_recent_sync`, `cycle_sleep`) y la parada.
+- `logs\worker_supervisor.log`: arranques (con el PID del padre), cada
+  lanzamiento del worker, **el código de cada salida** y la duración, los
+  relanzamientos y la parada.
+- `logs\worker_stdout.log` y `logs\worker_stderr.log`: la salida del worker, en
+  vivo, con una marca `==== ... lanza el worker ====` por lanzamiento. Se rotan
+  a `.1` al pasar de 10 MB.
+- `logs\worker_crashes.log`: una entrada por cada salida con código distinto de 0,
+  con las últimas líneas de stderr de ese lanzamiento.
+- `logs\worker_last_exit.json`: la última salida (PID, código, duración).
+- `logs\worker_supervisor_heartbeat.txt`: se reescribe cada minuto mientras el
+  worker corre. Si es viejo y no hay supervisor, alguien lo mató desde fuera.
+- `logs\worker_events.log`: ciclos (`cycle_started`, `cycle_completed`,
+  `cycle_failed`), esperas (`startup_skipped_recent_sync`, `cycle_sleep`), la
+  parada, y también `worker_process_started` y `worker_process_exit` por proceso,
+  más `worker_crashed` o `thread_exception` con traceback. Si hay un
+  `worker_process_started` sin su `worker_process_exit`, al proceso lo
+  terminaron desde fuera.
+- `logs\worker_faulthandler.log`: volcado si Python cae por un fallo nativo.
 - ¿Hay supervisor vivo?
 
 ```powershell
 Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -match 'run_worker\.ps1|snapshot_worker\.py' } |
-    Select-Object ProcessId, CommandLine
+    Select-Object ProcessId, ParentProcessId, CommandLine
 ```
 
 Solo puede haber un supervisor a la vez: uno nuevo sale sin duplicar si ya hay
