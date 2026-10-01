@@ -2724,6 +2724,122 @@ def _is_opponent_only_transition_title(title: str, team_name: str) -> bool:
     return any(phrase in title_norm for phrase in opponent_phrases)
 
 
+def _motivo_mercado_dudoso(title: str, category: str, team_name: str, ahora: datetime | None = None) -> str:
+    """filtros_feed.motivo_mercado_dudoso con el año en curso."""
+    anio = (ahora or datetime.now(timezone.utc)).year
+    return filtros_feed.motivo_mercado_dudoso(
+        title, category, _canonical_team_name(team_name) or team_name, anio
+    )
+
+
+def _rehacer_resumen_de_transicion(lado: dict) -> None:
+    """El "summary" de un lado de season_transition con las listas de ahora.
+
+    Mismo texto que _build_team_season_transition; si se quita un titular, el
+    "5 posibles altas u operaciones" de antes ya no cuadra.
+    """
+    facts = []
+    previo = str((lado.get("previous_season") or {}).get("summary") or "").strip()
+    if previo:
+        facts.append(f"temporada anterior: {previo}")
+    for cubo, texto in (
+        ("signings", "altas/refuerzos confirmados"),
+        ("transfer_reports", "posibles altas u operaciones"),
+        ("departures", "salidas confirmadas"),
+        ("departure_reports", "posibles salidas"),
+        ("coach_changes", "cambios de entrenador"),
+        ("availability", "bajas/disponibilidad"),
+        ("preseason", "señales de pretemporada"),
+        ("promotion_history", "señales de ascenso/descenso"),
+        ("squad_news", "noticias de plantilla"),
+        ("morale", "señales de vestuario"),
+    ):
+        n = len(lado.get(cubo) or [])
+        if n:
+            facts.append(f"{n} {texto}")
+    lado["summary"] = "; ".join(facts) if facts else (
+        "sin hechos recientes verificados en las fuentes consultadas; "
+        "esto no significa que la plantilla no haya cambiado"
+    )
+
+
+# Cubo de season_transition -> categoria que se supone que lleva.
+_CUBOS_DE_MERCADO = {
+    "signings": "signing",
+    "transfer_reports": "signing",
+    "departures": "departure",
+    "departure_reports": "departure",
+}
+
+
+def _quitar_mercado_dudoso(match: dict, ahora: datetime | None = None) -> int:
+    """Quita de un partido guardado las altas/salidas que no se sostienen.
+
+    J11: "PP reclama un refuerzo de Guardia Civil en el Almanzora de Almeria"
+    como posible alta del Almeria, la salida de Aguirre del Mallorca en 2024
+    como posible salida de hoy y "Suso ... se va del Cadiz" como fichaje
+    confirmado. No se reclasifican: se quitan.
+    """
+    transicion = ((match.get("competition_context") or {}).get("season_transition") or {})
+    quitados = 0
+    for side, lado_nombre in (("home", "local"), ("away", "visitante")):
+        lado = transicion.get(side)
+        equipo = _nombre_para_el_proveedor(match, lado_nombre) or str(match.get(lado_nombre) or "")
+        if isinstance(lado, dict) and equipo:
+            malos: set[str] = set()
+            for cubo, categoria in _CUBOS_DE_MERCADO.items():
+                items = lado.get(cubo)
+                if not isinstance(items, list):
+                    continue
+                buenos = []
+                for item in items:
+                    titulo = str((item or {}).get("title") or "") if isinstance(item, dict) else ""
+                    motivo = _motivo_mercado_dudoso(titulo, categoria, equipo, ahora) if titulo else ""
+                    if motivo:
+                        malos.add(titulo)
+                        print(f"[mercado] {equipo}: fuera de {cubo} ({motivo}): {titulo[:90]}")
+                    else:
+                        buenos.append(item)
+                if len(buenos) != len(items):
+                    quitados += len(items) - len(buenos)
+                    lado[cubo] = buenos
+            if malos and "summary" in lado:
+                _rehacer_resumen_de_transicion(lado)
+            if isinstance(lado.get("all_evidence"), list):
+                evidencia = [
+                    item
+                    for item in lado["all_evidence"]
+                    if not (
+                        isinstance(item, dict)
+                        and (
+                            str(item.get("title") or "") in malos
+                            or _motivo_mercado_dudoso(
+                                str(item.get("title") or ""), str(item.get("category") or ""), equipo, ahora
+                            )
+                        )
+                    )
+                ]
+                if len(evidencia) != len(lado["all_evidence"]):
+                    lado["all_evidence"] = evidencia
+                    lado["evidence_count"] = len(evidencia)
+        contexto = match.get(f"{side}_team_context") or {}
+        noticias = contexto.get("season_transition_news") if isinstance(contexto, dict) else None
+        if equipo and isinstance(noticias, dict) and isinstance(noticias.get("items"), list):
+            noticias["items"] = [
+                item
+                for item in noticias["items"]
+                if not (
+                    isinstance(item, dict)
+                    and _motivo_mercado_dudoso(
+                        str(item.get("title") or ""), str(item.get("category") or ""), equipo, ahora
+                    )
+                )
+            ]
+    if quitados:
+        _rehacer_briefing_de_plantillas(match)
+    return quitados
+
+
 def _passes_season_transition_quality(item: dict, team_name: str) -> bool:
     title = str(item.get("title", "")).strip()
     source = str(item.get("source", "")).strip()
@@ -2740,6 +2856,8 @@ def _passes_season_transition_quality(item: dict, team_name: str) -> bool:
         # Rodri" es mercado de clubes, no noticia de Espana.
         return False
     if _is_opponent_only_transition_title(title, team_name):
+        return False
+    if _motivo_mercado_dudoso(title, _season_transition_category(title, source), team_name):
         return False
     if title.count("#") >= 2:
         return False
@@ -8169,7 +8287,23 @@ def _ficha_por_nombre_exacto(nombre: str) -> dict:
     return vieja or {}
 
 
+# Como hay que preguntar a TheSportsDB por un equipo cuyo nombre en las cuotas
+# es el de OTRO club. "Andorra CF" es, en TheSportsDB, el club de Andorra
+# (Teruel) de Tercera Federacion: de ahi el "proximo: casa vs Ejea" del FC
+# Andorra en la J11. La clave de cache cambia para no servir la ficha mala, y
+# no se filtra por pais: el FC Andorra figura en Andorra aunque juegue la liga
+# espanola, y con la pista "ES" se descartaba.
+SPORTSDB_CONSULTA_POR_EQUIPO = {
+    "andorra cf": "FC Andorra",
+    "andorra": "FC Andorra",
+}
+
+
 def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> dict:
+    prefijo_cache = ""
+    corregido = SPORTSDB_CONSULTA_POR_EQUIPO.get(_normalize_team_name(team_name))
+    if corregido and _categoria_por_nombre(team_name) != "female" and not _es_seleccion(team_name):
+        team_name, prefijo_cache, country_hint = corregido, "team:v3c", None
     resolved_country_hint = _guess_country_hint(team_name, country_hint)
     categoria_pedida = _categoria_por_nombre(team_name)
     if categoria_pedida == "female":
@@ -8181,7 +8315,7 @@ def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> 
     # Las fichas femeninas guardadas antes de esto pueden ser de otro club (el
     # Deportivo (F) estaba cacheado como Always Ready): esas claves se
     # abandonan y la primera consulta las rehace.
-    prefijo = "team:v2f" if categoria_pedida == "female" else "team"
+    prefijo = prefijo_cache or ("team:v2f" if categoria_pedida == "female" else "team")
     cache_key = f"{prefijo}:{resolved_country_hint or 'any'}:{team_name}"
     fresca = _cache_get(THESPORTSDB_CACHE, cache_key, SPORTSDB_TTL_FRESCA)
     if fresca:
@@ -13619,6 +13753,115 @@ def _etiqueta_de_proximo(fixture: dict) -> str:
     return f"{sede} vs {rival} ({etiqueta})" if etiqueta else f"{sede} vs {rival}"
 
 
+# Ligas nacionales por debajo del futbol profesional. Un equipo de Primera o
+# Segunda no juega en ellas: si su calendario trae un partido de Tercera, es de
+# un homonimo o de un filial. J11: al FC Andorra le salia "casa vs Ejea
+# (Tercera Federacion Grupo 17)", que es el calendario del Andorra CF de Teruel,
+# el dia siguiente a su partido en Sabadell.
+_LIGA_NACIONAL_INFERIOR_RE = re.compile(
+    r"\b(?:tercera|segunda|primera)\s+(?:federacion|rfef)\b|\bterceira\b|\bregional\b|"
+    r"\bpreferente\b|\bdivision de honor\b|\bjuvenil\b|\bsub ?1[5-9]\b|\bu ?1[5-9]\b|\bu ?2[0-3]\b"
+)
+_LIGAS_PROFESIONALES_ES = {"soccer_spain_la_liga", "soccer_spain_segunda_division", LIGA_F_KEY}
+
+
+def _proximo_de_liga_inferior(clave: str, nombre: str, liga_partido: str) -> bool:
+    """True si el proximo partido es de una liga nacional por debajo de la del partido."""
+    if liga_partido not in _LIGAS_PROFESIONALES_ES or not (clave or nombre):
+        return False
+    texto = _normalize_ascii(f"{nombre} {clave}").lower()
+    if any(t in texto for t in ("copa", "cup", "supercopa", "trofeo", "amistoso", "friendly")):
+        return False
+    return bool(_LIGA_NACIONAL_INFERIOR_RE.search(texto))
+
+
+def _fecha_de_proximo(fx: dict) -> tuple[datetime | None, bool]:
+    """(momento, solo_fecha). football-data solo da el dia: "2026-10-04T00:00:00"."""
+    momento = _parse_iso_datetime(str(fx.get("kickoff") or "").strip())
+    if momento is not None:
+        solo_fecha = (momento.hour, momento.minute, momento.second) == (0, 0, 0)
+        return momento, solo_fecha
+    fecha = str(fx.get("date") or "").strip()[:10]
+    momento = _parse_iso_datetime(f"{fecha}T00:00:00Z") if fecha else None
+    return momento, momento is not None
+
+
+def _proximo_que_no_puede_ser(fx: dict, kickoff_dt: datetime | None, rivales: list[str]) -> str:
+    """Motivo para quitar un "proximo" partido que no es un partido futuro del equipo.
+
+    - el propio partido de la jornada con otra fecha: football-data apunta el
+      Deportivo F - Atletico F (sabado 14:00 UTC) en el dia 4 a las 00:00, y
+      salia como su proximo partido. Mismo rival a dos dias o menos = este.
+    - otro partido a menos de 40 horas (o el mismo dia/el dia siguiente si
+      solo se sabe la fecha): ningun equipo juega dos veces asi; es de otro
+      equipo con el mismo nombre.
+    """
+    if kickoff_dt is None:
+        return ""
+    momento, solo_fecha = _fecha_de_proximo(fx)
+    if momento is None:
+        return ""
+    rival = str(fx.get("opponent") or "").strip()
+    if rival and abs((momento - kickoff_dt).total_seconds()) <= 2 * 86400 + 3600:
+        candidatos = [rival, _sin_marca_femenina(rival) or rival]
+        parecido = max(
+            (_similitud_espn(n, c) for n in rivales if n for c in candidatos if c),
+            default=0.0,
+        )
+        if parecido >= 0.75:
+            return "este_partido"
+    if solo_fecha:
+        dias = abs((momento.date() - kickoff_dt.date()).days)
+        if dias <= 1:
+            return "imposible"
+    elif abs((momento - kickoff_dt).total_seconds()) < 40 * 3600:
+        return "imposible"
+    return ""
+
+
+def _tabla_espn_de_la_liga(match: dict, liga: str, femenino: bool, selecciones: bool, memo: dict) -> dict:
+    """La clasificacion de ESPN de la liga del partido si es la que lleva el
+    historico; {} si el historico usa otra fuente o no hay tabla."""
+    if "tabla" in memo:
+        return memo["tabla"]
+    memo["tabla"] = {}
+    historia = match.get("history_context") if isinstance(match.get("history_context"), dict) else {}
+    fuentes = {
+        str(((historia.get(lado) or {}).get("table") or {}).get("source") or "")
+        for lado in ("home", "away")
+    }
+    if "espn-standings" not in fuentes or selecciones:
+        return memo["tabla"]
+    try:
+        slugs = _espn_slugs_para_partido(liga, femenino=femenino, selecciones=selecciones)
+    except Exception:
+        slugs = []
+    if not slugs or slugs[0] not in SLUGS_CON_CLASIFICACION:
+        return memo["tabla"]
+    try:
+        memo["tabla"] = _espn_clasificacion(slugs[0]) if ESPN_ENABLED else dict(
+            _cache_get(EXTERNAL_FEEDS_CACHE, f"espn:tabla:v1:{slugs[0]}") or {}
+        )
+    except Exception as exc:  # contraste: sin tabla, sin puesto
+        print(f"[proximos] tabla ESPN {slugs[0]}: {exc}")
+        memo["tabla"] = {}
+    return memo["tabla"]
+
+
+def _fila_espn_del_rival(tabla: dict, rival: str) -> dict:
+    nombres = [rival, _sin_marca_femenina(rival), _canonical_team_name(rival)]
+    nombres = [n for n in dict.fromkeys(str(x or "").strip() for x in nombres) if n]
+    # "Deportivo de La Coruna Women" / "Tenerife Femenino": la marca y el
+    # "de La Coruna" sobran para encontrar "Deportivo" o "CD Tenerife".
+    extra = []
+    for n in nombres:
+        corto = re.sub(r"\b(women|femenino|femenina|femeni|de la coruna|de la coruña|united)\b", " ", n, flags=re.I)
+        corto = re.sub(r"\s+", " ", corto).strip()
+        if corto and corto not in nombres and corto not in extra:
+            extra.append(corto)
+    return _espn_fila_de(tabla, nombres + extra, _similitud_espn) if tabla else {}
+
+
 def _proximos_con_su_competicion(match: dict) -> dict:
     """Etiqueta cada proximo partido con su competicion y deja solo puestos verificados.
 
@@ -13637,13 +13880,24 @@ def _proximos_con_su_competicion(match: dict) -> dict:
     femenino = _categoria_del_partido(match) == "female"
     historia = match.get("history_context") if isinstance(match.get("history_context"), dict) else {}
     kickoff = str(match.get("kickoff") or "")
+    kickoff_dt = _parse_iso_datetime(kickoff)
     grupos_por_slug: dict[str, dict] = {}
-    resumen = {"puestos_quitados": 0, "puestos_de_grupo": 0, "de_otra_categoria": 0}
+    memo_tabla: dict = {}
+    resumen = {
+        "puestos_quitados": 0,
+        "puestos_de_grupo": 0,
+        "de_otra_categoria": 0,
+        "este_partido": 0,
+        "imposibles": 0,
+        "de_liga_inferior": 0,
+        "puestos_de_espn": 0,
+    }
     for lado, clave_lado in (("local", "home"), ("visitante", "away")):
         proximos = competicion.get(f"{clave_lado}_upcoming")
         if not isinstance(proximos, list):
             continue
         nombres_equipo = _nombres_del_lado(match, lado)
+        rivales = _nombres_del_lado(match, "visitante" if lado == "local" else "local")
         limpios = []
         quitados = []
         for original in proximos:
@@ -13657,6 +13911,15 @@ def _proximos_con_su_competicion(match: dict) -> dict:
             if es_fem is not None and es_fem != femenino:
                 quitados.append(fx)
                 resumen["de_otra_categoria"] += 1
+                continue
+            motivo = _proximo_que_no_puede_ser(fx, kickoff_dt, rivales)
+            if motivo:
+                quitados.append(fx)
+                resumen["este_partido" if motivo == "este_partido" else "imposibles"] += 1
+                continue
+            if _proximo_de_liga_inferior(clave, nombre, liga):
+                quitados.append(fx)
+                resumen["de_liga_inferior"] += 1
                 continue
             puesto = _safe_int(fx.get("opponent_position"), None)
             for campo in ("position_label", "opponent_group", "opponent_group_position", "opponent_group_points", "opponent_group_played", "position_omitted"):
@@ -13686,9 +13949,29 @@ def _proximos_con_su_competicion(match: dict) -> dict:
                     if puesto:
                         resumen["puestos_quitados"] += 1
             elif clave and clave == liga and not selecciones and not _is_non_domestic_competition(liga):
-                # Mismo torneo que el partido: la tabla con la que se calculo el
-                # puesto es la de esa liga.
-                if puesto:
+                # Mismo torneo que el partido. Si la clasificacion del partido es
+                # la de ESPN, el puesto del rival sale de esa misma tabla: el de
+                # football-data/TheSportsDB va con otras jornadas y en la J11
+                # decia "Deportivo 11º" con el Deportivo 13º en la tabla de arriba.
+                tabla_espn = _tabla_espn_de_la_liga(match, liga, femenino, selecciones, memo_tabla)
+                if tabla_espn:
+                    fila = _fila_espn_del_rival(tabla_espn, str(fx.get("opponent") or ""))
+                    if fila and fila.get("position"):
+                        if puesto != fila.get("position"):
+                            fx["provider_position"] = puesto
+                        puesto = _safe_int(fila.get("position"), None)
+                        fx["opponent_position"] = puesto
+                        fx["opponent_points"] = fila.get("points")
+                        fx["position_label"] = f"{nombre}, {puesto}º"
+                        fx["position_source"] = "espn-standings"
+                        resumen["puestos_de_espn"] += 1
+                    else:
+                        if puesto:
+                            resumen["puestos_quitados"] += 1
+                        fx["position_omitted"] = "rival sin fila clara en la tabla de ESPN"
+                        fx["opponent_position"] = None
+                        fx["opponent_points"] = None
+                elif puesto:
                     fx["position_label"] = f"{nombre}, {puesto}º"
                     fx["position_source"] = "tabla de la liga del partido"
             else:
@@ -15488,11 +15771,12 @@ def _espn_forma_del_partido(slug: str, event_id: str) -> dict:
 
 
 def _forma_de_selecciones_con_espn(match: dict, evento: dict) -> list[str]:
-    """Racha de cada seleccion (ultimos 5, cualquier competicion) si no la hay.
+    """Racha de cada seleccion (ultimos 5, cualquier competicion) con ESPN.
 
     El historico de Nations League no trae partidos de esta temporada, asi que
-    en las jornadas 10 y 11 ninguna seleccion tenia forma. Solo se rellena lo
-    que falta; lo que ya hubiera no se toca.
+    en las jornadas 10 y 11 ninguna seleccion tenia forma. Se rellena lo que
+    falta, se rehace la que ya era de ESPN y se sustituye la de otra fuente
+    solo si ESPN conoce mas partidos.
     """
     forma = _espn_forma_del_partido(evento.get("slug", ""), evento.get("espn_event_id", ""))
     if not forma:
@@ -15505,9 +15789,22 @@ def _forma_de_selecciones_con_espn(match: dict, evento: dict) -> list[str]:
         if ko is not None:
             partidos = [p for p in partidos if (_parse_iso_datetime(p.get("date", "")) or ko) < ko]
         bloque = historia.get(clave) if isinstance(historia.get(clave), dict) else {}
-        if not partidos or ((bloque.get("recent_all") or {}).get("form")):
+        if not partidos:
             continue
+        reciente = bloque.get("recent_all") if isinstance(bloque.get("recent_all"), dict) else {}
+        if reciente.get("form") and bloque.get("form_source") != "espn-summary":
+            # La que hay se queda salvo que ESPN tenga mas partidos: Espana
+            # llevaba 1 partido de forma con 2 jugados en su grupo de la tabla.
+            if int(reciente.get("matches") or 0) >= min(5, len(partidos)):
+                continue
         metricas = _espn_metricas_de_forma(partidos[-5:])
+        if (
+            reciente.get("form")
+            and bloque.get("form_source") == "espn-summary"
+            and metricas.get("form") == reciente.get("form")
+            and int(metricas.get("matches") or 0) == int(reciente.get("matches") or 0)
+        ):
+            continue
         bloque = dict(bloque)
         bloque.setdefault("resolved_name", nombre_espn)
         bloque["recent_all"] = metricas
@@ -15534,9 +15831,34 @@ def _nombres_del_lado(match: dict, lado: str) -> list[str]:
     return [n for n in dict.fromkeys(str(n).strip() for n in nombres) if n]
 
 
+# Sedes cuya ciudad viene mal en ESPN. El Nuevo Mirandilla (JP Financial
+# Estadio, antes Ramon de Carranza) esta en Cadiz capital; ESPN lo da en "La
+# Linea de la Concepcion", a 120 km, y con esa ciudad se pedia la meteo.
+_CIUDAD_DE_SEDE_CORREGIDA = {
+    "nuevo mirandilla": ("Cádiz", "Spain"),
+    "estadio nuevo mirandilla": ("Cádiz", "Spain"),
+    "jp financial estadio": ("Cádiz", "Spain"),
+    "ramon de carranza": ("Cádiz", "Spain"),
+    "estadio ramon de carranza": ("Cádiz", "Spain"),
+}
+
+
+def _corregir_ciudad_de_sede(evento: dict) -> dict:
+    """El evento con la ciudad buena si la sede es una de las que ESPN sitúa mal."""
+    sede = re.sub(r"\s+", " ", _normalize_ascii(str(evento.get("venue") or "")).lower()).strip()
+    corregida = _CIUDAD_DE_SEDE_CORREGIDA.get(sede)
+    if not corregida or str(evento.get("city") or "").strip() == corregida[0]:
+        return evento
+    evento = dict(evento)
+    evento["city_espn"] = evento.get("city", "")
+    evento["city"], evento["country"] = corregida
+    return evento
+
+
 def _aplicar_evento_espn(match: dict, evento: dict, selecciones: bool) -> list[str]:
     """Sede, ciudad y competicion del partido confirmado en el calendario."""
     cambios: list[str] = []
+    evento = _corregir_ciudad_de_sede(evento)
     estructurado = match.setdefault("structured_context", {})
     ev = estructurado.setdefault("event_context", {})
     ev["espn_event_id"] = evento.get("espn_event_id", "")
@@ -15619,6 +15941,29 @@ def _cuotas_de_respaldo_espn(match: dict, evento: dict) -> list[str]:
     return [f"cuotas de respaldo {match['bookmaker']}: {bloque['1']}/{bloque['X']}/{bloque['2']}"]
 
 
+def _descanso_guardado_vale(actual: dict, datos: dict, kickoff: datetime) -> bool:
+    """True si el descanso guardado se puede dejar como esta.
+
+    Antes solo se cambiaba si ESPN daba MENOS dias. Pero los dias se cuentan
+    contra el kickoff que hubiera entonces: el Barcelona F guardo "2 dias" con
+    ultimo partido el 30-sep 16:45 y un kickoff anterior, y con el kickoff
+    bueno (4-oct 15:00, 3,9 dias) nunca se rehacia porque 2 < 3. Ahora el
+    guardado solo vale si cuadra con su propia fecha de ultimo partido y el
+    kickoff actual, y si ESPN no conoce un partido mas reciente.
+    """
+    dias_actuales = _safe_int(actual.get("days_since_last_match"), None)
+    if dias_actuales is None:
+        return False
+    if actual.get("rest_source") == "espn-summary":
+        # Es nuestro propio calculo de un ciclo anterior: se rehace siempre.
+        return False
+    ultimo = _parse_iso_datetime(str(actual.get("last_match_date") or ""))
+    if ultimo is not None and ultimo < kickoff:
+        if int((kickoff - ultimo).total_seconds() // 86400) != dias_actuales:
+            return False
+    return dias_actuales <= datos["days_since_last_match"]
+
+
 def _descanso_con_espn(match: dict, evento: dict) -> list[str]:
     """Dias de descanso y partidos en 14 dias con los ultimos cinco de ESPN.
 
@@ -15639,8 +15984,7 @@ def _descanso_con_espn(match: dict, evento: dict) -> list[str]:
         if not datos:
             continue
         actual = calendario.get(clave) if isinstance(calendario.get(clave), dict) else {}
-        dias_actuales = _safe_int(actual.get("days_since_last_match"), None)
-        if dias_actuales is not None and dias_actuales <= datos["days_since_last_match"]:
+        if _descanso_guardado_vale(actual, datos, kickoff):
             continue
         nuevo = dict(actual)
         nuevo.update(datos)
@@ -15650,6 +15994,9 @@ def _descanso_con_espn(match: dict, evento: dict) -> list[str]:
             datos["days_since_last_match"], datos["matches_last_14_days"], viaje if clave == "away" else None
         )
         nuevo["fatigue_index"] = indice
+        ultimo = _parse_iso_datetime(str(datos.get("last_match_date") or ""))
+        if ultimo is not None:
+            nuevo["rest_days_exact"] = round((kickoff - ultimo).total_seconds() / 86400.0, 1)
         calendario[clave] = nuevo
         analitica[f"{clave}_fatigue_index"] = indice
         cambios.append(
@@ -17984,11 +18331,16 @@ def build_snapshot(raw_matches: list) -> dict:
     noticias_retiradas = 0
     tablas_retiradas = 0
     rumores_retirados = 0
+    mercado_retirado = 0
     for jornada in quiniela_jornadas:
         for match in jornada.get("matches", []):
             noticias_retiradas += _limpiar_noticias_de_otra_categoria(match)
             tablas_retiradas += _quitar_tablas_de_otra_liga(match)
             rumores_retirados += _quitar_rumores_caducados(match)
+            try:
+                mercado_retirado += _quitar_mercado_dudoso(match)
+            except Exception as exc:  # un filtro de titulares no tumba el ciclo
+                print(f"[mercado] {match.get('local','')} - {match.get('visitante','')}: {exc}")
             if ESPN_ENABLED:
                 try:
                     cambios_espn = _aplicar_fuentes_espn(match)
@@ -18011,6 +18363,8 @@ def build_snapshot(raw_matches: list) -> dict:
         print(f"[tabla] {tablas_retiradas} clasificaciones de otra liga retiradas de partidos guardados")
     if rumores_retirados:
         print(f"[mercado] {rumores_retirados} rumores de fichaje caducados retirados de partidos guardados")
+    if mercado_retirado:
+        print(f"[mercado] {mercado_retirado} altas/salidas dudosas retiradas de partidos guardados")
     if noticias_retiradas:
         print(
             f"[categoria] {noticias_retiradas} titulares de otra categoria "

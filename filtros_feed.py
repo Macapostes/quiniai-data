@@ -37,7 +37,12 @@ NO_FUTBOL_RE = re.compile(
     r"ciclismo|cycling|tenis|tennis|atp|wta|padel|golf|voleibol|volleyball|rugby|hockey|waterpolo|"
     r"atletismo|natacion|ciudadanos|turismo|turistas|hotel\w*|inmobiliari\w*|vivienda\w*|"
     r"concierto\w*|festival\w*|pelicula|serie de tv|esports?|procesion\w*|virgen|semana santa|"
-    r"manto|coviran|cajasol|unicaja|baskonia)\b"
+    r"manto|coviran|cajasol|unicaja|baskonia|"
+    # J11: "La Mini Desertica ... salida desde el Puerto de Almeria" entro
+    # como posible salida del Almeria. Carreras populares y pruebas de
+    # resistencia comparten la palabra "salida" con el mercado.
+    r"mini desertica|desertica|carrera popular|maraton|media maraton|triatlon|duatlon|"
+    r"trail|senderismo|mtb|btt|travesia)\b"
 )
 HOMONIMOS_RE = re.compile(
     r"\b(racing de cordoba|central cordoba|austria lustenau|austria wien|austria viena|austria klagenfurt|"
@@ -170,3 +175,115 @@ def deduplicar_por_apellido(entidades: list[dict]) -> list[dict]:
             continue
         out.append(entidad)
     return out
+
+
+# --- Mercado (altas y salidas) -------------------------------------------
+# J11 2026-27: tres titulares del mercado que estaban mal.
+# - "PP reclama un refuerzo de Guardia Civil en el Almanzora de Almeria": el
+#   "refuerzo" no es un fichaje y "de Almeria" es la provincia, no el club.
+# - "Suso ... se va del Cadiz CF ..." salia como FICHAJE confirmado del Cadiz.
+# - "Javier Aguirre ... tras su salida del RCD Mallorca en 2024 para hacerse
+#   cargo del Valencia CF" salia como posible salida del Mallorca hoy.
+# Ante la duda el titular se quita: mejor nada que un dato al reves.
+TERMINOS_DE_FUTBOL_RE = re.compile(
+    r"\b(futbol|football|soccer|futbolist\w*|jugador\w*|player\w*|fichaj\w*|fichar|ficha por|"
+    r"traspas\w*|cesion|cedid\w*|entrenador\w*|tecnico|delanter\w*|defensa|central|"
+    r"centrocampista|mediocentro|portero|guardameta|extremo|lateral|plantilla|vestuario|cantera|"
+    r"filial|laliga|liga|segunda|primera|division|temporada|contrato|renov\w*|rescind\w*|"
+    r"goles?|goleador\w*|partidos?|aficion|estadio|mercado|signs?|signing|transfer\w*|"
+    r"loan\w*|manager|coach)\b"
+)
+_PARTIDO_POLITICO_RE = re.compile(r"\bpartido (popular|socialista|politico)\b")
+_PREFIJOS_DE_CLUB = r"(?:ud|cf|fc|cd|sd|rcd|rc|ad|sad|club|real|sporting|deportivo|atletico|racing)"
+_PALABRAS_NO_NUCLEO = {
+    "ud", "cf", "fc", "cd", "sd", "rcd", "rc", "ad", "sad", "club", "de", "del", "la", "el",
+    "f", "fem", "femenino", "femenina", "femeni", "women", "futbol", "real", "b", "c",
+}
+_SALIDA_RE = (
+    r"(?:se va|se marcha|se despide|deja|dejara|sale|saldra|abandona|salida|adios|despedida|"
+    r"desvinculacion|rescinde con|rompe con|traspasa|vende|cede)"
+)
+_LLEGADA_RE = (
+    r"(?:traspasad[oa]s?|cedid[oa]s?|vendid[oa]s?|llega|llegan|aterriza|ficha por|firma por|"
+    r"se une|nuevo jugador|nueva jugadora|nuevo fichaje|refuerza|signs for|joins)"
+)
+_ARTICULOS = r"(?:del|de la|de|el|la|al|a la|por el|por la|para el|para la|con el|con la)"
+
+
+def nucleo_del_equipo(team_name: object) -> str:
+    """"CADIZ CF" -> "cadiz", "RCD Mallorca" -> "mallorca", "R.MADRID (F)" -> "madrid"."""
+    palabras = [p for p in _norm(team_name).split() if p not in _PALABRAS_NO_NUCLEO]
+    largas = [p for p in palabras if len(p) >= 4]
+    return (largas or palabras or [""])[-1]
+
+
+def _nombra_al_club(titulo: str, nucleo: str) -> bool:
+    """El equipo aparece como club ("el Almeria", "UD Almeria"), no como lugar."""
+    if not nucleo:
+        return False
+    n = re.escape(nucleo)
+    return bool(
+        re.search(rf"\b(?:el|del|al)\s+{n}\b", titulo)
+        or re.search(rf"\b{_PREFIJOS_DE_CLUB}\s+(?:de\s+)?{n}\b", titulo)
+        or re.search(rf"\b{n}\s+(?:cf|fc|ud|sd|cd|club)\b", titulo)
+    )
+
+
+def direccion_de_mercado(title: object, team_name: object) -> str:
+    """"sale" si el titular dice que alguien se va del equipo, "entra" si llega,
+    "" si no se sabe. Solo mira frases donde el verbo va pegado al club."""
+    titulo = _norm(title)
+    nucleo = nucleo_del_equipo(team_name)
+    if not titulo or not nucleo:
+        return ""
+    n = re.escape(nucleo)
+    club = rf"(?:{_PREFIJOS_DE_CLUB}\s+)?{n}"
+    sale = bool(re.search(rf"\b{_SALIDA_RE}\s+(?:{_ARTICULOS}\s+)?{club}\b", titulo))
+    # "El Girona hace oficial el traspaso de Tsygankov al Ajax": el club vende.
+    venta = re.search(
+        rf"\b{n}\b.{{0,40}}\b(?:traspaso|venta|cesion|salida)\s+de\s+.{{1,40}}?\s+(?:al|a la|a)\s+(\w+)",
+        titulo,
+    )
+    if venta and venta.group(1) != nucleo:
+        sale = True
+    entra = bool(re.search(rf"\b{_LLEGADA_RE}\s+(?:{_ARTICULOS}\s+)?{club}\b", titulo))
+    if sale and not entra:
+        return "sale"
+    if entra and not sale:
+        return "entra"
+    return ""
+
+
+def motivo_mercado_dudoso(
+    title: object, category: object, team_name: object, anio_actual: int | None = None
+) -> str:
+    """Motivo para no mostrar un alta/salida de este equipo, o "" si vale.
+
+    `category` es la de _season_transition_category ("signing"/"departure").
+    """
+    categoria = str(category or "").strip().lower()
+    if categoria not in {"signing", "departure"}:
+        return ""
+    titulo = _norm(title)
+    if not titulo:
+        return "sin titular"
+    nucleo = nucleo_del_equipo(team_name)
+    sin_politica = _PARTIDO_POLITICO_RE.sub(" ", titulo)
+    if not TERMINOS_DE_FUTBOL_RE.search(sin_politica) and not _nombra_al_club(titulo, nucleo):
+        return "sin contexto de futbol"
+    direccion = direccion_de_mercado(title, team_name)
+    if categoria == "signing" and direccion == "sale":
+        return "es una salida, no un fichaje"
+    if categoria == "departure" and direccion == "entra":
+        return "es una llegada, no una salida"
+    if categoria == "departure":
+        if re.search(r"\btras (?:su |la )?(?:salida|marcha|adios)\b", titulo):
+            return "salida antigua que se cita de pasada"
+        if anio_actual:
+            for anio in re.findall(r"\b(?:salida|marcha|se fue|dejo)\b.{0,60}?\ben (20\d\d)\b", titulo):
+                if int(anio) < int(anio_actual) - 1 or (int(anio) < int(anio_actual) and "tras" in titulo):
+                    return f"salida de {anio}"
+        destino = re.search(r"\bhacerse cargo (?:del|de la|de)\s+(?:\w+\s+)?(\w+)", titulo)
+        if destino and nucleo and nucleo not in titulo[destino.start():]:
+            return "habla de su llegada a otro club"
+    return ""
