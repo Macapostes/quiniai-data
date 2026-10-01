@@ -52,6 +52,7 @@ from fuentes_espn import (
     slugs_para_partido as _espn_slugs_para_partido,
     ESPN_SLUG_LIGA_F,
     descanso_desde_forma as _espn_descanso_desde_forma,
+    proximos_de_calendario as _espn_parse_proximos,
 )
 
 import requests
@@ -13142,14 +13143,23 @@ def _fatigue_rating(days_since_last_match: int | None, recent_match_count: int) 
     return "low"
 
 
-def _nearest_index(target: datetime, candidates: list[str]) -> int | None:
+def _nearest_index(target: datetime, candidates: list[str], candidates_tz=None) -> int | None:
+    """Indice de la hora mas cercana a `target`.
+
+    `candidates_tz` es la zona de las horas de `candidates` cuando vienen sin
+    zona (Open-Meteo con timezone=auto las da en hora local). Sin ella se
+    tomaban como si fueran de la zona del kickoff (UTC) y la prevision salia
+    dos horas antes en Espana: la del Madrid CFF F de las 18:00 era la de las 14:00.
+    """
     best_index = None
     best_delta = None
     for idx, candidate in enumerate(candidates):
         candidate_dt = _parse_iso_datetime(candidate)
         if not candidate_dt:
             continue
-        if candidate_dt.tzinfo is None and target.tzinfo is not None:
+        if candidate_dt.tzinfo is None and candidates_tz is not None and target.tzinfo is not None:
+            candidate_dt = candidate_dt.replace(tzinfo=candidates_tz)
+        elif candidate_dt.tzinfo is None and target.tzinfo is not None:
             candidate_dt = candidate_dt.replace(tzinfo=target.tzinfo)
         elif candidate_dt.tzinfo is not None and target.tzinfo is None:
             target = target.replace(tzinfo=candidate_dt.tzinfo)
@@ -13160,13 +13170,32 @@ def _nearest_index(target: datetime, candidates: list[str]) -> int | None:
     return best_index
 
 
+def _zona_de_open_meteo(data: dict):
+    """Zona de las horas de una respuesta de Open-Meteo (timezone=auto)."""
+    nombre = str((data or {}).get("timezone") or "").strip()
+    if nombre and nombre.upper() not in {"GMT", "UTC"}:
+        try:
+            return ZoneInfo(nombre)
+        except Exception:
+            pass
+    try:
+        return timezone(timedelta(seconds=int((data or {}).get("utc_offset_seconds") or 0)))
+    except (TypeError, ValueError):
+        return timezone.utc
+
+
 def fetch_weather_context(profile: dict, kickoff: str) -> dict:
     latitude = profile.get("latitude")
     longitude = profile.get("longitude")
     kickoff_dt = _parse_iso_datetime(kickoff)
     if latitude is None or longitude is None or kickoff_dt is None:
         return {}
-    cache_key = f"{round(float(latitude), 3)}|{round(float(longitude), 3)}|{kickoff_dt.date().isoformat()}"
+    # La hora va en la clave: con solo el dia, dos partidos en la misma ciudad
+    # y dia (o el mismo con la hora corregida) compartian prevision.
+    cache_key = (
+        f"v2|{round(float(latitude), 3)}|{round(float(longitude), 3)}|"
+        f"{kickoff_dt.astimezone(timezone.utc).strftime('%Y-%m-%dT%H')}"
+    )
     cached = _cache_get(WEATHER_CACHE, cache_key, WEATHER_CACHE_TTL_SECONDS)
     if cached:
         return cached
@@ -13195,7 +13224,7 @@ def fetch_weather_context(profile: dict, kickoff: str) -> dict:
         return {}
     hourly = data.get("hourly") or {}
     times = hourly.get("time") or []
-    idx = _nearest_index(kickoff_dt, times)
+    idx = _nearest_index(kickoff_dt, times, _zona_de_open_meteo(data))
     if idx is None:
         return {}
     weather = {
@@ -15855,8 +15884,14 @@ def _corregir_ciudad_de_sede(evento: dict) -> dict:
     return evento
 
 
-def _aplicar_evento_espn(match: dict, evento: dict, selecciones: bool) -> list[str]:
-    """Sede, ciudad y competicion del partido confirmado en el calendario."""
+def _aplicar_evento_espn(
+    match: dict, evento: dict, selecciones: bool, hora_corregida: bool = False
+) -> list[str]:
+    """Sede, ciudad y competicion del partido confirmado en el calendario.
+
+    Con `hora_corregida` la meteo se vuelve a pedir aunque la ciudad no cambie:
+    la que hubiera era de la hora anterior.
+    """
     cambios: list[str] = []
     evento = _corregir_ciudad_de_sede(evento)
     estructurado = match.setdefault("structured_context", {})
@@ -15889,7 +15924,10 @@ def _aplicar_evento_espn(match: dict, evento: dict, selecciones: bool) -> list[s
     # Meteo en la ciudad de la sede. Si no se puede, la que hubiera se queda,
     # marcada como aproximada si era la de la capital de una seleccion.
     ciudad_nueva = str(evento.get("city") or "").strip()
-    if ciudad_nueva and ciudad_nueva.lower() not in ciudad_anterior.lower():
+    if hora_corregida:
+        ciudad_meteo = ciudad_nueva or str(((match.get("weather_context") or {}).get("location_city")) or "")
+        cambios.extend(_recalcular_meteo_por_hora(match, ciudad_meteo, evento.get("country", ""), selecciones))
+    elif ciudad_nueva and ciudad_nueva.lower() not in ciudad_anterior.lower():
         codigo = _PAIS_ESPN_A_CODIGO.get(str(evento.get("country") or "").strip().lower())
         if not codigo and selecciones:
             codigo = NATIONAL_TEAM_COUNTRY_HINTS.get(_clave_seleccion(_canonical_team_name(match.get("local", ""))))
@@ -16109,6 +16147,171 @@ def _refrescar_tabla_con_espn(match: dict, slug: str) -> list[str]:
     )
 
 
+# Estados de ESPN en los que la hora del partido es la prevista.
+_ESTADOS_ESPN_PROGRAMADOS = {"", "STATUS_SCHEDULED"}
+
+
+def _corregir_kickoff_con_espn(match: dict, evento: dict, eventos: list[dict]) -> list[str]:
+    """La hora del partido pasa a ser la de ESPN si el cruce es inequivoco.
+
+    J11 2026-27: los cuatro partidos de Liga F llevaban el sabado 3 a las
+    14:00 UTC, la hora de relleno del boleto, y el Barcelona F - Real Madrid F
+    se juega el domingo 4 a las 15:00 UTC. De esa hora salian el descanso
+    ("2 dias" en vez de 3,9) y la hora de la meteo.
+
+    Solo se cambia si:
+    - `evento` es el partido elegido por _espn_elegir_partido (mismos dos
+      equipos y en su orden, a menos de 36 h, sin empate entre candidatos);
+    - no hay otro evento de ESPN con el mismo cruce en los dias consultados;
+    - ESPN da la hora por buena (timeValid) y el partido esta programado;
+    - la diferencia pasa de 15 minutos.
+    La hora anterior se guarda en kickoff_original (la primera, si ya hubo
+    correcciones) y su fuente en kickoff_source_original.
+    """
+    nuevo = _parse_iso_datetime(str(evento.get("kickoff") or ""))
+    actual = _parse_iso_datetime(str(match.get("kickoff") or ""))
+    if nuevo is None or actual is None:
+        return []
+    if abs((nuevo - actual).total_seconds()) <= 15 * 60:
+        return []
+    if not evento.get("time_valid", True) or evento.get("completed"):
+        return []
+    if str(evento.get("status") or "") not in _ESTADOS_ESPN_PROGRAMADOS:
+        return []
+    mismos = {
+        str(e.get("espn_event_id") or "") or f"{e.get('kickoff')}"
+        for e in eventos or []
+        if e.get("local") == evento.get("local") and e.get("visitante") == evento.get("visitante")
+    }
+    if len(mismos) != 1:
+        return []
+    anterior = str(match.get("kickoff") or "")
+    if not match.get("kickoff_original"):
+        match["kickoff_original"] = anterior
+        match["kickoff_source_original"] = match.get("kickoff_source", "")
+    match["kickoff"] = nuevo.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    match["kickoff_source"] = "espn-fixture"
+    return [f"hora {anterior} -> {match['kickoff']} (ESPN)"]
+
+
+def _recalcular_meteo_por_hora(match: dict, ciudad: str, pais: str, selecciones: bool) -> list[str]:
+    """Meteo a la hora corregida: en la sede si se puede, si no en el perfil del local.
+
+    Si no hay manera de pedirla, se quita: una prevision de otra hora (o de
+    otro dia) es peor que ninguna.
+    """
+    punto: dict = {}
+    if ciudad:
+        codigo = _PAIS_ESPN_A_CODIGO.get(str(pais or "").strip().lower())
+        if not codigo and selecciones:
+            codigo = NATIONAL_TEAM_COUNTRY_HINTS.get(_clave_seleccion(_canonical_team_name(match.get("local", ""))))
+        if codigo:
+            punto = _geocode_location(ciudad, codigo) or {}
+    base = "venue"
+    if punto.get("latitude") is None or punto.get("longitude") is None:
+        perfil = ((match.get("home_team_context") or {}).get("profile") or {})
+        punto = perfil if perfil.get("latitude") is not None and perfil.get("longitude") is not None else {}
+        base = "home_profile"
+    meteo = fetch_weather_context(punto, match.get("kickoff", "")) if punto else {}
+    if not meteo:
+        if match.get("weather_context"):
+            match["weather_context"] = {}
+            match.setdefault("match_signals", {})["weather_risk"] = _weather_risk({})
+            return ["meteo retirada: era de la hora anterior"]
+        return []
+    meteo = dict(meteo)
+    meteo["location_basis"] = base
+    if base == "venue":
+        meteo["location_city"] = ciudad
+    match["weather_context"] = meteo
+    match.setdefault("match_signals", {})["weather_risk"] = _weather_risk(meteo)
+    return [f"meteo recalculada a la hora de ESPN ({ciudad or 'perfil del local'})"]
+
+
+def _espn_proximos_equipo(slug: str, team_id: str) -> list[dict]:
+    if not team_id:
+        return []
+    clave = f"espn:proximos:v1:{slug}:{team_id}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, 6 * 3600)
+    if cached is not None:
+        return list(cached)
+    try:
+        data = _request_json(
+            ESPN_TEAM_SCHEDULE_URL.format(slug=slug, team_id=team_id), params={"fixture": "true"}, timeout=15
+        )
+    except Exception as exc:
+        print(f"[espn] proximos {slug} {team_id}: {exc}")
+        return list(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or [])
+    filas = _espn_parse_proximos(data if isinstance(data, dict) else {}, team_id)
+    _cache_set(EXTERNAL_FEEDS_CACHE, clave, filas)
+    return filas
+
+
+def _rellenar_proximos_con_espn(match: dict, slug: str) -> list[str]:
+    """Calendario de ESPN para el lado que se ha quedado sin proximos validos.
+
+    El FC Andorra se quedo sin ninguno: TheSportsDB (cupo gratis) solo da el
+    siguiente partido, que es el de la jornada, y lo de antes era el calendario
+    del Andorra CF de Teruel. El id de ESPN sale de la fila de la tabla de ESPN
+    de la liga del partido, asi que no puede ser un homonimo. Solo se rellena
+    lo que esta vacio; un calendario que ya hay no se toca.
+    """
+    kickoff = _parse_iso_datetime(str(match.get("kickoff") or ""))
+    historia = match.get("history_context") if isinstance(match.get("history_context"), dict) else {}
+    competicion = match.setdefault("competition_context", {})
+    liga = _canonical_league_key(match.get("league") or "")
+    if kickoff is None or not isinstance(competicion, dict):
+        return []
+    cambios = []
+    for lado in ("home", "away"):
+        tabla = ((historia.get(lado) or {}).get("table") or {})
+        team_id = str(tabla.get("espn_team_id") or "").strip()
+        if tabla.get("source") != "espn-standings" or not team_id:
+            continue
+        actuales = competicion.get(f"{lado}_upcoming")
+        if not isinstance(actuales, list):
+            # Sin la lista es que el partido no paso por el calendario (o es
+            # de otro formato): no se inventa uno.
+            continue
+        validos = [
+            f for f in actuales
+            if isinstance(f, dict)
+            and (_fecha_de_proximo(f)[0] or kickoff) > kickoff + timedelta(hours=40)
+        ]
+        if validos:
+            continue
+        nuevos = []
+        for fila in _espn_proximos_equipo(slug, team_id):
+            momento = _parse_iso_datetime(fila.get("kickoff", ""))
+            if momento is None or momento <= kickoff + timedelta(hours=40):
+                continue
+            if not fila.get("time_valid", True):
+                momento = momento.replace(hour=0, minute=0, second=0, microsecond=0)
+            nombre_liga = str(fila.get("league_name") or "")
+            misma_liga = _canonical_league_key(nombre_liga) == liga or nombre_liga == (
+                tabla.get("league_name") or ""
+            )
+            nuevos.append(
+                {
+                    "date": momento.strftime("%Y-%m-%d"),
+                    "kickoff": momento.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "venue": fila.get("venue"),
+                    "opponent": fila.get("opponent", ""),
+                    "opponent_position": None,
+                    "opponent_points": None,
+                    "league": liga if misma_liga else nombre_liga,
+                    "source": "espn-schedule",
+                    "espn_event_id": fila.get("espn_event_id", ""),
+                }
+            )
+            if len(nuevos) >= 5:
+                break
+        if nuevos:
+            competicion[f"{lado}_upcoming"] = nuevos
+            cambios.append(f"proximos {lado} de ESPN: {len(nuevos)}")
+    return cambios
+
+
 def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[str]:
     """Contrasta un partido que aun no se ha jugado con el calendario y la tabla de ESPN."""
     if not isinstance(match, dict):
@@ -16142,7 +16345,13 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
             evento["slug"] = slug
             break
     if evento:
-        cambios.extend(_aplicar_evento_espn(match, evento, selecciones))
+        try:
+            hora_corregida = _corregir_kickoff_con_espn(match, evento, eventos)
+        except Exception as exc:  # contraste: nunca tumba el partido
+            hora_corregida = []
+            print(f"[espn] hora {match.get('local','')} - {match.get('visitante','')}: {exc}")
+        cambios.extend(hora_corregida)
+        cambios.extend(_aplicar_evento_espn(match, evento, selecciones, hora_corregida=bool(hora_corregida)))
         if selecciones:
             cambios.extend(_forma_de_selecciones_con_espn(match, evento))
         try:
@@ -16160,6 +16369,10 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
             cambios.extend(_refrescar_tabla_con_espn(match, slugs[0]))
         except Exception as exc:  # la tabla de contraste no puede dejar el resto a medias
             print(f"[espn] tabla {match.get('local','')} - {match.get('visitante','')}: {exc}")
+        try:
+            cambios.extend(_rellenar_proximos_con_espn(match, slugs[0]))
+        except Exception as exc:  # el calendario de contraste tampoco
+            print(f"[espn] proximos {match.get('local','')} - {match.get('visitante','')}: {exc}")
     if cambios:
         match["espn_checked"] = {"at": _now_iso(), "changes": cambios}
     return cambios
@@ -16644,6 +16857,14 @@ def _aplicar_horario_oficial(match: dict, slot: dict) -> None:
     actual_dt = _parse_iso_datetime(str(match.get("kickoff", "")).strip())
     if actual_dt and abs((actual_dt - oficial_dt).total_seconds()) <= 15 * 60:
         return
+    if match.get("kickoff_source") == "espn-fixture":
+        # ESPN ya corrigio esta misma hora (la de Liga F de la J11 era la de
+        # relleno, sabado 16:00, para los cuatro partidos). Si el boleto trae
+        # la misma de antes, no se vuelve atras; si trae otra, manda el boleto
+        # y ESPN la vuelve a contrastar despues.
+        original_dt = _parse_iso_datetime(str(match.get("kickoff_original") or "").strip())
+        if original_dt and abs((original_dt - oficial_dt).total_seconds()) <= 15 * 60:
+            return
     if actual_dt:
         match["kickoff_previo"] = match.get("kickoff", "")
         match.pop("weather_context", None)

@@ -118,6 +118,9 @@ def eventos_del_marcador(payload: dict) -> list[dict]:
                 "league_name": liga,
                 "status": str(estado.get("name") or ""),
                 "completed": bool(estado.get("completed")),
+                # ESPN marca con timeValid=false los partidos con la hora aun
+                # sin fijar: esa hora no vale para corregir la de nadie.
+                "time_valid": bool(comp.get("timeValid", evento.get("timeValid", True))),
                 "odds": cuotas_de_competicion(comp),
             }
         )
@@ -371,6 +374,44 @@ def filas_de_calendario(payload: dict) -> list[dict]:
         )
     filas.sort(key=lambda f: f["KickoffUTC"])
     return filas
+
+
+def proximos_de_calendario(payload: dict, team_id: str) -> list[dict]:
+    """Partidos por jugar de /teams/{id}/schedule?fixture=true del equipo `team_id`.
+
+    Cada uno: kickoff (ISO), time_valid, venue ("home"/"away"), opponent y
+    league_name. Solo los que traen al equipo pedido en uno de los dos lados.
+    """
+    if not isinstance(payload, dict) or not str(team_id or "").strip():
+        return []
+    equipo_id = str(team_id).strip()
+    out = []
+    for evento in payload.get("events") or []:
+        try:
+            comp = (evento.get("competitions") or [])[0]
+        except (IndexError, TypeError):
+            continue
+        estado = ((comp.get("status") or evento.get("status") or {}).get("type") or {})
+        if estado.get("completed"):
+            continue
+        equipos = comp.get("competitors") or []
+        propio = next((c for c in equipos if str((c.get("team") or {}).get("id") or c.get("id") or "") == equipo_id), None)
+        rival = next((c for c in equipos if c is not propio), None)
+        fecha = _parse_fecha(evento.get("date"))
+        if propio is None or rival is None or fecha is None or propio.get("homeAway") not in {"home", "away"}:
+            continue
+        out.append(
+            {
+                "kickoff": fecha.astimezone(timezone.utc).isoformat().replace("+00:00", "Z"),
+                "time_valid": bool(comp.get("timeValid", evento.get("timeValid", True))),
+                "venue": propio.get("homeAway"),
+                "opponent": ((rival.get("team") or {}).get("displayName") or "").strip(),
+                "league_name": str(((evento.get("league") or {}).get("name")) or "").strip(),
+                "espn_event_id": str(evento.get("id") or ""),
+            }
+        )
+    out.sort(key=lambda f: f["kickoff"])
+    return out
 
 
 def forma_de_resumen(payload: dict) -> dict:
