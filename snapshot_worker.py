@@ -16325,6 +16325,104 @@ def _rellenar_proximos_con_espn(match: dict, slug: str) -> list[str]:
     return cambios
 
 
+def _ventana_de_la_jornada(jornada: dict) -> tuple[datetime, datetime] | None:
+    """Primer y ultimo kickoff conocidos de la jornada (los de los partidos con hora)."""
+    desde = _parse_iso_datetime(str((jornada or {}).get("kickoff_from") or ""))
+    hasta = _parse_iso_datetime(str((jornada or {}).get("kickoff_to") or ""))
+    momentos = [
+        m
+        for m in (
+            _parse_iso_datetime(str((partido or {}).get("kickoff") or ""))
+            for partido in (jornada or {}).get("matches") or []
+        )
+        if m is not None
+    ]
+    if momentos:
+        desde = min([d for d in (desde, min(momentos)) if d is not None])
+        hasta = max([h for h in (hasta, max(momentos)) if h is not None])
+    if desde is None or hasta is None or hasta < desde:
+        return None
+    return desde, hasta
+
+
+def _kickoff_de_espn_si_falta(
+    match: dict, ventana: tuple[datetime, datetime] | None, ahora: datetime | None = None
+) -> list[str]:
+    """Hora del partido desde el calendario de ESPN cuando el partido no tiene ninguna.
+
+    J11 2026-27: al pasar a ser la jornada en curso, la J11 dejo de salir en
+    "proximas" de Eduardo -que era de donde venia la hora de los cuatro de Liga
+    F- y la pagina de la jornada no trae horas. Con la jornada recien
+    reconstruida (la de las 12:14 la habia podado) no habia hora guardada que
+    heredar: kickoff vacio, y sin kickoff no hay contraste con ESPN, ni
+    descanso, ni meteo, ni proximos, ni tabla fresca.
+
+    Se busca el cruce en los dias de la jornada (los de los partidos que si
+    tienen hora, +-1 dia). Solo se acepta si los dos equipos coinciden en su
+    orden, es el unico cruce asi en esos dias, cae dentro de la ventana y ESPN
+    da la hora por buena con el partido programado.
+    """
+    if not isinstance(match, dict) or str(match.get("kickoff") or "").strip() or not ventana:
+        return []
+    desde, hasta = ventana
+    ahora = ahora or datetime.now(timezone.utc)
+    if hasta < ahora - timedelta(hours=3) or desde > ahora + timedelta(days=12):
+        return []
+    liga = _canonical_league_key(match.get("league") or "")
+    selecciones = _es_partido_de_selecciones(match)
+    femenino = _categoria_del_partido(match) == "female"
+    slugs = _espn_slugs_para_partido(liga, femenino=femenino, selecciones=selecciones)
+    if not slugs:
+        return []
+    inicio = (desde - timedelta(days=1)).astimezone(timezone.utc).date()
+    fin = (hasta + timedelta(days=1)).astimezone(timezone.utc).date()
+    dias = []
+    dia = inicio
+    while dia <= fin and len(dias) < 7:
+        dias.append(dia.strftime("%Y%m%d"))
+        dia += timedelta(days=1)
+    margen = timedelta(hours=36)
+    for slug in slugs:
+        eventos = []
+        for dia_txt in dias:
+            eventos.extend(_espn_eventos_del_dia(slug, dia_txt))
+        eventos = [
+            e
+            for e in eventos
+            if (lambda ko: ko is not None and desde - margen <= ko <= hasta + margen)(
+                _parse_iso_datetime(str(e.get("kickoff") or ""))
+            )
+        ]
+        evento = {}
+        for nombre_l in _nombres_del_lado(match, "local"):
+            for nombre_v in _nombres_del_lado(match, "visitante"):
+                evento = _espn_elegir_partido(eventos, nombre_l, nombre_v, None, _similitud_espn)
+                if evento:
+                    break
+            if evento:
+                break
+        if not evento:
+            continue
+        nuevo = _parse_iso_datetime(str(evento.get("kickoff") or ""))
+        if nuevo is None or not evento.get("time_valid", True) or evento.get("completed"):
+            return []
+        if str(evento.get("status") or "") not in _ESTADOS_ESPN_PROGRAMADOS:
+            return []
+        mismos = {
+            str(e.get("espn_event_id") or "") or f"{e.get('kickoff')}"
+            for e in eventos
+            if e.get("local") == evento.get("local") and e.get("visitante") == evento.get("visitante")
+        }
+        if len(mismos) != 1:
+            return []
+        match["kickoff"] = nuevo.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        match["kickoff_source"] = "espn-fixture"
+        match.setdefault("kickoff_original", "")
+        match.setdefault("kickoff_source_original", "sin-hora")
+        return [f"hora sin dato -> {match['kickoff']} (ESPN {slug})"]
+    return []
+
+
 def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[str]:
     """Contrasta un partido que aun no se ha jugado con el calendario y la tabla de ESPN."""
     if not isinstance(match, dict):
@@ -17394,11 +17492,21 @@ def _infer_league_from_histories(home_team: str, away_team: str, histories: dict
             continue
         home_score = max((_team_similarity_score(home_team, op) for op in casa_home), default=0.0)
         away_score = max((_team_similarity_score(away_team, op) for op in casa_away), default=0.0)
-        candidates.append((home_score + away_score, _canonical_league_key(league_key)))
+        # Que esten los dos en el historico no dice en que liga juegan HOY: el
+        # Mallorca y Las Palmas tienen anos de LaLiga detras, pero en 26/27 los
+        # dos estan en Segunda (J12, P12). Pesa primero la temporada en curso.
+        actuales = {
+            str(row.get(field, "")).strip()
+            for row in _season_rows(rows, _league_season_code_for(clave))
+            for field in ("HomeTeam", "AwayTeam")
+            if str(row.get(field, "")).strip()
+        }
+        en_curso = any(op in actuales for op in casa_home) and any(op in actuales for op in casa_away)
+        candidates.append((1 if en_curso else 0, home_score + away_score, _canonical_league_key(league_key)))
     if not candidates:
         return ""
-    candidates.sort(key=lambda item: item[0], reverse=True)
-    return candidates[0][1]
+    candidates.sort(key=lambda item: (item[0], item[1]), reverse=True)
+    return candidates[0][2]
 
 
 def _competicion_desde_las_cuotas(
@@ -17498,7 +17606,18 @@ def _bootstrap_quiniela_placeholder(
         not current_league
         or current_league == "league_unresolved"
         or str(match.get("league", "")).startswith("sportsdb_")
+        # Una deduccion propia de un ciclo anterior se rehace: la de antes podia
+        # ser la de otra temporada (Mallorca-Las Palmas en LaLiga, J12).
+        or (
+            match.get("league_source") == "history-team-membership"
+            and history_inferred_league != current_league
+        )
     ):
+        if current_league and current_league != history_inferred_league:
+            print(
+                f"[liga] {home_team} - {away_team}: {history_inferred_league} por el "
+                f"historico de la temporada en curso (antes {current_league})"
+            )
         match["league"] = history_inferred_league
         match["league_name"] = _league_display_name(history_inferred_league)
         match["league_id"] = _sportsdb_league_id_for_key(history_inferred_league)
@@ -18546,6 +18665,28 @@ def build_snapshot(raw_matches: list) -> dict:
                 quiniela_focus_matches.append(match)
 
     if quiniela_jornadas:
+        # Antes del bootstrap: un partido sin hora se enriquece a ciegas (sin
+        # descanso, meteo ni proximos) y el contraste con ESPN de despues se lo
+        # salta entero. Le pasaba a la Liga F de la J11 al pasar a jornada en
+        # curso.
+        if ESPN_ENABLED:
+            for jornada in quiniela_jornadas:
+                ventana = _ventana_de_la_jornada(jornada)
+                for match in jornada.get("matches", []):
+                    if str(match.get("kickoff") or "").strip():
+                        continue
+                    try:
+                        cambios_hora = _kickoff_de_espn_si_falta(match, ventana)
+                    except Exception as exc:  # contraste: nunca tumba el ciclo
+                        cambios_hora = []
+                        print(f"[espn] hora {match.get('local','')} - {match.get('visitante','')}: {exc}")
+                    if cambios_hora:
+                        print(f"[espn] {match.get('local','')} - {match.get('visitante','')}: " + "; ".join(cambios_hora))
+                    elif not str(match.get("kickoff") or "").strip():
+                        print(
+                            f"[espn] {match.get('local','')} - {match.get('visitante','')}: "
+                            "sin hora y sin cruce en ESPN; sin descanso, meteo ni proximos"
+                        )
         for jornada in quiniela_jornadas:
             for match in jornada.get("matches", []):
                 competition_context = match.get("competition_context") or {}
