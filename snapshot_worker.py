@@ -11212,6 +11212,16 @@ def _resolve_domestic_histories_and_h2h(
     away_team_api = _club_api_for_history(away_team, away_team_api)
     home_domestic = _domestic_league_key_from_team_api(home_team_api, league_key)
     away_domestic = _domestic_league_key_from_team_api(away_team_api, league_key)
+    # La ficha "conocida" de un club es la del primer equipo: "BARCELONA (F)"
+    # sale con la liga 4335 (LaLiga). En un cruce femenino una liga domestica
+    # masculina no vale ni para la forma ni para el H2H; se usa la del partido.
+    if _parece_femenino(league_key, _league_display_name(league_key)) or _parece_femenino(
+        home_team, away_team
+    ):
+        if home_domestic and not _parece_femenino(home_domestic, _league_display_name(home_domestic)):
+            home_domestic = ""
+        if away_domestic and not _parece_femenino(away_domestic, _league_display_name(away_domestic)):
+            away_domestic = ""
     cup = _is_non_domestic_competition(league_key)
     match_rows = _ensure_league_history(histories, league_key)
     home_rows = _ensure_league_history(histories, home_domestic) if home_domestic else []
@@ -17464,6 +17474,25 @@ def _bootstrap_quiniela_placeholder(
         away_team,
         histories,
     )
+    # "BARCELONA" y "Real Madrid" -el nombre canonizado, sin la marca (F)-
+    # estan los dos en el historico de LaLiga masculina. En la J11 el
+    # BARCELONA (F)-R.MADRID (F) salia de aqui como LaLiga (id 4335), la guarda
+    # de categoria lo descartaba despues y el partido se quedaba sin liga, sin
+    # tabla y sin temporada pasada. Una liga masculina no se deduce para un
+    # cruce femenino.
+    if (
+        history_inferred_league
+        and _categoria_del_partido(match) == "female"
+        and not _parece_femenino(
+            history_inferred_league, _league_display_name(history_inferred_league)
+        )
+    ):
+        print(
+            f"[categoria] {home_team} vs {away_team}: historico de "
+            f"{history_inferred_league!r} ignorado (no es femenino)"
+        )
+        match.setdefault("league_descartada", history_inferred_league)
+        history_inferred_league = ""
     current_league = _canonical_league_key(match.get("league", ""))
     if history_inferred_league and (
         not current_league
@@ -17614,7 +17643,14 @@ def _bootstrap_quiniela_placeholder(
     if not league_key or league_key == "league_unresolved":
         home_lower = home_team.lower()
         away_lower = away_team.lower()
-        is_female = any(x in home_lower or x in away_lower for x in ["(f)", "women", "femenino", "femení", "femeni"])
+        # La marca (F) va en el nombre del boleto (local_lae), no en el
+        # canonizado: mirando solo "BARCELONA" y "Real Madrid" este cruce no se
+        # reconocia como femenino y se quedaba en "Liga no resuelta". Las
+        # selecciones femeninas no juegan Liga F.
+        is_female = (
+            categoria == "female"
+            or any(x in home_lower or x in away_lower for x in ["(f)", "women", "femenino", "femení", "femeni"])
+        ) and not _es_partido_de_selecciones(match)
         if is_female:
             # En su forma canonica: escrito "5106" a secas, este partido no
             # comparte historico con los otros de su misma liga -se lo trae
@@ -17622,7 +17658,9 @@ def _bootstrap_quiniela_placeholder(
             # al lado si lo tenian.
             league_key = _canonical_league_key("5106")
             match["league"] = league_key
-            match["league_name"] = "Liga Femenina"
+            match["league_name"] = _league_display_name(league_key)
+            # Sin esto se quedaba el id de la liga descartada (4335, LaLiga).
+            match["league_id"] = _sportsdb_league_id_for_key(league_key)
             match["dynamic_league"] = False
             match["league_source"] = "quiniela-placeholder-inferred"
         else:
@@ -17659,10 +17697,20 @@ def _bootstrap_quiniela_placeholder(
     tiene_api_local = bool(str((home_team_api or {}).get("strTeam") or "").strip())
     tiene_api_visitante = bool(str((away_team_api or {}).get("strTeam") or "").strip())
     if categoria == "female":
-        if tiene_api_local:
-            nombre_hist_local = str(home_team_api["strTeam"]).strip()
-        if tiene_api_visitante:
-            nombre_hist_visitante = str(away_team_api["strTeam"]).strip()
+        # Sin ficha femenina, el nombre del boleto ("BARCELONA (F)"), que es el
+        # que dice el comentario de arriba. El canonizado ("BARCELONA") es el
+        # del primer equipo: con el, la forma, la tabla y el H2H salian de
+        # LaLiga masculina en cuanto el partido tenia liga (J11, P11).
+        nombre_hist_local = (
+            str(home_team_api["strTeam"]).strip()
+            if tiene_api_local
+            else (_nombre_para_el_proveedor(match, "local") or home_team)
+        )
+        nombre_hist_visitante = (
+            str(away_team_api["strTeam"]).strip()
+            if tiene_api_visitante
+            else (_nombre_para_el_proveedor(match, "visitante") or away_team)
+        )
 
     home_history, away_history, h2h_history = _resolve_domestic_histories_and_h2h(
         home_team=nombre_hist_local,
