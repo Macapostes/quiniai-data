@@ -7158,18 +7158,21 @@ def _eduardo_current_context() -> dict:
     except Exception as exc:
         payload["error"] = str(exc)
     if not payload.get("ok"):
-        upcoming_jornadas = fetch_eduardo_upcoming_jornadas()
-        if upcoming_jornadas:
-            latest = max(
-                (jornada for jornada in upcoming_jornadas if _safe_int(jornada.get("jornada"))),
-                key=lambda jornada: _safe_int(jornada.get("jornada")),
-                default={},
-            )
-            latest_jornada = _safe_int(latest.get("jornada"))
-            if latest_jornada:
-                payload["jornada"] = latest_jornada
-    if not payload.get("ok"):
-        payload["jornada"] = _safe_int((QUINIELA_HISTORY or {}).get("current_jornada"))
+        # Sin la pagina de porcentajes: lo guardado del ciclo anterior, que no
+        # puede ir por delante de la primera de las proximas anunciadas (el
+        # historico de Windows se quedo con la 15 el 2-oct). Sin nada guardado,
+        # esa primera anunciada; nunca la ultima: Eduardo llega a anunciar
+        # cuatro por delante. (Antes se tomaba la ultima anunciada, aunque luego
+        # lo guardado la pisaba siempre.)
+        guardada = _safe_int((QUINIELA_HISTORY or {}).get("current_jornada"))
+        anunciadas = [
+            _safe_int(jornada.get("jornada"))
+            for jornada in fetch_eduardo_upcoming_jornadas()
+            if _safe_int(jornada.get("jornada"))
+        ]
+        if anunciadas and (not guardada or guardada > min(anunciadas)):
+            guardada = min(anunciadas)
+        payload["jornada"] = guardada
         payload["temporada"] = _safe_int((QUINIELA_HISTORY or {}).get("season"))
         payload["ok"] = bool(payload.get("jornada") and payload.get("temporada"))
     _cache_set(EXTERNAL_FEEDS_CACHE, cache_key, payload)
@@ -17100,14 +17103,47 @@ def _merge_upcoming_slot_metadata(slots: list[dict], upcoming_payload: dict | No
     return merged
 
 
+def _jornada_actual_de(quiniela_jornadas: list[dict]) -> int | None:
+    """La jornada en juego de la lista: la marcada como actual.
+
+    Si ninguna lo esta, la mas baja que no sea solo historico, y si no, la mas
+    baja. Nunca la primera de la lista: va ordenada de mayor a menor, y el 2-oct
+    de 2026 Eduardo publico de golpe las J12-J15; la J11 se quedo fuera de la
+    ventana y la "actual" paso a ser la J15 (Oporto-PSV del 20-oct), con los
+    partidos de foco, el monitor y el historico apuntando tres semanas por
+    delante.
+    """
+    numeradas = [j for j in quiniela_jornadas or [] if _safe_int(j.get("jornada")) is not None]
+    if not numeradas:
+        return None
+    marcada = next((j for j in numeradas if j.get("is_current")), None)
+    if marcada is not None:
+        return marcada.get("jornada")
+    vivas = [j for j in numeradas if not j.get("history_only")] or numeradas
+    return min(vivas, key=lambda j: _safe_int(j.get("jornada"))).get("jornada")
+
+
+def _ventana_de_jornadas(actual: int, ultima_publicada: int, tamano: int) -> list[int]:
+    """Jornadas a seguir: las `tamano` ultimas publicadas, pero sin dejar fuera la actual.
+
+    Antes la ventana eran siempre las `tamano` ultimas publicadas. Mientras
+    Eduardo publicaba una o dos por delante daba igual (actual 11, ultima 13,
+    tamano 4: 10-13), pero el 2-oct publico hasta la 15 y la ventana paso a
+    12-15: la J11 se quedo fuera. Ahora el final no pasa de actual + tamano - 1.
+    Si la ventana de antes ya incluia la actual, sale exactamente la misma.
+    """
+    actual = max(1, int(actual))
+    tamano = max(1, int(tamano))
+    ultima = max(actual, min(int(ultima_publicada or actual), actual + tamano - 1))
+    primera = max(1, ultima - tamano + 1)
+    return list(range(primera, ultima + 1))
+
+
 def _persist_quiniela_history(quiniela_jornadas: list[dict]) -> None:
     jornadas_store = QUINIELA_HISTORY.setdefault("jornadas", {})
     QUINIELA_HISTORY["updated_at"] = _now_iso()
     if quiniela_jornadas:
-        QUINIELA_HISTORY["current_jornada"] = next(
-            (jornada.get("jornada") for jornada in quiniela_jornadas if jornada.get("is_current")),
-            quiniela_jornadas[0].get("jornada"),
-        )
+        QUINIELA_HISTORY["current_jornada"] = _jornada_actual_de(quiniela_jornadas)
     keep_jornadas = set()
     for jornada in quiniela_jornadas:
         jornada_num = _safe_int(jornada.get("jornada"))
@@ -17214,8 +17250,8 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
             latest_available_jornada = _lookahead
     except Exception:
         pass
-    first_jornada = max(1, latest_available_jornada - QUINIELA_HISTORY_JORNADAS + 1)
-    target_jornadas = list(range(first_jornada, latest_available_jornada + 1))
+    QUINIELA_HISTORY["latest_announced_jornada"] = latest_available_jornada
+    target_jornadas = _ventana_de_jornadas(current_jornada, latest_available_jornada, QUINIELA_HISTORY_JORNADAS)
     for jornada_num in reversed(target_jornadas):
         payload = fetch_quiniela_jornada_page(jornada_num, temporada=current_season)
         upcoming_payload = upcoming_map.get(jornada_num) or {}
@@ -18513,10 +18549,7 @@ def build_snapshot(raw_matches: list) -> dict:
                 resolved_matches.append(match)
             jornada["matches"] = resolved_matches
         tracked_matches = ordered_tracked
-        current_jornada_num = next(
-            (jornada.get("jornada") for jornada in quiniela_jornadas if jornada.get("is_current")),
-            quiniela_jornadas[0].get("jornada"),
-        )
+        current_jornada_num = _jornada_actual_de(quiniela_jornadas)
         quiniela_focus_matches = []
         for jornada in quiniela_jornadas:
             if jornada.get("jornada") != current_jornada_num:
@@ -18650,10 +18683,10 @@ def build_snapshot(raw_matches: list) -> dict:
         "focus_matches": len(quiniela_focus_matches),
         "tracked_quiniela_matches": len(tracked_matches),
         "quiniela_jornadas": len(quiniela_jornadas),
-        "quiniela_current_jornada": next(
-            (jornada.get("jornada") for jornada in quiniela_jornadas if jornada.get("is_current")),
-            quiniela_jornadas[0].get("jornada") if quiniela_jornadas else None,
-        ),
+        "quiniela_current_jornada": _jornada_actual_de(quiniela_jornadas),
+        # La ultima que Eduardo ha anunciado, se siga o no (la de arriba es la
+        # ultima de las que se siguen).
+        "quiniela_latest_announced_jornada": _safe_int((QUINIELA_HISTORY or {}).get("latest_announced_jornada")),
         "quiniela_latest_available_jornada": max(
             [jornada.get("jornada") for jornada in quiniela_jornadas if jornada.get("jornada") is not None],
             default=None,
