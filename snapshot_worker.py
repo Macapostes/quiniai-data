@@ -7068,10 +7068,17 @@ def _parse_eduardo_upcoming_jornadas(html_text: str) -> list[dict]:
                         if day_str in day_map:
                             target_day = day_map[day_str]
                             base_day = base_dt.weekday()
+                            # Ventana tipica del boleto: vie..lun en torno a la
+                            # fecha de la jornada. Con base=sabado, LUN tiene que
+                            # ser +2 (12/10), no -5 (05/10). El corte anterior
+                            # (diff>1 / diff<-5) sesgaba al pasado: Burgos-Granada
+                            # y Oviedo-Eibar de la J12 se quedaron en el lunes
+                            # ANTERIOR, sin cuotas que lo corrigieran, y ESPN no
+                            # los rescataba (busca a +/-36 h de esa hora mala).
                             diff = target_day - base_day
-                            if diff > 1:
+                            if diff > 3:
                                 diff -= 7
-                            elif diff < -5:
+                            elif diff < -2:
                                 diff += 7
                             match_date_str = (base_dt + timedelta(days=diff)).strftime("%d/%m/%Y")
                         else:
@@ -16429,7 +16436,13 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
         return []
     ahora = ahora or datetime.now(timezone.utc)
     kickoff_dt = _parse_iso_datetime(match.get("kickoff", ""))
-    if kickoff_dt is None or kickoff_dt < ahora - timedelta(hours=3) or kickoff_dt > ahora + timedelta(days=12):
+    if kickoff_dt is None or kickoff_dt > ahora + timedelta(days=12):
+        return []
+    # Normal: solo futuros (o recien empezados). Si la hora del boleto se
+    # calculo mal y ya "paso" (Burgos-Granada J12 en el 05/10 en vez del
+    # 12/10), aun asi se busca el cruce real en ESPN hasta 7 dias atras.
+    hora_pasada = kickoff_dt < ahora - timedelta(hours=3)
+    if hora_pasada and kickoff_dt < ahora - timedelta(days=7):
         return []
     liga = _canonical_league_key(match.get("league") or "")
     selecciones = _es_partido_de_selecciones(match)
@@ -16440,18 +16453,45 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
     cambios: list[str] = []
     evento = {}
     for slug in slugs:
+        local = _nombres_del_lado(match, "local")
+        visitante = _nombres_del_lado(match, "visitante")
+        # 1) Ventana estrecha (+/-1 dia, 36 h) alrededor de la hora conocida.
         eventos = []
         for dia in _espn_fechas(kickoff_dt):
             eventos.extend(_espn_eventos_del_dia(slug, dia))
-        local = _nombres_del_lado(match, "local")
-        visitante = _nombres_del_lado(match, "visitante")
         for nombre_l in local:
             for nombre_v in visitante:
-                evento = _espn_elegir_partido(eventos, nombre_l, nombre_v, kickoff_dt, _similitud_espn)
-                if evento:
-                    break
+                if not hora_pasada:
+                    evento = _espn_elegir_partido(
+                        eventos, nombre_l, nombre_v, kickoff_dt, _similitud_espn
+                    )
+                    if evento:
+                        break
             if evento:
                 break
+        # 2) Si no hay cruce cerca (hora del boleto mal calculada: LUN -> lunes
+        # anterior), mirar +/-7 dias con margen de 8 dias. Solo vale un cruce
+        # inequivoco y programado; _corregir_kickoff_con_espn ya exige eso.
+        if not evento:
+            base = kickoff_dt.astimezone(timezone.utc).date()
+            eventos = []
+            for delta in range(-7, 8):
+                dia = (base + timedelta(days=delta)).strftime("%Y%m%d")
+                eventos.extend(_espn_eventos_del_dia(slug, dia))
+            for nombre_l in local:
+                for nombre_v in visitante:
+                    evento = _espn_elegir_partido(
+                        eventos,
+                        nombre_l,
+                        nombre_v,
+                        kickoff_dt,
+                        _similitud_espn,
+                        margen_horas=8 * 24,
+                    )
+                    if evento:
+                        break
+                if evento:
+                    break
         if evento:
             evento["slug"] = slug
             break
