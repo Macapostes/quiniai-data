@@ -1,4 +1,4 @@
-"""Cliente unico para TheSportsDB: ritmo, memoria por pasada y cache en disco.
+﻿"""Cliente unico para TheSportsDB: ritmo, memoria por pasada y cache en disco.
 
 Por que existe
 --------------
@@ -151,6 +151,11 @@ class ClienteSportsDB:
         self.espera_base_429 = float(espera_base_429)
         self.espera_max_429 = float(espera_max_429)
         self.umbral_circuito = max(1, int(umbral_circuito))
+        # Respuestas vacias en la misma pasada que hacen falta para dar por
+        # caido al proveedor. Una sola no dice nada -puede ser una liga sin
+        # tabla-; cinco en la misma pasada son la forma que tiene este
+        # proveedor de cortarnos: 200 con 0 bytes en vez de 429.
+        self.umbral_nojson_pasada = 5
         self.ttl_por_endpoint = dict(TTL_POR_ENDPOINT if ttl_por_endpoint is None else ttl_por_endpoint)
         # requests.get se busca en cada llamada para que los tests que lo
         # parchean sigan funcionando.
@@ -173,6 +178,7 @@ class ClienteSportsDB:
         with self._lock:
             self._memo: dict[str, _Entrada] = {}
             self._seguidos_429 = 0
+            self._nojson_pasada = 0
             self.circuito_abierto = False
             self.stats = {
                 "llamadas": 0,
@@ -401,6 +407,36 @@ class ClienteSportsDB:
             datos = json.loads(cuerpo)
         except ValueError:
             self._sumar("nojson")
+            # Una respuesta vacia suelta no es una averia: puede ser una liga
+            # sin tabla. Pero MUCHAS SEGUIDAS si lo son: asi es como nos corta
+            # este proveedor, con un 200 de 0 bytes en vez de un 429. Al no
+            # contarlo, el worker no se enteraba de que estaba fuera y seguia
+            # pidiendo liga tras liga con dos segundos de freno cada una: los
+            # dias 5, 6 y 7 de octubre de 2026 el ciclo no termino en toda la
+            # noche y el feed se quedo 10, 14 y 16 horas sin publicar.
+            # No se cuentan SEGUIDAS sino las de toda la pasada: entre dos
+            # vacias se cuela alguna respuesta buena de otro endpoint y la
+            # racha nunca llegaba al umbral, que es por lo que el worker siguio
+            # colgandose el 7/10/2026 despues del primer intento de arreglo.
+            abrir = False
+            with self._lock:
+                self._nojson_pasada += 1
+                if (
+                    self._nojson_pasada >= self.umbral_nojson_pasada
+                    and not self.circuito_abierto
+                ):
+                    self.circuito_abierto = True
+                    abrir = True
+            if abrir:
+                # Abrir el circuito es lo unico que corta de verdad: a partir de
+                # aqui get_json falla al instante en vez de esperar su turno de
+                # dos segundos. El volcado del proceso colgado lo dejo claro:
+                # estaba en _esperar_turno, no pidiendo.
+                self.avisar(
+                    f"[sportsdb] {self._nojson_pasada} respuestas vacias en esta pasada: "
+                    "circuito abierto, el resto se sirve de la cache"
+                )
+                self.al_fallar()
             raise SportsDBNoJSON(
                 f"respuesta sin JSON en {_endpoint(url)} ({len(cuerpo)} bytes)", "nojson", estado
             ) from None

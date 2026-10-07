@@ -214,6 +214,11 @@ _SPORTSDB_FALLOS_CICLO = 0
 # Un rechazo suelto es ruido normal. A partir de tres seguidos ya no es ruido:
 # el proveedor no esta respondiendo.
 SPORTSDB_FALLOS_PARA_DEGRADADO = 3
+# Clasificaciones que pueden volver vacias antes de dejar de pedirlas en este
+# ciclo. Ver fetch_the_sportsdb_lookup_table: es la consulta que colgaba al
+# worker noches enteras.
+FALLOS_TABLA_PARA_RENDIRSE = 3
+_FALLOS_TABLA_CICLO = 0
 
 
 def _marcar_fallo_sportsdb() -> None:
@@ -227,8 +232,9 @@ def _reiniciar_fallos_sportsdb() -> None:
     Tampoco la memoria de la pasada ni el circuito del cliente: lo que fallo en
     el ciclo anterior se vuelve a intentar en este.
     """
-    global _SPORTSDB_FALLOS_CICLO
+    global _SPORTSDB_FALLOS_CICLO, _FALLOS_TABLA_CICLO
     _SPORTSDB_FALLOS_CICLO = 0
+    _FALLOS_TABLA_CICLO = 0
     cliente = globals().get("_SPORTSDB_CLIENTE")
     if cliente is not None:
         cliente.nueva_pasada()
@@ -10911,7 +10917,19 @@ def fetch_the_sportsdb_h2h_events(home_team: str, away_team: str) -> list[dict]:
                 if query not in queries:
                     queries.append(query)
     for query in queries[:8]:
+        # Ocho consultas por partido, quince partidos, dos segundos de freno
+        # cada una: esta era la llamada que dejaba el ciclo sin terminar noches
+        # enteras (5 al 8 de octubre de 2026, hasta 24 h sin publicar). El
+        # volcado del proceso colgado siempre caia aqui, en _esperar_turno.
+        #
+        # No consumia cupo ni miraba el estado del proveedor, asi que ninguno de
+        # los topes del ciclo la frenaba. Ahora para en seco cuando el proveedor
+        # esta caido o cuando se acaba el cupo del ciclo, y se sirve lo que haya
+        # reunido hasta ese momento.
+        if _sportsdb_degradado() or not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+            break
         try:
+            _frenar_sportsdb()
             data = _request_json(
                 THESPORTSDB_SEARCH_EVENTS_URL,
                 params={"e": query},
@@ -11002,6 +11020,20 @@ def fetch_the_sportsdb_last_events(team_id: str) -> list[dict]:
 
 
 def fetch_the_sportsdb_lookup_table(league_id: str, season_label: str) -> list[dict]:
+    """Clasificacion de una liga, o lo ultimo que guardamos de ella.
+
+    Esta es la consulta que mas se repite -una por liga y etiqueta de
+    temporada- y la que colgo al worker cuatro dias seguidos (5, 6, 7 y 8 de
+    octubre de 2026): 10, 14, 16 y 24 horas sin publicar. Cuando el proveedor
+    nos corta no devuelve 429 sino un 200 con 0 bytes, asi que nada lo tomaba
+    por averia y el worker seguia pidiendo la siguiente tabla, con dos segundos
+    de freno cada una, hasta no terminar el ciclo jamas.
+
+    El contador es de esta llamada y de este ciclo a proposito: fiarlo a la
+    racha del cliente no funciono porque entre dos tablas vacias se cuela
+    alguna respuesta buena de otro endpoint y la racha se reinicia.
+    """
+    global _FALLOS_TABLA_CICLO
     if not league_id or not season_label:
         return []
     cache_key = f"sportsdb_table:v1:{league_id}:{season_label}"
@@ -11009,6 +11041,8 @@ def fetch_the_sportsdb_lookup_table(league_id: str, season_label: str) -> list[d
     if cached:
         return list(cached)
     vieja = _cache_get(HISTORY_CACHE, cache_key) or []
+    if _FALLOS_TABLA_CICLO >= FALLOS_TABLA_PARA_RENDIRSE:
+        return list(vieja)
     try:
         _frenar_sportsdb()
         data = _request_json(
@@ -11017,6 +11051,12 @@ def fetch_the_sportsdb_lookup_table(league_id: str, season_label: str) -> list[d
             timeout=20,
         )
     except Exception as exc:
+        _FALLOS_TABLA_CICLO += 1
+        if _FALLOS_TABLA_CICLO == FALLOS_TABLA_PARA_RENDIRSE:
+            print(
+                f"[sportsdb] {_FALLOS_TABLA_CICLO} clasificaciones sin respuesta: "
+                "no se piden mas en este ciclo, se sirve lo guardado"
+            )
         _avisar_sportsdb(f"[sportsdb] lookuptable {league_id} {season_label}: {exc}", exc)
         return list(vieja)
     rows = (data or {}).get("table") or []
