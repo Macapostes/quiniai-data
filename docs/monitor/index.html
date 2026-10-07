@@ -203,22 +203,29 @@
         </div>`;
     };
     const STATUS_URLS = [
-      "https://raw.githubusercontent.com/Macapostes/quiniai-data/main/docs/monitor/status.json",
       "status.json",
+      "https://raw.githubusercontent.com/Macapostes/quiniai-data/main/docs/monitor/status.json",
     ];
+    // Se piden las dos copias y gana la que tenga el generated_at mas nuevo.
+    // Antes valia la primera que respondiera, que era la de raw.githubusercontent:
+    // su CDN la cachea cinco minutos y NO se purga al hacer push, asi que el
+    // 7/10/2026 la pagina siguio diciendo "Worker con error" un buen rato despues
+    // de subir el ciclo bueno. La copia de Pages (misma carpeta) si se purga al
+    // desplegar, pero tampoco se fia solo de ella: si el despliegue va con retraso,
+    // la de raw puede ir por delante.
     async function loadStatus() {
-      let lastError = null;
-      for (const url of STATUS_URLS) {
-        try {
-          const sep = url.includes("?") ? "&" : "?";
-          const response = await fetch(`${url}${sep}t=${Date.now()}`, {cache:"no-store"});
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return await response.json();
-        } catch (error) {
-          lastError = error;
-        }
+      const intentos = await Promise.allSettled(STATUS_URLS.map(async (url) => {
+        const sep = url.includes("?") ? "&" : "?";
+        const response = await fetch(`${url}${sep}t=${Date.now()}`, {cache:"no-store"});
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+      }));
+      const servidas = intentos.filter((r) => r.status === "fulfilled").map((r) => r.value);
+      if (!servidas.length) {
+        throw intentos[0].reason || new Error("No se pudo cargar status.json");
       }
-      throw lastError || new Error("No se pudo cargar status.json");
+      const sello = (estado) => Date.parse((estado && estado.generated_at) || "") || 0;
+      return servidas.reduce((mejor, otra) => (sello(otra) > sello(mejor) ? otra : mejor));
     }
     async function render() {
       const status = await loadStatus();
