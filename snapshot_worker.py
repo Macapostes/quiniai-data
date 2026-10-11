@@ -669,6 +669,17 @@ TEAM_NAME_ALIASES = {
     # que, escritos asi, no se reconocian a si mismos entre temporadas.
     "fc internazionale milano": "Inter Milan",
     "internazionale": "Inter Milan",
+    # Nombres del boleto en jornadas europeas (J13): sin estos alias INTER-BRUJAS
+    # no encontraba el Inter-Club Brugge de Champions y se quedaba con un partido
+    # de Segunda RFEF de TheSportsDB.
+    "inter": "Inter Milan",
+    "brujas": "Club Brugge",
+    "club brujas": "Club Brugge",
+    "r union sg": "Union Saint-Gilloise",
+    "union sg": "Union Saint-Gilloise",
+    "royale union sg": "Union Saint-Gilloise",
+    "u craiova": "Universitatea Craiova",
+    "craiova": "Universitatea Craiova",
     "sport lisboa e benfica": "Benfica",
     "sl benfica": "Benfica",
     "fc red bull salzburg": "RB Salzburg",
@@ -17412,6 +17423,60 @@ def _audit_quiniela_integrity(
     return report
 
 
+def _es_competicion_europea(match: dict) -> bool:
+    for campo in ("league_key", "league"):
+        clave = _canonical_league_key(str(match.get(campo) or ""))
+        if not clave:
+            continue
+        if clave in NON_DOMESTIC_LEAGUE_KEYS or clave.startswith("soccer_uefa_"):
+            return True
+        if clave.startswith("sportsdb_") and clave.split("_", 1)[1] in NON_DOMESTIC_SPORTSDB_IDS:
+            return True
+    return False
+
+
+def _tiene_liga(match: dict) -> bool:
+    return bool(str(match.get("league_key") or match.get("league") or "").strip())
+
+
+def _descartar_emparejamientos_incoherentes(jornada_matches: list[dict], jornada: int) -> list[str]:
+    """En una jornada europea, un partido emparejado con una liga domestica es otro partido.
+
+    J13: INTER-BRUJAS se quedo con un partido de Segunda RFEF (Sant Joan d'Alacant)
+    con sus cuotas, tabla y estadio. Mejor un hueco limpio que datos de otro partido.
+    Se considera europea si al menos la mitad de los partidos con liga son UEFA.
+    """
+    con_liga = [m for m in jornada_matches if _tiene_liga(m)]
+    europeos = [m for m in con_liga if _es_competicion_europea(m)]
+    if not con_liga or len(europeos) * 2 < len(con_liga):
+        return []
+    descartados = []
+    for i, match in enumerate(jornada_matches):
+        if _es_competicion_europea(match) or not _tiene_liga(match):
+            continue
+        slot = next(
+            (dict(s) for s in (match.get("quiniela_slots") or []) if s.get("jornada") == jornada),
+            None,
+        )
+        if not slot:
+            continue
+        slot.setdefault("local", slot.get("local_lae") or match.get("local", ""))
+        slot.setdefault("visitante", slot.get("visitante_lae") or match.get("visitante", ""))
+        if not slot.get("local"):
+            slot["local"] = match.get("local", "")
+        if not slot.get("visitante"):
+            slot["visitante"] = match.get("visitante", "")
+        limpio = _build_quiniela_placeholder(slot, jornada, cached_match=None)
+        limpio["kickoff"] = match.get("kickoff", "")
+        limpio["notes"].append("emparejamiento_descartado=liga_domestica_en_jornada_europea")
+        _aplicar_horario_oficial(limpio, slot)
+        jornada_matches[i] = limpio
+        descartados.append(f"J{jornada} P{slot.get('position')} {slot.get('local')}-{slot.get('visitante')} ({match.get('league')})")
+    for d in descartados:
+        LOGGER.warning("quiniela_emparejamiento_descartado %s", d)
+    return descartados
+
+
 def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], set[str]]:
     current_context = _eduardo_current_context()
     current_jornada = _safe_int(current_context.get("jornada"))
@@ -17517,6 +17582,7 @@ def build_quiniela_jornadas(matches: list[dict]) -> tuple[list[dict], set[str], 
             all_keys.add(match_key)
             if jornada_num == current_jornada:
                 current_keys.add(match_key)
+        _descartar_emparejamientos_incoherentes(jornada_matches, jornada_num)
         if jornada_matches:
             kickoff_dates = sorted(
                 [match.get("kickoff", "") for match in jornada_matches if match.get("kickoff", "")]
