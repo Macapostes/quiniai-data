@@ -166,6 +166,11 @@ OPENFOOTBALL_UEFA_BASE_URL = (
     "https://raw.githubusercontent.com/openfootball/champions-league/master"
 )
 OPENFOOTBALL_SOURCE = "openfootball"
+UEFA_CLUBES_H2H_KEYS = (
+    "soccer_uefa_champs_league",
+    "soccer_uefa_europa_league",
+    "soccer_uefa_europa_conference_league",
+)
 OPENFOOTBALL_UEFA_FILES = {
     "soccer_uefa_champs_league": "cl.txt",
     "soccer_uefa_europa_league": "el.txt",
@@ -6483,6 +6488,41 @@ def _categoria_del_partido(match: dict) -> str | None:
     return None
 
 
+# Ligas masculinas por id de TheSportsDB (LaLiga, Segunda, Premier, Serie A,
+# Bundesliga, Ligue 1, Eredivisie, Primeira, Champions, Europa, Conference).
+_LIGAS_MASCULINAS_SPORTSDB = {
+    "4335", "4400", "4328", "4332", "4331", "4334", "4337", "4344", "4480", "4481", "5071",
+}
+
+
+def _categoria_por_competicion(match: dict) -> str | None:
+    """Categoria que dice la COMPETICION del partido, no el texto del boleto.
+
+    16-oct-2026: la J12 llego de la LAE sin sufijo (M)/(F) ("RAYO",
+    "BARCELONA") y el historico se publico con gender "", asi que el backend no
+    pudo verificar la categoria. LaLiga/Segunda/UEFA de clubes son masculinas;
+    Liga F es femenina. Las claves de The Odds API ("soccer_...") son todas
+    masculinas salvo las que dicen "womens", que coge _parece_femenino.
+    """
+    textos = (match.get("league_key"), match.get("league"), match.get("league_name"))
+    if _parece_femenino(*textos):
+        return "female"
+    for valor in textos[:2]:
+        clave = _canonical_league_key(valor)
+        if not clave:
+            continue
+        if clave.startswith("soccer_"):
+            return "male"
+        if clave.startswith("sportsdb_") and clave.split("_", 1)[1] in _LIGAS_MASCULINAS_SPORTSDB:
+            return "male"
+    return None
+
+
+def _categoria_publicable(match: dict) -> str:
+    """La del boleto si la sella; si no, la de la competicion; si no, ""."""
+    return _categoria_del_partido(match) or _categoria_por_competicion(match) or ""
+
+
 _MARCAS_FEMENINAS_RE = re.compile(
     r"\b(femenin[oa]|femenines|femeni|femenil|women'?s?|ladies"
     r"|damer|damlag|kvinner|feminine|feminin|frauen)\b",
@@ -11342,6 +11382,13 @@ def _resolve_domestic_histories_and_h2h(
         canon = _canonical_league_key(key)
         if canon and canon not in h2h_keys:
             h2h_keys.append(canon)
+    # Un cruce europeo de clubes puede tener antecedentes en OTRA competicion
+    # UEFA: GALATASARAY-BARCELONA (Champions 2026-27) se vio en la Europa
+    # League 2021-22 y salia "sin enfrentamientos" porque solo se miraba cl.txt.
+    if _canonical_league_key(league_key) in UEFA_CLUBES_H2H_KEYS:
+        for clave in UEFA_CLUBES_H2H_KEYS:
+            if clave not in h2h_keys:
+                h2h_keys.append(clave)
     # Dos equipos pueden haberse cruzado en OTRA division del mismo pais. El
     # Racing y el Alaves se vieron cuatro veces en Segunda -2014, 2015, 2022 y
     # 2023-, pero este ano los dos estan en Primera, asi que preguntando solo
@@ -18163,7 +18210,7 @@ def _bootstrap_quiniela_placeholder(
         # del primer equipo en un cruce de Liga F-, pero lo busca aqui. Sin
         # esto, el worker resolvia bien la Liga F y el dato se tiraba igual al
         # llegar, asi que el usuario seguia viendo la pestaña vacia.
-        "gender": _categoria_del_partido(match) or "",
+        "gender": _categoria_publicable(match),
         "league": match.get("league_name") or match.get("league") or "",
         "table_quality": _table_quality_snapshot(
             current_table_snapshot,
@@ -18617,6 +18664,7 @@ def build_snapshot(raw_matches: list) -> dict:
                     # backend busca la marca de categoria DENTRO del historico.
                     "gender": _categoria_por_nombre(home_team)
                     or _categoria_por_nombre(away_team)
+                    or _categoria_por_competicion({"league": league})
                     or "",
                     "league": _league_display_name(league) or league or "",
                     "table_quality": _table_quality_snapshot(
