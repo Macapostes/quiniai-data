@@ -8430,6 +8430,14 @@ def fetch_the_sportsdb_team(team_name: str, country_hint: str | None = None) -> 
     teams = []
     alguna_respuesta = False
     for query in queries:
+        # El cupo se miraba una sola vez ahi arriba, y solo si habia copia
+        # guardada. Aqui abajo un equipo femenino lanza hasta seis variantes del
+        # nombre, y con trescientos equipos por ciclo el tope de 40 se quedaba en
+        # nada: el 17/10/2026 se gastaron 173 peticiones y el ciclo se paso 33 de
+        # sus 58 minutos esperando turno. Se mira antes de cada variante, y si el
+        # proveedor esta caido no se encola ninguna.
+        if _sportsdb_degradado() or not _sportsdb_hay_cupo(SPORTSDB_RESERVA_LIGAS):
+            break
         try:
             _frenar_sportsdb()
             data = _request_json(
@@ -11057,6 +11065,13 @@ def fetch_the_sportsdb_last_events(team_id: str) -> list[dict]:
     if cached:
         return list(cached)
     vieja = _cache_get(HISTORY_CACHE, cache_key) or []
+    # Sin comprobar el cupo a proposito: esta llamada y la de la clasificacion
+    # son las pocas que de verdad valen, y desde 33ade7d se piden aunque la
+    # busqueda de nombres haya vaciado el cupo del ciclo (si no, un 429 dejaba a
+    # Bayern y Shakhtar sin racha ni puesto). Caido el proveedor es otra cosa:
+    # ahi no hay nada que esperar, solo turno.
+    if _sportsdb_degradado():
+        return list(vieja)
     try:
         _frenar_sportsdb()
         data = _request_json(THESPORTSDB_EVENTS_LAST_URL, params={"id": team_id}, timeout=20)
@@ -11093,6 +11108,11 @@ def fetch_the_sportsdb_lookup_table(league_id: str, season_label: str) -> list[d
         return list(cached)
     vieja = _cache_get(HISTORY_CACHE, cache_key) or []
     if _FALLOS_TABLA_CICLO >= FALLOS_TABLA_PARA_RENDIRSE:
+        return list(vieja)
+    # Tampoco mira el cupo, por lo mismo que last_events. El freno de arriba
+    # cuenta tablas vacias; este corta cuando el proveedor esta caido, que es
+    # cuando pedir solo sirve para hacer cola.
+    if _sportsdb_degradado():
         return list(vieja)
     try:
         _frenar_sportsdb()

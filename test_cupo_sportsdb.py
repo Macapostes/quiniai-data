@@ -175,6 +175,79 @@ class NingunaLlamadaSeSaltaElCupoTests(unittest.TestCase):
             "Estas llamadas piden a TheSportsDB sin gastar cupo: " + str(sin_freno),
         )
 
+    def test_toda_llamada_mira_el_cupo_antes_de_gastarlo(self):
+        """Descontar no es parar.
+
+        El test de arriba exige que cada llamada pase por el freno, y el freno
+        descuenta del cupo; pero una funcion que descuenta sin mirar lo que
+        queda se salta el tope igual. El 17/10/2026 un ciclo gasto 173
+        peticiones con el tope en 40 y se paso 33 de sus 58 minutos esperando
+        turno: fetch_the_sportsdb_team miraba el cupo una sola vez, y luego el
+        bucle de variantes del nombre lanzaba hasta seis seguidas sin volver a
+        mirar; eventslast y lookuptable no lo miraban nunca.
+
+        Dos funciones estan exentas a proposito, y no por descuido: ver 33ade7d
+        (9/9/2026). last_events y lookup_table son las pocas llamadas que de
+        verdad valen, y se piden aunque la busqueda de nombres haya vaciado el
+        cupo; si no, un 429 dejaba a Bayern y al Shakhtar sin racha ni puesto, y
+        a Bodo con el puesto 22 de la Champions. Gastan cupo pero no lo
+        consultan. Lo que si miran es si el proveedor esta caido.
+
+        La ventana de 12 lineas da de sobra: hoy la comprobacion mas lejana
+        esta a 6 lineas de su llamada.
+        """
+        from pathlib import Path
+
+        EXENTAS = {
+            "fetch_the_sportsdb_last_events",
+            "fetch_the_sportsdb_lookup_table",
+        }
+
+        lineas = Path(sw.__file__).read_text(encoding="utf-8").splitlines()
+
+        def _funcion_de(indice):
+            for j in range(indice, -1, -1):
+                if lineas[j].startswith("def "):
+                    return lineas[j][4:].split("(")[0]
+            return ""
+
+        sin_mirar = []
+        for i, linea in enumerate(lineas):
+            if "_frenar_sportsdb()" not in linea:
+                continue
+            # Ni la definicion de la funcion ni los comentarios que la nombran.
+            if linea.strip().startswith(("#", "def ")):
+                continue
+            if _funcion_de(i) in EXENTAS:
+                continue
+            previas = lineas[max(0, i - 12) : i]
+            if not any("_sportsdb_hay_cupo" in p for p in previas):
+                sin_mirar.append(f"linea {i + 1}: {linea.strip()[:70]}")
+        self.assertEqual(
+            sin_mirar,
+            [],
+            "Estas gastan cupo sin comprobar si queda: " + str(sin_mirar),
+        )
+
+    def test_las_exentas_del_cupo_si_paran_con_el_proveedor_caido(self):
+        """Exenta del cupo no es exenta de todo.
+
+        Pedir con el circuito abierto no trae el dato: solo hace cola. El
+        17/10/2026 el ciclo se paso 33 minutos esperando turno con 30 respuestas
+        429 encima.
+        """
+        import inspect
+
+        for funcion in (sw.fetch_the_sportsdb_last_events, sw.fetch_the_sportsdb_lookup_table):
+            fuente = inspect.getsource(funcion)
+            self.assertIn(
+                "_sportsdb_degradado()",
+                fuente,
+                f"{funcion.__name__} sigue pidiendo con el proveedor caido",
+            )
+            # La exencion del cupo es deliberada (33ade7d): que siga siendolo.
+            self.assertNotIn("_sportsdb_hay_cupo", fuente)
+
 
 if __name__ == "__main__":
     unittest.main()
