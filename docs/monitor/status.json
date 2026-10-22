@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-10-22T12:22:53.258426+00:00",
-  "snapshot_generated_at": "2026-10-22T12:22:45.942565+00:00",
+  "generated_at": "2026-10-22T18:53:22.076600+00:00",
+  "snapshot_generated_at": "2026-10-22T18:53:15.040773+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
   "coverage": {
-    "monitored_matches": 161,
+    "monitored_matches": 174,
     "focus_matches": 15,
     "tracked_quiniela_matches": 60,
     "quiniela_jornadas": 4,
     "quiniela_current_jornada": 16,
     "quiniela_latest_available_jornada": 19,
-    "weather_matches": 156,
-    "travel_matches": 152,
-    "history_matches": 147,
+    "weather_matches": 169,
+    "travel_matches": 165,
+    "history_matches": 154,
     "sources_total": 24,
     "sources_ok": 24,
-    "fresh_headlines": 27,
+    "fresh_headlines": 25,
     "structured_focus_matches": 60,
     "structured_referees": 16,
     "focus_valid_tables": 15,
@@ -28,10 +28,10 @@
     "focus_resolved_leagues": 15
   },
   "structured_db_summary": {
-    "teams": 138,
-    "matches": 158,
+    "teams": 141,
+    "matches": 168,
     "referees": 16,
-    "last_pruned_at": "2026-10-22T12:22:45.931872+00:00"
+    "last_pruned_at": "2026-10-22T18:53:15.030026+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -39,15 +39,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-10-18T17:55:37.303513+00:00",
-      "finished_at": "2026-10-18T18:30:03.031074+00:00",
-      "ok": true,
-      "duration_seconds": 2065.73,
-      "monitored_matches": 164,
-      "tracked_matches": 60,
-      "current_jornada": 15
-    },
     {
       "started_at": "2026-10-18T18:30:16.698084+00:00",
       "finished_at": "2026-10-18T18:47:23.853479+00:00",
@@ -146,6 +137,15 @@
       "monitored_matches": 161,
       "tracked_matches": 60,
       "current_jornada": 16
+    },
+    {
+      "started_at": "2026-10-22T18:20:05.109043+00:00",
+      "finished_at": "2026-10-22T18:53:22.075775+00:00",
+      "ok": true,
+      "duration_seconds": 1996.97,
+      "monitored_matches": 174,
+      "tracked_matches": 60,
+      "current_jornada": 16
     }
   ],
   "public_jornadas": [
@@ -168,16 +168,16 @@
           "kickoff": "2026-10-24T12:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 1.79,
-            "X": 3.91,
-            "2": 4.53
+            "1": 1.81,
+            "X": 3.83,
+            "2": 4.49
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 53.97,
-            "X": 24.71,
-            "2": 21.33
+            "1": 53.31,
+            "X": 25.2,
+            "2": 21.49
           },
           "official_percent": {
             "1": 60.0,
@@ -246,16 +246,34 @@
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "high",
+              "score": 88,
+              "reason": "Rayo Vallecano tiene Spanish Copa del Rey vs Recreativo Huelva en 3.1 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-27",
+                "kickoff": "2026-10-27T15:00:00Z",
+                "venue": "away",
+                "opponent": "Recreativo Huelva",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "away_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "high",
+              "score": 88,
+              "reason": "Elche CF tiene Spanish Copa del Rey vs Atlético Pinatarense en 3.0 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-27",
+                "kickoff": "2026-10-27T13:00:00Z",
+                "venue": "away",
+                "opponent": "Atlético Pinatarense",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "table_reliability": {
               "regime": "early_sample",
@@ -498,7 +516,7 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 1,
+                "stale_rumours_dropped": 0,
                 "summary": "temporada anterior: 13o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 2 señales de pretemporada"
               },
               "evidence_count": 7,
@@ -512,16 +530,16 @@
           },
           "travel_km": 346.2,
           "weather": {
-            "temperature_c": 15.9,
+            "temperature_c": 16.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 7.0
+            "wind_speed_kmh": 7.7
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Celta Vigo (LaLiga, 8º) | fuera vs Real Sociedad (LaLiga, 5º) | casa vs Valencia (LaLiga, 19º) | fuera vs Real Betis (LaLiga, 4º) | casa vs Levante (LaLiga, 11º)",
-          "future_away": "casa vs Valencia (LaLiga, 19º) | casa vs Real Betis (LaLiga, 4º) | fuera vs Levante (LaLiga, 11º) | casa vs Atlético Madrid (LaLiga, 2º) | fuera vs Osasuna (LaLiga, 10º)",
+          "future_home": "fuera vs Recreativo Huelva (Copa del Rey) | casa vs Celta Vigo (LaLiga, 8º) | fuera vs Real Sociedad (LaLiga, 5º) | casa vs Valencia (LaLiga, 19º) | fuera vs Real Betis (LaLiga, 4º)",
+          "future_away": "fuera vs Atlético Pinatarense (Copa del Rey) | casa vs Valencia (LaLiga, 19º) | casa vs Real Betis (LaLiga, 4º) | fuera vs Levante (LaLiga, 11º) | casa vs Atlético Madrid (LaLiga, 2º)",
           "history_quality": {
             "valid": true,
             "teams": 20,
@@ -561,17 +579,27 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 8
+              "source_items_checked": 15
             },
             "away": {
               "team": "Elche CF",
-              "items": [],
-              "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "items": [
+                {
+                  "player_name": "Estamos",
+                  "verificado": false,
+                  "status": "suspended",
+                  "headline": "El Elche-Rayo, bajo amenaza de suspensión: “Estamos enfocados en lo que depende de nosotros” - TeleElx",
+                  "source": "TeleElx",
+                  "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQdzNIb0l2RjcwT2xGWFROVGhLaXduVmlfWXVtNDFDZGM5YjFVMklfOEhkZWdhTGp6SE9CNm1mWFhxemFzbHRGLUVFYUgyajB2eUZJb3RkVkZQSEtEN3JsM1BheGFzTWc0cTRHTWxqM202ckNWV1FTOGZYTS1NUTVYVXl5bGl0dk4wcnhkSGpNT0hQb1R5ampFbFdQcTNka1Y1V3RqRkVQLXE1ZHI0UUZqR2ZVS1h3MUZPLWJF?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:24:05 GMT"
+                }
+              ],
+              "count": 1,
+              "verification_status": "confirmed_absences",
+              "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-10-22T12:16:58.500243+00:00",
+          "context_updated_at": "2026-10-22T18:37:30.829715+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -589,19 +617,19 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 2,
-              "availability_items": 11,
+              "injury_items": 3,
+              "availability_items": 15,
               "official_items": 1,
-              "match_items": 2,
-              "team_items": 16,
-              "season_transition_items": 8,
+              "match_items": 9,
+              "team_items": 15,
+              "season_transition_items": 7,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
-              "away_roster_status": "sources_checked_no_confirmed_absence",
+              "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (54.0%) y el publico de Loterias lo refleja de forma similar (60.0%). Sin gran divergencia entre mercado y quiniela. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 8o con 50 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 1 posibles altas u operaciones; 2 noticias de plantilla | Visitante: temporada anterior: 13o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 2 señales de pretemporada | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 7 días vs 5 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (53.3%) y el publico de Loterias lo refleja de forma similar (60.0%). Sin gran divergencia entre mercado y quiniela. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 8o con 50 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 1 posibles altas u operaciones; 2 noticias de plantilla | Visitante: temporada anterior: 13o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 2 señales de pretemporada | local: Rayo Vallecano tiene Spanish Copa del Rey vs Recreativo Huelva en 3.1 dias (riesgo high) | visitante: Elche CF tiene Spanish Copa del Rey vs Atlético Pinatarense en 3.0 dias (riesgo high) | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 7 días vs 5 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         },
         {
@@ -614,16 +642,16 @@
           "kickoff": "2026-10-24T16:30:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 3.21,
+            "1": 3.28,
             "X": 3.74,
-            "2": 2.2
+            "2": 2.17
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 30.14,
-            "X": 25.87,
-            "2": 43.98
+            "1": 29.51,
+            "X": 25.88,
+            "2": 44.61
           },
           "official_percent": {
             "1": 26.0,
@@ -692,14 +720,23 @@
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "low",
-              "score": 8,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "medium",
+              "score": 68,
+              "reason": "Valencia tiene Spanish Copa del Rey vs Tavernes de la Valldigna en 3.9 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-28",
+                "kickoff": "2026-10-28T15:00:00Z",
+                "venue": "away",
+                "opponent": "Tavernes de la Valldigna",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "away_rotation_context": {
-              "risk": "high",
-              "score": 90,
+              "risk": "medium",
+              "score": 72,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -929,7 +966,7 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 1,
+                "stale_rumours_dropped": 0,
                 "summary": "temporada anterior: 9o con 49 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 posibles salidas; 3 cambios de entrenador"
               },
               "away": {
@@ -1012,16 +1049,16 @@
           },
           "travel_km": 57.2,
           "weather": {
-            "temperature_c": 22.1,
+            "temperature_c": 23.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 9.3
+            "wind_speed_kmh": 7.7
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Elche (LaLiga, 18º) | casa vs Real Madrid (LaLiga, 3º) | fuera vs Rayo Vallecano (LaLiga, 14º) | casa vs Osasuna (LaLiga, 10º) | fuera vs Getafe (LaLiga, 15º)",
-          "future_away": "casa vs Espanyol (LaLiga, 16º)",
+          "future_home": "fuera vs Tavernes de la Valldigna (Copa del Rey) | fuera vs Elche (LaLiga, 18º) | casa vs Real Madrid (LaLiga, 3º) | fuera vs Rayo Vallecano (LaLiga, 14º) | casa vs Osasuna (LaLiga, 10º)",
+          "future_away": "casa vs Espanyol (LaLiga, 16º) | casa vs Paris Saint Germain (UEFA Champions League)",
           "history_quality": {
             "valid": true,
             "teams": 20,
@@ -1042,7 +1079,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 16
+              "source_items_checked": 14
             },
             "away": {
               "team": "Villarreal",
@@ -1059,10 +1096,10 @@
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 20
+              "source_items_checked": 18
             }
           },
-          "context_updated_at": "2026-10-22T12:19:23.596244+00:00",
+          "context_updated_at": "2026-10-22T18:46:29.888301+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -1083,16 +1120,16 @@
               "injury_items": 1,
               "availability_items": 16,
               "official_items": 2,
-              "match_items": 10,
-              "team_items": 24,
-              "season_transition_items": 11,
+              "match_items": 9,
+              "team_items": 21,
+              "season_transition_items": 10,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (44.0%) y el publico de Loterias lo refleja de forma similar (43.0%). Sin gran divergencia entre mercado y quiniela. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 9o con 49 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 posibles salidas; 3 cambios de entrenador | Visitante: temporada anterior: 3o con 72 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 noticias de plantilla | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo high) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (44.6%) y el publico de Loterias lo refleja de forma similar (43.0%). Sin gran divergencia entre mercado y quiniela. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 9o con 49 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 posibles salidas; 3 cambios de entrenador | Visitante: temporada anterior: 3o con 72 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 noticias de plantilla | local: Valencia tiene Spanish Copa del Rey vs Tavernes de la Valldigna en 3.9 dias (riesgo medium) | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -1106,15 +1143,15 @@
           "bookmaker": "Pinnacle",
           "odds": {
             "1": 1.29,
-            "X": 5.84,
-            "2": 10.18
+            "X": 5.81,
+            "2": 10.05
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 74.21,
-            "X": 16.39,
-            "2": 9.4
+            "1": 74.05,
+            "X": 16.44,
+            "2": 9.51
           },
           "official_percent": {
             "1": 85.0,
@@ -1183,7 +1220,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "medium",
-              "score": 54,
+              "score": 36,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -1519,9 +1556,9 @@
           },
           "travel_km": 525.4,
           "weather": {
-            "temperature_c": 14.3,
+            "temperature_c": 14.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 3.5
+            "wind_speed_kmh": 3.9
           },
           "referee": {
             "name": "no confirmado",
@@ -1577,7 +1614,7 @@
               ],
               "count": 3,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 16
+              "source_items_checked": 14
             },
             "away": {
               "team": "Deportivo La Coruña",
@@ -1587,7 +1624,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-10-22T12:19:24.834126+00:00",
+          "context_updated_at": "2026-10-22T18:46:30.981455+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 95,
@@ -1607,10 +1644,10 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 3,
-              "availability_items": 10,
+              "availability_items": 9,
               "official_items": 4,
               "match_items": 0,
-              "team_items": 26,
+              "team_items": 23,
               "season_transition_items": 11,
               "verified_teams": 1,
               "home_roster_status": "confirmed_absences",
@@ -1618,7 +1655,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (74.2%), pero el público de la quiniela lo sobrevalora aún más (85.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 4o con 69 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 noticias de plantilla | Visitante: temporada anterior: ascendido: 2o con 77 pts en Segunda Division 25/26; 1 cambios de entrenador; 5 señales de pretemporada | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (74.0%), pero el público de la quiniela lo sobrevalora aún más (85.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 4o con 69 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 noticias de plantilla | Visitante: temporada anterior: ascendido: 2o con 77 pts en Segunda Division 25/26; 1 cambios de entrenador; 5 señales de pretemporada | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
           "analysis_ready": true
         },
         {
@@ -1631,16 +1668,16 @@
           "kickoff": "2026-10-25T13:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 1.65,
-            "X": 4.06,
-            "2": 5.46
+            "1": 1.63,
+            "X": 4.09,
+            "2": 5.55
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 58.53,
-            "X": 23.79,
-            "2": 17.69
+            "1": 59.09,
+            "X": 23.55,
+            "2": 17.36
           },
           "official_percent": {
             "1": 69.0,
@@ -1709,16 +1746,34 @@
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "medium",
+              "score": 68,
+              "reason": "Athletic Bilbao tiene Spanish Copa del Rey vs AE Prat en 4.1 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-29",
+                "kickoff": "2026-10-29T15:00:00Z",
+                "venue": "away",
+                "opponent": "AE Prat",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "away_rotation_context": {
               "risk": "medium",
-              "score": 54,
-              "reason": "la prensa reciente apunta a rotaciones/descanso",
-              "next_high_importance_fixture": {}
+              "score": 68,
+              "reason": "Getafe tiene Spanish Copa del Rey vs UB Lebrijana en 4.0 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-29",
+                "kickoff": "2026-10-29T13:00:00Z",
+                "venue": "away",
+                "opponent": "UB Lebrijana",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "table_reliability": {
               "regime": "early_sample",
@@ -2074,16 +2129,16 @@
           },
           "travel_km": 334.3,
           "weather": {
-            "temperature_c": 20.3,
-            "precipitation_probability": 5,
-            "wind_speed_kmh": 8.9
+            "temperature_c": 20.4,
+            "precipitation_probability": 8,
+            "wind_speed_kmh": 8.7
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Real Sociedad (LaLiga, 5º) | fuera vs Osasuna (LaLiga, 10º) | casa vs Espanyol (LaLiga, 16º) | fuera vs Málaga (LaLiga, 20º) | casa vs Real Madrid (LaLiga, 3º)",
-          "future_away": "casa vs Sevilla (LaLiga, 6º) | casa vs Brighton & Hove Albion (UEFA Conference League) | fuera vs Villarreal (LaLiga, 12º) | casa vs Atlético Madrid (LaLiga, 2º) | fuera vs Iberia 1999 (UEFA Conference League)",
+          "future_home": "fuera vs AE Prat (Copa del Rey) | casa vs Real Sociedad (LaLiga, 5º) | fuera vs Osasuna (LaLiga, 10º) | casa vs Espanyol (LaLiga, 16º) | fuera vs Málaga (LaLiga, 20º)",
+          "future_away": "fuera vs UB Lebrijana (Copa del Rey) | casa vs Sevilla (LaLiga, 6º) | casa vs Brighton & Hove Albion (UEFA Conference League) | fuera vs Villarreal (LaLiga, 12º) | casa vs Atlético Madrid (LaLiga, 2º)",
           "history_quality": {
             "valid": true,
             "teams": 20,
@@ -2121,10 +2176,10 @@
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 9
+              "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-10-22T12:17:13.621695+00:00",
+          "context_updated_at": "2026-10-22T18:38:20.182689+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -2146,7 +2201,7 @@
               "availability_items": 8,
               "official_items": 5,
               "match_items": 0,
-              "team_items": 25,
+              "team_items": 23,
               "season_transition_items": 16,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -2154,7 +2209,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (58.5%), pero el público de la quiniela lo sobrevalora aún más (69.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 12o con 45 pts en LaLiga 25/26; 1 cambios de entrenador; 1 noticias de plantilla | Visitante: temporada anterior: 7o con 51 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 6 días vs 4 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (59.1%), pero el público de la quiniela lo sobrevalora aún más (69.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 12o con 45 pts en LaLiga 25/26; 1 cambios de entrenador; 1 noticias de plantilla | Visitante: temporada anterior: 7o con 51 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas | local: Athletic Bilbao tiene Spanish Copa del Rey vs AE Prat en 4.1 dias (riesgo medium) | visitante: Getafe tiene Spanish Copa del Rey vs UB Lebrijana en 4.0 dias (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 6 días vs 4 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         },
         {
@@ -2167,16 +2222,16 @@
           "kickoff": "2026-10-25T15:15:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 2.88,
+            "1": 2.94,
             "X": 3.54,
-            "2": 2.48
+            "2": 2.44
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 33.62,
-            "X": 27.35,
-            "2": 39.04
+            "1": 32.94,
+            "X": 27.36,
+            "2": 39.7
           },
           "official_percent": {
             "1": 22.0,
@@ -2244,14 +2299,23 @@
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "medium",
-              "score": 44,
-              "reason": "la prensa reciente apunta a rotaciones/descanso",
-              "next_high_importance_fixture": {}
+              "risk": "high",
+              "score": 88,
+              "reason": "Celta Vigo tiene Spanish Copa del Rey vs Salamanca UDS en 3.0 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-28",
+                "kickoff": "2026-10-28T15:00:00Z",
+                "venue": "away",
+                "opponent": "Salamanca UDS",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "away_rotation_context": {
-              "risk": "medium",
-              "score": 54,
+              "risk": "high",
+              "score": 90,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -2627,16 +2691,16 @@
           },
           "travel_km": 589.0,
           "weather": {
-            "temperature_c": 19.2,
-            "precipitation_probability": 28,
-            "wind_speed_kmh": 8.3
+            "temperature_c": 18.9,
+            "precipitation_probability": 33,
+            "wind_speed_kmh": 12.8
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Rayo Vallecano (LaLiga, 14º) | casa vs Union St.-Gilloise (UEFA Europa League) | casa vs Levante (LaLiga, 11º) | fuera vs Real Madrid (LaLiga, 3º) | casa vs AFC Bournemouth (UEFA Europa League)",
-          "future_away": "casa vs Málaga (LaLiga, 20º)",
+          "future_home": "fuera vs Salamanca UDS (Copa del Rey) | fuera vs Rayo Vallecano (LaLiga, 14º) | casa vs Union St.-Gilloise (UEFA Europa League) | casa vs Levante (LaLiga, 11º) | fuera vs Real Madrid (LaLiga, 3º)",
+          "future_away": "casa vs Málaga (LaLiga, 20º) | fuera vs Borussia Dortmund (UEFA Champions League)",
           "history_quality": {
             "valid": true,
             "teams": 20,
@@ -2680,7 +2744,7 @@
                   "headline": "Importantísimas bajas en la convocatoria del Celta con la presencia de Milla, Arcos y Antañón - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSjYxNnRlX1FjbXhNeHFOMTBXUGhrb3dNRnUyalRmR05tSlA5NHFVOTFDMWdDTmhsWHhtNlpkS0t6eTdfSE1HeVdHZVBYb3l4UWZEckNqTWUxVHAwZzl6R2NlNFVBUHNENV9FWFdIN3dUenRGaUdkOHFYQmh4bldab2ZKbTVpVno3aHVwNHF0cjVzRkZfdExwRFZVd05yVDNjbVIyb19PQ01nV3Y0M2VsX9IBtgFBVV95cUxNT0VnQmhCTWV4RVg4LWQ0NHNSWnFPbTN6RkgtVTg0ajgwX2RJMC1hWmxKTVd5aXJ1N210d21EczRjblFyWWwtdlEtZnJVX2Zta1dPRzlfbEs2bkRVaWFWRmlVRG03RG1BUGNVYkp4Slh6bThzajZaby1IRWdNTWlDd3JYaWhIMjdJNGdsWkxYaHNERlpnYTN4ZldRU3VJZGp6QkhZQlpBRXplV05Mb1NyLXIwbVQ2Zw?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 11:54:10 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Milla",
@@ -2689,7 +2753,7 @@
                   "headline": "Importantísimas bajas en la convocatoria del Celta con la presencia de Milla, Arcos y Antañón - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSjYxNnRlX1FjbXhNeHFOMTBXUGhrb3dNRnUyalRmR05tSlA5NHFVOTFDMWdDTmhsWHhtNlpkS0t6eTdfSE1HeVdHZVBYb3l4UWZEckNqTWUxVHAwZzl6R2NlNFVBUHNENV9FWFdIN3dUenRGaUdkOHFYQmh4bldab2ZKbTVpVno3aHVwNHF0cjVzRkZfdExwRFZVd05yVDNjbVIyb19PQ01nV3Y0M2VsX9IBtgFBVV95cUxNT0VnQmhCTWV4RVg4LWQ0NHNSWnFPbTN6RkgtVTg0ajgwX2RJMC1hWmxKTVd5aXJ1N210d21EczRjblFyWWwtdlEtZnJVX2Zta1dPRzlfbEs2bkRVaWFWRmlVRG03RG1BUGNVYkp4Slh6bThzajZaby1IRWdNTWlDd3JYaWhIMjdJNGdsWkxYaHNERlpnYTN4ZldRU3VJZGp6QkhZQlpBRXplV05Mb1NyLXIwbVQ2Zw?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 11:54:10 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Arcos",
@@ -2698,7 +2762,7 @@
                   "headline": "Importantísimas bajas en la convocatoria del Celta con la presencia de Milla, Arcos y Antañón - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSjYxNnRlX1FjbXhNeHFOMTBXUGhrb3dNRnUyalRmR05tSlA5NHFVOTFDMWdDTmhsWHhtNlpkS0t6eTdfSE1HeVdHZVBYb3l4UWZEckNqTWUxVHAwZzl6R2NlNFVBUHNENV9FWFdIN3dUenRGaUdkOHFYQmh4bldab2ZKbTVpVno3aHVwNHF0cjVzRkZfdExwRFZVd05yVDNjbVIyb19PQ01nV3Y0M2VsX9IBtgFBVV95cUxNT0VnQmhCTWV4RVg4LWQ0NHNSWnFPbTN6RkgtVTg0ajgwX2RJMC1hWmxKTVd5aXJ1N210d21EczRjblFyWWwtdlEtZnJVX2Zta1dPRzlfbEs2bkRVaWFWRmlVRG03RG1BUGNVYkp4Slh6bThzajZaby1IRWdNTWlDd3JYaWhIMjdJNGdsWkxYaHNERlpnYTN4ZldRU3VJZGp6QkhZQlpBRXplV05Mb1NyLXIwbVQ2Zw?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 11:54:10 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Álvaro Núñez",
@@ -2725,7 +2789,7 @@
                   "headline": "Lesiones de Borja Iglesias y Pablo Durán: parte médico de los delanteros del Celta - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQLTlpX0Z1aXR2RF9Jb29sUEJDRWNTcG80TG04SGdyaWZfVWphdEpnTUdpbEVIZjdQYTdlYUhIdW45M2FqY3pYUzFZbmRvdk9KMXExaHlidC1ndkIzN3lUaGdMQW9ZejBoRXpBWTRuN1F6dnA3cGNGSVhTSl9GekY2NWNwTTRPWEcxSEgtbDZWVXVsNHdST091SnVwN05GLXFMWnZEUnRvbG81NUNnWlotLXpB0gG3AUFVX3lxTE8tMmRhN0NMS1A1Zkc0OFVOUC13MmlGT0h5S2ZrVG1vTkJRMDNlNHZJRHV1LTJpS2ZRSTFtYUoyUGNyUkF5WS1fV1ZoU0N4cllHbGJWdWp5YnVMM1dFSzdGVjVkcXl4Zkdzc2NVR0YtR244UllxUVVmbnNkeDJSdjFfUTY4MGlZRWFDYi11MmtQUlIxckkyZ0FZa25USkJLcGVJcGpzSUk4VVYtNmo4UGlXamxUZHM4QQ?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 13:50:47 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Pablo Durán",
@@ -2734,12 +2798,12 @@
                   "headline": "Lesiones de Borja Iglesias y Pablo Durán: parte médico de los delanteros del Celta - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQLTlpX0Z1aXR2RF9Jb29sUEJDRWNTcG80TG04SGdyaWZfVWphdEpnTUdpbEVIZjdQYTdlYUhIdW45M2FqY3pYUzFZbmRvdk9KMXExaHlidC1ndkIzN3lUaGdMQW9ZejBoRXpBWTRuN1F6dnA3cGNGSVhTSl9GekY2NWNwTTRPWEcxSEgtbDZWVXVsNHdST091SnVwN05GLXFMWnZEUnRvbG81NUNnWlotLXpB0gG3AUFVX3lxTE8tMmRhN0NMS1A1Zkc0OFVOUC13MmlGT0h5S2ZrVG1vTkJRMDNlNHZJRHV1LTJpS2ZRSTFtYUoyUGNyUkF5WS1fV1ZoU0N4cllHbGJWdWp5YnVMM1dFSzdGVjVkcXl4Zkdzc2NVR0YtR244UllxUVVmbnNkeDJSdjFfUTY4MGlZRWFDYi11MmtQUlIxckkyZ0FZa25USkJLcGVJcGpzSUk4VVYtNmo4UGlXamxUZHM4QQ?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 13:50:47 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 }
               ],
               "count": 9,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 21
+              "source_items_checked": 18
             },
             "away": {
               "team": "Real Betis",
@@ -2801,10 +2865,10 @@
               ],
               "count": 6,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 24
+              "source_items_checked": 22
             }
           },
-          "context_updated_at": "2026-10-22T12:19:25.264940+00:00",
+          "context_updated_at": "2026-10-22T18:46:31.383584+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -2823,9 +2887,9 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 15,
-              "availability_items": 33,
+              "availability_items": 31,
               "official_items": 2,
-              "match_items": 3,
+              "match_items": 2,
               "team_items": 49,
               "season_transition_items": 14,
               "verified_teams": 2,
@@ -2834,7 +2898,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (39.0%), pero el público de la quiniela lo sobrevalora aún más (48.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 6o con 54 pts en LaLiga 25/26; 2 posibles altas u operaciones; 5 señales de pretemporada; 1 noticias de plantilla | Visitante: temporada anterior: 5o con 60 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 bajas/disponibilidad | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (39.7%), pero el público de la quiniela lo sobrevalora aún más (48.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 6o con 54 pts en LaLiga 25/26; 2 posibles altas u operaciones; 5 señales de pretemporada; 1 noticias de plantilla | Visitante: temporada anterior: 5o con 60 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 bajas/disponibilidad | local: Celta Vigo tiene Spanish Copa del Rey vs Salamanca UDS en 3.0 dias (riesgo high) | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo high) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 8 días).",
           "analysis_ready": true
         },
         {
@@ -2847,16 +2911,16 @@
           "kickoff": "2026-10-25T17:30:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 1.76,
-            "X": 4.16,
-            "2": 4.42
+            "1": 1.68,
+            "X": 4.32,
+            "2": 4.74
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 54.91,
-            "X": 23.23,
-            "2": 21.86
+            "1": 57.36,
+            "X": 22.31,
+            "2": 20.33
           },
           "official_percent": {
             "1": 79.0,
@@ -2925,7 +2989,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "medium",
-              "score": 36,
+              "score": 54,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -3328,16 +3392,16 @@
           },
           "travel_km": 448.3,
           "weather": {
-            "temperature_c": 25.7,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 9.9
+            "temperature_c": 25.5,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 14.4
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs Athletic Club (LaLiga, 13º) | casa vs Lyon (UEFA Europa League) | casa vs Rayo Vallecano (LaLiga, 14º) | fuera vs Racing Santander (LaLiga, 17º) | fuera vs Crystal Palace (UEFA Europa League)",
-          "future_away": "casa vs Atlético Madrid (LaLiga, 2º) | fuera vs Celta Vigo (LaLiga, 8º) | casa vs Elche (LaLiga, 18º) | casa vs Racing Santander (LaLiga, 17º) | fuera vs Rayo Vallecano (LaLiga, 14º)",
+          "future_away": "casa vs Atlético Madrid (LaLiga, 2º) | casa vs Atlético Madrid (LaLiga, 2º) | fuera vs Celta Vigo (LaLiga, 8º) | casa vs Elche (LaLiga, 18º) | casa vs Racing Santander (LaLiga, 17º)",
           "history_quality": {
             "valid": true,
             "teams": 20,
@@ -3377,7 +3441,7 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 21
+              "source_items_checked": 22
             },
             "away": {
               "team": "Levante",
@@ -3387,7 +3451,7 @@
               "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-10-22T12:17:24.073876+00:00",
+          "context_updated_at": "2026-10-22T18:38:52.010491+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -3406,10 +3470,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 2,
-              "availability_items": 23,
+              "availability_items": 26,
               "official_items": 7,
               "match_items": 8,
-              "team_items": 27,
+              "team_items": 28,
               "season_transition_items": 15,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -3417,7 +3481,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (54.9%), pero el público de la quiniela lo sobrevalora aún más (79.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 10o con 46 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 noticias de plantilla; 1 señales de vestuario | Visitante: temporada anterior: 18o con 42 pts en LaLiga 25/26; 4 altas/refuerzos confirmados; 1 posibles altas u operaciones; 1 cambios de entrenador; 1 noticias de plantilla | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo sin rivales especialmente exigentes. | Carga física: local low, visitante medium. El local descansó 7 días vs 4 días del visitante. Ligera ventaja física para el local.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (57.4%), pero el público de la quiniela lo sobrevalora aún más (79.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 10o con 46 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 noticias de plantilla; 1 señales de vestuario | Visitante: temporada anterior: 18o con 42 pts en LaLiga 25/26; 4 altas/refuerzos confirmados; 1 posibles altas u operaciones; 1 cambios de entrenador; 1 noticias de plantilla | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo sin rivales especialmente exigentes. | Carga física: local low, visitante medium. El local descansó 7 días vs 4 días del visitante. Ligera ventaja física para el local.",
           "analysis_ready": true
         },
         {
@@ -3430,16 +3494,16 @@
           "kickoff": "2026-10-26T20:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 1.99,
-            "X": 3.38,
-            "2": 4.22
+            "1": 1.94,
+            "X": 3.47,
+            "2": 4.31
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 48.54,
-            "X": 28.58,
-            "2": 22.89
+            "1": 49.77,
+            "X": 27.83,
+            "2": 22.4
           },
           "official_percent": {
             "1": 65.0,
@@ -3506,16 +3570,34 @@
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "high",
+              "score": 88,
+              "reason": "Sevilla tiene Spanish Copa del Rey vs Sporting Hortaleza en 2.8 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-29",
+                "kickoff": "2026-10-29T15:00:00Z",
+                "venue": "away",
+                "opponent": "Sporting Hortaleza",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "away_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "high",
+              "score": 88,
+              "reason": "CA Osasuna tiene Spanish Copa del Rey vs Atlético Calatayud en 2.7 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-29",
+                "kickoff": "2026-10-29T13:00:00Z",
+                "venue": "away",
+                "opponent": "Atlético Calatayud",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "table_reliability": {
               "regime": "early_sample",
@@ -3884,16 +3966,16 @@
           },
           "travel_km": 707.1,
           "weather": {
-            "temperature_c": 22.2,
+            "temperature_c": 21.8,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 4.6
+            "wind_speed_kmh": 4.2
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Getafe (LaLiga, 15º) | casa vs Alavés (LaLiga, 7º) | casa vs Real Betis (LaLiga, 4º) | fuera vs Real Sociedad (LaLiga, 5º) | casa vs Málaga (LaLiga, 20º)",
-          "future_away": "fuera vs Deportivo La Coruña (LaLiga, 9º) | casa vs Athletic Club (LaLiga, 13º) | casa vs Málaga (LaLiga, 20º) | fuera vs Valencia (LaLiga, 19º) | casa vs Elche (LaLiga, 18º)",
+          "future_home": "fuera vs Sporting Hortaleza (Copa del Rey) | fuera vs Getafe (LaLiga, 15º) | casa vs Alavés (LaLiga, 7º) | casa vs Real Betis (LaLiga, 4º) | fuera vs Real Sociedad (LaLiga, 5º)",
+          "future_away": "fuera vs Atlético Calatayud (Copa del Rey) | fuera vs Deportivo La Coruña (LaLiga, 9º) | casa vs Athletic Club (LaLiga, 13º) | casa vs Málaga (LaLiga, 20º) | fuera vs Valencia (LaLiga, 19º)",
           "history_quality": {
             "valid": true,
             "teams": 20,
@@ -3931,13 +4013,31 @@
                   "published_at": "Sat, 17 Oct 2026 06:59:19 GMT"
                 },
                 {
-                  "player_name": "Jon Guridi",
+                  "player_name": "Novedades",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Última hora sobre el estado de salud de Jon Guridi: parte médico, tiempo de baja y cuántos partidos se perderá con el Sevilla - El Correo de Andalucía",
-                  "source": "El Correo de Andalucía",
-                  "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPQ2ZjSWxyYWktdjFsRVdmRTZWUEZEVzFNQ2tiTHU4Z1NtZUM4ZVdzTmZGWFllNGVHNmF0cFdTNzRKZkt2WmZVOWVvOF9EYWJOUVQ2N1l4a0czSjAxaGpXUS16NTB1RENkdE9SVnBkZ1hQZnJ3NnVNb0ZpZjh4enVqYUJuN2R1NWk2Nm9LVjZ6cmduREduOXdTYkdVRFJUUVlaWUxYZm5Ya9IBrAFBVV95cUxQdWFzWFd0WE90VlFJT2VuNzdINzduYUJjQTBUNkU3em5Ddkk0Vno2Vjd3TGlKbW1fQXhGX0kwTmJiNFlBSUt4UlNHeWxtaTR4cjJjUVllWGtVNWh0Rld1T2tYWG00U2h0TWdvQlNyNnVLX2ZuN2w0SjZMSXRINzhzdWhKbWZxdks0emVEbVZLUzZXUW4tOTQ0WXNRZEVMenRHTWMzNVVTSFdjOVFz?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 09:44:03 GMT"
+                  "headline": "Novedades en el Sevilla FC: regresa Giorgi Kochorashvili y Lucas Stassin causa baja - Diario de Sevilla",
+                  "source": "Diario de Sevilla",
+                  "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNYjY0bFdVRl8wYl9lenR6VW9LaElBN0t0bDRqM3RSa0VFdkpBejk3LWdpY3A5UWRIOUhOdHRKeGhpUXR6STR0cWZxbDZPZFpLUG9jSGJUT1JOazNlT2dNNDA4Ym42OUhPeVEwYk5kckdncWxoVE1lQkF1eVRySjFjOGI5NUc4TmtTdkVKZFRjM2xNZXNaTl9QSDlqUHZtVUZPT2lXbnYtdWhWM3FUcjhCSnZDYWcxVElaTFE0aUFqVUpqTzU5VWc?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:45:30 GMT"
+                },
+                {
+                  "player_name": "Giorgi Kochorashvili",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Novedades en el Sevilla FC: regresa Giorgi Kochorashvili y Lucas Stassin causa baja - Diario de Sevilla",
+                  "source": "Diario de Sevilla",
+                  "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNYjY0bFdVRl8wYl9lenR6VW9LaElBN0t0bDRqM3RSa0VFdkpBejk3LWdpY3A5UWRIOUhOdHRKeGhpUXR6STR0cWZxbDZPZFpLUG9jSGJUT1JOazNlT2dNNDA4Ym42OUhPeVEwYk5kckdncWxoVE1lQkF1eVRySjFjOGI5NUc4TmtTdkVKZFRjM2xNZXNaTl9QSDlqUHZtVUZPT2lXbnYtdWhWM3FUcjhCSnZDYWcxVElaTFE0aUFqVUpqTzU5VWc?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:45:30 GMT"
+                },
+                {
+                  "player_name": "Lucas Stassin",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Novedades en el Sevilla FC: regresa Giorgi Kochorashvili y Lucas Stassin causa baja - Diario de Sevilla",
+                  "source": "Diario de Sevilla",
+                  "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNYjY0bFdVRl8wYl9lenR6VW9LaElBN0t0bDRqM3RSa0VFdkpBejk3LWdpY3A5UWRIOUhOdHRKeGhpUXR6STR0cWZxbDZPZFpLUG9jSGJUT1JOazNlT2dNNDA4Ym42OUhPeVEwYk5kckdncWxoVE1lQkF1eVRySjFjOGI5NUc4TmtTdkVKZFRjM2xNZXNaTl9QSDlqUHZtVUZPT2lXbnYtdWhWM3FUcjhCSnZDYWcxVElaTFE0aUFqVUpqTzU5VWc?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:45:30 GMT"
                 },
                 {
                   "player_name": "Miguel Sierra",
@@ -3946,22 +4046,22 @@
                   "headline": "Lesión de Miguel Sierra: parte médico, tiempo de baja y cuántos partidos se perderá con el Sevilla - El Correo de Andalucía",
                   "source": "El Correo de Andalucía",
                   "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxONllhWWxPUUFhSFdzVFRDRzcyZ2FCVnVJcXVnZWNhVmRLcHF4S005bmRtMlB6cFhFNGx1dVJfLW1PcnpjTnZ5VnBvQXNYZ3RMMDJqcE83elI4b1E1NVJPd0NNVEZxaUVURG14VVBvUUlfTzVZZ0g2LXBhMEJ0WFJLbkFxcnI4dUhmVGNjSVoxaWJUb29qcmVqVVEzaEVwRkVNQ2laeDNXNzQza0JEUG9fQdIBtgFBVV95cUxPcWhBUVF3WGhSZDM2Z25EeWlBRG93aWV0R2xBU2RBcHBPQVBpOUxKSzdTMEN2eldnYTdTdW9uaHBPd2hpVGhnX3YwT19xdXJCS0JGc1JWdDJzYnQ3OFhnNVB0cmJaSldpTHhmc2VuclNuVXdDMURWQThpdG91Mk5NQnQwdTZ3Sk8yVEN3QWN0LWVHa3lHTXNyTXlVOUcxWklGQnVmWkhVeUVENVhsLWlVNXpQUFRldw?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 08:41:09 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 }
               ],
-              "count": 4,
+              "count": 6,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 15
+              "source_items_checked": 17
             },
             "away": {
               "team": "CA Osasuna",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 9
+              "source_items_checked": 8
             }
           },
-          "context_updated_at": "2026-10-22T12:17:29.330083+00:00",
+          "context_updated_at": "2026-10-22T18:39:30.468939+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -3979,11 +4079,11 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 4,
-              "availability_items": 20,
+              "injury_items": 6,
+              "availability_items": 22,
               "official_items": 2,
               "match_items": 3,
-              "team_items": 28,
+              "team_items": 30,
               "season_transition_items": 13,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -3991,7 +4091,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (48.5%), pero el público de la quiniela lo sobrevalora aún más (65.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 15o con 43 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 1 señales de pretemporada; 1 noticias de plantilla | Visitante: temporada anterior: 16o con 42 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 cambios de entrenador; 2 señales de pretemporada; 1 noticias de plantilla | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 8 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (49.8%), pero el público de la quiniela lo sobrevalora aún más (65.0%). Hay valor matemático en buscar la sorpresa o el empate. | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 15o con 43 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 1 señales de pretemporada; 1 noticias de plantilla | Visitante: temporada anterior: 16o con 42 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 cambios de entrenador; 2 señales de pretemporada; 1 noticias de plantilla | local: Sevilla tiene Spanish Copa del Rey vs Sporting Hortaleza en 2.8 dias (riesgo high) | visitante: CA Osasuna tiene Spanish Copa del Rey vs Atlético Calatayud en 2.7 dias (riesgo high) | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 8 días).",
           "analysis_ready": true
         },
         {
@@ -4034,17 +4134,17 @@
           },
           "pressure": {
             "home": {
-              "score": 33.92,
+              "score": 33.23,
               "label": "low",
-              "future_difficulty": 44.3,
+              "future_difficulty": 41.42,
               "hard_window_matches": 1,
               "gap_to_drop_zone": 3
             },
             "away": {
-              "score": 38.45,
-              "label": "medium",
-              "future_difficulty": 44.53,
-              "hard_window_matches": 1,
+              "score": 31.68,
+              "label": "low",
+              "future_difficulty": 35.07,
+              "hard_window_matches": 0,
               "gap_to_drop_zone": 10
             }
           },
@@ -4211,16 +4311,34 @@
             "away_must_not_lose_index": 66,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "medium",
+              "score": 68,
+              "reason": "Leganés tiene Spanish Copa del Rey vs Trival Valderas en 4.0 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-28",
+                "kickoff": "2026-10-28T14:00:00Z",
+                "venue": "away",
+                "opponent": "Trival Valderas",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "away_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "medium",
+              "score": 68,
+              "reason": "Mallorca tiene Spanish Copa del Rey vs Alcoyano en 4.0 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-28",
+                "kickoff": "2026-10-28T14:00:00Z",
+                "venue": "away",
+                "opponent": "Alcoyano",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "table_reliability": {
               "regime": "normal",
@@ -4402,16 +4520,16 @@
           },
           "travel_km": 549.9,
           "weather": {
-            "temperature_c": 18.1,
+            "temperature_c": 18.3,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 9.9
+            "wind_speed_kmh": 10.2
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Real Valladolid (Segunda División, 13º) | casa vs Albacete (Segunda División, 22º) | casa vs Burgos (Segunda División, 8º) | fuera vs FC Andorra (Segunda División, 18º) | casa vs CD Sabadell (Segunda División, 10º)",
-          "future_away": "casa vs Cádiz (Segunda División, 20º) | fuera vs FC Andorra (Segunda División, 18º) | casa vs Córdoba (Segunda División, 15º) | fuera vs Tenerife (Segunda División, 12º) | casa vs Castellón (Segunda División, 2º)",
+          "future_home": "fuera vs Trival Valderas (Copa del Rey) | fuera vs Real Valladolid (Segunda División, 13º) | casa vs Albacete (Segunda División, 22º) | casa vs Burgos (Segunda División, 8º) | fuera vs FC Andorra (Segunda División, 18º)",
+          "future_away": "fuera vs Alcoyano (Copa del Rey) | casa vs Cádiz (Segunda División, 20º) | fuera vs FC Andorra (Segunda División, 18º) | casa vs Córdoba (Segunda División, 15º) | fuera vs Tenerife (Segunda División, 12º)",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -4432,7 +4550,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 6
+              "source_items_checked": 7
             },
             "away": {
               "team": "Mallorca",
@@ -4442,7 +4560,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-10-22T12:18:03.467277+00:00",
+          "context_updated_at": "2026-10-22T18:40:41.784212+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 92,
@@ -4464,7 +4582,7 @@
               "availability_items": 7,
               "official_items": 0,
               "match_items": 6,
-              "team_items": 7,
+              "team_items": 8,
               "season_transition_items": 6,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -4472,7 +4590,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (40.8%), pero el público de la quiniela lo sobrevalora aún más (49.0%). Hay valor matemático en buscar la sorpresa o el empate. | local defiende salvacion con 3 pts de colchon; visitante defiende play-off con 1 pts de colchon | Local: 4 altas/refuerzos confirmados | Visitante: 1 señales de pretemporada; 1 señales de ascenso/descenso | Leganés defiende salvacion con 3 pts de colchon en tramo temprano (must-win 33/100, no perder 52/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario próximo sin rivales especialmente exigentes. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (40.8%), pero el público de la quiniela lo sobrevalora aún más (49.0%). Hay valor matemático en buscar la sorpresa o el empate. | local defiende salvacion con 3 pts de colchon; visitante defiende play-off con 1 pts de colchon | Local: 4 altas/refuerzos confirmados | Visitante: 1 señales de pretemporada; 1 señales de ascenso/descenso | local: Leganés tiene Spanish Copa del Rey vs Trival Valderas en 4.0 dias (riesgo medium) | visitante: Mallorca tiene Spanish Copa del Rey vs Alcoyano en 4.0 dias (riesgo medium) | Leganés defiende salvacion con 3 pts de colchon en tramo temprano (must-win 33/100, no perder 52/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario próximo sin rivales especialmente exigentes. Cierta tensión clasificatoria, aunque no en zona crítica. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 7 días).",
           "analysis_ready": true
         },
         {
@@ -4485,16 +4603,16 @@
           "kickoff": "2026-10-24T19:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 1.67,
+            "1": 1.65,
             "X": 3.85,
-            "2": 5.12
+            "2": 5.34
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 56.82,
-            "X": 24.65,
-            "2": 18.53
+            "1": 57.55,
+            "X": 24.67,
+            "2": 17.78
           },
           "official_percent": {
             "1": 71.0,
@@ -4697,10 +4815,19 @@
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
-              "risk": "low",
-              "score": 0,
-              "reason": "",
-              "next_high_importance_fixture": {}
+              "risk": "medium",
+              "score": 68,
+              "reason": "Oviedo tiene Spanish Copa del Rey vs Numancia en 3.8 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-10-28",
+                "kickoff": "2026-10-28T14:00:00Z",
+                "venue": "away",
+                "opponent": "Numancia",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "Spanish Copa del Rey",
+                "source": "espn-fixtures"
+              }
             },
             "table_reliability": {
               "regime": "normal",
@@ -4828,7 +4955,7 @@
                     "evidence_quality": "high"
                   }
                 ],
-                "stale_rumours_dropped": 9,
+                "stale_rumours_dropped": 0,
                 "summary": "3 posibles altas u operaciones; 2 posibles salidas"
               },
               "away": {
@@ -4923,7 +5050,7 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 10,
+                "stale_rumours_dropped": 0,
                 "summary": "3 altas/refuerzos confirmados; 1 señales de pretemporada"
               },
               "evidence_count": 9,
@@ -4937,7 +5064,7 @@
           },
           "travel_km": 780.4,
           "weather": {
-            "temperature_c": 18.9,
+            "temperature_c": 18.6,
             "precipitation_probability": 0,
             "wind_speed_kmh": 3.3
           },
@@ -4946,7 +5073,7 @@
             "bias_summary": "sin historico arbitral fiable"
           },
           "future_home": "fuera vs Eibar (Segunda División, 3º) | fuera vs Girona (Segunda División, 5º) | casa vs FC Andorra (Segunda División, 18º) | fuera vs Ceuta (Segunda División, 21º) | casa vs Sporting Gijón (Segunda División, 4º)",
-          "future_away": "casa vs Las Palmas (Segunda División, 16º) | fuera vs Cádiz (Segunda División, 20º) | casa vs Girona (Segunda División, 5º) | fuera vs Córdoba (Segunda División, 15º) | casa vs RC Celta Fortuna (Segunda División, 14º)",
+          "future_away": "fuera vs Numancia (Copa del Rey) | casa vs Las Palmas (Segunda División, 16º) | fuera vs Cádiz (Segunda División, 20º) | casa vs Girona (Segunda División, 5º) | fuera vs Córdoba (Segunda División, 15º)",
           "history_quality": {
             "valid": true,
             "teams": 22,
@@ -4996,7 +5123,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-10-22T12:18:09.682294+00:00",
+          "context_updated_at": "2026-10-22T18:40:57.490546+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 95,
@@ -5015,18 +5142,18 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 2,
-              "availability_items": 15,
+              "availability_items": 13,
               "official_items": 0,
-              "match_items": 6,
-              "team_items": 39,
-              "season_transition_items": 28,
+              "match_items": 7,
+              "team_items": 18,
+              "season_transition_items": 9,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
               "away_roster_status": "sources_checked_no_confirmed_absence",
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (56.8%), pero el público de la quiniela lo sobrevalora aún más (71.0%). Hay valor matemático en buscar la sorpresa o el empate. | local defiende ascenso directo con 2 pts de colchon; visitante persigue play-off a 1 pts | Local: 3 posibles altas u operaciones; 2 posibles salidas | Visitante: 3 altas/refuerzos confirmados; 1 señales de pretemporada | Almería defiende ascenso directo con 2 pts de colchon en tramo temprano (must-win 38/100, no perder 54/100). Victoria abre colchon en ascenso directo. Derrota deja en riesgo ascenso directo. Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (57.5%), pero el público de la quiniela lo sobrevalora aún más (71.0%). Hay valor matemático en buscar la sorpresa o el empate. | local defiende ascenso directo con 2 pts de colchon; visitante persigue play-off a 1 pts | Local: 3 posibles altas u operaciones; 2 posibles salidas | Visitante: 3 altas/refuerzos confirmados; 1 señales de pretemporada | visitante: Oviedo tiene Spanish Copa del Rey vs Numancia en 3.8 dias (riesgo medium) | Almería defiende ascenso directo con 2 pts de colchon en tramo temprano (must-win 38/100, no perder 54/100). Victoria abre colchon en ascenso directo. Derrota deja en riesgo ascenso directo. Calendario futuro con 3 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -5039,16 +5166,16 @@
           "kickoff": "2026-10-25T13:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 1.92,
-            "X": 3.21,
+            "1": 1.91,
+            "X": 3.22,
             "2": 4.56
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 49.52,
-            "X": 29.62,
-            "2": 20.85
+            "1": 49.7,
+            "X": 29.48,
+            "2": 20.82
           },
           "official_percent": {
             "1": 50.0,
@@ -5685,7 +5812,7 @@
           "weather": {
             "temperature_c": 20.0,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 9.7
+            "wind_speed_kmh": 6.9
           },
           "referee": {
             "name": "no confirmado",
@@ -5713,17 +5840,17 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 1
+              "source_items_checked": 2
             },
             "away": {
               "team": "Tenerife",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 9
+              "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-10-22T12:18:10.441399+00:00",
+          "context_updated_at": "2026-10-22T18:41:12.816681+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 77,
@@ -5744,7 +5871,7 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 4,
+              "availability_items": 5,
               "official_items": 0,
               "match_items": 1,
               "team_items": 24,
@@ -5755,7 +5882,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (49.5%) y el publico de Loterias lo refleja de forma similar (50.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 3 pts y 2 puestos. | Local: 3 altas/refuerzos confirmados; 1 posibles altas u operaciones; 4 señales de pretemporada | Visitante: 3 altas/refuerzos confirmados; 2 posibles altas u operaciones; 1 posibles salidas; 1 cambios de entrenador; 1 bajas/disponibilidad; 3 señales de pretemporada | Sabadell FC persigue play-off a 2 pts en tramo temprano (must-win 56/100, no perder 44/100). Victoria supera linea de play-off. Derrota aleja play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (49.7%) y el publico de Loterias lo refleja de forma similar (50.0%). Sin gran divergencia entre mercado y quiniela. | duelo directo por play-off: equipos separados por 3 pts y 2 puestos. | Local: 3 altas/refuerzos confirmados; 1 posibles altas u operaciones; 4 señales de pretemporada | Visitante: 3 altas/refuerzos confirmados; 2 posibles altas u operaciones; 1 posibles salidas; 1 cambios de entrenador; 1 bajas/disponibilidad; 3 señales de pretemporada | Sabadell FC persigue play-off a 2 pts en tramo temprano (must-win 56/100, no perder 44/100). Victoria supera linea de play-off. Derrota aleja play-off. Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (7 vs 6 días).",
           "analysis_ready": true
         },
         {
@@ -5964,9 +6091,9 @@
           },
           "travel_km": 404.5,
           "weather": {
-            "temperature_c": 18.8,
+            "temperature_c": 19.8,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 22.6
+            "wind_speed_kmh": 15.9
           },
           "referee": {
             "name": "no confirmado",
@@ -6003,7 +6130,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-10-22T12:22:05.866646+00:00",
+          "context_updated_at": "2026-10-22T18:52:23.666031+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 47,
@@ -6249,9 +6376,9 @@
           },
           "travel_km": 468.2,
           "weather": {
-            "temperature_c": 20.2,
-            "precipitation_probability": 27,
-            "wind_speed_kmh": 14.0
+            "temperature_c": 20.4,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 26.6
           },
           "referee": {
             "name": "no confirmado",
@@ -6289,7 +6416,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-10-22T12:22:08.495966+00:00",
+          "context_updated_at": "2026-10-22T18:52:29.596286+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -6544,9 +6671,9 @@
           },
           "travel_km": 340.7,
           "weather": {
-            "temperature_c": 18.0,
-            "precipitation_probability": 26,
-            "wind_speed_kmh": 5.8
+            "temperature_c": 20.1,
+            "precipitation_probability": 7,
+            "wind_speed_kmh": 6.4
           },
           "referee": {
             "name": "no confirmado",
@@ -6584,7 +6711,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-10-22T12:22:11.082446+00:00",
+          "context_updated_at": "2026-10-22T18:52:35.300562+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 52,
@@ -6881,9 +7008,9 @@
           },
           "travel_km": 1758.0,
           "weather": {
-            "temperature_c": 18.3,
+            "temperature_c": 18.5,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 7.9
+            "wind_speed_kmh": 8.9
           },
           "referee": {
             "name": "no confirmado",
@@ -6911,7 +7038,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 14
+              "source_items_checked": 10
             },
             "away": {
               "team": "TENERIFE",
@@ -6921,7 +7048,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-10-22T12:22:16.252800+00:00",
+          "context_updated_at": "2026-10-22T18:52:44.211720+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 73,
@@ -6943,8 +7070,8 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 2,
-              "official_items": 4,
+              "availability_items": 1,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 3,
               "season_transition_items": 1,
@@ -6968,15 +7095,15 @@
           "bookmaker": "Pinnacle",
           "odds": {
             "1": 1.63,
-            "X": 5.81,
-            "2": 3.99
+            "X": 5.97,
+            "2": 3.9
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 59.2,
-            "X": 16.61,
-            "2": 24.19
+            "1": 59.14,
+            "X": 16.15,
+            "2": 24.72
           },
           "official_percent": {},
           "home_table": {
@@ -7041,14 +7168,14 @@
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "high",
-              "score": 90,
+              "risk": "medium",
+              "score": 72,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "away_rotation_context": {
               "risk": "high",
-              "score": 100,
+              "score": 80,
               "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
@@ -7187,7 +7314,7 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 2,
+                "stale_rumours_dropped": 0,
                 "summary": "temporada anterior: 1o con 94 pts en LaLiga 25/26; 2 posibles salidas; 1 cambios de entrenador"
               },
               "away": {
@@ -7414,15 +7541,15 @@
           },
           "travel_km": 501.1,
           "weather": {
-            "temperature_c": 18.1,
+            "temperature_c": 18.2,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 4.7
+            "wind_speed_kmh": 3.7
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "casa vs Alavés (LaLiga, 7º)",
+          "future_home": "casa vs Alavés (LaLiga, 7º) | casa vs Aston Villa (UEFA Champions League)",
           "future_away": "fuera vs Real Racing Club de Santander (LaLiga, 17º) | fuera vs AEK Athens (UEFA Champions League)",
           "history_quality": {
             "valid": true,
@@ -7452,13 +7579,31 @@
                   "published_at": "Wed, 21 Oct 2026 19:18:00 GMT"
                 },
                 {
-                  "player_name": "Eric Garcia",
+                  "player_name": "Problemas",
                   "verificado": false,
-                  "status": "out",
-                  "headline": "Parte médico lesión Eric Garcia: qué le pasa, cómo se ha lesionado, cuánto tiempo estará de baja y qué partidos se perderá con el FC Barcelona - DAZN",
-                  "source": "DAZN",
-                  "link": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxNWk1yWE9KanRMV01YSVk3V0Q4ZFJZbEtpVWtuZHoxTzNXZF82elZOalB0QUlPSWY4Q3dIM2hhTkhjZFhhQTc2THM5WWdZZ0k3eldHM3dycUlTUnFxemw5U1VtMWc3RkNQOG91RDhWT1RYTHhmYWs1UUxVQ3ZjcFhobzk1di03RVBBNmgyZXVETTZNQWNKbHh5VXY0ZnlyX1h6Uzc3WDk3cy1uT0dtOE1ibXNLYW9PUUFPelNfZjMxTkVFU0ljdUR6eGpfNWZseEJvMDZOVHhrdzIzeklVcjNpTDZBVVQ4b1BqNWs1bVN4dw?oc=5",
-                  "published_at": "Sat, 17 Oct 2026 18:51:14 GMT"
+                  "status": "doubtful",
+                  "headline": "Problemas para el Barcelona en defensa: Eric García se perderá el Clásico por lesión y Koundé es duda - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOaXlHLTJpV0txYUViRHlFZlNmTXp5cTBYVXJEbndpeXlWZnlFYWFuVGk2TENPUEd4NUh2dEowLUEwb2ZfUWJkc2JiVnhHSGhYS1FHXzBhUDVyeHBudkdVQnNVQXlDTXV1dDhPZWhGWVkzWmxneldfUnJ4Y2l5RklGOHJxUFEyWHBsQUZ3TVdFZlpNTXIyaHIyQzRjaWdfcV82Q0RwaGlIcWs1TDVEZGUwX3pzd9IBuAFBVV95cUxOYUtGNE9SbFRVVjFHVFhUQUN2bEtHX1RRNHcwTWpmbDBTRThiSjZjVzF2d1JTOFN6c3k1bXRzMWZDaTYxSUdFbE45NkEzUVJSODgzZk1lUlZvT1duMW1Ja1NYcnlNVnhyVENsTi1kX1l6ekduQkdPVkQ2N3dFSmkyUVZMSFp4RkxmLXlvdnhBNzh0YW1FY2JhaWh3SElEd1dJeFNjOHNLNUl4YzlocjJRSmEzNEdWdldL?oc=5",
+                  "published_at": "Sun, 18 Oct 2026 16:06:38 GMT"
+                },
+                {
+                  "player_name": "Eric García",
+                  "verificado": false,
+                  "status": "doubtful",
+                  "headline": "Problemas para el Barcelona en defensa: Eric García se perderá el Clásico por lesión y Koundé es duda - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOaXlHLTJpV0txYUViRHlFZlNmTXp5cTBYVXJEbndpeXlWZnlFYWFuVGk2TENPUEd4NUh2dEowLUEwb2ZfUWJkc2JiVnhHSGhYS1FHXzBhUDVyeHBudkdVQnNVQXlDTXV1dDhPZWhGWVkzWmxneldfUnJ4Y2l5RklGOHJxUFEyWHBsQUZ3TVdFZlpNTXIyaHIyQzRjaWdfcV82Q0RwaGlIcWs1TDVEZGUwX3pzd9IBuAFBVV95cUxOYUtGNE9SbFRVVjFHVFhUQUN2bEtHX1RRNHcwTWpmbDBTRThiSjZjVzF2d1JTOFN6c3k1bXRzMWZDaTYxSUdFbE45NkEzUVJSODgzZk1lUlZvT1duMW1Ja1NYcnlNVnhyVENsTi1kX1l6ekduQkdPVkQ2N3dFSmkyUVZMSFp4RkxmLXlvdnhBNzh0YW1FY2JhaWh3SElEd1dJeFNjOHNLNUl4YzlocjJRSmEzNEdWdldL?oc=5",
+                  "published_at": "Sun, 18 Oct 2026 16:06:38 GMT"
+                },
+                {
+                  "player_name": "Clásico",
+                  "verificado": false,
+                  "status": "doubtful",
+                  "headline": "Problemas para el Barcelona en defensa: Eric García se perderá el Clásico por lesión y Koundé es duda - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOaXlHLTJpV0txYUViRHlFZlNmTXp5cTBYVXJEbndpeXlWZnlFYWFuVGk2TENPUEd4NUh2dEowLUEwb2ZfUWJkc2JiVnhHSGhYS1FHXzBhUDVyeHBudkdVQnNVQXlDTXV1dDhPZWhGWVkzWmxneldfUnJ4Y2l5RklGOHJxUFEyWHBsQUZ3TVdFZlpNTXIyaHIyQzRjaWdfcV82Q0RwaGlIcWs1TDVEZGUwX3pzd9IBuAFBVV95cUxOYUtGNE9SbFRVVjFHVFhUQUN2bEtHX1RRNHcwTWpmbDBTRThiSjZjVzF2d1JTOFN6c3k1bXRzMWZDaTYxSUdFbE45NkEzUVJSODgzZk1lUlZvT1duMW1Ja1NYcnlNVnhyVENsTi1kX1l6ekduQkdPVkQ2N3dFSmkyUVZMSFp4RkxmLXlvdnhBNzh0YW1FY2JhaWh3SElEd1dJeFNjOHNLNUl4YzlocjJRSmEzNEdWdldL?oc=5",
+                  "published_at": "Sun, 18 Oct 2026 16:06:38 GMT"
                 },
                 {
                   "player_name": "Lesionados",
@@ -7470,7 +7615,7 @@
                   "published_at": "Wed, 21 Oct 2026 16:49:43 GMT"
                 }
               ],
-              "count": 3,
+              "count": 5,
               "verification_status": "confirmed_absences",
               "source_items_checked": 31
             },
@@ -7505,13 +7650,22 @@
                   "published_at": "Wed, 14 Oct 2026 19:21:22 GMT"
                 },
                 {
+                  "player_name": "Huijsen",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Convocatoria del Real Madrid contra la Roma: vuelve Huijsen y Mourinho mantiene cuatro bajas - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQRmF5SUFYMTZ0ZEFhWnVVQmlZRnZYUEFnUTNJV0plVG1LeTlBTE11U201c0ZBVHAtbndWWE9qNURHcU5OMHFmX3BscW43d056amdQYlFGR1pOSnRIVlZ2eEY4T0dZelVuQkItM2sybmc2TmNFTlZhTXBNZUxyekFzb3Q4WEdjcGQwSTMwYzlzZm9oTXNmSDFYMElvd01XVmVDUVlVOXhiUDN3Sk05dmpDZXAxZnNDQ2tvNkRjYjlzRXl4ajFYdVg0eXR5bndTekFqZFctZ1R6VlJVZnPSAeABQVVfeXFMTWplMHE5akE1QU51RUthdEozM2wxLUFLQkx6OUxPaW9pSEN1LS1WLWtPeGY0SExHSG5RcDBralFMeHR1ZER5Sm15WjMtRUllNHBSVndpZXdKUHZQVzJYY0ZLYVdvekdTZERYbGJiTEJEbUV4QUVBRDFIdjNRR1ZhM3Jjc0t5bWRWVm1mbWpOc1I2MDloQm00bVJZRU1TVlk1SC02SWQtUFAwWnFudTg2TmthdWVCdEVMUTJnWWxHTDBaVHNiX1VsVW1JSkZHRExldldFZEFra2VtZDlOT05vYWU?oc=5",
+                  "published_at": "Tue, 13 Oct 2026 07:00:00 GMT"
+                },
+                {
                   "player_name": "Mourinho",
                   "verificado": false,
-                  "status": "suspended",
-                  "headline": "¿El Real Madrid podría ser sancionado por no presentarse Mourinho a la rueda de prensa? - Sports Illustrated",
-                  "source": "Sports Illustrated",
-                  "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOZzUyYjBzUVd2YzdJS0dnaWFaTUNMOXVoQnRVal9jN2x4TzhKbjdtVlRyTHV6QjRCLUJrVUlzYW84ZTNTVkRaNC1aLUFYSHc0OEt2anpCMXNfZllXZXRDTHRPNlZWM2N4YV9VLVliWkE2b1pjX3J6QkE3TUkzWE41UE1id19XVXFVcDB3ZGl6Y1lWU04wRS1SQmptNDRJVEJIeVVGWWwzZnZhajZqY2dF?oc=5",
-                  "published_at": "Mon, 12 Oct 2026 15:02:47 GMT"
+                  "status": "out",
+                  "headline": "Convocatoria del Real Madrid contra la Roma: vuelve Huijsen y Mourinho mantiene cuatro bajas - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQRmF5SUFYMTZ0ZEFhWnVVQmlZRnZYUEFnUTNJV0plVG1LeTlBTE11U201c0ZBVHAtbndWWE9qNURHcU5OMHFmX3BscW43d056amdQYlFGR1pOSnRIVlZ2eEY4T0dZelVuQkItM2sybmc2TmNFTlZhTXBNZUxyekFzb3Q4WEdjcGQwSTMwYzlzZm9oTXNmSDFYMElvd01XVmVDUVlVOXhiUDN3Sk05dmpDZXAxZnNDQ2tvNkRjYjlzRXl4ajFYdVg0eXR5bndTekFqZFctZ1R6VlJVZnPSAeABQVVfeXFMTWplMHE5akE1QU51RUthdEozM2wxLUFLQkx6OUxPaW9pSEN1LS1WLWtPeGY0SExHSG5RcDBralFMeHR1ZER5Sm15WjMtRUllNHBSVndpZXdKUHZQVzJYY0ZLYVdvekdTZERYbGJiTEJEbUV4QUVBRDFIdjNRR1ZhM3Jjc0t5bWRWVm1mbWpOc1I2MDloQm00bVJZRU1TVlk1SC02SWQtUFAwWnFudTg2TmthdWVCdEVMUTJnWWxHTDBaVHNiX1VsVW1JSkZHRExldldFZEFra2VtZDlOT05vYWU?oc=5",
+                  "published_at": "Tue, 13 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Hansi Flick",
@@ -7539,23 +7693,14 @@
                   "source": "heraldo.es",
                   "link": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPRHh5VlZxZUN2VVhSLUJtVlkzdHBZV1lFZXIycVVHSW5CWGJVR3ZMbVFVeVlZMUh0NXJIZktYRWRjNjAyYkd5d0xCZUxqV3BQUUNSOFNOb05CdFAxWldoVW5IYnZkZm05T1VCN1RHUElSQXdQbVNNQXVWdVE1RUIwcW5USW9hc21ub0FDMVE0dUpocmdKVUJpRXdrWnZWQk14REtxeUFmazY1TjZhcHhxV1NEVlJqNGRlM21LMWxmS3BTRHBvUjZFeUFVQmtGODVtdl92MjV1MXpVOXZhSmJjVQ?oc=5",
                   "published_at": "Wed, 21 Oct 2026 16:50:36 GMT"
-                },
-                {
-                  "player_name": "Huijsen",
-                  "verificado": false,
-                  "status": "out",
-                  "headline": "Convocatoria del Real Madrid contra la Roma: vuelve Huijsen y Mourinho mantiene cuatro bajas - OkDiario",
-                  "source": "OkDiario",
-                  "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQRmF5SUFYMTZ0ZEFhWnVVQmlZRnZYUEFnUTNJV0plVG1LeTlBTE11U201c0ZBVHAtbndWWE9qNURHcU5OMHFmX3BscW43d056amdQYlFGR1pOSnRIVlZ2eEY4T0dZelVuQkItM2sybmc2TmNFTlZhTXBNZUxyekFzb3Q4WEdjcGQwSTMwYzlzZm9oTXNmSDFYMElvd01XVmVDUVlVOXhiUDN3Sk05dmpDZXAxZnNDQ2tvNkRjYjlzRXl4ajFYdVg0eXR5bndTekFqZFctZ1R6VlJVZnPSAeABQVVfeXFMTWplMHE5akE1QU51RUthdEozM2wxLUFLQkx6OUxPaW9pSEN1LS1WLWtPeGY0SExHSG5RcDBralFMeHR1ZER5Sm15WjMtRUllNHBSVndpZXdKUHZQVzJYY0ZLYVdvekdTZERYbGJiTEJEbUV4QUVBRDFIdjNRR1ZhM3Jjc0t5bWRWVm1mbWpOc1I2MDloQm00bVJZRU1TVlk1SC02SWQtUFAwWnFudTg2TmthdWVCdEVMUTJnWWxHTDBaVHNiX1VsVW1JSkZHRExldldFZEFra2VtZDlOT05vYWU?oc=5",
-                  "published_at": "Tue, 13 Oct 2026 07:00:00 GMT"
                 }
               ],
               "count": 8,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 37
+              "source_items_checked": 34
             }
           },
-          "context_updated_at": "2026-10-22T12:19:25.514458+00:00",
+          "context_updated_at": "2026-10-22T18:46:31.649988+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -7574,19 +7719,19 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 11,
-              "availability_items": 36,
+              "injury_items": 13,
+              "availability_items": 33,
               "official_items": 0,
-              "match_items": 10,
-              "team_items": 60,
-              "season_transition_items": 19,
+              "match_items": 11,
+              "team_items": 51,
+              "season_transition_items": 17,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
               "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (59.2%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 1o con 94 pts en LaLiga 25/26; 2 posibles salidas; 1 cambios de entrenador | Visitante: temporada anterior: 2o con 86 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 cambios de entrenador | local: la prensa reciente apunta a rotaciones/descanso (riesgo high) | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo high) | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 7 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (59.1%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 1o con 94 pts en LaLiga 25/26; 2 posibles salidas; 1 cambios de entrenador | Visitante: temporada anterior: 2o con 86 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 cambios de entrenador | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo high) | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (8 vs 7 días).",
           "analysis_ready": true
         }
       ]
@@ -7735,7 +7880,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -7955,7 +8100,7 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 6
+              "source_items_checked": 5
             },
             "away": {
               "team": "LAS PALMAS",
@@ -7965,7 +8110,7 @@
               "source_items_checked": 12
             }
           },
-          "context_updated_at": "2026-10-22T12:20:40.505956+00:00",
+          "context_updated_at": "2026-10-22T18:49:22.672276+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 18,
@@ -7991,7 +8136,7 @@
               "availability_items": 1,
               "official_items": 4,
               "match_items": 1,
-              "team_items": 16,
+              "team_items": 15,
               "season_transition_items": 6,
               "verified_teams": 0,
               "home_roster_status": "not_verified",
@@ -8354,9 +8499,9 @@
           },
           "travel_km": 261.7,
           "weather": {
-            "temperature_c": 19.4,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 4.1
+            "temperature_c": 20.2,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 6.4
           },
           "referee": {
             "name": "no confirmado",
@@ -8393,7 +8538,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-10-22T12:20:51.312606+00:00",
+          "context_updated_at": "2026-10-22T18:49:37.209845+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 28,
@@ -8803,9 +8948,9 @@
           },
           "travel_km": 20.8,
           "weather": {
-            "temperature_c": 13.2,
-            "precipitation_probability": 34,
-            "wind_speed_kmh": 2.1
+            "temperature_c": 15.8,
+            "precipitation_probability": 28,
+            "wind_speed_kmh": 3.0
           },
           "referee": {
             "name": "no confirmado",
@@ -8836,7 +8981,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-10-22T12:20:53.549856+00:00",
+          "context_updated_at": "2026-10-22T18:49:48.802881+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 44,
@@ -9215,9 +9360,9 @@
           },
           "travel_km": 162.8,
           "weather": {
-            "temperature_c": 11.7,
+            "temperature_c": 17.1,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 2.6
+            "wind_speed_kmh": 1.9
           },
           "referee": {
             "name": "no confirmado",
@@ -9254,7 +9399,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-10-22T12:20:56.154406+00:00",
+          "context_updated_at": "2026-10-22T18:49:56.488717+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 55,
@@ -9368,7 +9513,7 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -9848,9 +9993,9 @@
           },
           "travel_km": 1439.7,
           "weather": {
-            "temperature_c": 20.9,
+            "temperature_c": 18.0,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 4.0
+            "wind_speed_kmh": 7.6
           },
           "referee": {
             "name": "no confirmado",
@@ -9878,10 +10023,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 10
+              "source_items_checked": 8
             }
           },
-          "context_updated_at": "2026-10-22T12:20:59.745031+00:00",
+          "context_updated_at": "2026-10-22T18:50:06.792734+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 58,
@@ -9903,10 +10048,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 4,
+              "availability_items": 3,
               "official_items": 2,
               "match_items": 0,
-              "team_items": 27,
+              "team_items": 24,
               "season_transition_items": 20,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -10058,8 +10203,8 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 0,
-              "reason": "",
+              "score": 18,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "table_reliability": {
@@ -10320,7 +10465,7 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 1,
+                "stale_rumours_dropped": 0,
                 "summary": "5 posibles altas u operaciones; 1 posibles salidas"
               },
               "evidence_count": 12,
@@ -10334,9 +10479,9 @@
           },
           "travel_km": 225.1,
           "weather": {
-            "temperature_c": 17.5,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 3.1
+            "temperature_c": 20.5,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 2.2
           },
           "referee": {
             "name": "no confirmado",
@@ -10369,6 +10514,24 @@
               "team": "GRANADA",
               "items": [
                 {
+                  "player_name": "Víctor",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Las bajas de Víctor y Latasa, principales novedades de la convocatoria para Granada - Diario AS",
+                  "source": "Diario AS",
+                  "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxORFBTNUgycWpHcVg5Ti02Wlhja0o2WVpPUWtkWmNjWTdPYnlTLVpzTjNTZU1hUFpRVGpCQmM3dm9sdWhRNkxUcDNGMGt6TXJ6STVJdF9wazdoSFhMMGxUdjVxRzRNam1fZzVuZmFKVV9jdkdHYkNFVkpVZU1uWGhOcVk3bGFpTksxTDFLVUh6SUNNRTRRRzlYOVpLa2NndHVLZzZzcTJfd1c2a0FPSHdkaWNPbTlTZ2JXYUNsVUFfWErSAdQBQVVfeXFMUC15SDUzbEJHTktsMFFrd3JvMkM1SDJPVXFRSk5sanB5WEg0M2VWUlBzT0RUVWFMRndVUXVKMk5XcmtidUlDVE9Ma2hsN0FNSldsb0FiT0tFWXp6V21hQkRZTTZIeTM1T252N2ZmS0VLZEVxU0UxLS1uLVQ4RWpYTVNES080eDFuMHZ0bVlvTjdiZnNDVnBhd05XNk5wNzI3YWtWdHowS2VLLXRnMWRjb1ZwVXRMYmhCcUFqQTVGekpzeVd0RVFhSHdkV3lfUTNHQ2VKMWE?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 11:57:16 GMT"
+                },
+                {
+                  "player_name": "Latasa",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Las bajas de Víctor y Latasa, principales novedades de la convocatoria para Granada - Diario AS",
+                  "source": "Diario AS",
+                  "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxORFBTNUgycWpHcVg5Ti02Wlhja0o2WVpPUWtkWmNjWTdPYnlTLVpzTjNTZU1hUFpRVGpCQmM3dm9sdWhRNkxUcDNGMGt6TXJ6STVJdF9wazdoSFhMMGxUdjVxRzRNam1fZzVuZmFKVV9jdkdHYkNFVkpVZU1uWGhOcVk3bGFpTksxTDFLVUh6SUNNRTRRRzlYOVpLa2NndHVLZzZzcTJfd1c2a0FPSHdkaWNPbTlTZ2JXYUNsVUFfWErSAdQBQVVfeXFMUC15SDUzbEJHTktsMFFrd3JvMkM1SDJPVXFRSk5sanB5WEg0M2VWUlBzT0RUVWFMRndVUXVKMk5XcmtidUlDVE9Ma2hsN0FNSldsb0FiT0tFWXp6V21hQkRZTTZIeTM1T252N2ZmS0VLZEVxU0UxLS1uLVQ4RWpYTVNES080eDFuMHZ0bVlvTjdiZnNDVnBhd05XNk5wNzI3YWtWdHowS2VLLXRnMWRjb1ZwVXRMYmhCcUFqQTVGekpzeVd0RVFhSHdkV3lfUTNHQ2VKMWE?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 11:57:16 GMT"
+                },
+                {
                   "player_name": "Alejandro Marqués",
                   "verificado": false,
                   "status": "out",
@@ -10378,12 +10541,12 @@
                   "published_at": "Wed, 21 Oct 2026 14:55:00 GMT"
                 }
               ],
-              "count": 1,
+              "count": 3,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 10
+              "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-10-22T12:21:02.718225+00:00",
+          "context_updated_at": "2026-10-22T18:50:16.073665+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 29,
@@ -10405,12 +10568,12 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
-              "injury_items": 1,
-              "availability_items": 8,
+              "injury_items": 3,
+              "availability_items": 11,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 21,
-              "season_transition_items": 13,
+              "team_items": 24,
+              "season_transition_items": 12,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
               "away_roster_status": "confirmed_absences",
@@ -10829,9 +10992,9 @@
           },
           "travel_km": 156.9,
           "weather": {
-            "temperature_c": 6.4,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 4.4
+            "temperature_c": 8.9,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 7.5
           },
           "referee": {
             "name": "no confirmado",
@@ -10868,7 +11031,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-10-22T12:21:06.692700+00:00",
+          "context_updated_at": "2026-10-22T18:50:28.003295+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 32,
@@ -11273,9 +11436,9 @@
           },
           "travel_km": 210.9,
           "weather": {
-            "temperature_c": 13.8,
-            "precipitation_probability": 4,
-            "wind_speed_kmh": 1.1
+            "temperature_c": 13.9,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 3.6
           },
           "referee": {
             "name": "no confirmado",
@@ -11306,7 +11469,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-10-22T12:21:12.419138+00:00",
+          "context_updated_at": "2026-10-22T18:50:41.230358+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -11725,9 +11888,9 @@
           },
           "travel_km": 9265.1,
           "weather": {
-            "temperature_c": 14.3,
-            "precipitation_probability": 4,
-            "wind_speed_kmh": 25.4
+            "temperature_c": 12.3,
+            "precipitation_probability": 19,
+            "wind_speed_kmh": 22.9
           },
           "referee": {
             "name": "no confirmado",
@@ -11756,19 +11919,19 @@
                 {
                   "player_name": "Quindío",
                   "verificado": false,
-                  "status": "watch",
-                  "headline": "Real Cartagena confirma lesión grave tras el aparatoso choque ante Quindío - Win Sports",
+                  "status": "suspended",
+                  "headline": "Real Cartagena le igualó a Quindío tras sanción de mano penal - Win Sports",
                   "source": "Win Sports",
-                  "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQa003QUJJWUl4MmxDNXQwY0hmLWFwODJkMUxmVDBxZGg4NnZmZDd4OVpNdl9EM0FqbDB0bUNzcmdwZnh1ZDc4RmJEdDVmZkZyS0tBbXB3WWx5NkZnekNVMTNZYWdBTXF5NWhBbFo4Slo1elFOUTlYLXdoM0g3WHo1WWlTVVBVUDVUXy0tVkJIS01sVmJDb1J1RU05aGh1REhPclJoLXpPM1BsckljaVpYSUtuTTRXY085QU9iZlBUVUNTc25Kc256ZHI0ZXdydw?oc=5",
-                  "published_at": "Sat, 17 Oct 2026 02:00:15 GMT"
+                  "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPS0xVbzdscnpDdkdKM1pxS3B5VTh0aGZnSkNGaGxHSlVRQ2FmZzJYdlVGUC00MVZUbEROZ2hQby1qYVRuR0E0WS01UnBHS1hGVHhncFpQZGRnTVZ5eERzQ1BHSkZ0MHFiYmkwak1mZ0pHSTRIelJaN2VIcWZrRHlUb3gtSnczbXVrZWRMVE5mbUxIdzJwWWdnM3A3ejdKOUQ4TWFZV3VNamd6Y1ZOVjNGNjVRNDRPMFlja1ZfcA?oc=5",
+                  "published_at": "Fri, 16 Oct 2026 02:47:09 GMT"
                 }
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 3
+              "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-10-22T12:21:18.930848+00:00",
+          "context_updated_at": "2026-10-22T18:50:54.683885+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -11792,10 +11955,10 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 1,
-              "availability_items": 1,
+              "availability_items": 2,
               "official_items": 1,
               "match_items": 0,
-              "team_items": 12,
+              "team_items": 13,
               "season_transition_items": 11,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
@@ -12134,9 +12297,9 @@
           },
           "travel_km": 56.2,
           "weather": {
-            "temperature_c": 16.8,
-            "precipitation_probability": 6,
-            "wind_speed_kmh": 3.2
+            "temperature_c": 18.1,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 2.5
           },
           "referee": {
             "name": "no confirmado",
@@ -12157,17 +12320,17 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 2
+              "source_items_checked": 1
             },
             "away": {
               "team": "EXTREMADURA",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 3
+              "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-10-22T12:21:25.296916+00:00",
+          "context_updated_at": "2026-10-22T18:51:08.879787+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -12191,10 +12354,10 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 1,
+              "availability_items": 3,
               "official_items": 0,
-              "match_items": 2,
-              "team_items": 9,
+              "match_items": 1,
+              "team_items": 11,
               "season_transition_items": 8,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
@@ -12494,7 +12657,7 @@
                     "evidence_quality": "high"
                   }
                 ],
-                "stale_rumours_dropped": 1,
+                "stale_rumours_dropped": 0,
                 "summary": "temporada anterior: sin registro en 25/26; 5 posibles altas u operaciones; 1 noticias de plantilla"
               },
               "evidence_count": 7,
@@ -12508,9 +12671,9 @@
           },
           "travel_km": 121.1,
           "weather": {
-            "temperature_c": 14.6,
-            "precipitation_probability": 1,
-            "wind_speed_kmh": 5.0
+            "temperature_c": 14.5,
+            "precipitation_probability": 0,
+            "wind_speed_kmh": 11.9
           },
           "referee": {
             "name": "no confirmado",
@@ -12575,10 +12738,10 @@
               ],
               "count": 4,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 12
+              "source_items_checked": 13
             }
           },
-          "context_updated_at": "2026-10-22T12:21:32.119112+00:00",
+          "context_updated_at": "2026-10-22T18:51:17.449257+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -12600,11 +12763,11 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 4,
-              "availability_items": 4,
+              "availability_items": 5,
               "official_items": 6,
               "match_items": 0,
               "team_items": 16,
-              "season_transition_items": 8,
+              "season_transition_items": 7,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "confirmed_absences",
@@ -13111,9 +13274,9 @@
           },
           "travel_km": 376.0,
           "weather": {
-            "temperature_c": 17.9,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 2.6
+            "temperature_c": 15.3,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 4.5
           },
           "referee": {
             "name": "no confirmado",
@@ -13146,14 +13309,14 @@
               "team": "Real Oviedo",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 2
+              "verification_status": "not_verified",
+              "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-10-22T12:21:37.122321+00:00",
+          "context_updated_at": "2026-10-22T18:51:32.342872+00:00",
           "data_confidence": {
             "nivel": "baja",
-            "score": 34,
+            "score": 33,
             "resumen": "Confianza baja: análisis orientativo; faltan datos clave.",
             "fortalezas": [
               "liga identificada",
@@ -13161,26 +13324,26 @@
               "viaje",
               "calendario próximo",
               "H2H",
-              "una plantilla investigada en fuentes recientes"
+              "noticias de equipo limitadas"
             ],
             "faltan": [
               "cuotas/referencia 1X2",
               "porcentajes de quiniela",
               "clasificacion/forma reciente",
-              "bajas/convocatorias del otro equipo",
+              "bajas/convocatorias verificadas",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "partial_verification",
+              "roster_status": "not_verified",
               "injury_items": 0,
-              "availability_items": 2,
+              "availability_items": 1,
               "official_items": 2,
               "match_items": 1,
-              "team_items": 18,
+              "team_items": 17,
               "season_transition_items": 17,
-              "verified_teams": 1,
+              "verified_teams": 0,
               "home_roster_status": "not_verified",
-              "away_roster_status": "sources_checked_no_confirmed_absence",
+              "away_roster_status": "not_verified",
               "referee_confirmed": false
             }
           },
@@ -13652,9 +13815,9 @@
           },
           "travel_km": 75.0,
           "weather": {
-            "temperature_c": 17.3,
+            "temperature_c": 17.4,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 3.1
+            "wind_speed_kmh": 6.0
           },
           "referee": {
             "name": "no confirmado",
@@ -13681,6 +13844,33 @@
               "team": "Real Zaragoza",
               "items": [
                 {
+                  "player_name": "Escudero",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Escudero será baja y Ander jugará de titular en el Real Zaragoza contra el Europa - heraldo.es",
+                  "source": "heraldo.es",
+                  "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOUlFqLTJNbjdMU3FtelZHTDF4WGdFel9yVjdHU1BwM2Etd2t2UG1Yb3NLd3JRaUNwNEtVQTVKdjRzaDdXZnNsQjVxeFRFaDlrWnhJXzRqNGRoVUJ2VmN6TDRBQldYNU90TXFkM3dNb2U4R3Vkbmg2bWFBNUhYM09Dd3htSkV2eFpRUXBaOW8xbllpZmY1LWRxa1c3dWppZGtwQnZuQlgtVWs3V0tKMS1lWmxxME5EMVhUaUJSX0xlVzRBcXBjeXd3WjJMTzQwSHFJSFdxOE1zbHl5Zy1wTUE4YW9saXRiTGRF?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 15:00:00 GMT"
+                },
+                {
+                  "player_name": "Ander",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Escudero será baja y Ander jugará de titular en el Real Zaragoza contra el Europa - heraldo.es",
+                  "source": "heraldo.es",
+                  "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOUlFqLTJNbjdMU3FtelZHTDF4WGdFel9yVjdHU1BwM2Etd2t2UG1Yb3NLd3JRaUNwNEtVQTVKdjRzaDdXZnNsQjVxeFRFaDlrWnhJXzRqNGRoVUJ2VmN6TDRBQldYNU90TXFkM3dNb2U4R3Vkbmg2bWFBNUhYM09Dd3htSkV2eFpRUXBaOW8xbllpZmY1LWRxa1c3dWppZGtwQnZuQlgtVWs3V0tKMS1lWmxxME5EMVhUaUJSX0xlVzRBcXBjeXd3WjJMTzQwSHFJSFdxOE1zbHl5Zy1wTUE4YW9saXRiTGRF?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 15:00:00 GMT"
+                },
+                {
+                  "player_name": "Europa",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Escudero será baja y Ander jugará de titular en el Real Zaragoza contra el Europa - heraldo.es",
+                  "source": "heraldo.es",
+                  "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOUlFqLTJNbjdMU3FtelZHTDF4WGdFel9yVjdHU1BwM2Etd2t2UG1Yb3NLd3JRaUNwNEtVQTVKdjRzaDdXZnNsQjVxeFRFaDlrWnhJXzRqNGRoVUJ2VmN6TDRBQldYNU90TXFkM3dNb2U4R3Vkbmg2bWFBNUhYM09Dd3htSkV2eFpRUXBaOW8xbllpZmY1LWRxa1c3dWppZGtwQnZuQlgtVWs3V0tKMS1lWmxxME5EMVhUaUJSX0xlVzRBcXBjeXd3WjJMTzQwSHFJSFdxOE1zbHl5Zy1wTUE4YW9saXRiTGRF?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 15:00:00 GMT"
+                },
+                {
                   "player_name": "Vadillo",
                   "verificado": false,
                   "status": "watch",
@@ -13690,12 +13880,12 @@
                   "published_at": "Tue, 20 Oct 2026 17:09:49 GMT"
                 }
               ],
-              "count": 1,
+              "count": 4,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 18
+              "source_items_checked": 20
             }
           },
-          "context_updated_at": "2026-10-22T12:21:44.834789+00:00",
+          "context_updated_at": "2026-10-22T18:51:44.776357+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -13718,11 +13908,11 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
-              "injury_items": 1,
-              "availability_items": 5,
+              "injury_items": 4,
+              "availability_items": 7,
               "official_items": 4,
               "match_items": 1,
-              "team_items": 26,
+              "team_items": 30,
               "season_transition_items": 17,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
@@ -14303,9 +14493,9 @@
           },
           "travel_km": 22.4,
           "weather": {
-            "temperature_c": 20.3,
-            "precipitation_probability": 1,
-            "wind_speed_kmh": 2.7
+            "temperature_c": 21.6,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 1.3
           },
           "referee": {
             "name": "no confirmado",
@@ -14323,33 +14513,23 @@
           "availability": {
             "home": {
               "team": "XEREZ",
-              "items": [
-                {
-                  "player_name": "Zelu",
-                  "verificado": false,
-                  "status": "out",
-                  "headline": "Zelu sufre una rotura fibrilar y estará más de un mes de baja en el Xerez CD - Diario de Jerez",
-                  "source": "Diario de Jerez",
-                  "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPT1p3Z0luNU4wN1hybVE2QjN1Zk5YSXFIbkdPVl91b2VKRzBiVzhWMzhZQUV6dkQwR29EVC1ETURGOFc3M0t2SU9Jem9aNUliRWljRFdaTUQ1dWtjaHRuY3p5RjZvWFU1LXdBSU9KWWZMVGxDRi1IODFDNVAwRnRteWhfb0IxOXhiTkZ0MV84c0lRSUI3YUZVLU1MLUVNRHlwa1YxQlJaeGg2UQ?oc=5",
-                  "published_at": "Mon, 12 Oct 2026 07:00:00 GMT"
-                }
-              ],
-              "count": 1,
-              "verification_status": "confirmed_absences",
-              "source_items_checked": 14
+              "items": [],
+              "count": 0,
+              "verification_status": "not_verified",
+              "source_items_checked": 16
             },
             "away": {
               "team": "Cadiz CF",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 16
+              "source_items_checked": 18
             }
           },
-          "context_updated_at": "2026-10-22T12:21:59.815781+00:00",
+          "context_updated_at": "2026-10-22T18:52:03.991403+00:00",
           "data_confidence": {
             "nivel": "media",
-            "score": 66,
+            "score": 60,
             "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
               "liga identificada",
@@ -14362,18 +14542,19 @@
             "faltan": [
               "cuotas/referencia 1X2",
               "porcentajes de quiniela",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "confirmed_absences",
-              "injury_items": 1,
-              "availability_items": 4,
+              "roster_status": "partial_verification",
+              "injury_items": 0,
+              "availability_items": 3,
               "official_items": 2,
-              "match_items": 10,
+              "match_items": 12,
               "team_items": 31,
               "season_transition_items": 24,
-              "verified_teams": 2,
-              "home_roster_status": "confirmed_absences",
+              "verified_teams": 1,
+              "home_roster_status": "not_verified",
               "away_roster_status": "sources_checked_no_confirmed_absence",
               "referee_confirmed": false
             }
@@ -14676,7 +14857,7 @@
               "source_items_checked": 11
             }
           },
-          "context_updated_at": "2026-10-22T12:22:00.987627+00:00",
+          "context_updated_at": "2026-10-22T18:52:15.435176+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 38,
@@ -14701,10 +14882,10 @@
             "cobertura_cualitativa": {
               "roster_status": "partial_verification",
               "injury_items": 1,
-              "availability_items": 9,
+              "availability_items": 11,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 13,
+              "team_items": 14,
               "season_transition_items": 4,
               "verified_teams": 1,
               "home_roster_status": "not_verified",
@@ -14827,7 +15008,7 @@
                 "opponent_position": null,
                 "opponent_points": null,
                 "league": "UEFA Champions League",
-                "source": "espn-fixtures"
+                "source": "espn-fixtures+odds-feed+espn-fixtures"
               }
             },
             "table_reliability": {
@@ -15176,9 +15357,9 @@
           },
           "travel_km": 278.0,
           "weather": {
-            "temperature_c": 15.8,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 5.2
+            "temperature_c": 19.0,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 4.5
           },
           "referee": {
             "name": "no confirmado",
@@ -15241,10 +15422,10 @@
               ],
               "count": 3,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 19
+              "source_items_checked": 17
             }
           },
-          "context_updated_at": "2026-10-22T12:17:29.754543+00:00",
+          "context_updated_at": "2026-10-22T18:39:35.397630+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -15264,10 +15445,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 3,
-              "availability_items": 17,
+              "availability_items": 16,
               "official_items": 7,
               "match_items": 3,
-              "team_items": 28,
+              "team_items": 26,
               "season_transition_items": 12,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -15736,9 +15917,9 @@
           },
           "travel_km": 470.1,
           "weather": {
-            "temperature_c": 14.8,
-            "precipitation_probability": 2,
-            "wind_speed_kmh": 3.7
+            "temperature_c": 14.3,
+            "precipitation_probability": 4,
+            "wind_speed_kmh": 5.0
           },
           "referee": {
             "name": "no confirmado",
@@ -15796,7 +15977,7 @@
                   "headline": "Importantísimas bajas en la convocatoria del Celta con la presencia de Milla, Arcos y Antañón - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSjYxNnRlX1FjbXhNeHFOMTBXUGhrb3dNRnUyalRmR05tSlA5NHFVOTFDMWdDTmhsWHhtNlpkS0t6eTdfSE1HeVdHZVBYb3l4UWZEckNqTWUxVHAwZzl6R2NlNFVBUHNENV9FWFdIN3dUenRGaUdkOHFYQmh4bldab2ZKbTVpVno3aHVwNHF0cjVzRkZfdExwRFZVd05yVDNjbVIyb19PQ01nV3Y0M2VsX9IBtgFBVV95cUxNT0VnQmhCTWV4RVg4LWQ0NHNSWnFPbTN6RkgtVTg0ajgwX2RJMC1hWmxKTVd5aXJ1N210d21EczRjblFyWWwtdlEtZnJVX2Zta1dPRzlfbEs2bkRVaWFWRmlVRG03RG1BUGNVYkp4Slh6bThzajZaby1IRWdNTWlDd3JYaWhIMjdJNGdsWkxYaHNERlpnYTN4ZldRU3VJZGp6QkhZQlpBRXplV05Mb1NyLXIwbVQ2Zw?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 11:54:10 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Milla",
@@ -15805,7 +15986,7 @@
                   "headline": "Importantísimas bajas en la convocatoria del Celta con la presencia de Milla, Arcos y Antañón - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSjYxNnRlX1FjbXhNeHFOMTBXUGhrb3dNRnUyalRmR05tSlA5NHFVOTFDMWdDTmhsWHhtNlpkS0t6eTdfSE1HeVdHZVBYb3l4UWZEckNqTWUxVHAwZzl6R2NlNFVBUHNENV9FWFdIN3dUenRGaUdkOHFYQmh4bldab2ZKbTVpVno3aHVwNHF0cjVzRkZfdExwRFZVd05yVDNjbVIyb19PQ01nV3Y0M2VsX9IBtgFBVV95cUxNT0VnQmhCTWV4RVg4LWQ0NHNSWnFPbTN6RkgtVTg0ajgwX2RJMC1hWmxKTVd5aXJ1N210d21EczRjblFyWWwtdlEtZnJVX2Zta1dPRzlfbEs2bkRVaWFWRmlVRG03RG1BUGNVYkp4Slh6bThzajZaby1IRWdNTWlDd3JYaWhIMjdJNGdsWkxYaHNERlpnYTN4ZldRU3VJZGp6QkhZQlpBRXplV05Mb1NyLXIwbVQ2Zw?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 11:54:10 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Arcos",
@@ -15814,7 +15995,7 @@
                   "headline": "Importantísimas bajas en la convocatoria del Celta con la presencia de Milla, Arcos y Antañón - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNSjYxNnRlX1FjbXhNeHFOMTBXUGhrb3dNRnUyalRmR05tSlA5NHFVOTFDMWdDTmhsWHhtNlpkS0t6eTdfSE1HeVdHZVBYb3l4UWZEckNqTWUxVHAwZzl6R2NlNFVBUHNENV9FWFdIN3dUenRGaUdkOHFYQmh4bldab2ZKbTVpVno3aHVwNHF0cjVzRkZfdExwRFZVd05yVDNjbVIyb19PQ01nV3Y0M2VsX9IBtgFBVV95cUxNT0VnQmhCTWV4RVg4LWQ0NHNSWnFPbTN6RkgtVTg0ajgwX2RJMC1hWmxKTVd5aXJ1N210d21EczRjblFyWWwtdlEtZnJVX2Zta1dPRzlfbEs2bkRVaWFWRmlVRG03RG1BUGNVYkp4Slh6bThzajZaby1IRWdNTWlDd3JYaWhIMjdJNGdsWkxYaHNERlpnYTN4ZldRU3VJZGp6QkhZQlpBRXplV05Mb1NyLXIwbVQ2Zw?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 11:54:10 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Álvaro Núñez",
@@ -15841,7 +16022,7 @@
                   "headline": "Lesiones de Borja Iglesias y Pablo Durán: parte médico de los delanteros del Celta - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQLTlpX0Z1aXR2RF9Jb29sUEJDRWNTcG80TG04SGdyaWZfVWphdEpnTUdpbEVIZjdQYTdlYUhIdW45M2FqY3pYUzFZbmRvdk9KMXExaHlidC1ndkIzN3lUaGdMQW9ZejBoRXpBWTRuN1F6dnA3cGNGSVhTSl9GekY2NWNwTTRPWEcxSEgtbDZWVXVsNHdST091SnVwN05GLXFMWnZEUnRvbG81NUNnWlotLXpB0gG3AUFVX3lxTE8tMmRhN0NMS1A1Zkc0OFVOUC13MmlGT0h5S2ZrVG1vTkJRMDNlNHZJRHV1LTJpS2ZRSTFtYUoyUGNyUkF5WS1fV1ZoU0N4cllHbGJWdWp5YnVMM1dFSzdGVjVkcXl4Zkdzc2NVR0YtR244UllxUVVmbnNkeDJSdjFfUTY4MGlZRWFDYi11MmtQUlIxckkyZ0FZa25USkJLcGVJcGpzSUk4VVYtNmo4UGlXamxUZHM4QQ?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 13:50:47 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Pablo Durán",
@@ -15850,15 +16031,15 @@
                   "headline": "Lesiones de Borja Iglesias y Pablo Durán: parte médico de los delanteros del Celta - Metropolitano.gal",
                   "source": "Metropolitano.gal",
                   "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQLTlpX0Z1aXR2RF9Jb29sUEJDRWNTcG80TG04SGdyaWZfVWphdEpnTUdpbEVIZjdQYTdlYUhIdW45M2FqY3pYUzFZbmRvdk9KMXExaHlidC1ndkIzN3lUaGdMQW9ZejBoRXpBWTRuN1F6dnA3cGNGSVhTSl9GekY2NWNwTTRPWEcxSEgtbDZWVXVsNHdST091SnVwN05GLXFMWnZEUnRvbG81NUNnWlotLXpB0gG3AUFVX3lxTE8tMmRhN0NMS1A1Zkc0OFVOUC13MmlGT0h5S2ZrVG1vTkJRMDNlNHZJRHV1LTJpS2ZRSTFtYUoyUGNyUkF5WS1fV1ZoU0N4cllHbGJWdWp5YnVMM1dFSzdGVjVkcXl4Zkdzc2NVR0YtR244UllxUVVmbnNkeDJSdjFfUTY4MGlZRWFDYi11MmtQUlIxckkyZ0FZa25USkJLcGVJcGpzSUk4VVYtNmo4UGlXamxUZHM4QQ?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 13:50:47 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 }
               ],
               "count": 9,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 19
+              "source_items_checked": 17
             }
           },
-          "context_updated_at": "2026-10-22T12:17:30.264193+00:00",
+          "context_updated_at": "2026-10-22T18:39:39.706735+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -15878,7 +16059,7 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 9,
-              "availability_items": 21,
+              "availability_items": 22,
               "official_items": 3,
               "match_items": 1,
               "team_items": 35,
@@ -15898,20 +16079,20 @@
           "visitante": "Málaga",
           "league": "LaLiga",
           "league_key": "soccer_spain_la_liga",
-          "league_source": "feed-de-cuotas",
+          "league_source": "odds-snapshot",
           "kickoff": "2026-10-31T17:30:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 1.41,
-            "X": 5.1,
-            "2": 6.5
+            "1": 1.39,
+            "X": 5.21,
+            "2": 6.77
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 66.96,
-            "X": 18.51,
-            "2": 14.53
+            "1": 67.93,
+            "X": 18.12,
+            "2": 13.95
           },
           "official_percent": {},
           "home_table": {
@@ -15975,15 +16156,24 @@
             "away_must_not_lose_index": 0,
             "direct_rivalry_index": 0,
             "home_rotation_context": {
-              "risk": "medium",
-              "score": 54,
-              "reason": "la prensa reciente apunta a rotaciones/descanso",
-              "next_high_importance_fixture": {}
+              "risk": "high",
+              "score": 90,
+              "reason": "Real Betis tiene UEFA Champions League vs Borussia Dortmund en 4.1 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-11-04",
+                "kickoff": "2026-11-04T20:00:00Z",
+                "venue": "away",
+                "opponent": "Borussia Dortmund",
+                "opponent_position": null,
+                "opponent_points": null,
+                "league": "soccer_uefa_champs_league",
+                "source": "odds-feed"
+              }
             },
             "away_rotation_context": {
-              "risk": "medium",
-              "score": 50,
-              "reason": "la prensa reciente apunta a rotaciones/descanso",
+              "risk": "low",
+              "score": 32,
+              "reason": "",
               "next_high_importance_fixture": {}
             },
             "table_reliability": {
@@ -16395,15 +16585,15 @@
           },
           "travel_km": 155.6,
           "weather": {
-            "temperature_c": 18.9,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 1.1
+            "temperature_c": 19.1,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 6.4
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Elche (LaLiga, 18º) | fuera vs Sevilla (LaLiga, 6º) | casa vs Rayo Vallecano (LaLiga, 14º) | fuera vs Atlético Madrid (LaLiga, 2º) | casa vs Racing Santander (LaLiga, 17º)",
+          "future_home": "fuera vs Borussia Dortmund (UEFA Champions League)",
           "future_away": "casa vs Racing Santander (LaLiga, 17º) | fuera vs Osasuna (LaLiga, 10º) | casa vs Athletic Club (LaLiga, 13º) | fuera vs Sevilla (LaLiga, 6º) | casa vs Barcelona (LaLiga, 1º)",
           "history_quality": {
             "valid": true,
@@ -16480,7 +16670,7 @@
               ],
               "count": 6,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 29
+              "source_items_checked": 28
             },
             "away": {
               "team": "Málaga",
@@ -16527,7 +16717,7 @@
               "source_items_checked": 27
             }
           },
-          "context_updated_at": "2026-10-22T12:17:31.130708+00:00",
+          "context_updated_at": "2026-10-22T18:46:29.565462+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -16547,10 +16737,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 10,
-              "availability_items": 38,
-              "official_items": 1,
+              "availability_items": 36,
+              "official_items": 2,
               "match_items": 8,
-              "team_items": 51,
+              "team_items": 52,
               "season_transition_items": 16,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -16558,7 +16748,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (67.0%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 5o con 60 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 bajas/disponibilidad | Visitante: temporada anterior: ascendido: 4o con 73 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 3 señales de pretemporada | local: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | visitante: la prensa reciente apunta a rotaciones/descanso (riesgo medium) | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (67.9%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 5o con 60 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 bajas/disponibilidad | Visitante: temporada anterior: ascendido: 4o con 73 pts en Segunda Division 25/26; 5 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 3 señales de pretemporada | local: Real Betis tiene UEFA Champions League vs Borussia Dortmund en 4.1 dias (riesgo high) | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -16572,15 +16762,15 @@
           "bookmaker": "Pinnacle",
           "odds": {
             "1": 1.17,
-            "X": 6.43,
-            "2": 21.93
+            "X": 6.29,
+            "2": 21.66
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 80.95,
-            "X": 14.73,
-            "2": 4.32
+            "1": 80.64,
+            "X": 15.0,
+            "2": 4.36
           },
           "official_percent": {},
           "home_table": {
@@ -16645,9 +16835,18 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "high",
-              "score": 90,
-              "reason": "la prensa reciente apunta a rotaciones/descanso",
-              "next_high_importance_fixture": {}
+              "score": 88,
+              "reason": "Barcelona tiene UEFA Champions League vs Aston Villa en 3.0 dias",
+              "next_high_importance_fixture": {
+                "date": "2026-11-03",
+                "kickoff": "2026-11-03T20:00:00Z",
+                "venue": "home",
+                "opponent": "Aston Villa",
+                "opponent_position": 12,
+                "opponent_points": 9,
+                "league": "soccer_uefa_champs_league",
+                "source": "odds-feed"
+              }
             },
             "away_rotation_context": {
               "risk": "low",
@@ -16790,7 +16989,7 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 2,
+                "stale_rumours_dropped": 0,
                 "summary": "temporada anterior: 1o con 94 pts en LaLiga 25/26; 2 posibles salidas; 1 cambios de entrenador"
               },
               "away": {
@@ -16873,15 +17072,15 @@
           },
           "travel_km": 427.7,
           "weather": {
-            "temperature_c": 15.9,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 3.6
+            "temperature_c": 18.7,
+            "precipitation_probability": 7,
+            "wind_speed_kmh": 2.7
           },
           "referee": {
             "name": "no confirmado",
             "bias_summary": "sin historico arbitral fiable"
           },
-          "future_home": "fuera vs Atlético Madrid (LaLiga, 2º) | casa vs Villarreal (LaLiga, 12º) | fuera vs Deportivo (LaLiga, 9º) | casa vs Celta Vigo (LaLiga, 8º) | fuera vs Málaga (LaLiga, 20º)",
+          "future_home": "casa vs Aston Villa (UEFA Champions League)",
           "future_away": "fuera vs Sevilla (LaLiga, 6º) | casa vs Deportivo (LaLiga, 9º) | fuera vs Real Madrid (LaLiga, 3º) | casa vs Espanyol (LaLiga, 16º) | fuera vs Levante (LaLiga, 11º)",
           "history_quality": {
             "valid": true,
@@ -16911,16 +17110,34 @@
                   "published_at": "Wed, 21 Oct 2026 19:18:00 GMT"
                 },
                 {
-                  "player_name": "Eric Garcia",
+                  "player_name": "Problemas",
                   "verificado": false,
-                  "status": "out",
-                  "headline": "Parte médico lesión Eric Garcia: qué le pasa, cómo se ha lesionado, cuánto tiempo estará de baja y qué partidos se perderá con el FC Barcelona - DAZN",
-                  "source": "DAZN",
-                  "link": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxNWk1yWE9KanRMV01YSVk3V0Q4ZFJZbEtpVWtuZHoxTzNXZF82elZOalB0QUlPSWY4Q3dIM2hhTkhjZFhhQTc2THM5WWdZZ0k3eldHM3dycUlTUnFxemw5U1VtMWc3RkNQOG91RDhWT1RYTHhmYWs1UUxVQ3ZjcFhobzk1di03RVBBNmgyZXVETTZNQWNKbHh5VXY0ZnlyX1h6Uzc3WDk3cy1uT0dtOE1ibXNLYW9PUUFPelNfZjMxTkVFU0ljdUR6eGpfNWZseEJvMDZOVHhrdzIzeklVcjNpTDZBVVQ4b1BqNWs1bVN4dw?oc=5",
-                  "published_at": "Sat, 17 Oct 2026 18:51:14 GMT"
+                  "status": "doubtful",
+                  "headline": "Problemas para el Barcelona en defensa: Eric García se perderá el Clásico por lesión y Koundé es duda - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOaXlHLTJpV0txYUViRHlFZlNmTXp5cTBYVXJEbndpeXlWZnlFYWFuVGk2TENPUEd4NUh2dEowLUEwb2ZfUWJkc2JiVnhHSGhYS1FHXzBhUDVyeHBudkdVQnNVQXlDTXV1dDhPZWhGWVkzWmxneldfUnJ4Y2l5RklGOHJxUFEyWHBsQUZ3TVdFZlpNTXIyaHIyQzRjaWdfcV82Q0RwaGlIcWs1TDVEZGUwX3pzd9IBuAFBVV95cUxOYUtGNE9SbFRVVjFHVFhUQUN2bEtHX1RRNHcwTWpmbDBTRThiSjZjVzF2d1JTOFN6c3k1bXRzMWZDaTYxSUdFbE45NkEzUVJSODgzZk1lUlZvT1duMW1Ja1NYcnlNVnhyVENsTi1kX1l6ekduQkdPVkQ2N3dFSmkyUVZMSFp4RkxmLXlvdnhBNzh0YW1FY2JhaWh3SElEd1dJeFNjOHNLNUl4YzlocjJRSmEzNEdWdldL?oc=5",
+                  "published_at": "Sun, 18 Oct 2026 16:06:38 GMT"
+                },
+                {
+                  "player_name": "Eric García",
+                  "verificado": false,
+                  "status": "doubtful",
+                  "headline": "Problemas para el Barcelona en defensa: Eric García se perderá el Clásico por lesión y Koundé es duda - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOaXlHLTJpV0txYUViRHlFZlNmTXp5cTBYVXJEbndpeXlWZnlFYWFuVGk2TENPUEd4NUh2dEowLUEwb2ZfUWJkc2JiVnhHSGhYS1FHXzBhUDVyeHBudkdVQnNVQXlDTXV1dDhPZWhGWVkzWmxneldfUnJ4Y2l5RklGOHJxUFEyWHBsQUZ3TVdFZlpNTXIyaHIyQzRjaWdfcV82Q0RwaGlIcWs1TDVEZGUwX3pzd9IBuAFBVV95cUxOYUtGNE9SbFRVVjFHVFhUQUN2bEtHX1RRNHcwTWpmbDBTRThiSjZjVzF2d1JTOFN6c3k1bXRzMWZDaTYxSUdFbE45NkEzUVJSODgzZk1lUlZvT1duMW1Ja1NYcnlNVnhyVENsTi1kX1l6ekduQkdPVkQ2N3dFSmkyUVZMSFp4RkxmLXlvdnhBNzh0YW1FY2JhaWh3SElEd1dJeFNjOHNLNUl4YzlocjJRSmEzNEdWdldL?oc=5",
+                  "published_at": "Sun, 18 Oct 2026 16:06:38 GMT"
+                },
+                {
+                  "player_name": "Clásico",
+                  "verificado": false,
+                  "status": "doubtful",
+                  "headline": "Problemas para el Barcelona en defensa: Eric García se perderá el Clásico por lesión y Koundé es duda - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOaXlHLTJpV0txYUViRHlFZlNmTXp5cTBYVXJEbndpeXlWZnlFYWFuVGk2TENPUEd4NUh2dEowLUEwb2ZfUWJkc2JiVnhHSGhYS1FHXzBhUDVyeHBudkdVQnNVQXlDTXV1dDhPZWhGWVkzWmxneldfUnJ4Y2l5RklGOHJxUFEyWHBsQUZ3TVdFZlpNTXIyaHIyQzRjaWdfcV82Q0RwaGlIcWs1TDVEZGUwX3pzd9IBuAFBVV95cUxOYUtGNE9SbFRVVjFHVFhUQUN2bEtHX1RRNHcwTWpmbDBTRThiSjZjVzF2d1JTOFN6c3k1bXRzMWZDaTYxSUdFbE45NkEzUVJSODgzZk1lUlZvT1duMW1Ja1NYcnlNVnhyVENsTi1kX1l6ekduQkdPVkQ2N3dFSmkyUVZMSFp4RkxmLXlvdnhBNzh0YW1FY2JhaWh3SElEd1dJeFNjOHNLNUl4YzlocjJRSmEzNEdWdldL?oc=5",
+                  "published_at": "Sun, 18 Oct 2026 16:06:38 GMT"
                 }
               ],
-              "count": 2,
+              "count": 4,
               "verification_status": "confirmed_absences",
               "source_items_checked": 29
             },
@@ -16932,40 +17149,39 @@
               "source_items_checked": 8
             }
           },
-          "context_updated_at": "2026-10-22T12:17:31.472861+00:00",
+          "context_updated_at": "2026-10-22T18:40:02.691816+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 74,
+            "score": 84,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
               "liga identificada",
               "clima",
               "viaje",
-              "temporada anterior de ambos equipos",
-              "contexto parcial de plantilla/pretemporada"
+              "calendario próximo",
+              "temporada anterior de ambos equipos"
             ],
             "faltan": [
               "porcentajes de quiniela",
-              "calendario próximo",
               "mas fuentes sobre altas, salidas y pretemporada",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 2,
+              "injury_items": 4,
               "availability_items": 20,
               "official_items": 0,
               "match_items": 8,
-              "team_items": 22,
-              "season_transition_items": 7,
+              "team_items": 20,
+              "season_transition_items": 5,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
               "away_roster_status": "sources_checked_no_confirmed_absence",
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (81.0%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 1o con 94 pts en LaLiga 25/26; 2 posibles salidas; 1 cambios de entrenador | Visitante: temporada anterior: 14o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 1 noticias de plantilla | local: la prensa reciente apunta a rotaciones/descanso (riesgo high) | Calendario próximo equilibrado, sin presión de conservar fuerzas. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (80.6%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 1o con 94 pts en LaLiga 25/26; 2 posibles salidas; 1 cambios de entrenador | Visitante: temporada anterior: 14o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 1 noticias de plantilla | local: Barcelona tiene UEFA Champions League vs Aston Villa en 3.0 dias (riesgo high) | Calendario próximo sin rivales especialmente exigentes. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 13 días).",
           "analysis_ready": true
         },
         {
@@ -16978,16 +17194,16 @@
           "kickoff": "2026-11-01T13:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 2.93,
+            "1": 2.97,
             "X": 3.0,
-            "2": 2.67
+            "2": 2.63
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 32.53,
-            "X": 31.77,
-            "2": 35.7
+            "1": 32.06,
+            "X": 31.74,
+            "2": 36.2
           },
           "official_percent": {},
           "home_table": {
@@ -17483,9 +17699,9 @@
           },
           "travel_km": 378.2,
           "weather": {
-            "temperature_c": 14.9,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 3.3
+            "temperature_c": 14.2,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 6.4
           },
           "referee": {
             "name": "no confirmado",
@@ -17523,7 +17739,7 @@
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 17
+              "source_items_checked": 15
             },
             "away": {
               "team": "Sevilla",
@@ -17547,13 +17763,31 @@
                   "published_at": "Sat, 17 Oct 2026 06:59:19 GMT"
                 },
                 {
-                  "player_name": "Jon Guridi",
+                  "player_name": "Novedades",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Última hora sobre el estado de salud de Jon Guridi: parte médico, tiempo de baja y cuántos partidos se perderá con el Sevilla - El Correo de Andalucía",
-                  "source": "El Correo de Andalucía",
-                  "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPQ2ZjSWxyYWktdjFsRVdmRTZWUEZEVzFNQ2tiTHU4Z1NtZUM4ZVdzTmZGWFllNGVHNmF0cFdTNzRKZkt2WmZVOWVvOF9EYWJOUVQ2N1l4a0czSjAxaGpXUS16NTB1RENkdE9SVnBkZ1hQZnJ3NnVNb0ZpZjh4enVqYUJuN2R1NWk2Nm9LVjZ6cmduREduOXdTYkdVRFJUUVlaWUxYZm5Ya9IBrAFBVV95cUxQdWFzWFd0WE90VlFJT2VuNzdINzduYUJjQTBUNkU3em5Ddkk0Vno2Vjd3TGlKbW1fQXhGX0kwTmJiNFlBSUt4UlNHeWxtaTR4cjJjUVllWGtVNWh0Rld1T2tYWG00U2h0TWdvQlNyNnVLX2ZuN2w0SjZMSXRINzhzdWhKbWZxdks0emVEbVZLUzZXUW4tOTQ0WXNRZEVMenRHTWMzNVVTSFdjOVFz?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 09:44:03 GMT"
+                  "headline": "Novedades en el Sevilla FC: regresa Giorgi Kochorashvili y Lucas Stassin causa baja - Diario de Sevilla",
+                  "source": "Diario de Sevilla",
+                  "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNYjY0bFdVRl8wYl9lenR6VW9LaElBN0t0bDRqM3RSa0VFdkpBejk3LWdpY3A5UWRIOUhOdHRKeGhpUXR6STR0cWZxbDZPZFpLUG9jSGJUT1JOazNlT2dNNDA4Ym42OUhPeVEwYk5kckdncWxoVE1lQkF1eVRySjFjOGI5NUc4TmtTdkVKZFRjM2xNZXNaTl9QSDlqUHZtVUZPT2lXbnYtdWhWM3FUcjhCSnZDYWcxVElaTFE0aUFqVUpqTzU5VWc?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:45:30 GMT"
+                },
+                {
+                  "player_name": "Giorgi Kochorashvili",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Novedades en el Sevilla FC: regresa Giorgi Kochorashvili y Lucas Stassin causa baja - Diario de Sevilla",
+                  "source": "Diario de Sevilla",
+                  "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNYjY0bFdVRl8wYl9lenR6VW9LaElBN0t0bDRqM3RSa0VFdkpBejk3LWdpY3A5UWRIOUhOdHRKeGhpUXR6STR0cWZxbDZPZFpLUG9jSGJUT1JOazNlT2dNNDA4Ym42OUhPeVEwYk5kckdncWxoVE1lQkF1eVRySjFjOGI5NUc4TmtTdkVKZFRjM2xNZXNaTl9QSDlqUHZtVUZPT2lXbnYtdWhWM3FUcjhCSnZDYWcxVElaTFE0aUFqVUpqTzU5VWc?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:45:30 GMT"
+                },
+                {
+                  "player_name": "Lucas Stassin",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Novedades en el Sevilla FC: regresa Giorgi Kochorashvili y Lucas Stassin causa baja - Diario de Sevilla",
+                  "source": "Diario de Sevilla",
+                  "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNYjY0bFdVRl8wYl9lenR6VW9LaElBN0t0bDRqM3RSa0VFdkpBejk3LWdpY3A5UWRIOUhOdHRKeGhpUXR6STR0cWZxbDZPZFpLUG9jSGJUT1JOazNlT2dNNDA4Ym42OUhPeVEwYk5kckdncWxoVE1lQkF1eVRySjFjOGI5NUc4TmtTdkVKZFRjM2xNZXNaTl9QSDlqUHZtVUZPT2lXbnYtdWhWM3FUcjhCSnZDYWcxVElaTFE0aUFqVUpqTzU5VWc?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:45:30 GMT"
                 },
                 {
                   "player_name": "Miguel Sierra",
@@ -17562,15 +17796,15 @@
                   "headline": "Lesión de Miguel Sierra: parte médico, tiempo de baja y cuántos partidos se perderá con el Sevilla - El Correo de Andalucía",
                   "source": "El Correo de Andalucía",
                   "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxONllhWWxPUUFhSFdzVFRDRzcyZ2FCVnVJcXVnZWNhVmRLcHF4S005bmRtMlB6cFhFNGx1dVJfLW1PcnpjTnZ5VnBvQXNYZ3RMMDJqcE83elI4b1E1NVJPd0NNVEZxaUVURG14VVBvUUlfTzVZZ0g2LXBhMEJ0WFJLbkFxcnI4dUhmVGNjSVoxaWJUb29qcmVqVVEzaEVwRkVNQ2laeDNXNzQza0JEUG9fQdIBtgFBVV95cUxPcWhBUVF3WGhSZDM2Z25EeWlBRG93aWV0R2xBU2RBcHBPQVBpOUxKSzdTMEN2eldnYTdTdW9uaHBPd2hpVGhnX3YwT19xdXJCS0JGc1JWdDJzYnQ3OFhnNVB0cmJaSldpTHhmc2VuclNuVXdDMURWQThpdG91Mk5NQnQwdTZ3Sk8yVEN3QWN0LWVHa3lHTXNyTXlVOUcxWklGQnVmWkhVeUVENVhsLWlVNXpQUFRldw?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 08:41:09 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 }
               ],
-              "count": 4,
+              "count": 6,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 20
+              "source_items_checked": 22
             }
           },
-          "context_updated_at": "2026-10-22T12:17:32.378464+00:00",
+          "context_updated_at": "2026-10-22T18:40:07.312742+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -17589,8 +17823,8 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 5,
-              "availability_items": 27,
+              "injury_items": 7,
+              "availability_items": 29,
               "official_items": 1,
               "match_items": 8,
               "team_items": 39,
@@ -17601,7 +17835,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (35.7%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 7o con 51 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas | Visitante: temporada anterior: 15o con 43 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 1 señales de pretemporada; 1 noticias de plantilla | local: Getafe tiene UEFA Conference League vs Brighton & Hove Albion en 4.0 dias (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 14 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (36.2%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 7o con 51 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 2 posibles salidas | Visitante: temporada anterior: 15o con 43 pts en LaLiga 25/26; 1 posibles altas u operaciones; 1 posibles salidas; 1 bajas/disponibilidad; 1 señales de pretemporada; 1 noticias de plantilla | local: Getafe tiene UEFA Conference League vs Brighton & Hove Albion en 4.0 dias (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 14 días).",
           "analysis_ready": true
         },
         {
@@ -17614,16 +17848,16 @@
           "kickoff": "2026-11-01T15:15:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 8.16,
-            "X": 6.95,
+            "1": 7.98,
+            "X": 6.87,
             "2": 1.26
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 11.56,
-            "X": 13.57,
-            "2": 74.87
+            "1": 11.77,
+            "X": 13.67,
+            "2": 74.55
           },
           "official_percent": {},
           "home_table": {
@@ -17694,7 +17928,7 @@
             },
             "away_rotation_context": {
               "risk": "high",
-              "score": 100,
+              "score": 88,
               "reason": "Real Madrid tiene UEFA Champions League vs AEK Athens en 3.1 dias",
               "next_high_importance_fixture": {
                 "date": "2026-11-04",
@@ -18107,7 +18341,7 @@
           "travel_km": 338.7,
           "weather": {
             "temperature_c": 13.8,
-            "precipitation_probability": 1,
+            "precipitation_probability": 0,
             "wind_speed_kmh": 15.7
           },
           "referee": {
@@ -18169,13 +18403,22 @@
                   "published_at": "Wed, 14 Oct 2026 19:21:22 GMT"
                 },
                 {
+                  "player_name": "Huijsen",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Convocatoria del Real Madrid contra la Roma: vuelve Huijsen y Mourinho mantiene cuatro bajas - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQRmF5SUFYMTZ0ZEFhWnVVQmlZRnZYUEFnUTNJV0plVG1LeTlBTE11U201c0ZBVHAtbndWWE9qNURHcU5OMHFmX3BscW43d056amdQYlFGR1pOSnRIVlZ2eEY4T0dZelVuQkItM2sybmc2TmNFTlZhTXBNZUxyekFzb3Q4WEdjcGQwSTMwYzlzZm9oTXNmSDFYMElvd01XVmVDUVlVOXhiUDN3Sk05dmpDZXAxZnNDQ2tvNkRjYjlzRXl4ajFYdVg0eXR5bndTekFqZFctZ1R6VlJVZnPSAeABQVVfeXFMTWplMHE5akE1QU51RUthdEozM2wxLUFLQkx6OUxPaW9pSEN1LS1WLWtPeGY0SExHSG5RcDBralFMeHR1ZER5Sm15WjMtRUllNHBSVndpZXdKUHZQVzJYY0ZLYVdvekdTZERYbGJiTEJEbUV4QUVBRDFIdjNRR1ZhM3Jjc0t5bWRWVm1mbWpOc1I2MDloQm00bVJZRU1TVlk1SC02SWQtUFAwWnFudTg2TmthdWVCdEVMUTJnWWxHTDBaVHNiX1VsVW1JSkZHRExldldFZEFra2VtZDlOT05vYWU?oc=5",
+                  "published_at": "Tue, 13 Oct 2026 07:00:00 GMT"
+                },
+                {
                   "player_name": "Mourinho",
                   "verificado": false,
-                  "status": "suspended",
-                  "headline": "¿El Real Madrid podría ser sancionado por no presentarse Mourinho a la rueda de prensa? - Sports Illustrated",
-                  "source": "Sports Illustrated",
-                  "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOZzUyYjBzUVd2YzdJS0dnaWFaTUNMOXVoQnRVal9jN2x4TzhKbjdtVlRyTHV6QjRCLUJrVUlzYW84ZTNTVkRaNC1aLUFYSHc0OEt2anpCMXNfZllXZXRDTHRPNlZWM2N4YV9VLVliWkE2b1pjX3J6QkE3TUkzWE41UE1id19XVXFVcDB3ZGl6Y1lWU04wRS1SQmptNDRJVEJIeVVGWWwzZnZhajZqY2dF?oc=5",
-                  "published_at": "Mon, 12 Oct 2026 15:02:47 GMT"
+                  "status": "out",
+                  "headline": "Convocatoria del Real Madrid contra la Roma: vuelve Huijsen y Mourinho mantiene cuatro bajas - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQRmF5SUFYMTZ0ZEFhWnVVQmlZRnZYUEFnUTNJV0plVG1LeTlBTE11U201c0ZBVHAtbndWWE9qNURHcU5OMHFmX3BscW43d056amdQYlFGR1pOSnRIVlZ2eEY4T0dZelVuQkItM2sybmc2TmNFTlZhTXBNZUxyekFzb3Q4WEdjcGQwSTMwYzlzZm9oTXNmSDFYMElvd01XVmVDUVlVOXhiUDN3Sk05dmpDZXAxZnNDQ2tvNkRjYjlzRXl4ajFYdVg0eXR5bndTekFqZFctZ1R6VlJVZnPSAeABQVVfeXFMTWplMHE5akE1QU51RUthdEozM2wxLUFLQkx6OUxPaW9pSEN1LS1WLWtPeGY0SExHSG5RcDBralFMeHR1ZER5Sm15WjMtRUllNHBSVndpZXdKUHZQVzJYY0ZLYVdvekdTZERYbGJiTEJEbUV4QUVBRDFIdjNRR1ZhM3Jjc0t5bWRWVm1mbWpOc1I2MDloQm00bVJZRU1TVlk1SC02SWQtUFAwWnFudTg2TmthdWVCdEVMUTJnWWxHTDBaVHNiX1VsVW1JSkZHRExldldFZEFra2VtZDlOT05vYWU?oc=5",
+                  "published_at": "Tue, 13 Oct 2026 07:00:00 GMT"
                 },
                 {
                   "player_name": "Hansi Flick",
@@ -18203,23 +18446,14 @@
                   "source": "heraldo.es",
                   "link": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPRHh5VlZxZUN2VVhSLUJtVlkzdHBZV1lFZXIycVVHSW5CWGJVR3ZMbVFVeVlZMUh0NXJIZktYRWRjNjAyYkd5d0xCZUxqV3BQUUNSOFNOb05CdFAxWldoVW5IYnZkZm05T1VCN1RHUElSQXdQbVNNQXVWdVE1RUIwcW5USW9hc21ub0FDMVE0dUpocmdKVUJpRXdrWnZWQk14REtxeUFmazY1TjZhcHhxV1NEVlJqNGRlM21LMWxmS3BTRHBvUjZFeUFVQmtGODVtdl92MjV1MXpVOXZhSmJjVQ?oc=5",
                   "published_at": "Wed, 21 Oct 2026 16:50:36 GMT"
-                },
-                {
-                  "player_name": "Huijsen",
-                  "verificado": false,
-                  "status": "out",
-                  "headline": "Convocatoria del Real Madrid contra la Roma: vuelve Huijsen y Mourinho mantiene cuatro bajas - OkDiario",
-                  "source": "OkDiario",
-                  "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQRmF5SUFYMTZ0ZEFhWnVVQmlZRnZYUEFnUTNJV0plVG1LeTlBTE11U201c0ZBVHAtbndWWE9qNURHcU5OMHFmX3BscW43d056amdQYlFGR1pOSnRIVlZ2eEY4T0dZelVuQkItM2sybmc2TmNFTlZhTXBNZUxyekFzb3Q4WEdjcGQwSTMwYzlzZm9oTXNmSDFYMElvd01XVmVDUVlVOXhiUDN3Sk05dmpDZXAxZnNDQ2tvNkRjYjlzRXl4ajFYdVg0eXR5bndTekFqZFctZ1R6VlJVZnPSAeABQVVfeXFMTWplMHE5akE1QU51RUthdEozM2wxLUFLQkx6OUxPaW9pSEN1LS1WLWtPeGY0SExHSG5RcDBralFMeHR1ZER5Sm15WjMtRUllNHBSVndpZXdKUHZQVzJYY0ZLYVdvekdTZERYbGJiTEJEbUV4QUVBRDFIdjNRR1ZhM3Jjc0t5bWRWVm1mbWpOc1I2MDloQm00bVJZRU1TVlk1SC02SWQtUFAwWnFudTg2TmthdWVCdEVMUTJnWWxHTDBaVHNiX1VsVW1JSkZHRExldldFZEFra2VtZDlOT05vYWU?oc=5",
-                  "published_at": "Tue, 13 Oct 2026 07:00:00 GMT"
                 }
               ],
               "count": 8,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 28
+              "source_items_checked": 26
             }
           },
-          "context_updated_at": "2026-10-22T12:19:23.465597+00:00",
+          "context_updated_at": "2026-10-22T18:46:29.767988+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -18239,10 +18473,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 8,
-              "availability_items": 18,
+              "availability_items": 14,
               "official_items": 0,
-              "match_items": 1,
-              "team_items": 46,
+              "match_items": 2,
+              "team_items": 38,
               "season_transition_items": 19,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -18250,7 +18484,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (74.9%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: ascendido: 1o con 82 pts en Segunda Division 25/26; 2 altas/refuerzos confirmados; 2 salidas confirmadas; 1 señales de pretemporada | Visitante: temporada anterior: 2o con 86 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 cambios de entrenador | visitante: Real Madrid tiene UEFA Champions League vs AEK Athens en 3.1 dias (riesgo high) | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 14 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El visitante es favorito para las casas de apuestas (74.5%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: ascendido: 1o con 82 pts en Segunda Division 25/26; 2 altas/refuerzos confirmados; 2 salidas confirmadas; 1 señales de pretemporada | Visitante: temporada anterior: 2o con 86 pts en LaLiga 25/26; 5 posibles altas u operaciones; 1 cambios de entrenador | visitante: Real Madrid tiene UEFA Champions League vs AEK Athens en 3.1 dias (riesgo high) | Calendario futuro con 2 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (14 vs 14 días).",
           "analysis_ready": true
         },
         {
@@ -18482,7 +18716,7 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 1,
+                "stale_rumours_dropped": 0,
                 "summary": "temporada anterior: 13o con 43 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 2 señales de pretemporada"
               },
               "away": {
@@ -18660,7 +18894,7 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 1,
+                "stale_rumours_dropped": 0,
                 "summary": "temporada anterior: 9o con 49 pts en LaLiga 25/26; 4 posibles altas u operaciones; 1 posibles salidas; 3 cambios de entrenador"
               },
               "evidence_count": 11,
@@ -18674,9 +18908,9 @@
           },
           "travel_km": 136.6,
           "weather": {
-            "temperature_c": 17.6,
-            "precipitation_probability": 4,
-            "wind_speed_kmh": 5.0
+            "temperature_c": 19.1,
+            "precipitation_probability": 2,
+            "wind_speed_kmh": 2.7
           },
           "referee": {
             "name": "no confirmado",
@@ -18704,7 +18938,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 3
+              "source_items_checked": 4
             },
             "away": {
               "team": "Valencia",
@@ -18714,7 +18948,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-10-22T12:17:35.624596+00:00",
+          "context_updated_at": "2026-10-22T18:40:22.940898+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 88,
@@ -18734,11 +18968,11 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 4,
+              "availability_items": 5,
               "official_items": 2,
-              "match_items": 1,
-              "team_items": 19,
-              "season_transition_items": 13,
+              "match_items": 2,
+              "team_items": 16,
+              "season_transition_items": 11,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -19222,9 +19456,9 @@
           },
           "travel_km": 705.7,
           "weather": {
-            "temperature_c": 15.1,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 6.6
+            "temperature_c": 13.5,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 2.5
           },
           "referee": {
             "name": "no confirmado",
@@ -19278,10 +19512,10 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 15
+              "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-10-22T12:20:10.636957+00:00",
+          "context_updated_at": "2026-10-22T18:47:47.586910+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -19302,10 +19536,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 2,
-              "availability_items": 14,
+              "availability_items": 13,
               "official_items": 0,
               "match_items": 6,
-              "team_items": 24,
+              "team_items": 23,
               "season_transition_items": 11,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -19534,8 +19768,8 @@
             },
             "away_rotation_context": {
               "risk": "low",
-              "score": 0,
-              "reason": "",
+              "score": 18,
+              "reason": "la prensa reciente apunta a rotaciones/descanso",
               "next_high_importance_fixture": {}
             },
             "table_reliability": {
@@ -19903,7 +20137,7 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 1,
+                "stale_rumours_dropped": 0,
                 "summary": "5 posibles altas u operaciones; 1 posibles salidas"
               },
               "evidence_count": 21,
@@ -19917,9 +20151,9 @@
           },
           "travel_km": 284.6,
           "weather": {
-            "temperature_c": 16.3,
-            "precipitation_probability": 4,
-            "wind_speed_kmh": 3.9
+            "temperature_c": 17.1,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 3.7
           },
           "referee": {
             "name": "no confirmado",
@@ -19957,11 +20191,29 @@
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 12
+              "source_items_checked": 11
             },
             "away": {
               "team": "GRANADA",
               "items": [
+                {
+                  "player_name": "Víctor",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Las bajas de Víctor y Latasa, principales novedades de la convocatoria para Granada - Diario AS",
+                  "source": "Diario AS",
+                  "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxORFBTNUgycWpHcVg5Ti02Wlhja0o2WVpPUWtkWmNjWTdPYnlTLVpzTjNTZU1hUFpRVGpCQmM3dm9sdWhRNkxUcDNGMGt6TXJ6STVJdF9wazdoSFhMMGxUdjVxRzRNam1fZzVuZmFKVV9jdkdHYkNFVkpVZU1uWGhOcVk3bGFpTksxTDFLVUh6SUNNRTRRRzlYOVpLa2NndHVLZzZzcTJfd1c2a0FPSHdkaWNPbTlTZ2JXYUNsVUFfWErSAdQBQVVfeXFMUC15SDUzbEJHTktsMFFrd3JvMkM1SDJPVXFRSk5sanB5WEg0M2VWUlBzT0RUVWFMRndVUXVKMk5XcmtidUlDVE9Ma2hsN0FNSldsb0FiT0tFWXp6V21hQkRZTTZIeTM1T252N2ZmS0VLZEVxU0UxLS1uLVQ4RWpYTVNES080eDFuMHZ0bVlvTjdiZnNDVnBhd05XNk5wNzI3YWtWdHowS2VLLXRnMWRjb1ZwVXRMYmhCcUFqQTVGekpzeVd0RVFhSHdkV3lfUTNHQ2VKMWE?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 11:57:16 GMT"
+                },
+                {
+                  "player_name": "Latasa",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Las bajas de Víctor y Latasa, principales novedades de la convocatoria para Granada - Diario AS",
+                  "source": "Diario AS",
+                  "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxORFBTNUgycWpHcVg5Ti02Wlhja0o2WVpPUWtkWmNjWTdPYnlTLVpzTjNTZU1hUFpRVGpCQmM3dm9sdWhRNkxUcDNGMGt6TXJ6STVJdF9wazdoSFhMMGxUdjVxRzRNam1fZzVuZmFKVV9jdkdHYkNFVkpVZU1uWGhOcVk3bGFpTksxTDFLVUh6SUNNRTRRRzlYOVpLa2NndHVLZzZzcTJfd1c2a0FPSHdkaWNPbTlTZ2JXYUNsVUFfWErSAdQBQVVfeXFMUC15SDUzbEJHTktsMFFrd3JvMkM1SDJPVXFRSk5sanB5WEg0M2VWUlBzT0RUVWFMRndVUXVKMk5XcmtidUlDVE9Ma2hsN0FNSldsb0FiT0tFWXp6V21hQkRZTTZIeTM1T252N2ZmS0VLZEVxU0UxLS1uLVQ4RWpYTVNES080eDFuMHZ0bVlvTjdiZnNDVnBhd05XNk5wNzI3YWtWdHowS2VLLXRnMWRjb1ZwVXRMYmhCcUFqQTVGekpzeVd0RVFhSHdkV3lfUTNHQ2VKMWE?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 11:57:16 GMT"
+                },
                 {
                   "player_name": "Alejandro Marqués",
                   "verificado": false,
@@ -19972,12 +20224,12 @@
                   "published_at": "Wed, 21 Oct 2026 14:55:00 GMT"
                 }
               ],
-              "count": 1,
+              "count": 3,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 16
+              "source_items_checked": 19
             }
           },
-          "context_updated_at": "2026-10-22T12:20:14.721056+00:00",
+          "context_updated_at": "2026-10-22T18:48:03.094301+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -19997,12 +20249,12 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 2,
-              "availability_items": 15,
+              "injury_items": 4,
+              "availability_items": 17,
               "official_items": 0,
-              "match_items": 7,
-              "team_items": 31,
-              "season_transition_items": 22,
+              "match_items": 6,
+              "team_items": 34,
+              "season_transition_items": 21,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
               "away_roster_status": "confirmed_absences",
@@ -20382,7 +20634,7 @@
                     "evidence_quality": "high"
                   }
                 ],
-                "stale_rumours_dropped": 1,
+                "stale_rumours_dropped": 0,
                 "summary": "5 posibles altas u operaciones; 1 noticias de plantilla"
               },
               "away": {
@@ -20493,9 +20745,9 @@
           },
           "travel_km": 402.5,
           "weather": {
-            "temperature_c": 13.0,
+            "temperature_c": 12.6,
             "precipitation_probability": 0,
-            "wind_speed_kmh": 4.4
+            "wind_speed_kmh": 7.7
           },
           "referee": {
             "name": "no confirmado",
@@ -20567,10 +20819,10 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 11
+              "source_items_checked": 10
             }
           },
-          "context_updated_at": "2026-10-22T12:20:21.367230+00:00",
+          "context_updated_at": "2026-10-22T18:48:25.789000+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -20593,9 +20845,9 @@
               "injury_items": 4,
               "availability_items": 11,
               "official_items": 3,
-              "match_items": 6,
+              "match_items": 5,
               "team_items": 22,
-              "season_transition_items": 12,
+              "season_transition_items": 11,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
               "away_roster_status": "sources_checked_no_confirmed_absence",
@@ -21000,9 +21252,9 @@
           },
           "travel_km": 76.8,
           "weather": {
-            "temperature_c": 13.8,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 2.0
+            "temperature_c": 11.0,
+            "precipitation_probability": 1,
+            "wind_speed_kmh": 1.9
           },
           "referee": {
             "name": "no confirmado",
@@ -21030,7 +21282,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 9
+              "source_items_checked": 8
             },
             "away": {
               "team": "Real Sociedad",
@@ -21056,10 +21308,10 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 21
+              "source_items_checked": 22
             }
           },
-          "context_updated_at": "2026-10-22T12:20:22.981757+00:00",
+          "context_updated_at": "2026-10-22T18:48:31.660581+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -21080,10 +21332,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 2,
-              "availability_items": 20,
+              "availability_items": 22,
               "official_items": 4,
-              "match_items": 8,
-              "team_items": 19,
+              "match_items": 7,
+              "team_items": 20,
               "season_transition_items": 10,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -21616,9 +21868,9 @@
           },
           "travel_km": 512.9,
           "weather": {
-            "temperature_c": 14.6,
-            "precipitation_probability": 3,
-            "wind_speed_kmh": 3.3
+            "temperature_c": 14.0,
+            "precipitation_probability": 5,
+            "wind_speed_kmh": 6.4
           },
           "referee": {
             "name": "no confirmado",
@@ -21671,10 +21923,10 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 24
+              "source_items_checked": 25
             }
           },
-          "context_updated_at": "2026-10-22T12:20:24.609003+00:00",
+          "context_updated_at": "2026-10-22T18:48:46.062641+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -21698,7 +21950,7 @@
               "availability_items": 15,
               "official_items": 0,
               "match_items": 0,
-              "team_items": 36,
+              "team_items": 37,
               "season_transition_items": 18,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -21790,7 +22042,7 @@
             },
             "away_rotation_context": {
               "risk": "high",
-              "score": 100,
+              "score": 88,
               "reason": "Real Madrid tiene UEFA Champions League vs AEK Athens en 3.0 dias",
               "next_high_importance_fixture": {
                 "date": "2026-11-04",
@@ -22204,9 +22456,9 @@
           },
           "travel_km": 390.1,
           "weather": {
-            "temperature_c": 18.9,
-            "precipitation_probability": 0,
-            "wind_speed_kmh": 1.1
+            "temperature_c": 19.1,
+            "precipitation_probability": 3,
+            "wind_speed_kmh": 6.4
           },
           "referee": {
             "name": "no confirmado",
@@ -22251,13 +22503,31 @@
                   "published_at": "Sat, 17 Oct 2026 06:59:19 GMT"
                 },
                 {
-                  "player_name": "Jon Guridi",
+                  "player_name": "Novedades",
                   "verificado": false,
                   "status": "out",
-                  "headline": "Última hora sobre el estado de salud de Jon Guridi: parte médico, tiempo de baja y cuántos partidos se perderá con el Sevilla - El Correo de Andalucía",
-                  "source": "El Correo de Andalucía",
-                  "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPQ2ZjSWxyYWktdjFsRVdmRTZWUEZEVzFNQ2tiTHU4Z1NtZUM4ZVdzTmZGWFllNGVHNmF0cFdTNzRKZkt2WmZVOWVvOF9EYWJOUVQ2N1l4a0czSjAxaGpXUS16NTB1RENkdE9SVnBkZ1hQZnJ3NnVNb0ZpZjh4enVqYUJuN2R1NWk2Nm9LVjZ6cmduREduOXdTYkdVRFJUUVlaWUxYZm5Ya9IBrAFBVV95cUxQdWFzWFd0WE90VlFJT2VuNzdINzduYUJjQTBUNkU3em5Ddkk0Vno2Vjd3TGlKbW1fQXhGX0kwTmJiNFlBSUt4UlNHeWxtaTR4cjJjUVllWGtVNWh0Rld1T2tYWG00U2h0TWdvQlNyNnVLX2ZuN2w0SjZMSXRINzhzdWhKbWZxdks0emVEbVZLUzZXUW4tOTQ0WXNRZEVMenRHTWMzNVVTSFdjOVFz?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 09:44:03 GMT"
+                  "headline": "Novedades en el Sevilla FC: regresa Giorgi Kochorashvili y Lucas Stassin causa baja - Diario de Sevilla",
+                  "source": "Diario de Sevilla",
+                  "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNYjY0bFdVRl8wYl9lenR6VW9LaElBN0t0bDRqM3RSa0VFdkpBejk3LWdpY3A5UWRIOUhOdHRKeGhpUXR6STR0cWZxbDZPZFpLUG9jSGJUT1JOazNlT2dNNDA4Ym42OUhPeVEwYk5kckdncWxoVE1lQkF1eVRySjFjOGI5NUc4TmtTdkVKZFRjM2xNZXNaTl9QSDlqUHZtVUZPT2lXbnYtdWhWM3FUcjhCSnZDYWcxVElaTFE0aUFqVUpqTzU5VWc?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:45:30 GMT"
+                },
+                {
+                  "player_name": "Giorgi Kochorashvili",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Novedades en el Sevilla FC: regresa Giorgi Kochorashvili y Lucas Stassin causa baja - Diario de Sevilla",
+                  "source": "Diario de Sevilla",
+                  "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNYjY0bFdVRl8wYl9lenR6VW9LaElBN0t0bDRqM3RSa0VFdkpBejk3LWdpY3A5UWRIOUhOdHRKeGhpUXR6STR0cWZxbDZPZFpLUG9jSGJUT1JOazNlT2dNNDA4Ym42OUhPeVEwYk5kckdncWxoVE1lQkF1eVRySjFjOGI5NUc4TmtTdkVKZFRjM2xNZXNaTl9QSDlqUHZtVUZPT2lXbnYtdWhWM3FUcjhCSnZDYWcxVElaTFE0aUFqVUpqTzU5VWc?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:45:30 GMT"
+                },
+                {
+                  "player_name": "Lucas Stassin",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Novedades en el Sevilla FC: regresa Giorgi Kochorashvili y Lucas Stassin causa baja - Diario de Sevilla",
+                  "source": "Diario de Sevilla",
+                  "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNYjY0bFdVRl8wYl9lenR6VW9LaElBN0t0bDRqM3RSa0VFdkpBejk3LWdpY3A5UWRIOUhOdHRKeGhpUXR6STR0cWZxbDZPZFpLUG9jSGJUT1JOazNlT2dNNDA4Ym42OUhPeVEwYk5kckdncWxoVE1lQkF1eVRySjFjOGI5NUc4TmtTdkVKZFRjM2xNZXNaTl9QSDlqUHZtVUZPT2lXbnYtdWhWM3FUcjhCSnZDYWcxVElaTFE0aUFqVUpqTzU5VWc?oc=5",
+                  "published_at": "Thu, 22 Oct 2026 09:45:30 GMT"
                 },
                 {
                   "player_name": "Miguel Sierra",
@@ -22266,12 +22536,12 @@
                   "headline": "Lesión de Miguel Sierra: parte médico, tiempo de baja y cuántos partidos se perderá con el Sevilla - El Correo de Andalucía",
                   "source": "El Correo de Andalucía",
                   "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxONllhWWxPUUFhSFdzVFRDRzcyZ2FCVnVJcXVnZWNhVmRLcHF4S005bmRtMlB6cFhFNGx1dVJfLW1PcnpjTnZ5VnBvQXNYZ3RMMDJqcE83elI4b1E1NVJPd0NNVEZxaUVURG14VVBvUUlfTzVZZ0g2LXBhMEJ0WFJLbkFxcnI4dUhmVGNjSVoxaWJUb29qcmVqVVEzaEVwRkVNQ2laeDNXNzQza0JEUG9fQdIBtgFBVV95cUxPcWhBUVF3WGhSZDM2Z25EeWlBRG93aWV0R2xBU2RBcHBPQVBpOUxKSzdTMEN2eldnYTdTdW9uaHBPd2hpVGhnX3YwT19xdXJCS0JGc1JWdDJzYnQ3OFhnNVB0cmJaSldpTHhmc2VuclNuVXdDMURWQThpdG91Mk5NQnQwdTZ3Sk8yVEN3QWN0LWVHa3lHTXNyTXlVOUcxWklGQnVmWkhVeUVENVhsLWlVNXpQUFRldw?oc=5",
-                  "published_at": "Wed, 14 Oct 2026 08:41:09 GMT"
+                  "published_at": "Wed, 14 Oct 2026 07:00:00 GMT"
                 }
               ],
-              "count": 4,
+              "count": 6,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 24
+              "source_items_checked": 25
             },
             "away": {
               "team": "Real Madrid",
@@ -22313,6 +22583,15 @@
                   "published_at": "Wed, 14 Oct 2026 19:21:22 GMT"
                 },
                 {
+                  "player_name": "Huijsen",
+                  "verificado": false,
+                  "status": "out",
+                  "headline": "Convocatoria del Real Madrid contra la Roma: vuelve Huijsen y Mourinho mantiene cuatro bajas - OkDiario",
+                  "source": "OkDiario",
+                  "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQRmF5SUFYMTZ0ZEFhWnVVQmlZRnZYUEFnUTNJV0plVG1LeTlBTE11U201c0ZBVHAtbndWWE9qNURHcU5OMHFmX3BscW43d056amdQYlFGR1pOSnRIVlZ2eEY4T0dZelVuQkItM2sybmc2TmNFTlZhTXBNZUxyekFzb3Q4WEdjcGQwSTMwYzlzZm9oTXNmSDFYMElvd01XVmVDUVlVOXhiUDN3Sk05dmpDZXAxZnNDQ2tvNkRjYjlzRXl4ajFYdVg0eXR5bndTekFqZFctZ1R6VlJVZnPSAeABQVVfeXFMTWplMHE5akE1QU51RUthdEozM2wxLUFLQkx6OUxPaW9pSEN1LS1WLWtPeGY0SExHSG5RcDBralFMeHR1ZER5Sm15WjMtRUllNHBSVndpZXdKUHZQVzJYY0ZLYVdvekdTZERYbGJiTEJEbUV4QUVBRDFIdjNRR1ZhM3Jjc0t5bWRWVm1mbWpOc1I2MDloQm00bVJZRU1TVlk1SC02SWQtUFAwWnFudTg2TmthdWVCdEVMUTJnWWxHTDBaVHNiX1VsVW1JSkZHRExldldFZEFra2VtZDlOT05vYWU?oc=5",
+                  "published_at": "Tue, 13 Oct 2026 07:00:00 GMT"
+                },
+                {
                   "player_name": "Hansi Flick",
                   "verificado": false,
                   "status": "out",
@@ -22338,23 +22617,14 @@
                   "source": "heraldo.es",
                   "link": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPRHh5VlZxZUN2VVhSLUJtVlkzdHBZV1lFZXIycVVHSW5CWGJVR3ZMbVFVeVlZMUh0NXJIZktYRWRjNjAyYkd5d0xCZUxqV3BQUUNSOFNOb05CdFAxWldoVW5IYnZkZm05T1VCN1RHUElSQXdQbVNNQXVWdVE1RUIwcW5USW9hc21ub0FDMVE0dUpocmdKVUJpRXdrWnZWQk14REtxeUFmazY1TjZhcHhxV1NEVlJqNGRlM21LMWxmS3BTRHBvUjZFeUFVQmtGODVtdl92MjV1MXpVOXZhSmJjVQ?oc=5",
                   "published_at": "Wed, 21 Oct 2026 16:50:36 GMT"
-                },
-                {
-                  "player_name": "Huijsen",
-                  "verificado": false,
-                  "status": "out",
-                  "headline": "Convocatoria del Real Madrid contra la Roma: vuelve Huijsen y Mourinho mantiene cuatro bajas - OkDiario",
-                  "source": "OkDiario",
-                  "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQRmF5SUFYMTZ0ZEFhWnVVQmlZRnZYUEFnUTNJV0plVG1LeTlBTE11U201c0ZBVHAtbndWWE9qNURHcU5OMHFmX3BscW43d056amdQYlFGR1pOSnRIVlZ2eEY4T0dZelVuQkItM2sybmc2TmNFTlZhTXBNZUxyekFzb3Q4WEdjcGQwSTMwYzlzZm9oTXNmSDFYMElvd01XVmVDUVlVOXhiUDN3Sk05dmpDZXAxZnNDQ2tvNkRjYjlzRXl4ajFYdVg0eXR5bndTekFqZFctZ1R6VlJVZnPSAeABQVVfeXFMTWplMHE5akE1QU51RUthdEozM2wxLUFLQkx6OUxPaW9pSEN1LS1WLWtPeGY0SExHSG5RcDBralFMeHR1ZER5Sm15WjMtRUllNHBSVndpZXdKUHZQVzJYY0ZLYVdvekdTZERYbGJiTEJEbUV4QUVBRDFIdjNRR1ZhM3Jjc0t5bWRWVm1mbWpOc1I2MDloQm00bVJZRU1TVlk1SC02SWQtUFAwWnFudTg2TmthdWVCdEVMUTJnWWxHTDBaVHNiX1VsVW1JSkZHRExldldFZEFra2VtZDlOT05vYWU?oc=5",
-                  "published_at": "Tue, 13 Oct 2026 07:00:00 GMT"
                 }
               ],
               "count": 8,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 41
+              "source_items_checked": 39
             }
           },
-          "context_updated_at": "2026-10-22T12:20:29.545519+00:00",
+          "context_updated_at": "2026-10-22T18:48:57.648146+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 66,
@@ -22374,11 +22644,11 @@
             ],
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
-              "injury_items": 12,
-              "availability_items": 42,
+              "injury_items": 14,
+              "availability_items": 39,
               "official_items": 0,
               "match_items": 12,
-              "team_items": 57,
+              "team_items": 51,
               "season_transition_items": 19,
               "verified_teams": 2,
               "home_roster_status": "confirmed_absences",
@@ -22530,7 +22800,7 @@
             "direct_rivalry_index": 0,
             "home_rotation_context": {
               "risk": "low",
-              "score": 8,
+              "score": 0,
               "reason": "",
               "next_high_importance_fixture": {}
             },
@@ -22851,9 +23121,9 @@
           },
           "travel_km": 2033.1,
           "weather": {
-            "temperature_c": 22.3,
-            "precipitation_probability": 4,
-            "wind_speed_kmh": 4.7
+            "temperature_c": 24.0,
+            "precipitation_probability": 14,
+            "wind_speed_kmh": 3.8
           },
           "referee": {
             "name": "no confirmado",
@@ -22880,7 +23150,7 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 9
+              "source_items_checked": 7
             },
             "away": {
               "team": "Athletic Bilbao",
@@ -22890,7 +23160,7 @@
               "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-10-22T12:20:35.503092+00:00",
+          "context_updated_at": "2026-10-22T18:49:06.677018+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 45,
@@ -22912,10 +23182,10 @@
             "cobertura_cualitativa": {
               "roster_status": "sources_checked_no_confirmed_absence",
               "injury_items": 0,
-              "availability_items": 5,
+              "availability_items": 4,
               "official_items": 6,
               "match_items": 0,
-              "team_items": 19,
+              "team_items": 16,
               "season_transition_items": 13,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -22936,16 +23206,16 @@
           "kickoff": "2026-11-01T20:00:00Z",
           "bookmaker": "Pinnacle",
           "odds": {
-            "1": 1.93,
-            "X": 3.7,
-            "2": 3.82
+            "1": 1.95,
+            "X": 3.57,
+            "2": 3.86
           },
           "odds_source": "",
           "odds_femenino": false,
           "normalized_percent": {
-            "1": 49.34,
-            "X": 25.74,
-            "2": 24.93
+            "1": 48.75,
+            "X": 26.63,
+            "2": 24.63
           },
           "official_percent": {},
           "home_table": {
@@ -23330,7 +23600,7 @@
           "travel_km": 71.0,
           "weather": {
             "temperature_c": 9.5,
-            "precipitation_probability": 1,
+            "precipitation_probability": 0,
             "wind_speed_kmh": 4.5
           },
           "referee": {
@@ -23385,10 +23655,10 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 13
+              "source_items_checked": 14
             }
           },
-          "context_updated_at": "2026-10-22T12:17:37.642365+00:00",
+          "context_updated_at": "2026-10-22T18:40:26.670939+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 91,
@@ -23408,10 +23678,10 @@
             "cobertura_cualitativa": {
               "roster_status": "confirmed_absences",
               "injury_items": 2,
-              "availability_items": 13,
+              "availability_items": 16,
               "official_items": 8,
               "match_items": 0,
-              "team_items": 19,
+              "team_items": 20,
               "season_transition_items": 10,
               "verified_teams": 2,
               "home_roster_status": "sources_checked_no_confirmed_absence",
@@ -23419,7 +23689,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (49.3%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 12o con 45 pts en LaLiga 25/26; 1 cambios de entrenador; 1 noticias de plantilla | Visitante: temporada anterior: 10o con 46 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 noticias de plantilla; 1 señales de vestuario | visitante: Real Sociedad tiene UEFA Europa League vs Lyon en 3.7 dias (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 14 días vs 11 días del local. Ligera ventaja física para el visitante.",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (48.8%). | muestra corta (9 jornadas): la posicion es un hecho, las distancias en puntos todavia no son senal; no hay objetivo competitivo que perseguir | Local: temporada anterior: 12o con 45 pts en LaLiga 25/26; 1 cambios de entrenador; 1 noticias de plantilla | Visitante: temporada anterior: 10o con 46 pts en LaLiga 25/26; 1 altas/refuerzos confirmados; 4 posibles altas u operaciones; 1 noticias de plantilla; 1 señales de vestuario | visitante: Real Sociedad tiene UEFA Europa League vs Lyon en 3.7 dias (riesgo medium) | Calendario futuro con 1 rivales del top-6. | Ambos equipos llegan con una carga física similar (Low). El visitante descansó 14 días vs 11 días del local. Ligera ventaja física para el visitante.",
           "analysis_ready": true
         }
       ]
