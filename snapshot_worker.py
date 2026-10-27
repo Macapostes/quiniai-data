@@ -15572,6 +15572,71 @@ def _match_data_confidence(match: dict) -> dict:
     }
 
 
+# Lados sin contexto de plantilla que se toleran sin frenar el snapshot.
+#
+# 27/10/2026, ciclo de las 14:00: AT.CALATAYUD (Copa del Rey) no tiene plantilla
+# ni noticias en ninguna fuente, TheSportsDB respondia bien y la auditoria
+# rechazo el snapshot ENTERO dos veces; solo paso al tercer intento porque, de
+# tanto reintentar, el proveedor acabo cortando (circuito abierto) y entonces
+# se publico "degradado". 114 minutos de ciclo por un equipo de Segunda RFEF.
+#
+# Un equipo modesto sin datos no es un dato malo: es que no los hay. Se tolera
+# un hueco cuando es de un equipo de fuera de las ligas principales que seguimos
+# en un partido de copa o de categoria inferior, o cuando son muy pocos huecos
+# en toda la jornada. Lo masivo -muchos lados vacios- sigue frenando, y una
+# evidencia invalida frena siempre.
+AUDIT_MAX_LADOS_SIN_CONTEXTO = max(
+    0, int(os.getenv("QUINIAI_AUDIT_MAX_LADOS_SIN_CONTEXTO", "3") or 3)
+)
+# Por debajo de esta proporcion de lados auditados un hueco se tolera aunque
+# sea de un equipo de Primera: 1 de 30 en una quiniela de 15 partidos.
+AUDIT_PROPORCION_LADOS_SIN_CONTEXTO = 0.05
+
+
+def _ligas_principales_seguidas() -> set[str]:
+    ligas = {
+        _canonical_league_key(key)
+        for key in LEAGUE_PRIORITY
+        if not _is_non_domestic_competition(key)
+    }
+    ligas.update(_canonical_league_key(key) for key in _LIGAS_PROFESIONALES_ES)
+    ligas.discard("")
+    return ligas
+
+
+def _lado_de_equipo_modesto(match: dict, side: str) -> bool:
+    """True si el lado es de un equipo de fuera de las ligas que seguimos.
+
+    Solo en partidos de copa nacional o de categoria inferior: en un cruce
+    europeo un club con la liga sin resolver no es "modesto", y en un partido
+    de una liga principal los dos equipos son de esa liga.
+    """
+    liga_partido = _canonical_league_key(match.get("league"))
+    principales = _ligas_principales_seguidas()
+    if not liga_partido or liga_partido == "league_unresolved":
+        return False
+    if liga_partido in principales or _is_non_domestic_competition(liga_partido):
+        return False
+    historia = ((match.get("history_context") or {}).get(side) or {})
+    liga_equipo = (
+        _canonical_league_key(historia.get("league_key"))
+        if historia.get("league_scope") == "domestic"
+        else ""
+    )
+    return liga_equipo not in principales
+
+
+def _lados_sin_contexto_tolerables(empty_sides: list, total_sides: int) -> bool:
+    """Pocos huecos, o solo de equipos modestos: se publica igualmente."""
+    if not empty_sides:
+        return True
+    if len(empty_sides) > AUDIT_MAX_LADOS_SIN_CONTEXTO:
+        return False
+    if all(item.get("modest") for item in empty_sides):
+        return True
+    return bool(total_sides) and len(empty_sides) / total_sides < AUDIT_PROPORCION_LADOS_SIN_CONTEXTO
+
+
 def _audit_season_transition_snapshot(snapshot: dict) -> dict:
     """Impide publicar contexto de verano cruzado entre clubes.
 
@@ -15601,7 +15666,12 @@ def _audit_season_transition_snapshot(snapshot: dict) -> dict:
             evidence = list(side_context.get("all_evidence") or [])
             if not previous_summary and not evidence:
                 empty_sides.append(
-                    {"match": match_label, "side": side, "team": team_name}
+                    {
+                        "match": match_label,
+                        "side": side,
+                        "team": team_name,
+                        "modest": _lado_de_equipo_modesto(match, side),
+                    }
                 )
             for item in evidence:
                 checked_evidence += 1
@@ -15627,13 +15697,23 @@ def _audit_season_transition_snapshot(snapshot: dict) -> dict:
     # a todo el mundo sin jornada por una averia ajena que no podemos arreglar
     # esperando. En ese caso se publica marcado como degradado, para que quien
     # lo lea sepa que va con menos contexto del normal.
+    #
+    # Tampoco frenan unos pocos huecos de equipos modestos (ver
+    # _lados_sin_contexto_tolerables): se publican tal cual, sin contexto, y
+    # quedan listados aqui en "tolerated_empty_sides".
     proveedor_degradado = _sportsdb_degradado()
     degradado = bool(empty_sides) and proveedor_degradado
+    tolerados = (
+        bool(empty_sides)
+        and not proveedor_degradado
+        and _lados_sin_contexto_tolerables(empty_sides, 2 * len(focus_matches))
+    )
     return {
         "ok": bool(focus_matches)
         and not invalid_evidence
-        and (not empty_sides or proveedor_degradado),
+        and (not empty_sides or proveedor_degradado or tolerados),
         "degraded": degradado,
+        "tolerated_empty_sides": empty_sides[:20] if tolerados else [],
         "degraded_reason": (
             "TheSportsDB no respondio durante el ciclo "
             f"({_SPORTSDB_FALLOS_CICLO} peticiones rechazadas); "
@@ -19268,6 +19348,15 @@ def run_once(print_summary: bool = False) -> dict:
             provider_failures=transition_audit.get("provider_failures", 0),
             empty_side_count=transition_audit.get("empty_side_count", 0),
             empty_sides=transition_audit.get("empty_sides", [])[:6],
+        )
+    if transition_audit.get("ok") and transition_audit.get("tolerated_empty_sides"):
+        # Equipos modestos sin plantilla en ninguna fuente: se publica sin su
+        # contexto, pero queda escrito por si un dia el hueco es de un grande.
+        _log_cycle_event(
+            "warning",
+            "season_transition_audit_tolerated_empty_sides",
+            empty_side_count=transition_audit.get("empty_side_count", 0),
+            empty_sides=transition_audit.get("tolerated_empty_sides", [])[:6],
         )
     if not transition_audit.get("ok"):
         _log_cycle_event(
