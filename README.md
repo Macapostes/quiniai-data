@@ -9,7 +9,7 @@ Crear un archivo `.env` junto a `snapshot_worker.py`:
 
 ```env
 QUINIAI_ADMIN_KEY=tu_admin_key_del_backend
-QUINIAI_BACKEND_URL=https://quiniela-backend-production-cb1a.up.railway.app
+QUINIAI_BACKEND_URL=https://<url-del-backend>
 SNAPSHOT_POLL_SECONDS=21600
 QUINIAI_ACTIVE_CONTEXT_REFRESH_SECONDS=14400
 QUINIAI_DATA_URL=https://raw.githubusercontent.com/Macapostes/quiniai-data/main/cuotas.json

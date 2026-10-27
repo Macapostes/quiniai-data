@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+import re
 
 API_KEY = os.getenv('ODDS_API_KEY')
 # Lista refinada: Solo España (1 y 2) y las 3 grandes de Europa
@@ -26,6 +27,14 @@ LEAGUES = [
     'soccer_uefa_european_championship',
 ]
 
+def _enmascarar(texto):
+    """Quita la apiKey de cualquier texto que se vaya a imprimir."""
+    texto = str(texto or "")
+    if API_KEY:
+        texto = texto.replace(API_KEY, "***")
+    return re.sub(r"(apiKey=)[^&\s'\"]+", r"\1***", texto, flags=re.IGNORECASE)
+
+
 def get_odds():
     all_odds = []
     seen_ids = set()
@@ -33,9 +42,12 @@ def get_odds():
     
     for league in LEAGUES:
         # Petición a la API
-        url = f'https://api.the-odds-api.com/v4/sports/{league}/odds/?apiKey={API_KEY}&regions=eu&markets=h2h'
+        # La clave va en params= para no construir a mano una URL con ella;
+        # nunca se imprime ni la URL ni la excepcion completa.
+        url = f'https://api.the-odds-api.com/v4/sports/{league}/odds/'
+        params = {'apiKey': API_KEY, 'regions': 'eu', 'markets': 'h2h'}
         try:
-            r = requests.get(url)
+            r = requests.get(url, params=params)
             if r.status_code == 200:
                 data = r.json()
                 print(f"✅ {league}: Encontrados {len(data)} partidos.")
@@ -47,9 +59,10 @@ def get_odds():
                         seen_ids.add(match_id)
                     all_odds.append(item)
             else:
-                print(f"❌ {league}: Error {r.status_code} - {r.text}")
+                resumen = _enmascarar(r.text)[:200]
+                print(f"❌ {league}: Error {r.status_code} - {resumen}")
         except Exception as e:
-            print(f"💥 Error crítico en {league}: {e}")
+            print(f"💥 Error crítico en {league}: {type(e).__name__}")
     
     # Guardar el JSON final
     with open('cuotas.json', 'w', encoding='utf-8') as f:
