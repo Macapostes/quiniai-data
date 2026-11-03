@@ -33,7 +33,10 @@ from zoneinfo import ZoneInfo
 import filtros_feed
 from sportsdb_cliente import ClienteSportsDB, SportsDBCircuitoAbierto, SportsDBError
 from selecciones_uefa import SELECCIONES_UEFA
+import calidad_europea as _ce
 from fuentes_espn import (
+    SLUGS_FASE_LIGA_UEFA,
+    ESPN_BASE,
     ESPN_SCOREBOARD_URL,
     ESPN_STANDINGS_URL,
     ESPN_SUMMARY_URL,
@@ -2948,7 +2951,71 @@ def _titular_de_otra_categoria(title: str, team_name: str) -> bool:
     todo lo demás.
     """
     pedido_femenino = _categoria_por_nombre(team_name) == "female"
-    return pedido_femenino != _titular_femenino(title)
+    if pedido_femenino != _titular_femenino(title):
+        return True
+    # Sin marca en el titular: "Lesion Kika Nazareth: comunicado medico del
+    # Barcelona" (J19) colgaba del Barcelona masculino. Si nombra a una
+    # jugadora de la plantilla de Liga F del club, es del femenino.
+    if not pedido_femenino and _titular_nombra_jugadora_del_club(title, team_name):
+        return True
+    return False
+
+
+_JUGADORAS_LIGA_F: dict | None = None
+
+
+def _jugadoras_liga_f() -> dict:
+    """Plantillas de Liga F ya cargadas (sin red: las carga el ciclo)."""
+    return _JUGADORAS_LIGA_F or {}
+
+
+def _cargar_jugadoras_liga_f() -> dict:
+    """{club normalizado: {nombre completo normalizado}} de las plantillas de Liga F (ESPN)."""
+    global _JUGADORAS_LIGA_F
+    if _JUGADORAS_LIGA_F:
+        return _JUGADORAS_LIGA_F
+    _JUGADORAS_LIGA_F = {}
+    clave = "espn:jugadoras-liga-f:v1"
+    try:
+        cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, 24 * 3600)
+    except Exception:
+        cached = None
+    if isinstance(cached, dict) and cached:
+        _JUGADORAS_LIGA_F = {k: set(v) for k, v in cached.items()}
+        return _JUGADORAS_LIGA_F
+    base = "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.w.1/teams"
+    try:
+        data = _request_json(base, timeout=15)
+        equipos = [t.get("team") or {} for t in ((data.get("sports") or [{}])[0].get("leagues") or [{}])[0].get("teams") or []]
+        resultado: dict[str, set] = {}
+        for equipo in equipos:
+            tid, nombre = str(equipo.get("id") or ""), str(equipo.get("displayName") or "")
+            if not tid or not nombre:
+                continue
+            plantilla = _request_json(f"{base}/{tid}/roster", timeout=15)
+            nombres = {
+                _normalize_team_name(a.get("displayName") or "")
+                for a in (plantilla.get("athletes") or [])
+                if isinstance(a, dict)
+            }
+            resultado[_normalize_team_name(nombre)] = {n for n in nombres if " " in n}
+        _JUGADORAS_LIGA_F = resultado
+        _cache_set(EXTERNAL_FEEDS_CACHE, clave, {k: sorted(v) for k, v in resultado.items()})
+    except Exception as exc:
+        print(f"[categoria] plantillas Liga F no disponibles: {exc}")
+    return _JUGADORAS_LIGA_F
+
+
+def _titular_nombra_jugadora_del_club(title: str, team_name: str) -> bool:
+    plantillas = _jugadoras_liga_f()
+    if not plantillas or not title:
+        return False
+    club = _normalize_team_name(_canonical_team_name(team_name) or team_name)
+    jugadoras: set = set()
+    for nombre_club, nombres in plantillas.items():
+        if nombre_club == club or _team_similarity_score(nombre_club, club) >= 0.8:
+            jugadoras |= set(nombres)
+    return _ce.titular_nombra_jugadora(title, jugadoras, _normalize_team_name)
 
 
 def _lo_guardado_sigue_pasando_el_filtro(payload: dict, team_name: str) -> bool:
@@ -9250,12 +9317,26 @@ def _extract_referee_assignment(
                 break
     if not assigned_referee and candidates:
         assigned_referee = candidates[0].get("name", "")
+    if not official_name:
+        # Un nombre sacado de un titular nunca es una designacion: J19 dio
+        # "arbitro Lamine Yamal" porque la web se llama "Soy Referee". Solo
+        # vale una fuente estructurada (RFEF, TheSportsDB); lo de prensa se
+        # guarda como candidato sin verificar y no llega al contexto.
+        return {
+            "assigned_referee": "",
+            "unverified_referee": assigned_referee,
+            "fourth_official": "",
+            "var_referee": "",
+            "avar_referee": "",
+            "source": "news_unverified" if (assigned_referee or candidates) else "",
+            "candidate_articles": candidates,
+        }
     return {
         "assigned_referee": assigned_referee,
         "fourth_official": "",
         "var_referee": "",
         "avar_referee": "",
-        "source": "thesportsdb" if official_name else ("news" if (assigned_referee or candidates) else ""),
+        "source": "thesportsdb",
         "candidate_articles": candidates,
     }
 
@@ -14080,6 +14161,12 @@ def _proximos_con_su_competicion(match: dict) -> dict:
                 resumen["de_otra_categoria"] += 1
                 continue
             motivo = _proximo_que_no_puede_ser(fx, kickoff_dt, rivales)
+            if not motivo and _ce.proximo_de_otra_copa_uefa(clave, liga):
+                # J19: "Lille tiene Europa League vs Viktoria Plzen" era el
+                # Lillestrom. Un club solo juega una copa UEFA por temporada.
+                motivo = "imposible"
+            if not motivo and _ce.proximo_ya_jugado(_fecha_de_proximo(fx)[0], kickoff_dt):
+                motivo = "imposible"
             if motivo:
                 quitados.append(fx)
                 resumen["este_partido" if motivo == "este_partido" else "imposibles"] += 1
@@ -14161,6 +14248,8 @@ def _proximos_con_su_competicion(match: dict) -> dict:
                 competicion[f"{clave_lado}_rotation_context"] = _rotation_context_from_upcoming(
                     equipo, limpios, kickoff, {}
                 )
+        limpios.sort(key=lambda f: _fecha_de_proximo(f)[0] or datetime.max.replace(tzinfo=timezone.utc))
+        competicion[f"{clave_lado}_upcoming"] = limpios
         texto = " | ".join(_etiqueta_de_proximo(fx) for fx in limpios[:5] if str(fx.get("opponent") or "").strip())
         if texto:
             match[f"future_{clave_lado}"] = texto
@@ -16628,6 +16717,168 @@ def _kickoff_de_espn_si_falta(
     return []
 
 
+def _espn_liga_domestica_del_equipo(slug: str, team_id: str) -> str:
+    """Slug ESPN de la liga domestica de un club (defaultLeague de su ficha)."""
+    if not team_id:
+        return ""
+    clave = f"espn:liga-equipo:v1:{team_id}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, 7 * 86400)
+    if isinstance(cached, str):
+        return cached
+    try:
+        data = _request_json(f"{ESPN_BASE}/site/v2/sports/soccer/{slug}/teams/{team_id}", timeout=15)
+        liga = str((((data or {}).get("team") or {}).get("defaultLeague") or {}).get("slug") or "")
+    except Exception as exc:
+        print(f"[espn] liga del equipo {team_id}: {exc}")
+        return ""
+    _cache_set(EXTERNAL_FEEDS_CACHE, clave, liga)
+    return liga
+
+
+def _espn_calendario_todas(team_id: str, kickoff_dt: datetime | None) -> list[dict]:
+    """Calendario de un club en TODAS sus competiciones (liga, copas, UEFA)."""
+    if not team_id:
+        return []
+    referencia = kickoff_dt or datetime.now(timezone.utc)
+    temporada = referencia.year if referencia.month >= 7 else referencia.year - 1
+    clave = f"espn:calendario-todas:v1:{team_id}:{temporada}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, ESPN_TABLA_TTL_SECONDS)
+    if cached is not None:
+        return list(cached)
+    try:
+        data = _request_json(
+            ESPN_TEAM_SCHEDULE_URL.format(slug="all", team_id=team_id) + f"?season={temporada}", timeout=15
+        )
+    except Exception as exc:
+        print(f"[espn] calendario completo {team_id}: {exc}")
+        return list(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or [])
+    filas = _espn_filas_de_calendario(data if isinstance(data, dict) else {})
+    _cache_set(EXTERNAL_FEEDS_CACHE, clave, filas)
+    return filas
+
+
+def _forma_todas_las_competiciones(fila: dict, slug: str, kickoff_dt: datetime | None) -> dict:
+    """Ultimos 5 de un club sumando su copa UEFA y su liga (calendarios de ESPN)."""
+    team_id = str(fila.get("espn_team_id") or "")
+    nombre = str(fila.get("team") or "")
+    if not team_id or not nombre:
+        return {}
+    filas = list(_espn_calendario_todas(team_id, kickoff_dt))
+    if not filas:
+        # Respaldo: su copa UEFA y su liga (sin copas nacionales).
+        filas = list(_espn_calendario_equipo(slug, team_id))
+        domestica = _espn_liga_domestica_del_equipo(slug, team_id)
+        if domestica and domestica != slug:
+            filas.extend(_espn_calendario_equipo(domestica, team_id))
+    vistos, unicas = set(), []
+    for f in filas:
+        clave = (str(f.get("KickoffUTC") or f.get("Date") or "")[:10], f.get("HomeTeam"), f.get("AwayTeam"))
+        if clave in vistos:
+            continue
+        vistos.add(clave)
+        unicas.append(f)
+    if kickoff_dt is not None:
+        unicas = [f for f in unicas if (_parse_iso_datetime(f.get("KickoffUTC", "")) or kickoff_dt) < kickoff_dt]
+    unicas.sort(key=lambda f: str(f.get("KickoffUTC") or f.get("Date") or ""))
+    # Los nombres de ESPN son los mismos en las dos competiciones (mismo id).
+    return _recent_form_metrics(unicas, nombre, 5) or {}
+
+
+def _fase_liga_uefa_con_espn(match: dict, slug: str, ahora: datetime | None = None) -> list[str]:
+    """Clasificacion, jornada y forma de un cruce de fase liga UEFA con ESPN.
+
+    J19: TheSportsDB contaba las previas ("jornada 12 de Champions", "Bodo/Glimt
+    5 jornadas disputadas") y no habia ni tabla ni racha para 11 de 15 cruces.
+    """
+    tabla = _espn_clasificacion(slug)
+    if not tabla:
+        return []
+    liga = _canonical_league_key(match.get("league") or "")
+    fila_l = _espn_fila_de(tabla, _nombres_del_lado(match, "local"), _similitud_espn) or {}
+    fila_v = _espn_fila_de(tabla, _nombres_del_lado(match, "visitante"), _similitud_espn) or {}
+    kickoff_dt = _parse_iso_datetime(match.get("kickoff", ""))
+    ya_empezado = bool(kickoff_dt and (ahora or datetime.now(timezone.utc)) >= kickoff_dt)
+    bloque = _ce.fase_liga_desde_tabla(tabla, fila_l, fila_v, liga, ya_empezado=ya_empezado)
+    if not bloque:
+        return []
+    cambios = [f"fase liga: jornada {bloque['matchday']} ({bloque['matchdays_played']} disputadas)"]
+    competicion = match.setdefault("competition_context", {})
+    competicion["european_matchday"] = bloque
+    fase = competicion.get("season_context_phase") if isinstance(competicion.get("season_context_phase"), dict) else {}
+    competicion["season_context_phase"] = {
+        **fase,
+        "played": bloque["matchdays_played"],
+        "total_rounds": _ce.JORNADAS_FASE_LIGA,
+        "progress": round(bloque["matchdays_played"] / _ce.JORNADAS_FASE_LIGA, 3),
+        "source": "espn-standings",
+    }
+    ev = match.setdefault("structured_context", {}).setdefault("event_context", {})
+    if str(ev.get("round") or "") != str(bloque["matchday"]):
+        ev["round_provider"] = ev.get("round", "")
+        ev["round"] = str(bloque["matchday"])
+        cambios.append(f"jornada {ev['round_provider'] or '-'} -> {bloque['matchday']}")
+    historia = match.setdefault("history_context", {})
+    for lado, clave, fila in (("local", "home", fila_l), ("visitante", "away", fila_v)):
+        if not fila:
+            continue
+        bloque_lado = historia.setdefault(clave, {}) if isinstance(historia, dict) else {}
+        if not isinstance(bloque_lado, dict):
+            continue
+        nueva = dict(fila)
+        nueva["espn_team"] = fila.get("team")
+        nueva["team"] = bloque_lado.get("resolved_name") or fila.get("team")
+        nueva["league_key"] = liga
+        nueva["scope"] = "uefa_league_phase"
+        bloque_lado["table"] = nueva
+        try:
+            forma = _forma_todas_las_competiciones({**fila, "team": fila.get("team")}, slug, kickoff_dt)
+        except Exception as exc:
+            forma = {}
+            print(f"[espn] forma {fila.get('team')}: {exc}")
+        if int((forma or {}).get("matches") or 0) >= 3:
+            bloque_lado["recent_all"] = forma
+            bloque_lado["streak"] = {**(bloque_lado.get("streak") or {}), "sequence": forma.get("form", "")}
+            bloque_lado["form_source"] = "espn-schedule-all"
+            cambios.append(f"forma {clave}: {forma.get('form', '')} ({forma.get('points')} pts)")
+    try:
+        cambios.extend(_recalcular_regimen_con_espn(match, tabla, liga))
+    except Exception as exc:
+        print(f"[espn] regimen {match.get('local','')} - {match.get('visitante','')}: {exc}")
+    return cambios
+
+
+def _sanear_partido(match: dict) -> list[str]:
+    """Ultimas barreras de calidad (arbitro, viaje y meteo) sobre lo ya guardado."""
+    cambios: list[str] = []
+    if not isinstance(match, dict):
+        return cambios
+    for contenedor in (match.get("structured_context"), match):
+        if isinstance(contenedor, dict) and _ce.sanear_arbitro(contenedor.get("referee_context")):
+            cambios.append("arbitro de prensa retirado (sin fuente estructurada)")
+    liga = _canonical_league_key(match.get("league") or "")
+    viaje = match.get("travel_context")
+    if _ce.es_copa_uefa(liga) and isinstance(viaje, dict) and viaje.get("distance_km") is not None:
+        motivo = _ce.viaje_inverosimil_uefa(viaje.get("distance_km"), viaje.get("home_country"), viaje.get("away_country"))
+        if motivo:
+            viaje["distance_rejected_km"] = viaje.get("distance_km")
+            viaje["distance_km"] = None
+            viaje["distance_bucket"] = "unknown"
+            viaje["distance_rejected_reason"] = motivo
+            if match.get("travel_km") is not None:
+                match["travel_km"] = None
+            cambios.append(f"viaje retirado: {motivo}")
+    meteo = match.get("weather_context")
+    kickoff_dt = _parse_iso_datetime(match.get("kickoff", ""))
+    pais = (viaje or {}).get("home_country") if isinstance(viaje, dict) else ""
+    if _ce.es_copa_uefa(liga) or liga in _LIGAS_PROFESIONALES_ES:
+        motivo = _ce.meteo_inverosimil(meteo, pais or ("ES" if liga in _LIGAS_PROFESIONALES_ES else ""), kickoff_dt.month if kickoff_dt else None)
+        if motivo:
+            match["weather_context"] = {"rejected_reason": motivo}
+            match.setdefault("match_signals", {}).pop("weather_risk", None)
+            cambios.append(f"meteo retirada: {motivo}")
+    return cambios
+
+
 def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[str]:
     """Contrasta un partido que aun no se ha jugado con el calendario y la tabla de ESPN."""
     if not isinstance(match, dict):
@@ -16713,6 +16964,11 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
             # Sin partido confirmado, la meteo es la de la capital del local.
             meteo["location_basis"] = "capital_aproximada"
             meteo["approximate"] = True
+    if not selecciones and slugs[0] in SLUGS_FASE_LIGA_UEFA:
+        try:
+            cambios.extend(_fase_liga_uefa_con_espn(match, slugs[0], ahora))
+        except Exception as exc:  # contraste: nunca tumba el partido
+            print(f"[espn] fase liga {match.get('local','')} - {match.get('visitante','')}: {exc}")
     if not selecciones and slugs[0] in SLUGS_CON_CLASIFICACION:
         try:
             cambios.extend(_refrescar_tabla_con_espn(match, slugs[0]))
@@ -19069,6 +19325,11 @@ def build_snapshot(raw_matches: list) -> dict:
     tablas_retiradas = 0
     rumores_retirados = 0
     mercado_retirado = 0
+    if ESPN_ENABLED:
+        try:
+            _cargar_jugadoras_liga_f()
+        except Exception as exc:  # sin plantillas solo se pierde un filtro extra
+            print(f"[categoria] plantillas Liga F: {exc}")
     for jornada in quiniela_jornadas:
         for match in jornada.get("matches", []):
             noticias_retiradas += _limpiar_noticias_de_otra_categoria(match)
@@ -19091,6 +19352,13 @@ def build_snapshot(raw_matches: list) -> dict:
             except Exception as exc:  # el calendario no puede tumbar el ciclo
                 proximos = {}
                 print(f"[proximos] {match.get('local','')} - {match.get('visitante','')}: {exc}")
+            try:
+                saneado = _sanear_partido(match)
+            except Exception as exc:  # una barrera de calidad no tumba el ciclo
+                saneado = []
+                print(f"[calidad] {match.get('local','')} - {match.get('visitante','')}: {exc}")
+            if saneado:
+                print(f"[calidad] {match.get('local','')} - {match.get('visitante','')}: " + "; ".join(saneado))
             if any(proximos.values()):
                 print(
                     f"[proximos] {match.get('local','')} - {match.get('visitante','')}: "
