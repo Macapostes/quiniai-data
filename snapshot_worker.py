@@ -56,7 +56,10 @@ from fuentes_espn import (
     ESPN_SLUG_LIGA_F,
     descanso_desde_forma as _espn_descanso_desde_forma,
     proximos_de_calendario as _espn_parse_proximos,
+    alineacion_de_resumen as _espn_alineacion_de_resumen,
+    jugadores_de_roster as _espn_jugadores_de_roster,
 )
+import fuentes_uefa as _uefa
 
 import requests
 from dotenv import load_dotenv
@@ -3576,6 +3579,79 @@ _PLANTILLA_TTL_SEGUNDOS = int(
 )
 
 
+ESPN_TEAMS_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/teams"
+ESPN_ROSTER_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/teams/{team_id}/roster"
+_ESPN_SLUGS_PLANTILLAS = ("esp.1", "esp.2", "eng.1", "ita.1", "ger.1", "fra.1", "por.1", "ned.1",
+                          "uefa.champions", "uefa.europa", "uefa.europa.conf")
+
+
+def _espn_indice_de_equipos() -> dict:
+    """{nombre normalizado: id ESPN} de las ligas principales y copas UEFA."""
+    clave = "espn:equipos:v2"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, 7 * 24 * 3600)
+    if cached is not None:
+        return dict(cached)
+    indice: dict = {}
+    ambiguos: set = set()
+    for slug in _ESPN_SLUGS_PLANTILLAS:
+        try:
+            data = _request_json(ESPN_TEAMS_URL.format(slug=slug), timeout=15)
+        except Exception as exc:
+            print(f"[espn] equipos {slug}: {exc}")
+            continue
+        for liga in ((data or {}).get("sports") or [{}])[0].get("leagues") or []:
+            for t in liga.get("teams") or []:
+                eq = (t or {}).get("team") or {}
+                tid = str(eq.get("id") or "")
+                for nombre in {eq.get("displayName"), eq.get("shortDisplayName"), eq.get("name")}:
+                    n = _normalize_team_name(str(nombre or ""))
+                    if not n or not tid:
+                        continue
+                    if n in indice and indice[n][0] != tid:
+                        ambiguos.add(n)
+                    if n not in indice:
+                        indice[n] = [tid, slug]
+    for n in ambiguos:
+        indice.pop(n, None)
+    if indice:
+        _cache_set(EXTERNAL_FEEDS_CACHE, clave, indice)
+    return indice
+
+
+def _espn_id_de_equipo(team_name: str) -> str:
+    """Id ESPN por igualdad de nombre normalizado (o su forma canonica), nunca
+    por parecido."""
+    par = _espn_equipo_y_liga(team_name)
+    return par[0] if par else ""
+
+
+def _espn_equipo_y_liga(team_name: str) -> list:
+    indice = _espn_indice_de_equipos()
+    canon = _canonical_team_name(team_name) or ""
+    candidatos = [_normalize_team_name(team_name), _normalize_team_name(canon)]
+    candidatos += [k for k, v in TEAM_NAME_ALIASES.items() if canon and v == canon]
+    candidatos += [re.sub(r"^(?:cf|fc|cd|sd|ud|ca|rc|rcd) | (?:cf|fc|cd|sd|ud|sad)$", "", c).strip() for c in list(candidatos) if c]
+    for n in candidatos:
+        if n and n in indice:
+            return list(indice[n])
+    return []
+
+
+def _plantilla_espn(team_name: str) -> list[str]:
+    if not ESPN_ENABLED or _parece_femenino(team_name, ""):
+        return []
+    par = _espn_equipo_y_liga(team_name)
+    if not par:
+        return []
+    tid, slug = par
+    try:
+        data = _request_json(ESPN_ROSTER_URL.format(slug=slug, team_id=tid), timeout=15)
+    except Exception as exc:
+        print(f"[espn] plantilla {team_name}: {exc}")
+        return []
+    return _espn_jugadores_de_roster(data if isinstance(data, dict) else {})
+
+
 def _plantilla_de_equipo(team_name: str) -> list[str]:
     """Los jugadores que el proveedor conoce de un equipo. Cacheada una semana:
     una plantilla solo cambia en mercado."""
@@ -3583,6 +3659,11 @@ def _plantilla_de_equipo(team_name: str) -> list[str]:
     cacheada = _cache_get(THESPORTSDB_CACHE, clave, _PLANTILLA_TTL_SEGUNDOS)
     if cacheada is not None:
         return list(cacheada)
+    espn = _plantilla_espn(team_name)
+    if espn:
+        # ESPN da la plantilla completa (30+), gratis y sin cupo.
+        _cache_set(THESPORTSDB_CACHE, clave, espn)
+        return espn
     ficha = fetch_the_sportsdb_team(team_name) or {}
     id_equipo = str(ficha.get("idTeam") or "").strip()
     if not id_equipo:
@@ -13979,7 +14060,9 @@ _FUENTES_DE_LA_PROPIA_LIGA = {"football-data", "sportsdb-rounds", "odds-feed"}
 def _pais_del_lado(match: dict, clave_lado: str) -> str:
     """Pais del club de un lado (perfil de viaje o pais guardado)."""
     viaje = match.get("travel_context") if isinstance(match.get("travel_context"), dict) else {}
+    uefa = ((match.get("structured_context") or {}).get("uefa_match") or {}) if isinstance(match.get("structured_context"), dict) else {}
     for valor in (
+        uefa.get(f"{clave_lado}_country"),
         viaje.get(f"{clave_lado}_country"),
         ((match.get(f"{clave_lado}_team_context") or {}) if isinstance(match.get(f"{clave_lado}_team_context"), dict) else {}).get("country"),
     ):
@@ -16982,6 +17065,144 @@ def _h2h_uefa_con_espn(match: dict, evento: dict) -> list[str]:
     return [f"h2h ESPN: {nuevo.get('meetings')} enfrentamientos"]
 
 
+UEFA_ENABLED = os.getenv("QUINIAI_UEFA", "1").strip().lower() not in {"0", "false", "no", "off"}
+UEFA_MARCADOR_TTL_SECONDS = 20 * 60
+UEFA_ALINEACION_VENTANA_H = (3.0, 2.5)  # desde 3 h antes hasta 2,5 h despues
+
+
+def _uefa_partidos_del_dia(competicion: str, kickoff_dt: datetime) -> list[dict]:
+    dia = kickoff_dt.astimezone(timezone.utc).strftime("%Y-%m-%d")
+    temporada = _uefa.temporada_uefa(kickoff_dt.year, kickoff_dt.month)
+    clave = f"uefa:partidos:v1:{competicion}:{dia}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, UEFA_MARCADOR_TTL_SECONDS)
+    if cached is not None:
+        return list(cached)
+    try:
+        data = _request_json(
+            _uefa.UEFA_MATCHES_URL,
+            params={"competitionId": competicion, "seasonYear": temporada, "fromDate": dia, "toDate": dia,
+                    "limit": 60, "offset": 0, "order": "ASC"},
+            timeout=15,
+        )
+    except Exception as exc:
+        print(f"[uefa] partidos {competicion} {dia}: {exc}")
+        return list(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or [])
+    lista = _uefa.partidos(data)
+    if lista:
+        _cache_set(EXTERNAL_FEEDS_CACHE, clave, lista)
+    return lista
+
+
+def _uefa_alineacion(match_id: str) -> dict:
+    clave = f"uefa:alineacion:v1:{match_id}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, 15 * 60)
+    if cached is not None:
+        return dict(cached)
+    try:
+        data = _request_json(_uefa.UEFA_LINEUPS_URL.format(match_id=match_id), timeout=15)
+    except Exception as exc:
+        print(f"[uefa] alineacion {match_id}: {exc}")
+        return {}
+    once = _uefa.alineacion(data)
+    if once:
+        _cache_set(EXTERNAL_FEEDS_CACHE, clave, once)
+    return once
+
+
+def _en_ventana_de_alineacion(kickoff_dt: datetime | None, ahora: datetime | None = None) -> bool:
+    if kickoff_dt is None:
+        return False
+    ahora = ahora or datetime.now(timezone.utc)
+    horas = (kickoff_dt - ahora).total_seconds() / 3600.0
+    return -UEFA_ALINEACION_VENTANA_H[1] <= horas <= UEFA_ALINEACION_VENTANA_H[0]
+
+
+def _aplicar_fuente_uefa(match: dict, ahora: datetime | None = None) -> list[str]:
+    """Datos oficiales de UEFA para un cruce de copa europea de clubes.
+
+    Arbitro designado, jornada oficial, id y pais UEFA de cada club y, cerca
+    del inicio, el once oficial. El partido se identifica exigiendo local Y
+    visitante el mismo dia en la misma competicion: con eso no hay Lille que
+    se convierta en Lillestrom.
+    """
+    liga = _canonical_league_key(match.get("league") or "")
+    competicion = _uefa.COMPETICION_UEFA_POR_LIGA.get(liga)
+    kickoff_dt = _parse_iso_datetime(match.get("kickoff", ""))
+    if not UEFA_ENABLED or not competicion or kickoff_dt is None or _categoria_del_partido(match) == "female":
+        return []
+    partido = _uefa.buscar_partido(
+        _uefa_partidos_del_dia(competicion, kickoff_dt),
+        _nombres_del_lado(match, "local"),
+        _nombres_del_lado(match, "visitante"),
+    )
+    if not partido or not (partido["home"]["men_first_team"] and partido["away"]["men_first_team"]):
+        return []
+    cambios = []
+    estructurado = match.setdefault("structured_context", {})
+    estructurado["uefa_match"] = {
+        "uefa_match_id": partido["uefa_match_id"],
+        "home_uefa_team_id": partido["home"]["uefa_team_id"],
+        "away_uefa_team_id": partido["away"]["uefa_team_id"],
+        "home_name": partido["home"]["name"],
+        "away_name": partido["away"]["name"],
+        "home_country": partido["home"]["country"],
+        "away_country": partido["away"]["country"],
+        "matchday": partido["matchday"],
+        "city": partido["city"],
+        "source": "uefa",
+    }
+    arbitro = partido.get("referee") or ""
+    if arbitro and not _ce.arbitro_parece_titular(arbitro) and 2 <= len(arbitro.split()) <= 5:
+        previo = (estructurado.get("referee_context") or {}).get("assigned_referee", "")
+        estructurado["referee_context"] = {
+            **(estructurado.get("referee_context") or {}),
+            "assigned_referee": arbitro,
+            "source": "uefa",
+            "status": "designado",
+        }
+        if previo != arbitro:
+            cambios.append(f"arbitro UEFA: {arbitro}")
+    jornada = partido.get("matchday")
+    competicion_ctx = match.setdefault("competition_context", {})
+    bloque = competicion_ctx.get("european_matchday")
+    if jornada and isinstance(bloque, dict) and bloque.get("matchday") != jornada:
+        cambios.append(f"jornada UEFA {bloque.get('matchday')} -> {jornada}")
+        bloque["matchday"] = jornada
+        bloque["matchday_source"] = "uefa"
+        ev = estructurado.setdefault("event_context", {})
+        ev["round"] = str(jornada)
+    if partido.get("lineup_status") in _uefa.LINEUP_CONFIRMADA and _en_ventana_de_alineacion(kickoff_dt, ahora):
+        once = _uefa_alineacion(partido["uefa_match_id"])
+        if once:
+            estructurado["lineup_context"] = once
+            cambios.append("once oficial UEFA")
+    return cambios
+
+
+def _alineacion_con_espn(match: dict, evento: dict, ahora: datetime | None = None) -> list[str]:
+    """Once confirmado del resumen de ESPN (ligas domesticas) cerca del inicio."""
+    estructurado = match.setdefault("structured_context", {})
+    if (estructurado.get("lineup_context") or {}).get("status") == "confirmed":
+        return []
+    if _categoria_del_partido(match) == "female":
+        return []
+    if not _en_ventana_de_alineacion(_parse_iso_datetime(match.get("kickoff", "")), ahora):
+        return []
+    slug, event_id = evento.get("slug", ""), evento.get("espn_event_id", "")
+    if not slug or not event_id:
+        return []
+    try:
+        data = _request_json(ESPN_SUMMARY_URL.format(slug=slug), params={"event": event_id}, timeout=15)
+    except Exception as exc:
+        print(f"[espn] alineacion {slug} {event_id}: {exc}")
+        return []
+    once = _espn_alineacion_de_resumen(data if isinstance(data, dict) else {})
+    if not once:
+        return []
+    estructurado["lineup_context"] = once
+    return ["once confirmado ESPN"]
+
+
 def _fase_liga_uefa_con_espn(match: dict, slug: str, ahora: datetime | None = None) -> list[str]:
     """Clasificacion, jornada y forma de un cruce de fase liga UEFA con ESPN.
 
@@ -16992,8 +17213,11 @@ def _fase_liga_uefa_con_espn(match: dict, slug: str, ahora: datetime | None = No
     if not tabla:
         return []
     liga = _canonical_league_key(match.get("league") or "")
-    fila_l = _espn_fila_de(tabla, _nombres_del_lado(match, "local"), _similitud_espn) or {}
-    fila_v = _espn_fila_de(tabla, _nombres_del_lado(match, "visitante"), _similitud_espn) or {}
+    ids = (match.get("structured_context") or {}).get("espn_team_ids") or {}
+    por_id = {str(f.get("espn_team_id")): f for f in tabla.values() if isinstance(f, dict) and f.get("espn_team_id")}
+    # Identidad por id ESPN del propio evento; el nombre solo si no hay id.
+    fila_l = por_id.get(str(ids.get("home") or "")) or _espn_fila_de(tabla, _nombres_del_lado(match, "local"), _similitud_espn) or {}
+    fila_v = por_id.get(str(ids.get("away") or "")) or _espn_fila_de(tabla, _nombres_del_lado(match, "visitante"), _similitud_espn) or {}
     kickoff_dt = _parse_iso_datetime(match.get("kickoff", ""))
     ya_empezado = bool(kickoff_dt and (ahora or datetime.now(timezone.utc)) >= kickoff_dt)
     bloque = _ce.fase_liga_desde_tabla(tabla, fila_l, fila_v, liga, ya_empezado=ya_empezado)
@@ -17076,6 +17300,35 @@ _CUBOS_DE_TRANSICION = ("signings", "transfer_reports", "departures", "departure
                         "availability", "preseason", "promotion_history", "squad_news", "morale", "all_evidence")
 
 
+def _reverificar_bajas(match: dict) -> int:
+    """Lo ya guardado: una baja sin verificar se verifica si la plantilla (ahora
+    completa, de ESPN) confirma que el jugador es de ese equipo; si es de OTRO
+    equipo se quita."""
+    estructurado = match.get("structured_context") if isinstance(match.get("structured_context"), dict) else {}
+    bajas = estructurado.get("injury_context") if isinstance(estructurado.get("injury_context"), dict) else {}
+    total = 0
+    for clave, lado in (("home_team", "local"), ("away_team", "visitante")):
+        bloque = bajas.get(clave)
+        equipo = str(match.get(lado) or "")
+        if not isinstance(bloque, dict) or not isinstance(bloque.get("items"), list) or not equipo:
+            continue
+        _registrar_plantilla(equipo)
+        buenos = []
+        for item in bloque["items"]:
+            if not isinstance(item, dict):
+                continue
+            nombre = item.get("player_name") or item.get("player")
+            if nombre and _es_jugador_de_otro_equipo(nombre, equipo):
+                continue
+            if nombre and not item.get("verificado") and _jugador_confirmado_del_equipo(nombre, equipo):
+                item["verificado"] = True
+                item["verified_by"] = "espn-roster"
+                total += 1
+            buenos.append(item)
+        bloque["items"] = buenos
+    return total
+
+
 def _quitar_noticias_de_otro_club(match: dict) -> int:
     """Sobre lo ya guardado: fuera titulares de otro club y cronicas como mercado."""
     transicion = ((match.get("competition_context") or {}).get("season_transition") or {})
@@ -17122,6 +17375,9 @@ def _sanear_partido(match: dict) -> list[str]:
     cambios: list[str] = []
     if not isinstance(match, dict):
         return cambios
+    verificadas = _reverificar_bajas(match)
+    if verificadas:
+        cambios.append(f"{verificadas} bajas verificadas con la plantilla")
     quitadas = _quitar_noticias_de_otro_club(match)
     if quitadas:
         cambios.append(f"{quitadas} noticias de otro club o cronicas fuera de plantillas")
@@ -17226,6 +17482,11 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
             print(f"[espn] hora {match.get('local','')} - {match.get('visitante','')}: {exc}")
         cambios.extend(hora_corregida)
         cambios.extend(_aplicar_evento_espn(match, evento, selecciones, hora_corregida=bool(hora_corregida)))
+        if evento.get("local_id") and evento.get("visitante_id"):
+            match.setdefault("structured_context", {})["espn_team_ids"] = {
+                "home": evento.get("local_id"), "away": evento.get("visitante_id"),
+                "event": evento.get("espn_event_id", ""),
+            }
         if selecciones:
             cambios.extend(_forma_de_selecciones_con_espn(match, evento))
         try:
@@ -17243,6 +17504,16 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
             cambios.extend(_fase_liga_uefa_con_espn(match, slugs[0], ahora))
         except Exception as exc:  # contraste: nunca tumba el partido
             print(f"[espn] fase liga {match.get('local','')} - {match.get('visitante','')}: {exc}")
+    if not selecciones and slugs[0] in SLUGS_FASE_LIGA_UEFA:
+        try:
+            cambios.extend(_aplicar_fuente_uefa(match, ahora))
+        except Exception as exc:  # fuente oficial de contraste: nunca tumba el partido
+            print(f"[uefa] {match.get('local','')} - {match.get('visitante','')}: {exc}")
+    if evento and not selecciones:
+        try:
+            cambios.extend(_alineacion_con_espn(match, {**evento, "slug": evento.get("slug") or slugs[0]}, ahora))
+        except Exception as exc:
+            print(f"[espn] alineacion {match.get('local','')} - {match.get('visitante','')}: {exc}")
     if evento and not selecciones and slugs[0] in SLUGS_FASE_LIGA_UEFA:
         try:
             cambios.extend(_h2h_uefa_con_espn(match, {**evento, "slug": evento.get("slug") or slugs[0]}))
