@@ -114,6 +114,8 @@ def eventos_del_marcador(payload: dict) -> list[dict]:
                 "kickoff": str(evento.get("date") or ""),
                 "local": ((local.get("team") or {}).get("displayName") or "").strip(),
                 "visitante": ((visitante.get("team") or {}).get("displayName") or "").strip(),
+                "local_id": str((local.get("team") or {}).get("id") or ""),
+                "visitante_id": str((visitante.get("team") or {}).get("id") or ""),
                 "venue": str(sede.get("fullName") or "").strip(),
                 "city": str(direccion.get("city") or "").strip(),
                 "country": str(direccion.get("country") or "").strip(),
@@ -474,3 +476,33 @@ def metricas_de_forma(partidos: list[dict]) -> dict:
         "clean_sheets": sum(1 for p in partidos if p["goals_against"] == 0),
         "competitions": sorted({p["league"] for p in partidos if p["league"]}),
     }
+
+
+def alineacion_de_resumen(payload: dict) -> dict:
+    """Once titular del resumen de ESPN (rosters.starter); {} si no son 11+11."""
+    if not isinstance(payload, dict):
+        return {}
+    salida = {}
+    for r in payload.get("rosters") or []:
+        if not isinstance(r, dict):
+            continue
+        lado = "home" if r.get("homeAway") == "home" else ("away" if r.get("homeAway") == "away" else "")
+        titulares = [
+            {"name": str(((j.get("athlete") or {}).get("displayName")) or "").strip(),
+             "position": str(((j.get("position") or {}).get("abbreviation")) or "")}
+            for j in r.get("roster") or [] if isinstance(j, dict) and j.get("starter")
+        ]
+        titulares = [t for t in titulares if t["name"]]
+        if lado and len(titulares) == 11:
+            salida[lado] = {"starters": titulares, "team": str((r.get("team") or {}).get("displayName") or "")}
+    if set(salida) != {"home", "away"}:
+        return {}
+    return {"status": "confirmed", "source": "espn", **salida}
+
+
+def jugadores_de_roster(payload: dict) -> list[str]:
+    """Nombres de /teams/{id}/roster."""
+    if not isinstance(payload, dict):
+        return []
+    return [str(a.get("displayName") or "").strip() for a in payload.get("athletes") or []
+            if isinstance(a, dict) and str(a.get("displayName") or "").strip()]

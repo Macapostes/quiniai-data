@@ -43,7 +43,7 @@ FORMATO_POR_COPA = {
 def jornadas_fase_liga(liga: str) -> int:
     return JORNADAS_POR_COPA.get(liga, JORNADAS_FASE_LIGA)
 
-FUENTES_ARBITRO_FIABLES = {"rfef", "thesportsdb", "espn"}
+FUENTES_ARBITRO_FIABLES = {"rfef", "thesportsdb", "espn", "uefa"}
 
 # Paises (ISO2) de federaciones UEFA. Los de los extremos pueden pasar de
 # 3.500 km de viaje de verdad (Bakú, Almaty, Tel Aviv, Nicosia...).
@@ -262,6 +262,8 @@ def fase_liga_desde_tabla(tabla: dict, fila_local: dict, fila_visitante: dict, l
             partes.append(
                 f"{etiqueta} {fila.get('team')} {fila.get('position')}º con {fila.get('points')} pts "
                 f"en {fila.get('played')} partidos"
+                + (f" (goles {fila.get('goals_for')}-{fila.get('goals_against')})"
+                   if fila.get('played') and fila.get('goals_for') is not None and fila.get('goals_against') is not None else "")
             )
     if en_tabla <= 0:
         guia = "Primera jornada: aun no hay clasificacion."
