@@ -32,6 +32,17 @@ class ArbitroTests(unittest.TestCase):
         w._sanear_partido(m)
         self.assertEqual(m["structured_context"]["referee_context"]["assigned_referee"], "")
 
+    def test_un_jugador_o_un_titular_nunca_es_arbitro_aunque_venga_estructurado(self):
+        m = {"league": "soccer_uefa_champs_league",
+             "home_injuries": [{"player": "Lamine Yamal"}],
+             "referee_context": {"assigned_referee": "Lamine Yamal", "source": "thesportsdb"}}
+        w._sanear_partido(m)
+        self.assertEqual(m["referee_context"]["assigned_referee"], "")
+        titular = {"assigned_referee": "El Real Madrid viaja a Atenas sin Mbappe: la lista", "source": "thesportsdb"}
+        self.assertTrue(ce.sanear_arbitro(titular))
+        bueno = {"assigned_referee": "Szymon Marciniak", "source": "thesportsdb"}
+        self.assertFalse(ce.sanear_arbitro(bueno, {"Lamine Yamal"}))
+
 
 class JugadorasTests(unittest.TestCase):
     def setUp(self):

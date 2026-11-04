@@ -79,13 +79,31 @@ def iso_de_pais(valor: object) -> str:
 
 # --- Arbitro -----------------------------------------------------------------
 
-def sanear_arbitro(referee_context: object) -> bool:
-    """Deja el arbitro solo si viene de una fuente estructurada. True si cambia."""
+def _norm_nombre(texto: object) -> str:
+    import unicodedata
+    t = unicodedata.normalize("NFKD", str(texto or "")).encode("ascii", "ignore").decode().lower()
+    return " ".join("".join(c if c.isalnum() else " " for c in t).split())
+
+
+def arbitro_parece_titular(nombre: str) -> bool:
+    """Un nombre de arbitro no tiene mas de 5 palabras ni signos de titular."""
+    if len(nombre.split()) > 5:
+        return True
+    return any(ch in nombre for ch in ":;!?\"«»|") or len(nombre) > 45
+
+
+def sanear_arbitro(referee_context: object, jugadores: object = None) -> bool:
+    """Deja el arbitro solo si viene de una fuente estructurada, no es un titular
+    y no es un jugador de ninguno de los dos equipos. True si cambia."""
     if not isinstance(referee_context, dict):
         return False
     nombre = str(referee_context.get("assigned_referee") or "").strip()
     fuente = str(referee_context.get("source") or "").strip().lower()
-    if not nombre or fuente in FUENTES_ARBITRO_FIABLES:
+    if not nombre:
+        return False
+    plantilla = {_norm_nombre(j) for j in (jugadores or []) if _norm_nombre(j)}
+    es_jugador = _norm_nombre(nombre) in plantilla
+    if fuente in FUENTES_ARBITRO_FIABLES and not es_jugador and not arbitro_parece_titular(nombre):
         return False
     referee_context["unverified_referee"] = nombre
     referee_context["assigned_referee"] = ""

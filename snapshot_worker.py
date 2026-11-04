@@ -16847,13 +16847,41 @@ def _fase_liga_uefa_con_espn(match: dict, slug: str, ahora: datetime | None = No
     return cambios
 
 
+def _nombres_de_jugadores(nodo: object, dentro: bool = False, prof: int = 0) -> set[str]:
+    """Nombres de jugadores de ambos equipos guardados en el partido (plantillas,
+    alineaciones, bajas, jugadores clave) para que nunca pasen por arbitro."""
+    nombres: set[str] = set()
+    if prof > 8:
+        return nombres
+    if isinstance(nodo, dict):
+        if dentro:
+            for k in ("name", "player", "strPlayer", "displayName", "fullName", "nombre"):
+                v = nodo.get(k)
+                if isinstance(v, str) and v.strip():
+                    nombres.add(v.strip())
+        for k, v in nodo.items():
+            if "referee" in str(k).lower():
+                continue
+            clave = str(k).lower()
+            marca = dentro or any(t in clave for t in ("player", "squad", "lineup", "roster", "injur", "absen", "baja", "jugador", "plantilla", "alineac"))
+            nombres |= _nombres_de_jugadores(v, marca, prof + 1)
+    elif isinstance(nodo, list):
+        for v in nodo:
+            if dentro and isinstance(v, str) and 0 < len(v) < 45:
+                nombres.add(v.strip())
+            else:
+                nombres |= _nombres_de_jugadores(v, dentro, prof + 1)
+    return nombres
+
+
 def _sanear_partido(match: dict) -> list[str]:
     """Ultimas barreras de calidad (arbitro, viaje y meteo) sobre lo ya guardado."""
     cambios: list[str] = []
     if not isinstance(match, dict):
         return cambios
+    jugadores = _nombres_de_jugadores(match)
     for contenedor in (match.get("structured_context"), match):
-        if isinstance(contenedor, dict) and _ce.sanear_arbitro(contenedor.get("referee_context")):
+        if isinstance(contenedor, dict) and _ce.sanear_arbitro(contenedor.get("referee_context"), jugadores):
             cambios.append("arbitro de prensa retirado (sin fuente estructurada)")
     liga = _canonical_league_key(match.get("league") or "")
     viaje = match.get("travel_context")
