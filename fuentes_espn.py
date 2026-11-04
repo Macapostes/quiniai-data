@@ -44,7 +44,10 @@ ESPN_SLUG_POR_LIGA = {
     "soccer_uefa_nations_league": "uefa.nations",
     "soccer_uefa_champs_league": "uefa.champions",
     "soccer_uefa_europa_league": "uefa.europa",
+    "soccer_uefa_europa_conference_league": "uefa.europa.conf",
 }
+# Fase liga de las copas UEFA de clubes: tabla unica de 36 en ESPN.
+SLUGS_FASE_LIGA_UEFA = {"uefa.champions", "uefa.europa", "uefa.europa.conf"}
 ESPN_SLUG_LIGA_F = "esp.w.1"
 # Ligas cuya clasificacion se puede contrastar con la de ESPN.
 SLUGS_CON_CLASIFICACION = {"esp.1", "esp.2", "esp.w.1", "eng.1", "eng.2", "ita.1", "ger.1", "fra.1", "por.1", "ned.1"}
