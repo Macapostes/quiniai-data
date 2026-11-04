@@ -71,17 +71,21 @@ class ProveedorCaidoTests(BaseAuditoria):
         la auditoria no protegeria de nada."""
         sw._marcar_fallo_sportsdb()
         audit = self.auditar([_partido()])
-        self.assertFalse(audit["ok"])
+        # Desde nov 2026 un hueco no frena: se publica omitido, pero no "degradado".
+        self.assertTrue(audit["ok"])
         self.assertFalse(audit["degraded"])
 
 
 class ProveedorSanoTests(BaseAuditoria):
-    def test_sin_averia_un_lado_vacio_sigue_frenando(self):
-        """Esta es la garantia original y no se toca: si el proveedor responde y
-        aun asi falta contexto, el dato es nuestro y esta mal."""
-        audit = self.auditar([_partido()])
-        self.assertFalse(audit["ok"])
+    def test_sin_averia_un_lado_vacio_se_omite_y_no_frena(self):
+        """Politica nueva (J19, nov 2026): el lado vacio se publica sin contexto
+        de plantilla, marcado, y queda en el registro; no se rechaza el ciclo."""
+        partido = _partido()
+        audit = self.auditar([partido])
+        self.assertTrue(audit["ok"])
         self.assertFalse(audit["degraded"])
+        self.assertEqual(len(audit["tolerated_empty_sides"]), 1)
+        self.assertTrue(partido["competition_context"]["season_transition"]["home"]["context_omitted"])
 
     def test_con_contexto_en_los_dos_lados_pasa(self):
         audit = self.auditar([_partido(home_ctx=_con_contexto())])

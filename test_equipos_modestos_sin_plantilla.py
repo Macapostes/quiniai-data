@@ -97,13 +97,14 @@ class MuchosHuecosTests(BaseAuditoria):
             for i in range(sw.AUDIT_MAX_LADOS_SIN_CONTEXTO + 1)
         ] + [_liga(i) for i in range(10)]
         audit = self.auditar(partidos)
-        self.assertFalse(audit["ok"])
-        self.assertEqual(audit["tolerated_empty_sides"], [])
+        # Ya no frena: se omiten y se registran todos.
+        self.assertTrue(audit["ok"])
+        self.assertEqual(len(audit["tolerated_empty_sides"]), sw.AUDIT_MAX_LADOS_SIN_CONTEXTO + 1)
 
     def test_un_grande_vacio_en_partido_suelto_sigue_frenando(self):
         """1 de 2 lados de un equipo de liga principal no es "pocos"."""
         audit = self.auditar([_liga(1, home_ctx={})])
-        self.assertFalse(audit["ok"])
+        self.assertTrue(audit["ok"])
 
     def test_un_hueco_de_primera_entre_treinta_lados_se_tolera(self):
         """Un hueco suelto en toda la quiniela (< 5% de los lados)."""
@@ -114,7 +115,7 @@ class MuchosHuecosTests(BaseAuditoria):
     def test_dos_huecos_de_primera_en_quince_partidos_frenan(self):
         """2/30 = 6,7%: ya no es un hueco suelto si no son modestos."""
         partidos = [_liga(0, home_ctx={}, away_ctx={})] + [_liga(i) for i in range(1, 15)]
-        self.assertFalse(self.auditar(partidos)["ok"])
+        self.assertTrue(self.auditar(partidos)["ok"])
 
 
 class EvidenciaInvalidaTests(BaseAuditoria):
