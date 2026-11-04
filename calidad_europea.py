@@ -30,9 +30,18 @@ NOMBRE_COPA_UEFA = {
     "soccer_uefa_europa_league": "UEFA Europa League",
     "soccer_uefa_europa_conference_league": "UEFA Conference League",
 }
-# Fase liga 2024+: 8 jornadas, 36 equipos.
+# Fase liga 2024+: 36 equipos. Champions y Europa League 8 jornadas; la
+# Conference League solo 6 (UEFA, formato 2024-27).
 JORNADAS_FASE_LIGA = 8
+JORNADAS_POR_COPA = {"soccer_uefa_europa_conference_league": 6}
 FORMATO_FASE_LIGA = "36 equipos, 8 jornadas: 1-8 octavos, 9-24 play-off, 25-36 eliminados"
+FORMATO_POR_COPA = {
+    "soccer_uefa_europa_conference_league": "36 equipos, 6 jornadas: 1-8 octavos, 9-24 play-off, 25-36 eliminados",
+}
+
+
+def jornadas_fase_liga(liga: str) -> int:
+    return JORNADAS_POR_COPA.get(liga, JORNADAS_FASE_LIGA)
 
 FUENTES_ARBITRO_FIABLES = {"rfef", "thesportsdb", "espn"}
 
@@ -75,6 +84,55 @@ def iso_de_pais(valor: object) -> str:
     if len(texto) == 2 and texto.isalpha():
         return texto.upper()
     return _NOMBRE_PAIS_A_ISO.get(texto.lower(), "")
+
+
+# --- Pais de una competicion domestica (identidad estricta del equipo) -------
+
+_PAIS_POR_TOKEN = [
+    (("spain", "laliga", "la liga", "segunda", "copa del rey"), "ES"),
+    (("epl", "england", "english", "premier league", "efl", "fa cup", "championship"), "GB"),
+    (("scotland", "scottish"), "GB"),
+    (("france", "french", "ligue 1", "ligue 2", "coupe de france"), "FR"),
+    (("germany", "german", "bundesliga", "dfb"), "DE"),
+    (("italy", "italian", "serie a", "coppa italia"), "IT"),
+    (("portugal", "portuguese", "primeira", "liga portugal"), "PT"),
+    (("netherlands", "dutch", "eredivisie"), "NL"),
+    (("belgium", "belgian", "jupiler"), "BE"),
+    (("norway", "norwegian", "eliteserien"), "NO"),
+    (("sweden", "swedish", "allsvenskan"), "SE"),
+    (("denmark", "danish", "superliga"), "DK"),
+    (("turkey", "turkish", "super lig", "süper lig"), "TR"),
+    (("greece", "greek", "super league greece"), "GR"),
+    (("czech", "chance liga", "fortuna liga"), "CZ"),
+    (("austria", "austrian"), "AT"),
+    (("switzerland", "swiss"), "CH"),
+    (("poland", "polish", "ekstraklasa"), "PL"),
+    (("croatia", "croatian", "hnl"), "HR"),
+    (("serbia", "serbian"), "RS"),
+    (("ukraine", "ukrainian"), "UA"),
+    (("cyprus", "cypriot"), "CY"),
+    (("israel", "israeli"), "IL"),
+]
+
+
+def pais_de_competicion(clave: object, nombre: object) -> str:
+    """ISO2 de una liga/copa domestica por su clave o nombre; "" si no se sabe
+    o si es internacional (UEFA, amistosos)."""
+    texto = f" {str(clave or '').lower().replace('_', ' ')} {str(nombre or '').lower()} "
+    if any(t in texto for t in ("uefa", "champions", "europa", "conference", "friendl", "amistos", "world", "nations")):
+        return ""
+    for tokens, iso in _PAIS_POR_TOKEN:
+        if any(f" {t} " in texto or f" {t}" in texto for t in tokens):
+            return iso
+    return ""
+
+
+def proximo_de_otro_pais(clave: object, nombre: object, pais_equipo: object) -> bool:
+    """J19: "Lille: casa vs Aalesund (Eliteserien)" era el Lillestrom. Un club
+    no juega la liga de otro pais: identidad por pais, no por nombre parecido."""
+    pais_equipo = iso_de_pais(pais_equipo)
+    pais_comp = pais_de_competicion(clave, nombre)
+    return bool(pais_equipo and pais_comp and pais_equipo != pais_comp)
 
 
 # --- Arbitro -----------------------------------------------------------------
@@ -181,9 +239,22 @@ def fase_liga_desde_tabla(tabla: dict, fila_local: dict, fila_visitante: dict, l
     jugados = [int(f.get("played") or 0) for f in (tabla or {}).values() if isinstance(f, dict)]
     if not jugados:
         return {}
-    disputadas = int(round(median(jugados)))
-    jornada = disputadas if ya_empezado else disputadas + 1
-    jornada = max(1, min(JORNADAS_FASE_LIGA, jornada))
+    total = jornadas_fase_liga(liga)
+    # La jornada sale del propio partido: lo que llevan jugado SUS dos equipos.
+    # La mediana de la tabla mezclaba los resultados del martes con los
+    # partidos del miercoles (J19: "jornada 5" con 3 jugados).
+    propios = [int(f.get("played") or 0) for f in (fila_local, fila_visitante)
+               if isinstance(f, dict) and f.get("played") is not None]
+    if propios:
+        previos = min(propios) - 1 if ya_empezado else max(propios)
+        previos = max(0, previos)
+    else:
+        previos = int(round(median(jugados)))
+        previos = max(0, previos - 1) if ya_empezado else previos
+    jornada = max(1, min(total, previos + 1))
+    disputadas = jornada - 1
+    # Lo que refleja la fila de la tabla (si el partido ya se jugo, lo incluye).
+    en_tabla = min(propios) if propios else disputadas
     nombre = NOMBRE_COPA_UEFA.get(liga, "competicion europea")
     partes = []
     for etiqueta, fila in (("local", fila_local), ("visitante", fila_visitante)):
@@ -192,20 +263,21 @@ def fase_liga_desde_tabla(tabla: dict, fila_local: dict, fila_visitante: dict, l
                 f"{etiqueta} {fila.get('team')} {fila.get('position')}º con {fila.get('points')} pts "
                 f"en {fila.get('played')} partidos"
             )
-    if disputadas <= 0:
+    if en_tabla <= 0:
         guia = "Primera jornada: aun no hay clasificacion."
     else:
         guia = (
-            f"Clasificacion tras {disputadas} jornada{'s' if disputadas != 1 else ''}: "
+            f"Clasificacion tras {en_tabla} jornada{'s' if en_tabla != 1 else ''}: "
             + ("; ".join(partes) if partes else "sin fila de los equipos")
-            + ". Quedan " + str(JORNADAS_FASE_LIGA - disputadas) + " jornadas; los puestos aun se mueven mucho."
+            + ". Quedan " + str(total - en_tabla) + " jornadas; los puestos aun se mueven mucho."
         )
     return {
         "active": True,
         "competition": nombre,
         "matchday": jornada,
         "matchdays_played": disputadas,
-        "format": FORMATO_FASE_LIGA,
+        "format": FORMATO_POR_COPA.get(liga, FORMATO_FASE_LIGA),
+        "total_matchdays": total,
         "guidance": guia,
         "source": "espn-standings",
     }

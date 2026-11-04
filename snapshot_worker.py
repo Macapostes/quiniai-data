@@ -2659,6 +2659,60 @@ def _signal_strength_score(title: str, source: str = "") -> float:
     return round(score, 2)
 
 
+_MARCADOR_RE = re.compile(r"(?<![\d/:.-])\d{1,2}\s?-\s?\d{1,2}(?![\d/:.-])")
+_CRONICA_TOKENS = ("tras el", "tras la victoria", "tras la derrota", "tras el empate", "cronica", "reaccion",
+                   "resumen", "goles del", "victoria ante", "derrota ante", "post-match", "player ratings")
+
+
+def _es_cronica_de_partido(title: str) -> bool:
+    """Cronica o reaccion a un partido ya jugado (marcador en el titular)."""
+    t = _normalize_ascii(str(title or "")).lower()
+    return bool(_MARCADOR_RE.search(t)) and any(tok in t for tok in _CRONICA_TOKENS) or bool(
+        _MARCADOR_RE.search(t) and re.search(r"\b(tras|after|despues de)\b", t)
+    )
+
+
+def _otro_club_es_el_sujeto(title: str, team_name: str) -> str:
+    """Nombre del club del que realmente habla el titular si no es el nuestro.
+
+    J19: "Asi llega el Espanyol a La Ceramica: nuevo entrenador, dos bajas..."
+    entraba como baja del Villarreal. El sujeto es el primer club que se nombra.
+    """
+    cuerpo = re.split(r"\s[-|–]\s", str(title or ""))[0]
+    texto = f" {_normalize_team_name(cuerpo)} "
+    propio = _normalize_team_name(_canonical_team_name(team_name) or team_name)
+    propios = {propio, _normalize_team_name(team_name)}
+    propios |= {k for k, v in TEAM_NAME_ALIASES.items() if _normalize_team_name(v) == propio}
+    def primera(nombres):
+        pos = [texto.find(f" {n} ") for n in nombres if n and len(n) >= 4 and f" {n} " in texto]
+        return min(pos) if pos else -1
+    pos_propio = primera(propios)
+    if pos_propio < 0:
+        return ""
+    mejor, pos_mejor = "", pos_propio
+    candidatos = [(a, a) for a in _CLUBES_CONOCIDOS] + list(TEAM_NAME_ALIASES.items())
+    for alias, canon in candidatos:
+        alias = _normalize_team_name(alias)
+        if not alias or len(alias) < 5 or alias in propios:
+            continue
+        if _normalize_team_name(_canonical_team_name(canon) or canon) == propio or _es_seleccion(canon):
+            continue
+        if any(alias in p or p in alias for p in propios if p):
+            continue
+        i = texto.find(f" {alias} ")
+        if 0 <= i < pos_mejor:
+            mejor, pos_mejor = canon, i
+    if mejor:
+        # "Getafe - Villarreal: bajas..." es la previa del partido de los dos,
+        # no una noticia del otro club.
+        crudo = _normalize_ascii(cuerpo).lower()
+        if re.search(r"[a-z.]\s*(?:-|–|vs\.?|v\.?|contra|frente al?)\s*[a-z.]", crudo) and re.search(
+            r"(?:-|–|\bvs\.?|\bv\.?)\s*(?:el\s+|la\s+)?" + re.escape(sorted(propios, key=len)[-1].split()[0]), crudo
+        ):
+            return ""
+    return mejor
+
+
 def _season_transition_category(title: str, source: str = "") -> str:
     """Clasifica hechos que sustituyen a la tabla al inicio de temporada."""
     haystack = f"{title} {source}"
@@ -2669,11 +2723,16 @@ def _season_transition_category(title: str, source: str = "") -> str:
         return "squad"
     if _contains_injury_signal(title) or _contains_any(haystack, DISCIPLINE_KEYWORDS):
         return "availability"
-    if _contains_any(haystack, DEPARTURE_KEYWORDS):
+    # El mercado se lee del TITULAR, no de la fuente: "La reaccion de Hansi
+    # Flick tras el 3-0 al Aston Villa - Fichajes.com" salia como posible alta
+    # del Aston Villa por el nombre de la web. Y una cronica (marcador "3-0")
+    # no es mercado.
+    cronica = _es_cronica_de_partido(title)
+    if not cronica and _contains_any(title, DEPARTURE_KEYWORDS):
         return "departure"
     if _contains_any(haystack, COACH_CHANGE_KEYWORDS):
         return "coach"
-    if _contains_any(haystack, MARKET_KEYWORDS):
+    if not cronica and _contains_any(title, MARKET_KEYWORDS):
         return "signing"
     if _contains_any(haystack, PRESEASON_KEYWORDS):
         return "preseason"
@@ -2883,6 +2942,8 @@ def _passes_season_transition_quality(item: dict, team_name: str) -> bool:
         # Rodri" es mercado de clubes, no noticia de Espana.
         return False
     if _is_opponent_only_transition_title(title, team_name):
+        return False
+    if _otro_club_es_el_sujeto(title, team_name):
         return False
     if _motivo_mercado_dudoso(title, _season_transition_category(title, source), team_name):
         return False
@@ -13915,6 +13976,18 @@ _NOMBRE_CORTO_COMPETICION = {
 _FUENTES_DE_LA_PROPIA_LIGA = {"football-data", "sportsdb-rounds", "odds-feed"}
 
 
+def _pais_del_lado(match: dict, clave_lado: str) -> str:
+    """Pais del club de un lado (perfil de viaje o pais guardado)."""
+    viaje = match.get("travel_context") if isinstance(match.get("travel_context"), dict) else {}
+    for valor in (
+        viaje.get(f"{clave_lado}_country"),
+        ((match.get(f"{clave_lado}_team_context") or {}) if isinstance(match.get(f"{clave_lado}_team_context"), dict) else {}).get("country"),
+    ):
+        if _ce.iso_de_pais(valor):
+            return _ce.iso_de_pais(valor)
+    return ""
+
+
 def _competicion_de_proximo(fixture: dict, liga_partido: str) -> tuple[str, str]:
     """(clave, nombre) de la competicion de un proximo partido; ("", "") si no se sabe."""
     bruto = str(fixture.get("league") or "").strip()
@@ -14181,6 +14254,10 @@ def _proximos_con_su_competicion(match: dict) -> dict:
                 # Lillestrom. Un club solo juega una copa UEFA por temporada.
                 motivo = "imposible"
             if not motivo and _ce.proximo_ya_jugado(_fecha_de_proximo(fx)[0], kickoff_dt):
+                motivo = "imposible"
+            if not motivo and _ce.es_copa_uefa(liga) and _ce.proximo_de_otro_pais(
+                clave, nombre, _pais_del_lado(match, clave_lado)
+            ):
                 motivo = "imposible"
             if motivo:
                 quitados.append(fx)
@@ -16818,6 +16895,93 @@ def _forma_todas_las_competiciones(fila: dict, slug: str, kickoff_dt: datetime |
     return _recent_form_metrics(unicas, nombre, 5) or {}
 
 
+def _espn_serie_h2h(slug: str, event_id: str) -> list[dict]:
+    """Enfrentamientos previos (todas las competiciones) del resumen de ESPN."""
+    if not event_id:
+        return []
+    clave = f"espn:h2h:v1:{slug}:{event_id}"
+    cached = _cache_get(EXTERNAL_FEEDS_CACHE, clave, ESPN_TABLA_TTL_SECONDS)
+    if cached is not None:
+        return list(cached)
+    try:
+        data = _request_json(ESPN_SUMMARY_URL.format(slug=slug), params={"event": event_id}, timeout=15)
+    except Exception as exc:
+        print(f"[espn] h2h {slug} {event_id}: {exc}")
+        return list(_cache_get(EXTERNAL_FEEDS_CACHE, clave) or [])
+    filas = _espn_filas_de_serie(data if isinstance(data, dict) else {}, event_id)
+    _cache_set(EXTERNAL_FEEDS_CACHE, clave, filas)
+    return filas
+
+
+def _espn_filas_de_serie(data: dict, event_id: str = "") -> list[dict]:
+    filas = []
+    for serie in data.get("seasonseries") or []:
+        if not isinstance(serie, dict) or serie.get("type") not in (None, "head-to-head"):
+            continue
+        for ev in serie.get("events") or []:
+            if not isinstance(ev, dict) or str(ev.get("id")) == str(event_id):
+                continue
+            if not ((ev.get("statusType") or {}).get("completed")):
+                continue
+            casa = fuera = None
+            for c in ev.get("competitors") or []:
+                if c.get("homeAway") == "home":
+                    casa = c
+                elif c.get("homeAway") == "away":
+                    fuera = c
+            try:
+                gl, gv = int(casa.get("score")), int(fuera.get("score"))
+            except (TypeError, ValueError, AttributeError):
+                continue
+            fecha = str(ev.get("date") or "")
+            filas.append({
+                "Date": fecha[:10],
+                "KickoffUTC": fecha,
+                "HomeTeam": ((casa.get("team") or {}).get("displayName") or ""),
+                "AwayTeam": ((fuera.get("team") or {}).get("displayName") or ""),
+                "HomeTeamId": str((casa.get("team") or {}).get("id") or ""),
+                "AwayTeamId": str((fuera.get("team") or {}).get("id") or ""),
+                "FTHG": gl, "FTAG": gv,
+                "FTR": "H" if gl > gv else ("A" if gv > gl else "D"),
+                "League": str(ev.get("leagueName") or "Competicion europea"),
+                "Source": "espn-seasonseries",
+            })
+    return filas
+
+
+def _h2h_uefa_con_espn(match: dict, evento: dict) -> list[str]:
+    """H2H de un cruce UEFA con la serie de ESPN (todas las competiciones).
+
+    J19: openfootball solo cubre 2011+ y 11 de 15 cruces salian sin H2H
+    (AEK-Real Madrid se vio en 2002, Oporto-Napoles en 2014...).
+    """
+    filas = _espn_serie_h2h(evento.get("slug", ""), evento.get("espn_event_id", ""))
+    if not filas:
+        return []
+    local, visitante = str(match.get("local") or ""), str(match.get("visitante") or "")
+    espn_l, espn_v = str(evento.get("local") or ""), str(evento.get("visitante") or "")
+    # Identidad por el nombre ESPN del propio evento: se renombra al del boleto.
+    renombre = {espn_l: local, espn_v: visitante}
+    propias = []
+    for f in filas:
+        if {f["HomeTeam"], f["AwayTeam"]} != {espn_l, espn_v}:
+            continue
+        g = dict(f)
+        g["HomeTeam"], g["AwayTeam"] = renombre[f["HomeTeam"]], renombre[f["AwayTeam"]]
+        propias.append(g)
+    completed = _completed_rows_before_kickoff(propias, _parse_iso_datetime(match.get("kickoff", "")))
+    if not completed:
+        return []
+    nuevo = _head_to_head_metrics(completed, local, visitante, last_n=H2H_LAST_N) or {}
+    historia = match.setdefault("history_context", {})
+    actual = historia.get("head_to_head") if isinstance(historia.get("head_to_head"), dict) else {}
+    if int(nuevo.get("meetings") or 0) <= int((actual or {}).get("meetings") or 0):
+        return []
+    nuevo["source"] = "espn-seasonseries"
+    historia["head_to_head"] = nuevo
+    return [f"h2h ESPN: {nuevo.get('meetings')} enfrentamientos"]
+
+
 def _fase_liga_uefa_con_espn(match: dict, slug: str, ahora: datetime | None = None) -> list[str]:
     """Clasificacion, jornada y forma de un cruce de fase liga UEFA con ESPN.
 
@@ -16842,8 +17006,8 @@ def _fase_liga_uefa_con_espn(match: dict, slug: str, ahora: datetime | None = No
     competicion["season_context_phase"] = {
         **fase,
         "played": bloque["matchdays_played"],
-        "total_rounds": _ce.JORNADAS_FASE_LIGA,
-        "progress": round(bloque["matchdays_played"] / _ce.JORNADAS_FASE_LIGA, 3),
+        "total_rounds": _ce.jornadas_fase_liga(liga),
+        "progress": round(bloque["matchdays_played"] / _ce.jornadas_fase_liga(liga), 3),
         "source": "espn-standings",
     }
     ev = match.setdefault("structured_context", {}).setdefault("event_context", {})
@@ -16908,11 +17072,59 @@ def _nombres_de_jugadores(nodo: object, dentro: bool = False, prof: int = 0) -> 
     return nombres
 
 
+_CUBOS_DE_TRANSICION = ("signings", "transfer_reports", "departures", "departure_reports", "coach_changes",
+                        "availability", "preseason", "promotion_history", "squad_news", "morale", "all_evidence")
+
+
+def _quitar_noticias_de_otro_club(match: dict) -> int:
+    """Sobre lo ya guardado: fuera titulares de otro club y cronicas como mercado."""
+    transicion = ((match.get("competition_context") or {}).get("season_transition") or {})
+    total = 0
+    for side, lado_nombre in (("home", "local"), ("away", "visitante")):
+        lado = transicion.get(side)
+        equipo = _nombre_para_el_proveedor(match, lado_nombre) or str(match.get(lado_nombre) or "")
+        if not isinstance(lado, dict) or not equipo:
+            continue
+        cambiado = False
+        for cubo in _CUBOS_DE_TRANSICION:
+            items = lado.get(cubo)
+            if not isinstance(items, list):
+                continue
+            buenos = []
+            for item in items:
+                titulo = str((item or {}).get("title") or "") if isinstance(item, dict) else ""
+                mercado = cubo in ("signings", "transfer_reports", "departures", "departure_reports") or (
+                    isinstance(item, dict) and item.get("category") in ("signing", "departure")
+                )
+                if titulo and (_otro_club_es_el_sujeto(titulo, equipo) or (mercado and _es_cronica_de_partido(titulo))):
+                    continue
+                buenos.append(item)
+            if len(buenos) != len(items):
+                if cubo != "all_evidence":
+                    total += len(items) - len(buenos)
+                lado[cubo] = buenos
+                cambiado = True
+        if cambiado:
+            if isinstance(lado.get("all_evidence"), list):
+                lado["evidence_count"] = len(lado["all_evidence"])
+            if "summary" in lado:
+                _rehacer_resumen_de_transicion(lado)
+    if total:
+        try:
+            _rehacer_briefing_de_plantillas(match)
+        except Exception as exc:
+            print(f"[plantillas] briefing {match.get('local','')}: {exc}")
+    return total
+
+
 def _sanear_partido(match: dict) -> list[str]:
     """Ultimas barreras de calidad (arbitro, viaje y meteo) sobre lo ya guardado."""
     cambios: list[str] = []
     if not isinstance(match, dict):
         return cambios
+    quitadas = _quitar_noticias_de_otro_club(match)
+    if quitadas:
+        cambios.append(f"{quitadas} noticias de otro club o cronicas fuera de plantillas")
     jugadores = _nombres_de_jugadores(match)
     for contenedor in (match.get("structured_context"), match):
         if isinstance(contenedor, dict) and _ce.sanear_arbitro(contenedor.get("referee_context"), jugadores):
@@ -17031,6 +17243,11 @@ def _aplicar_fuentes_espn(match: dict, ahora: datetime | None = None) -> list[st
             cambios.extend(_fase_liga_uefa_con_espn(match, slugs[0], ahora))
         except Exception as exc:  # contraste: nunca tumba el partido
             print(f"[espn] fase liga {match.get('local','')} - {match.get('visitante','')}: {exc}")
+    if evento and not selecciones and slugs[0] in SLUGS_FASE_LIGA_UEFA:
+        try:
+            cambios.extend(_h2h_uefa_con_espn(match, {**evento, "slug": evento.get("slug") or slugs[0]}))
+        except Exception as exc:  # contraste: nunca tumba el partido
+            print(f"[espn] h2h {match.get('local','')} - {match.get('visitante','')}: {exc}")
     if not selecciones and slugs[0] in SLUGS_CON_CLASIFICACION:
         try:
             cambios.extend(_refrescar_tabla_con_espn(match, slugs[0]))
