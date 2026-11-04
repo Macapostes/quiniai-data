@@ -823,6 +823,7 @@ TEAM_NAME_ALIASES = {
     "racing santander": "Racing de Santander",
     "real racing club de santander": "Racing de Santander",
     "sporting gijon": "Sporting de Gijon",
+    "sporting gijn": "Sporting de Gijon",  # "Gij\ufffdn" de una consola Windows
     # football-data lo abrevia "Sp Gijon". Casaba con "SPORTING" porque "SP"
     # hacia de principio de "Sporting", y por la misma via casaban tambien
     # "ESPAÑA" y "SPORTING PORT.". Mejor decirlo que adivinarlo.
@@ -6195,7 +6196,21 @@ def _enrich_news_item(item: dict) -> dict:
     return enriched
 
 
+def _reparar_mojibake(value: str) -> str:
+    """"GijÃ³n" (UTF-8 leido como cp1252/latin-1 en Windows) -> "Gijón"."""
+    text = str(value or "")
+    if not any(marca in text for marca in ("Ã", "Â")):
+        return text
+    for codec in ("cp1252", "latin-1"):
+        try:
+            return text.encode(codec).decode("utf-8")
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            continue
+    return text
+
+
 def _normalize_ascii(value: str) -> str:
+    value = _reparar_mojibake(value).replace("\ufffd", "")
     return unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
 
 
@@ -15726,6 +15741,18 @@ def _lados_sin_contexto_tolerables(empty_sides: list, total_sides: int) -> bool:
     return bool(total_sides) and len(empty_sides) / total_sides < AUDIT_PROPORCION_LADOS_SIN_CONTEXTO
 
 
+def _omitir_contexto_de_lados_vacios(focus_matches: list, empty_sides: list) -> None:
+    """Marca los lados sin contexto de plantilla para que la IA no lo invente."""
+    vacios = {(item.get("match"), item.get("side")) for item in empty_sides}
+    for match in focus_matches:
+        etiqueta = f"{match.get('local', '')} - {match.get('visitante', '')}".strip(" -")
+        transicion = ((match.get("competition_context") or {}).get("season_transition") or {})
+        for side in ("home", "away"):
+            if (etiqueta, side) in vacios and isinstance(transicion.get(side), dict):
+                transicion[side]["context_omitted"] = True
+                transicion[side]["summary"] = "sin contexto de plantilla disponible; no suponer nada"
+
+
 def _audit_season_transition_snapshot(snapshot: dict) -> dict:
     """Impide publicar contexto de verano cruzado entre clubes.
 
@@ -15753,6 +15780,12 @@ def _audit_season_transition_snapshot(snapshot: dict) -> dict:
                 ((side_context.get("previous_season") or {}).get("summary") or "")
             ).strip()
             evidence = list(side_context.get("all_evidence") or [])
+            # Con la temporada en marcha (tabla util, sin season_preview
+            # activo) no hay "temporada anterior" y los rumores de verano
+            # caducan (21 dias): un club sin noticias recientes se queda sin
+            # nada. J19: Athletic y Sporting rechazaban todos los ciclos desde
+            # el 3 nov. Se anota y se omite; ya no frena.
+            temporada_en_marcha = not transition.get("active")
             if not previous_summary and not evidence:
                 empty_sides.append(
                     {
@@ -15760,6 +15793,7 @@ def _audit_season_transition_snapshot(snapshot: dict) -> dict:
                         "side": side,
                         "team": team_name,
                         "modest": _lado_de_equipo_modesto(match, side),
+                        "season_underway": temporada_en_marcha,
                     }
                 )
             for item in evidence:
@@ -15790,17 +15824,17 @@ def _audit_season_transition_snapshot(snapshot: dict) -> dict:
     # Tampoco frenan unos pocos huecos de equipos modestos (ver
     # _lados_sin_contexto_tolerables): se publican tal cual, sin contexto, y
     # quedan listados aqui en "tolerated_empty_sides".
+    #
+    # Los lados sin contexto ya no frenan nunca: se publica sin el contexto de
+    # plantilla de ese lado (marcado "context_omitted") y queda en el registro.
+    # Solo una evidencia invalida rechaza el snapshot.
     proveedor_degradado = _sportsdb_degradado()
     degradado = bool(empty_sides) and proveedor_degradado
-    tolerados = (
-        bool(empty_sides)
-        and not proveedor_degradado
-        and _lados_sin_contexto_tolerables(empty_sides, 2 * len(focus_matches))
-    )
+    tolerados = bool(empty_sides) and not proveedor_degradado
+    if empty_sides:
+        _omitir_contexto_de_lados_vacios(focus_matches, empty_sides)
     return {
-        "ok": bool(focus_matches)
-        and not invalid_evidence
-        and (not empty_sides or proveedor_degradado or tolerados),
+        "ok": bool(focus_matches) and not invalid_evidence,
         "degraded": degradado,
         "tolerated_empty_sides": empty_sides[:20] if tolerados else [],
         "degraded_reason": (
