@@ -2706,6 +2706,14 @@ def _otro_club_es_el_sujeto(title: str, team_name: str) -> str:
         if 0 <= i < pos_mejor:
             mejor, pos_mejor = canon, i
     if mejor:
+        # Solo si NUESTRO equipo sale como rival del sujeto ("... contra el
+        # Villarreal"). Si sale como dueno de la noticia -"el centrocampista del
+        # Almeria", "acuerdan el traspaso", "para fichar por el Levante"- la
+        # noticia tambien es suya (J20: 13 de 183 titulares caian asi).
+        previo = texto[max(0, pos_propio - 40):pos_propio]
+        if not re.search(r"\b(contra|ante|frente|visita|visitar|recibe|recibir|vs|rival|enfrenta|enfrentarse|duelo)\b(\s+\w+){0,2}\s*$", previo):
+            return ""
+    if mejor:
         # "Getafe - Villarreal: bajas..." es la previa del partido de los dos,
         # no una noticia del otro club.
         crudo = _normalize_ascii(cuerpo).lower()

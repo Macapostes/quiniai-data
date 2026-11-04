@@ -93,6 +93,18 @@ class NoticiasDeOtroClubTests(unittest.TestCase):
         self.assertEqual(w._otro_club_es_el_sujeto("El Villarreal recupera a Gerard Moreno ante el Espanyol", "Villarreal"), "")
         self.assertEqual(w._otro_club_es_el_sujeto("Bellingham, baja del Real Madrid ante el AEK", "Real Madrid"), "")
 
+    def test_j20_noticias_propias_aunque_otro_club_vaya_primero(self):
+        """Pre-#6 entraban y son del equipo: no se pueden perder (J20)."""
+        casos = [
+            ("Levante UD y C. Atlético Osasuna acuerdan el traspaso de Rubén García - Levante UD", "Osasuna"),
+            ("Hugo Sotelo ya está en Valencia para fichar por el Levante - El Desmarque", "Levante"),
+            ("El Sevilla FC pone el foco en dos jugadores del Cádiz CF - Fichajes.net", "Cádiz"),
+            ("El Atlético de Madrid inicia conversaciones con el centrocampista del Almería Stefan Dzodic", "Almería"),
+            ("El futbolista de la Real Sociedad que ha desvelado que Matarazzo evitó su fichaje por el Rayo", "Rayo Vallecano"),
+        ]
+        for titulo, equipo in casos:
+            self.assertEqual(w._otro_club_es_el_sujeto(titulo, equipo), "", titulo)
+
     def test_la_previa_de_los_dos_no_se_quita(self):
         self.assertEqual(w._otro_club_es_el_sujeto("Getafe - Villarreal: bajas y alineaciones", "Villarreal"), "")
         self.assertEqual(w._otro_club_es_el_sujeto("Previa Real Madrid vs Barcelona: Pedri, baja", "Barcelona"), "")
