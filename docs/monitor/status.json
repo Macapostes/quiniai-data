@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-14T06:21:54.493496+00:00",
-  "snapshot_generated_at": "2026-11-14T06:21:50.292278+00:00",
+  "generated_at": "2026-11-14T10:33:27.592037+00:00",
+  "snapshot_generated_at": "2026-11-14T10:33:23.742379+00:00",
   "ok": true,
   "last_error": "",
   "poll_seconds": 7200,
@@ -20,8 +20,8 @@
     "structured_focus_matches": 60,
     "structured_referees": 26,
     "focus_valid_tables": 15,
-    "focus_rosters_checked": 6,
-    "focus_rosters_checked_partial": 6,
+    "focus_rosters_checked": 5,
+    "focus_rosters_checked_partial": 7,
     "focus_referees_confirmed": 2,
     "focus_season_transition_covered": 10,
     "focus_season_transition_evidence": 84,
@@ -31,7 +31,7 @@
     "teams": 137,
     "matches": 140,
     "referees": 26,
-    "last_pruned_at": "2026-11-14T06:21:50.285455+00:00"
+    "last_pruned_at": "2026-11-14T10:33:23.735670+00:00"
   },
   "quiniela_integrity": {
     "ok": true,
@@ -39,15 +39,6 @@
     "mismatch_count": 0
   },
   "last_runs": [
-    {
-      "started_at": "2026-11-10T13:00:04.889032+00:00",
-      "finished_at": "2026-11-10T13:21:34.854937+00:00",
-      "ok": true,
-      "duration_seconds": 1289.97,
-      "monitored_matches": 147,
-      "tracked_matches": 60,
-      "current_jornada": 21
-    },
     {
       "started_at": "2026-11-10T19:24:33.452372+00:00",
       "finished_at": "2026-11-10T19:46:31.529916+00:00",
@@ -143,6 +134,15 @@
       "finished_at": "2026-11-14T06:21:54.492698+00:00",
       "ok": true,
       "duration_seconds": 1309.92,
+      "monitored_matches": 172,
+      "tracked_matches": 60,
+      "current_jornada": 21
+    },
+    {
+      "started_at": "2026-11-14T10:20:04.600408+00:00",
+      "finished_at": "2026-11-14T10:33:27.591251+00:00",
+      "ok": true,
+      "duration_seconds": 802.99,
       "monitored_matches": 172,
       "tracked_matches": 60,
       "current_jornada": 21
@@ -689,7 +689,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-11-14T06:13:40.461287+00:00",
+          "context_updated_at": "2026-11-14T10:30:23.788300+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -1150,7 +1150,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:13:50.057385+00:00",
+          "context_updated_at": "2026-11-14T10:30:41.723792+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -1659,7 +1659,7 @@
               "source_items_checked": 10
             }
           },
-          "context_updated_at": "2026-11-14T06:14:00.257313+00:00",
+          "context_updated_at": "2026-11-14T10:30:47.124936+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -2121,7 +2121,7 @@
               "source_items_checked": 13
             }
           },
-          "context_updated_at": "2026-11-14T06:14:21.866872+00:00",
+          "context_updated_at": "2026-11-14T10:30:47.241774+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 100,
@@ -2768,7 +2768,7 @@
               "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-11-14T06:14:32.436399+00:00",
+          "context_updated_at": "2026-11-14T10:30:47.742651+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 97,
@@ -3233,20 +3233,20 @@
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 8
+              "source_items_checked": 7
             },
             "away": {
               "team": "AD Ceuta FC",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 8
+              "verification_status": "not_verified",
+              "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-11-14T06:14:44.672535+00:00",
+          "context_updated_at": "2026-11-14T10:30:48.479931+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 87,
+            "score": 84,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -3258,19 +3258,20 @@
             ],
             "faltan": [
               "H2H",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "sources_checked_no_confirmed_absence",
+              "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 3,
+              "availability_items": 2,
               "official_items": 1,
-              "match_items": 2,
+              "match_items": 1,
               "team_items": 16,
               "season_transition_items": 5,
-              "verified_teams": 2,
+              "verified_teams": 1,
               "home_roster_status": "sources_checked_no_confirmed_absence",
-              "away_roster_status": "sources_checked_no_confirmed_absence",
+              "away_roster_status": "not_verified",
               "referee_confirmed": false
             }
           },
@@ -3842,17 +3843,17 @@
               ],
               "count": 1,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 9
+              "source_items_checked": 8
             },
             "away": {
               "team": "Las Palmas",
               "items": [],
               "count": 0,
               "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 11
+              "source_items_checked": 10
             }
           },
-          "context_updated_at": "2026-11-14T06:15:00.283676+00:00",
+          "context_updated_at": "2026-11-14T10:30:51.211256+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 95,
@@ -3873,7 +3874,7 @@
               "injury_items": 1,
               "availability_items": 5,
               "official_items": 3,
-              "match_items": 7,
+              "match_items": 6,
               "team_items": 17,
               "season_transition_items": 13,
               "verified_teams": 2,
@@ -4404,10 +4405,10 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 5
+              "source_items_checked": 4
             }
           },
-          "context_updated_at": "2026-11-14T06:15:29.067487+00:00",
+          "context_updated_at": "2026-11-14T10:30:54.240760+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 89,
@@ -4428,7 +4429,7 @@
               "roster_status": "partial_verification",
               "injury_items": 0,
               "availability_items": 1,
-              "official_items": 7,
+              "official_items": 6,
               "match_items": 1,
               "team_items": 13,
               "season_transition_items": 10,
@@ -4953,7 +4954,7 @@
               "source_items_checked": 3
             }
           },
-          "context_updated_at": "2026-11-14T06:15:10.721622+00:00",
+          "context_updated_at": "2026-11-14T10:30:52.478737+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 87,
@@ -5224,7 +5225,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:15:37.615506+00:00",
+          "context_updated_at": "2026-11-14T10:30:55.252297+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 71,
@@ -5508,7 +5509,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-11-14T06:20:14.986732+00:00",
+          "context_updated_at": "2026-11-14T10:32:10.827238+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -5799,14 +5800,14 @@
               "team": "Athletic Bilbao",
               "items": [],
               "count": 0,
-              "verification_status": "sources_checked_no_confirmed_absence",
-              "source_items_checked": 4
+              "verification_status": "not_verified",
+              "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:20:24.845417+00:00",
+          "context_updated_at": "2026-11-14T10:32:14.661298+00:00",
           "data_confidence": {
             "nivel": "media",
-            "score": 66,
+            "score": 62,
             "resumen": "Confianza media: análisis útil, pero con datos incompletos.",
             "fortalezas": [
               "referencia 1X2 sin cuotas reales",
@@ -5819,20 +5820,20 @@
             "faltan": [
               "cuotas reales",
               "altas, salidas, entrenador y pretemporada verificadas",
-              "bajas/convocatorias del otro equipo",
+              "noticias y bajas verificadas",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "partial_verification",
+              "roster_status": "not_verified",
               "injury_items": 0,
-              "availability_items": 1,
-              "official_items": 4,
+              "availability_items": 0,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 0,
               "season_transition_items": 0,
-              "verified_teams": 1,
+              "verified_teams": 0,
               "home_roster_status": "not_verified",
-              "away_roster_status": "sources_checked_no_confirmed_absence",
+              "away_roster_status": "not_verified",
               "referee_confirmed": false
             }
           },
@@ -6097,7 +6098,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:20:29.677435+00:00",
+          "context_updated_at": "2026-11-14T10:32:20.648618+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 62,
@@ -6391,8 +6392,8 @@
               "team": "VALENCIA",
               "items": [],
               "count": 0,
-              "verification_status": "not_verified",
-              "source_items_checked": 1
+              "verification_status": "sources_checked_no_confirmed_absence",
+              "source_items_checked": 3
             },
             "away": {
               "team": "GRANADA",
@@ -6402,10 +6403,10 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-11-14T06:20:34.852988+00:00",
+          "context_updated_at": "2026-11-14T10:32:24.343598+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 72,
+            "score": 73,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "referencia 1X2 sin cuotas reales",
@@ -6418,19 +6419,19 @@
             "faltan": [
               "cuotas reales",
               "mas fuentes sobre altas, salidas y pretemporada",
-              "bajas/convocatorias verificadas",
+              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "not_verified",
+              "roster_status": "partial_verification",
               "injury_items": 0,
-              "availability_items": 0,
-              "official_items": 0,
+              "availability_items": 2,
+              "official_items": 2,
               "match_items": 0,
               "team_items": 3,
               "season_transition_items": 0,
-              "verified_teams": 0,
-              "home_roster_status": "not_verified",
+              "verified_teams": 1,
+              "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "not_verified",
               "referee_confirmed": false
             }
@@ -6681,7 +6682,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:15:46.577653+00:00",
+          "context_updated_at": "2026-11-14T10:30:56.350667+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -6961,7 +6962,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:15:54.451138+00:00",
+          "context_updated_at": "2026-11-14T10:30:57.179470+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -7229,7 +7230,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-11-14T06:16:11.657088+00:00",
+          "context_updated_at": "2026-11-14T10:30:59.060617+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 61,
@@ -7535,7 +7536,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-11-14T06:16:45.361296+00:00",
+          "context_updated_at": "2026-11-14T10:31:02.786098+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 68,
@@ -7804,7 +7805,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:16:19.106200+00:00",
+          "context_updated_at": "2026-11-14T10:30:59.932020+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -8072,7 +8073,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:16:35.865484+00:00",
+          "context_updated_at": "2026-11-14T10:31:01.598609+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -8341,7 +8342,7 @@
               "source_items_checked": 1
             }
           },
-          "context_updated_at": "2026-11-14T06:16:27.255895+00:00",
+          "context_updated_at": "2026-11-14T10:31:00.745236+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -8611,7 +8612,7 @@
               "items": [],
               "count": 0,
               "verification_status": "not_verified",
-              "source_items_checked": 1
+              "source_items_checked": 0
             },
             "away": {
               "team": "Inter Milan",
@@ -8621,7 +8622,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:19:30.893093+00:00",
+          "context_updated_at": "2026-11-14T10:31:52.022008+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 47,
@@ -8646,7 +8647,7 @@
               "roster_status": "not_verified",
               "injury_items": 0,
               "availability_items": 0,
-              "official_items": 1,
+              "official_items": 0,
               "match_items": 0,
               "team_items": 1,
               "season_transition_items": 0,
@@ -8876,7 +8877,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:19:35.330973+00:00",
+          "context_updated_at": "2026-11-14T10:31:53.157323+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 32,
@@ -9130,7 +9131,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:19:40.094175+00:00",
+          "context_updated_at": "2026-11-14T10:31:54.361393+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 37,
@@ -9384,7 +9385,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:19:44.106780+00:00",
+          "context_updated_at": "2026-11-14T10:31:55.494506+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 37,
@@ -9638,7 +9639,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:19:48.383588+00:00",
+          "context_updated_at": "2026-11-14T10:31:56.732908+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 32,
@@ -9892,7 +9893,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:19:52.729631+00:00",
+          "context_updated_at": "2026-11-14T10:31:57.743463+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 32,
@@ -10153,7 +10154,7 @@
                   "player_name": "Vicky López",
                   "verificado": false,
                   "status": "out",
-                  "headline": "FC Barcelona club badge Vicky López medical update Player set to be out for longer due to right thigh injury Women Published date 9 hrs ago",
+                  "headline": "FC Barcelona club badge Vicky López medical update Player set to be out for longer due to right thigh injury Women Published date 13 Nov 26",
                   "source": "Web oficial",
                   "link": "https://www.fcbarcelona.com/en/football/womens-football/news/4608647/vicky-lopez-medical-update",
                   "published_at": ""
@@ -10162,7 +10163,7 @@
                   "player_name": "Player",
                   "verificado": false,
                   "status": "out",
-                  "headline": "FC Barcelona club badge Vicky López medical update Player set to be out for longer due to right thigh injury Women Published date 9 hrs ago",
+                  "headline": "FC Barcelona club badge Vicky López medical update Player set to be out for longer due to right thigh injury Women Published date 13 Nov 26",
                   "source": "Web oficial",
                   "link": "https://www.fcbarcelona.com/en/football/womens-football/news/4608647/vicky-lopez-medical-update",
                   "published_at": ""
@@ -10170,7 +10171,7 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 4
+              "source_items_checked": 7
             },
             "away": {
               "team": "SERVETTE",
@@ -10180,7 +10181,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:19:57.452894+00:00",
+          "context_updated_at": "2026-11-14T10:32:00.777844+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 41,
@@ -10205,7 +10206,7 @@
               "roster_status": "partial_verification",
               "injury_items": 2,
               "availability_items": 1,
-              "official_items": 1,
+              "official_items": 4,
               "match_items": 0,
               "team_items": 0,
               "season_transition_items": 0,
@@ -10435,7 +10436,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:20:01.752674+00:00",
+          "context_updated_at": "2026-11-14T10:32:01.893842+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 32,
@@ -10703,7 +10704,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:16:03.036123+00:00",
+          "context_updated_at": "2026-11-14T10:30:58.086293+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 57,
@@ -11202,7 +11203,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:17:56.937209+00:00",
+          "context_updated_at": "2026-11-14T10:31:31.381019+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 78,
@@ -11589,7 +11590,7 @@
                 "previous_season": {},
                 "coverage": "rich",
                 "lookback_days": 120,
-                "evidence_count": 14,
+                "evidence_count": 13,
                 "signings": [],
                 "transfer_reports": [
                   {
@@ -11606,15 +11607,6 @@
                     "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxORjdCakF5NHpRMGJOcGhLNkpaOS1zQkZFT3A4Z1NkYkpHd19iWnRpd05FeDRSbVlERFdqWnRvT2VUUEU3N1FCWXBjOHpXRy15bjFLZGZyNV9ZUTcybkZwQlB2elFGU2plOTJockU4czA1NHBielBFMER6a3Y5bE1SS1lkZXhlcTJNVzBDbm9jUU1EZkZYZnFlMW81WGIwbTNPMXNWOFpoQk10ZVc5S2fSAbMBQVVfeXFMTzVfd2Z1Z2ZGcXVsYzJhRmNfYXRSallDcHR2S09tOG5zZnNjSEszMmVBOWVXdkF4OHhpaVNkRURYbldNLUlyc2k4RnQ0QzFsMklqaGJiMVZGN3NqclBmUC1VaGpfS3o3RWJjbEExcUplNlFBZDFNZFJLNGs0QzVxVWE0UVNJdmdyWnVDelJ6TE5TSENqRUgwRnBYZXdjeXVkYWVGNzlMeXJOcHpYdXVvRnQ4NUk?oc=5",
                     "published_at": "Wed, 11 Nov 2026 10:24:10 GMT",
                     "source": "Superdeporte",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
-                  },
-                  {
-                    "title": "Jorge López: “Mi fichaje encendió la rivalidad entre el Valencia y el Villarreal” - Diario AS",
-                    "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPNUQ3NV9FX1RMQzAwTkZxTzh0eVR5YlhVX0lXOFp5aTVfaDV3MUQtTkttNDEzbFlIcElmNldva25UVUtMdUhwYjI2cjZDQlViaFlGSkRCYmJnOVFYQ3dIRV9WNzR5TmlqSHJXNUN6aWRkdG85ZXVzUDM5LUxPZGNTbTR4bzlNNmlwM0pzbWJQTEZxZWRvZ3JpMHlBZ1FtZlRCOFloWkcweTZ1X0xWRTAyeUFzbENRM2FNRmdr0gHPAUFVX3lxTE1hVzV2THJGSVVUSXg1NmxBcjVfamhNOFBFY0hVRjdDLUszSVpfaG5lNjRRSTlVNTRZR3BubHdyMG1pbi0zb0J3UUVDSTJGaDlwbWVXbHRTS2J6N1hKMEJrYzNSc2RyMkVzSlNpd0pvU3RyRnlsLWxud1lnQWZGcTkxOG1SMkdWcnFZeDZiaG5LanFjN2kxZnFNM2NPQ25Ra3BlUkpKRmMtdFlqZW14SElFd2sxZURqelA1enhnQ2ItVE00R1E3dTBJUFY3YTZmbw?oc=5",
-                    "published_at": "Sat, 24 Oct 2026 07:00:00 GMT",
-                    "source": "Diario AS",
                     "category": "signing",
                     "fact_status": "reported",
                     "evidence_quality": "high"
@@ -11701,15 +11693,6 @@
                     "category": "coach",
                     "fact_status": "reported",
                     "evidence_quality": "medium"
-                  },
-                  {
-                    "title": "Jorge López: “Mi fichaje encendió la rivalidad entre el Valencia y el Villarreal” - Diario AS",
-                    "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPNUQ3NV9FX1RMQzAwTkZxTzh0eVR5YlhVX0lXOFp5aTVfaDV3MUQtTkttNDEzbFlIcElmNldva25UVUtMdUhwYjI2cjZDQlViaFlGSkRCYmJnOVFYQ3dIRV9WNzR5TmlqSHJXNUN6aWRkdG85ZXVzUDM5LUxPZGNTbTR4bzlNNmlwM0pzbWJQTEZxZWRvZ3JpMHlBZ1FtZlRCOFloWkcweTZ1X0xWRTAyeUFzbENRM2FNRmdr0gHPAUFVX3lxTE1hVzV2THJGSVVUSXg1NmxBcjVfamhNOFBFY0hVRjdDLUszSVpfaG5lNjRRSTlVNTRZR3BubHdyMG1pbi0zb0J3UUVDSTJGaDlwbWVXbHRTS2J6N1hKMEJrYzNSc2RyMkVzSlNpd0pvU3RyRnlsLWxud1lnQWZGcTkxOG1SMkdWcnFZeDZiaG5LanFjN2kxZnFNM2NPQ25Ra3BlUkpKRmMtdFlqZW14SElFd2sxZURqelA1enhnQ2ItVE00R1E3dTBJUFY3YTZmbw?oc=5",
-                    "published_at": "Sat, 24 Oct 2026 07:00:00 GMT",
-                    "source": "Diario AS",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
                   },
                   {
                     "title": "Javier Aguirre es presentado como nuevo entrenador del Valencia CF - Infobae",
@@ -11802,10 +11785,10 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 0,
-                "summary": "3 posibles altas u operaciones; 5 cambios de entrenador"
+                "stale_rumours_dropped": 1,
+                "summary": "2 posibles altas u operaciones; 5 cambios de entrenador"
               },
-              "evidence_count": 17,
+              "evidence_count": 16,
               "analysis_priorities": [
                 "Usar la temporada anterior como base cuando la tabla actual no tenga muestra.",
                 "Valorar altas, salidas, entrenador, bajas y pretemporada por titular, fuente y fecha.",
@@ -11866,7 +11849,7 @@
               "source_items_checked": 13
             }
           },
-          "context_updated_at": "2026-11-14T06:12:16.323926+00:00",
+          "context_updated_at": "2026-11-14T10:30:10.961662+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -11897,7 +11880,7 @@
               "referee_confirmed": false
             }
           },
-          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (49.2%). | duelo directo por salvacion: equipos separados por 3 pts y 5 puestos. | Local: 1 altas/refuerzos confirmados; 1 posibles altas u operaciones; 1 noticias de plantilla | Visitante: 3 posibles altas u operaciones; 5 cambios de entrenador | Rayo Vallecano defiende salvacion con 2 pts de colchon en tramo medio (must-win 38/100, no perder 64/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario futuro con 2 rivales del top-6. Situación clasificatoria muy delicada, partido de alto voltaje emocional. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 14 días).",
+          "briefing_excerpt": "Confianza alta: análisis apoyado en datos fuertes. | El local es favorito para las casas de apuestas (49.2%). | duelo directo por salvacion: equipos separados por 3 pts y 5 puestos. | Local: 1 altas/refuerzos confirmados; 1 posibles altas u operaciones; 1 noticias de plantilla | Visitante: 2 posibles altas u operaciones; 5 cambios de entrenador | Rayo Vallecano defiende salvacion con 2 pts de colchon en tramo medio (must-win 38/100, no perder 64/100). Victoria abre colchon en salvacion. Derrota puede meterle en descenso o dejarle al borde. Calendario futuro con 2 rivales del top-6. Situación clasificatoria muy delicada, partido de alto voltaje emocional. | Ambos equipos llegan con una carga física similar (Low). Tiempo de descanso similar (13 vs 14 días).",
           "analysis_ready": true
         },
         {
@@ -12532,7 +12515,7 @@
               "source_items_checked": 9
             }
           },
-          "context_updated_at": "2026-11-14T06:17:58.209588+00:00",
+          "context_updated_at": "2026-11-14T10:31:31.821091+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 82,
@@ -13023,7 +13006,7 @@
                 "previous_season": {},
                 "coverage": "rich",
                 "lookback_days": 120,
-                "evidence_count": 9,
+                "evidence_count": 8,
                 "signings": [],
                 "transfer_reports": [
                   {
@@ -13156,15 +13139,6 @@
                     "evidence_quality": "medium"
                   },
                   {
-                    "title": "Jorge López: “Mi fichaje encendió la rivalidad entre el Valencia y el Villarreal” - Diario AS",
-                    "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPNUQ3NV9FX1RMQzAwTkZxTzh0eVR5YlhVX0lXOFp5aTVfaDV3MUQtTkttNDEzbFlIcElmNldva25UVUtMdUhwYjI2cjZDQlViaFlGSkRCYmJnOVFYQ3dIRV9WNzR5TmlqSHJXNUN6aWRkdG85ZXVzUDM5LUxPZGNTbTR4bzlNNmlwM0pzbWJQTEZxZWRvZ3JpMHlBZ1FtZlRCOFloWkcweTZ1X0xWRTAyeUFzbENRM2FNRmdr0gHPAUFVX3lxTE1hVzV2THJGSVVUSXg1NmxBcjVfamhNOFBFY0hVRjdDLUszSVpfaG5lNjRRSTlVNTRZR3BubHdyMG1pbi0zb0J3UUVDSTJGaDlwbWVXbHRTS2J6N1hKMEJrYzNSc2RyMkVzSlNpd0pvU3RyRnlsLWxud1lnQWZGcTkxOG1SMkdWcnFZeDZiaG5LanFjN2kxZnFNM2NPQ25Ra3BlUkpKRmMtdFlqZW14SElFd2sxZURqelA1enhnQ2ItVE00R1E3dTBJUFY3YTZmbw?oc=5",
-                    "published_at": "Sat, 24 Oct 2026 07:00:00 GMT",
-                    "source": "Diario AS",
-                    "category": "signing",
-                    "fact_status": "reported",
-                    "evidence_quality": "high"
-                  },
-                  {
                     "title": "Villarreal en LaLiga EA Sports 2026/27: plantilla, fichajes, bajas, figuras y claves de la temporada - Diario AS",
                     "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPbFJVOHdfQlFpTlY0Y0o3NGlWR1RlckZTaUJJeURqeHBPbWQ1SU5QdVJGdjFRLThHck9tV2hEVURpSjJtYkZDNUxXQ0pwNGx0SmpIZWZKNDlJTzFQV1ZkSGRBVGktTU9aemxhSHFIX3lUeDl0ZGpiQ0VYU20tVEVEQXhlVWxwZjJiNVY2V3p4Y1ZLTFhkWEVjZkRBLU1VRlUwbWJvRkg0cEZDTEdYcWp6Z0hSZDdoLTU5OW45alFMdW5EcnplMktxRzlmLVlXRzNoRmc?oc=5",
                     "published_at": "Thu, 13 Aug 2026 07:00:00 GMT",
@@ -13192,10 +13166,10 @@
                     "evidence_quality": "medium"
                   }
                 ],
-                "stale_rumours_dropped": 0,
+                "stale_rumours_dropped": 1,
                 "summary": "5 posibles altas u operaciones; 2 señales de pretemporada; 1 noticias de plantilla"
               },
-              "evidence_count": 17,
+              "evidence_count": 16,
               "analysis_priorities": [
                 "Usar la temporada anterior como base cuando la tabla actual no tenga muestra.",
                 "Valorar altas, salidas, entrenador, bajas y pretemporada por titular, fuente y fecha.",
@@ -13246,7 +13220,7 @@
               "source_items_checked": 5
             }
           },
-          "context_updated_at": "2026-11-14T06:17:58.317281+00:00",
+          "context_updated_at": "2026-11-14T10:31:31.918521+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 82,
@@ -13860,7 +13834,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-11-14T06:13:00.020755+00:00",
+          "context_updated_at": "2026-11-14T10:30:14.645749+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -14522,8 +14496,8 @@
               "team": "CA Osasuna",
               "items": [],
               "count": 0,
-              "verification_status": "not_verified",
-              "source_items_checked": 3
+              "verification_status": "sources_checked_no_confirmed_absence",
+              "source_items_checked": 4
             },
             "away": {
               "team": "Málaga",
@@ -14549,13 +14523,13 @@
               ],
               "count": 2,
               "verification_status": "confirmed_absences",
-              "source_items_checked": 11
+              "source_items_checked": 12
             }
           },
-          "context_updated_at": "2026-11-14T06:13:14.920323+00:00",
+          "context_updated_at": "2026-11-14T10:30:16.218860+00:00",
           "data_confidence": {
             "nivel": "alta",
-            "score": 79,
+            "score": 85,
             "resumen": "Confianza alta: análisis apoyado en datos fuertes.",
             "fortalezas": [
               "cuotas reales",
@@ -14567,19 +14541,18 @@
             ],
             "faltan": [
               "porcentajes de quiniela",
-              "bajas/convocatorias del otro equipo",
               "arbitro confirmado"
             ],
             "cobertura_cualitativa": {
-              "roster_status": "partial_verification",
+              "roster_status": "confirmed_absences",
               "injury_items": 2,
-              "availability_items": 9,
+              "availability_items": 10,
               "official_items": 2,
-              "match_items": 1,
+              "match_items": 2,
               "team_items": 25,
               "season_transition_items": 15,
-              "verified_teams": 1,
-              "home_roster_status": "not_verified",
+              "verified_teams": 2,
+              "home_roster_status": "sources_checked_no_confirmed_absence",
               "away_roster_status": "confirmed_absences",
               "referee_confirmed": false
             }
@@ -15235,7 +15208,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-11-14T06:13:30.767882+00:00",
+          "context_updated_at": "2026-11-14T10:30:17.804950+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 82,
@@ -15631,7 +15604,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-11-14T06:18:34.445368+00:00",
+          "context_updated_at": "2026-11-14T10:31:38.022873+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 47,
@@ -16358,7 +16331,7 @@
               "source_items_checked": 6
             }
           },
-          "context_updated_at": "2026-11-14T06:18:45.990667+00:00",
+          "context_updated_at": "2026-11-14T10:31:39.917793+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -16853,7 +16826,7 @@
               "source_items_checked": 2
             }
           },
-          "context_updated_at": "2026-11-14T06:18:56.202745+00:00",
+          "context_updated_at": "2026-11-14T10:31:41.747149+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 47,
@@ -17437,7 +17410,7 @@
               "source_items_checked": 8
             }
           },
-          "context_updated_at": "2026-11-14T06:19:00.545869+00:00",
+          "context_updated_at": "2026-11-14T10:31:44.916285+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 34,
@@ -18023,7 +17996,7 @@
               "source_items_checked": 17
             }
           },
-          "context_updated_at": "2026-11-14T06:19:08.644636+00:00",
+          "context_updated_at": "2026-11-14T10:31:46.675356+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 37,
@@ -18648,7 +18621,7 @@
               "source_items_checked": 7
             }
           },
-          "context_updated_at": "2026-11-14T06:19:16.716067+00:00",
+          "context_updated_at": "2026-11-14T10:31:48.517278+00:00",
           "data_confidence": {
             "nivel": "media",
             "score": 60,
@@ -18987,7 +18960,7 @@
               "source_items_checked": 0
             }
           },
-          "context_updated_at": "2026-11-14T06:19:22.806940+00:00",
+          "context_updated_at": "2026-11-14T10:31:49.841157+00:00",
           "data_confidence": {
             "nivel": "baja",
             "score": 43,
@@ -19650,7 +19623,7 @@
               "source_items_checked": 15
             }
           },
-          "context_updated_at": "2026-11-14T06:17:58.526578+00:00",
+          "context_updated_at": "2026-11-14T10:31:32.158345+00:00",
           "data_confidence": {
             "nivel": "alta",
             "score": 85,
@@ -19747,7 +19720,7 @@
       }
     ],
     "degraded_reason": "",
-    "provider_failures": 1,
+    "provider_failures": 0,
     "focus_matches": 15,
     "checked_evidence": 84,
     "invalid_evidence_count": 0,
